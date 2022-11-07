@@ -61,14 +61,11 @@
 	.hyper {
   float: right;
   margin-left: 1.5em;
+  font-size: 1.2em;
  
 	}
 
-	.hypertxt {
-  background: linear-gradient(to bottom left, #2A2A95 6%, #1CB5E0 100%);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-	}
+
 
 
 
@@ -86,8 +83,28 @@
 		
 	}
 
-	
-	
+.flow {
+    background: linear-gradient(236deg, #2a2a95, #1cb5e0);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+    -webkit-animation: flow 6s ease infinite;
+    animation: flow 6s ease infinite;
+}
+
+@-webkit-keyframes flow {
+    0%{background-position:0% 91%}
+    50%{background-position:100% 10%}
+    100%{background-position:0% 91%}
+}
+@keyframes flow { 
+    0%{background-position:0% 91%}
+    50%{background-position:100% 10%}
+    100%{background-position:0% 91%}
+}
+
+
+
 	h1 {
 		font-size: 6.5em;
 		font-family: 'Inter', sans-serif;		
@@ -255,10 +272,9 @@ text-decoration: none;
 	} 
 		
 	a:hover {
-	  background: linear-gradient(to bottom left, #2A2A95 6%, #1CB5E0 100%);
+	  background: linear-gradient(to top right, #2A2A95 6%, #1CB5E0 100%);
 -webkit-background-clip: text;
 -webkit-text-fill-color: transparent;
-		font-family: QuattroBo;
 	  text-decoration: none;
 	
 	}  
@@ -384,24 +400,6 @@ text-decoration: none;
 
 
 
-
-	a:link {
-	  color: #4096D2;
-	  text-decoration: none;
-
-	 
-	}
-	
-	a:visited {
-	  color: #4096D2;
-	  text-decoration: none;
-
-
-	} 
-		
-	a:hover {
-	  color: #F0F0F0;
-	  text-decoration: none;
 	  
 	}    
 
