@@ -1,0 +1,75 @@
+==================================================================
+https://keybase.io/cristianrus4
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://cristianrus4.me
+  * I am cristianrus4 (https://keybase.io/cristianrus4) on keybase.
+  * I have a public key with fingerprint 55DB A2C3 31C1 11A3 9B36  2433 8585 75CB 2B97 2233
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01203ff3199d17a9e82e10428343365f5ead14c15d94949ba5f997ce23c23c6d78620a",
+      "fingerprint": "55dba2c331c111a39b362433858575cb2b972233",
+      "host": "keybase.io",
+      "key_id": "858575cb2b972233",
+      "kid": "0101366c861afb15bef163eae7cdf965d7156e12defcf4a559fa4f0aab791004b7010a",
+      "uid": "431d4613bbbdfd182a1049306c2f1c19",
+      "username": "cristianrus4"
+    },
+    "service": {
+      "hostname": "cristianrus4.me",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1546178221,
+  "expire_in": 157680000,
+  "prev": "998cb39f150ed1949acf700fa6fa0be530c300309cb7702e1a0ec6e2bc4dabaa",
+  "seqno": 23,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.80
+Comment: https://keybase.io/crypto
+
+yMNsAnicbVJtUFRVGF7KoFYZcizJChtu4JAQ3nPP/di7ZYgCMU6lfA1DIts5956L
+F2V32b27iICAtpDooMYkmCSig9YkSPYDkZIoSllG+dBpRjMXQWcofzhlDoQzTGeZ
+/Oc5Z+bMed/nfc7zfgyEP20yh/h8nqH4JgaGDPW3ekz5cVc6yhnsUMsYazmzlcxf
+ZJtK3IZtq64yVoYFHAs1DQJZVoGEZGLhCGB5zgJ5CEVBEwhSAa8AQZV5ujESNFmW
+FMJBhR5RlSwixyImgdF0eyFxOV263aC0gqBixCkQAgUAgKCMochRRotgESRBwRyW
+JY6DkAZucbiDEVQcRm6SqDuojT5s8/KegH+smwVQFBWLCJCGgYCJBkRIEJEUVZNF
+QZWAIBLAqURTNB4JgqwhXmMRwpIMWJbHEmUI6vbM0/EQqLwIIMZY1VRg4RAtggxZ
+UeE0moIcBLqJy46KCUUrLt1t6Mju8rh5pjKBoR6vrpBgcYPZPAGVSC0JjNPlMByK
+Yxt1bjEMp9saDDbKnEF0KcG2/3lsWLertJw0wktcbt1hZ6yAIhVDDxIDgSqVLBwH
+Ehiy3am7iE0PIgRJtLB0Bf8hXkopyxYFQ1kDAktUQLuHFE1iWQ2JGmIxESCrQJaF
+rKxgSWJp3xFLFJFwWOFVhFGwOm5SYncwVg5SnaiQcrr1QjsyPC7CVP7Yn7/AFGI2
+hT7zVHDOTObnnn88fYGQiLmE7F8mos7ERn8mJz66OVxjj4Hrfi50BTDT2WC6/s1H
+MbXnnH23PS3t6YOBuwfqeoqsxzfH7KwY7xQj+YlYy+TvFVWV3ot1dlErOeR4qWSV
+b+atClNFW6qyOKWrs5ILVH0op4lTG9JaYw4e7PTU3nKdG+DS13xZurvzpvDu7a7J
+HHJ235WYybHDA11DriVVb5rLL7Ade88eMFbX5zauPDW9Ji5QH1Iy21wTIS3+vuD+
+CW996HB3d0Nq87Xk8nWVRd37LrXnFgg9Xy10HxvpM28XRjePgsEtGZ+2xy5vSsVl
+eXPkQdqc953s9MjXej7Rvw7rbf1h3DT2et8tXs7tiEuJ3+8MM6p37rnjn8jZPRV1
+ZtmhjJFvzXrWNVBQ+9OLryYFAsfupHzgN99oXFD91+kVm75rinhwJMwfGpsUv6rZ
+Mv0CXrsn+wt/kS20unWi5tnw1fvvvZzXEjY9mPHG2plXLhN+w8bs+L9PaOFDhy/6
+P38YldkGP36wQy942MZs/3XXTDHYONzzZ9J56/vxS703wmat/ioj81iSMBZ94VJW
+zwrfwtj3po+eIj4UF1M6uv7q+rqSyzltf+y9fuTqZH7yyWRbWvT1qCn93qNlxWO9
+myqWeXsHGjz9xujyEyX/LMKn317aEknGj+7IWLTyN3Z0tn3k/MlM0Ljk3+N3d9VA
+22ze/bHGh76s/wCVJr9C
+=6VVa
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/cristianrus4
+
+==================================================================

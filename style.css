@@ -1,0 +1,370 @@
+
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+		@font-face {
+  	font-family: Quattro;
+  	src: url(fonts/Quattro.woff);
+		}
+
+		@font-face {
+  	font-family: QuattroIt;
+  	src: url(fonts/QuattroIt.woff);
+		}
+
+		@font-face {
+  	font-family: QuattroBo;
+  	src: url(fonts/QuattroBo.woff);
+		}
+
+		@font-face {
+  	font-family: GothamXNBookk;
+  	src: url(fonts/GothamXNarrow-Book.otf);
+		}
+
+		@font-face {
+  	font-family: GothamXNMedium;
+  	src: url(fonts/GothamXNarrow-Medium.otf);
+		}
+
+		@font-face {
+  	font-family: GothamXNBold;
+  	src: url(fonts/GothamXNarrow-Bold.otf);
+		}
+
+		@font-face {
+  	font-family: GothamXNBlack;
+  	src: url(fonts/GothamXNarrow-Black.otf);
+		}
+
+		@font-face {
+  	font-family: GothamXNUltra;
+  	src: url(fonts/GothamXNarrow-Ultra.otf);
+		}
+
+ 
+
+	html{
+		background-color: #F0F0F0;
+		font-family: 'Quattro', sans-serif;
+		color: #1B1B1B;
+	}
+	
+	nav {
+		margin-bottom: 2em;
+		margin-top: 2em;
+		
+	}
+
+
+
+
+	.hyper {
+  float: right;
+  margin-left: 1.5em;
+ 
+	}
+
+	.hypertxt {
+  color: #1B1B1B;
+	}
+
+
+
+	body {
+		font-size: 1em;
+		line-height: 1.6em;
+		text-align: left;
+		margin: 0 auto;
+		padding: 0 10%;
+		margin-top: 15%;
+		margin-bottom: 2em;
+		max-width: 800px;
+		min-width: 300px;
+		
+		
+	}
+
+	
+	
+	h1 {
+		font-size: 6.5em;
+		font-family: 'Inter', sans-serif;		
+		margin-bottom: 0.4em;
+		line-height: 1em;
+		text-align: right;
+		font-weight: 800;
+	}
+
+	h2 {
+		font-size: 1.9em;
+		font-family: 'Inter', sans-serif;		
+		margin-bottom: 0;
+		line-height: 1em;
+		
+	}
+		
+
+	p {
+		margin-top: 0.5em;
+		margin-bottom: 1em;
+		font-size: 1em;
+	}
+
+
+	figure {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+
+
+	.projects {
+		
+		filter:grayscale(100%);
+		transition: .3s ease;
+  	
+	}
+
+
+	
+	.projects:hover {
+		
+		filter:grayscale(0%);
+		transition: .3s ease;
+  	transform: scale(1.1);
+	}
+
+	.toolslight {
+		width: 100%;
+		max-width: 400px;
+
+		}
+
+	.toolsdark {
+
+		display: none;
+	}
+
+	
+	.tools {
+	
+		filter:grayscale(100%) opacity(20%);
+		transition: .3s ease;
+		float: left;
+		margin-top: 2%;
+		margin-right: 3%;
+		width: 13.6%;
+  	
+	}
+
+	
+
+	.tools:hover {
+		filter:grayscale(0%);
+		transition: .3s ease;
+  	transform: scale(1.15);
+	}
+
+
+
+
+	.item {
+		border-left: 4px solid #1B1B1B;
+		margin-left: 0.5em;
+		padding-left: 0.5em;
+
+	}
+
+	.tit {
+		
+		font-family: 'QuattroBo', sans-serif;
+	}
+
+	.ext {
+		
+		font-family: 'QuattroIt', sans-serif;
+	}
+
+	.dat {
+		
+		font-size: 0.8em;
+		
+	}
+
+
+	figcaption {
+		text-align: right;
+		font-size: 0.8em;
+		font-family: QuattroIt, sans-serif;
+		margin-top: -0.5em;
+
+	}
+
+	#name {
+		position: fixed;
+   	bottom: 10%;
+   	right: 10%;
+   	
+		
+	}
+
+	
+
+	.subtitle {
+		font-size: 2em;
+		font-weight: 700;
+		font-family: 'Inter', sans-serif;
+		max-width: 600px;
+		line-height: 1.2em;
+
+	}
+	
+
+
+
+	
+	a:link {
+	  color: #4096D2;
+	  text-decoration: none;
+	  
+	}
+	
+	a:visited {
+	  color: #4096D2;
+	  text-decoration: none;
+
+	} 
+		
+	a:hover {
+	  color: #1B1B1B;
+	  text-decoration: none;
+	
+	}  
+
+
+
+@media only screen and (min-width: 1000px) {
+  #name {
+  	
+    position: relative;
+    float: right;
+   	right: 0;
+   	margin-top: 300px;
+
+  }
+}
+
+
+@media only screen and (max-width: 800px) {
+  h1 {
+  
+    font-size: 5em;
+
+	
+  }
+
+  .subtitle {
+
+		font-size: 1.6em;	
+
+	}
+
+}
+
+
+
+@media only screen and (max-width: 635px) {
+  h1 {
+  	
+    font-size: 4.5em;
+
+  }
+
+  .subtitle {
+
+		font-size: 1.4em;	
+
+	}
+}
+
+@media only screen and (max-width: 555px) {
+  h1 {
+  	
+    font-size: 3.4em;
+
+
+
+  }
+
+  
+
+}
+
+
+@media only screen and (max-width: 480px) {
+  h1 {
+  	
+    font-size: 3em;
+   	
+
+
+  }
+}
+
+	@media (prefers-color-scheme: dark) {
+
+
+	html{
+		background-color: #1B1B1B;
+		color: #F0F0F0;
+	}
+
+	.hypertxt {
+  color: #F0F0F0;
+	}
+
+	.item {
+		border-left: 4px solid #F0F0F0;
+		margin-left: 0.5em;
+		padding-left: 0.5em;
+
+	}
+
+
+
+	
+
+	.toolslight {
+		display: none;
+
+	}
+
+
+		.toolsdark {
+		display: inline;
+	}
+
+
+
+
+	a:link {
+	  color: #4096D2;
+	  text-decoration: none;
+
+	 
+	}
+	
+	a:visited {
+	  color: #4096D2;
+	  text-decoration: none;
+
+
+	} 
+		
+	a:hover {
+	  color: #F0F0F0;
+	  text-decoration: none;
+	  
+	}    
+
+
