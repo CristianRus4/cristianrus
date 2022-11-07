@@ -83,25 +83,6 @@
 		
 	}
 
-.flow {
-    background: linear-gradient(236deg, #2a2a95, #1cb5e0);
-    background-size: 400% 400%;
-    -webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-    -webkit-animation: flow 6s ease infinite;
-    animation: flow 6s ease infinite;
-}
-
-@-webkit-keyframes flow {
-    0%{background-position:0% 91%}
-    50%{background-position:100% 10%}
-    100%{background-position:0% 91%}
-}
-@keyframes flow { 
-    0%{background-position:0% 91%}
-    50%{background-position:100% 10%}
-    100%{background-position:0% 91%}
-}
 
 
 
@@ -153,38 +134,6 @@
   	transform: scale(1.1);
 	}
 
-	.toolslight {
-		width: 100%;
-		max-width: 400px;
-
-		}
-
-	.toolsdark {
-
-		display: none;
-	}
-
-	
-	.tools {
-	
-		filter:grayscale(100%) opacity(20%);
-		transition: .3s ease;
-		float: left;
-		margin-top: 2%;
-		margin-right: 3%;
-		width: 13.6%;
-  	
-	}
-
-	
-
-	.tools:hover {
-		filter:grayscale(0%);
-		transition: .3s ease;
-  	transform: scale(1.15);
-	}
-
-
 
 
 	.item {
@@ -227,14 +176,12 @@
 		
 	}
 
+
+
 	#cr {
 		position: fixed;
    	bottom: 10%;
    	right: 10%;
-
-
-   	
-		
 	}
 
 	
@@ -387,16 +334,6 @@ text-decoration: none;
 
 
 	
-
-	.toolslight {
-		display: none;
-
-	}
-
-
-		.toolsdark {
-		display: inline;
-	}
 
 
 
