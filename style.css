@@ -65,7 +65,9 @@
 	}
 
 	.hypertxt {
-  color: #1B1B1B;
+  background: linear-gradient(to bottom left, #2A2A95 6%, #1CB5E0 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
 	}
 
 
@@ -208,6 +210,16 @@
 		
 	}
 
+	#cr {
+		position: fixed;
+   	bottom: 10%;
+   	right: 10%;
+
+
+   	
+		
+	}
+
 	
 
 	.subtitle {
@@ -224,19 +236,29 @@
 
 	
 	a:link {
-	  color: #4096D2;
-	  text-decoration: none;
+	  background: #2A2A95;
+background: linear-gradient(to bottom left, #2A2A95 -20%, #1CB5E0 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+text-decoration: none;
+	 
 	  
 	}
 	
 	a:visited {
-	  color: #4096D2;
-	  text-decoration: none;
+	  background: #2A2A95;
+background: linear-gradient(to bottom left, #2A2A95 6%, #1CB5E0 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+text-decoration: none;
 
 	} 
 		
 	a:hover {
-	  color: #1B1B1B;
+	  background: linear-gradient(to bottom left, #2A2A95 6%, #1CB5E0 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+		font-family: QuattroBo;
 	  text-decoration: none;
 	
 	}  
@@ -250,6 +272,15 @@
     float: right;
    	right: 0;
    	margin-top: 300px;
+
+  }
+
+  #cr {
+  	
+    position: relative;
+    float: right;
+   	right: 0;
+   	margin-top: 200px;
 
   }
 }
@@ -268,6 +299,13 @@
 		font-size: 1.6em;	
 
 	}
+
+	  #cr {
+  	
+    width: 40%;
+   	
+
+  }
 
 }
 
