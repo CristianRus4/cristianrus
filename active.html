@@ -18,17 +18,17 @@
 		
 
 
-		<h1>active '23</h1>
+		<h1>active</h1>
 
 		
-
-
-		
-		
+<p>Committed to have an active life (<a href="https://anydistance.club">since 2018!</a>). Every relevant workout I did (and I remembered to share it). Images are created with –the great– <a href="https://anydistance.club">Any Distance</a> app.</p>
 
 		
 		
-<!-- Each figure element should have a unique id attribute -->
+
+		
+		
+
 
 
 <figure>
@@ -51,6 +51,48 @@
 	<img width="100%" height="auto" src="images/workouts/swm2jan23.webp">
 	<figcaption>Swimming / 2th January 2023</figcaption>
 </figure>
+
+
+
+
+
+
+ <script>
+    // Get all figures
+    var figures = document.getElementsByTagName('figure');
+
+    // Initialize the counts to 0
+    var fstCount = 0;
+    var runningCount = 0;
+    var swimmingCount = 0;
+
+    // Loop through the figures
+    for (var i = 0; i < figures.length; i++) {
+      // Get the figcaption of the current figure
+      var figcaption = figures[i].getElementsByTagName('figcaption')[0].innerHTML;
+
+      // Check if the figcaption includes "Running", "FST", or "Swimming"
+      if (figcaption.indexOf('Running') !== -1) {
+        runningCount++;
+      }
+      if (figcaption.indexOf('FST') !== -1) {
+        fstCount++;
+      }
+      if (figcaption.indexOf('Swimming') !== -1) {
+        swimmingCount++;
+      }
+    }
+
+    // Create the text element
+    var text = document.createElement('p');
+    text.innerHTML = 'Workouts completed during 2023: ' + fstCount + ' FST, ' + runningCount + ' Running, ' + swimmingCount + ' Swimming';
+
+    // Get the first figure element
+    var firstFigure = figures[0];
+
+    // Insert the text before the first figure
+    document.body.insertBefore(text, firstFigure);
+  </script>
 
 
 	</body>
