@@ -25,8 +25,6 @@
 
 		
 		
-
-		
 <div class="container">
     <div class="box duration">
       <p>Duration</p>
@@ -97,16 +95,22 @@
         swimmingCount++;
       }
     }
+// Create the text element
+var text = document.createElement('p');
+text.innerHTML = 'Workouts in 2023 so far: ' + fstCount + ' FST, ' + runningCount + ' Running, ' + swimmingCount + ' Swimming';
 
-    // Create the text element
-    var text = document.createElement('p');
-    text.innerHTML = 'Workouts completed during 2023: ' + fstCount + ' FST, ' + runningCount + ' Running, ' + swimmingCount + ' Swimming';
+// Create the div element and append the text element to it
+var div = document.createElement('div');
+div.appendChild(text);
 
-    // Get the first figure element
-    var firstFigure = figures[0];
+// Give the div the workout-box class
+div.className = 'summary-box';
 
-    // Insert the text before the first figure
-    document.body.insertBefore(text, firstFigure);
+// Get the container element
+var container = document.getElementsByClassName('container')[0];
+
+// Insert the div before the container
+document.body.insertBefore(div, container);
   </script>
 
 
