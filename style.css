@@ -254,6 +254,8 @@ text-decoration: none;
 .box p {
   margin: 0;
   vertical-align: top;
+  font-family: 'Inter', sans-serif;
+
 }
 .box p:first-of-type {
 	font-size: 0.9em;
@@ -261,11 +263,14 @@ text-decoration: none;
   
 }
 .box p:last-of-type {
-	font-family: 'QuattroBo', sans-serif;
+	font-family: 'Inter', sans-serif;
+	font-weight: 700;
   font-size: 1.3em;
   font-style: italic;
   	
 }
+
+
 
 .box:hover {
   background-color: #1B1B1B;
@@ -279,10 +284,10 @@ text-decoration: none;
 }
 
 .box.distance:hover {
-  background-color: #5EBD61;
+  background-color: #608DE6 ;
 }
 .box.elevation:hover {
-  background-color: #608DE6;
+  background-color: #9370DB;
 }
 
 
@@ -296,14 +301,16 @@ text-decoration: none;
   padding-top: 0.5em;
   padding-bottom: 0.01em;
   padding-right: 0.5em;
-  font-family: 'QuattroBo', sans-serif;
+  font-family: 'Inter', sans-serif;
+	font-weight: 700;
   font-size: 1.3em;
   border-radius:12px;
 }
 
 .summary-box:hover {
-  background-color: #9370DB;
+  background-color: #5EBD61;
   color: #F0F0F0;
+
 }
 
 
@@ -409,9 +416,38 @@ text-decoration: none;
   }
 }
 
+
 @media only screen and (max-width: 500px) {
   .box {
-    width: calc(50% - 1em);
+  	margin: 0.2em;
+    width: calc(46.5% - 1em);
+    line-height: 1.2em;
+    height: 3.2em;
+  }
+
+  .box p {
+	
+
+
+}
+
+  .box p:first-of-type {
+	font-size: 0.8em;
+
+  
+}
+.box p:last-of-type {
+  font-size: 1.1em;
+
+}
+
+
+
+
+.summary-box {
+		padding-top: 0.2em;
+    font-size: 1em;
+    height: 4em;
   }
 }
 
