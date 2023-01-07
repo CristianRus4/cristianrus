@@ -245,7 +245,7 @@ text-decoration: none;
   align-items: flex-start;
   border-radius:12px;
   justify-content: flex-start;
-  background-color: #E0E0E0;
+  background-color: #E8E8E8;
   margin: 0.5em;
   padding-left: 1em;
   padding-top: 0.8em;
@@ -293,7 +293,7 @@ text-decoration: none;
 
 
 .summary-box {
-  background-color: #E0E0E0;
+  background-color: #E8E8E8;
   margin: 0em;
   margin-top: 1em;
   margin-bottom: 0.3em;
@@ -476,11 +476,27 @@ text-decoration: none;
 
 	}
 
+	.box {
+		background-color: #222222;
+		color: #F0F0F0;
+	
+	}
 
+	.summary-box {
+		background-color: #222222;
+		color: #F0F0F0;
 
 	
+	}
 
+	
+	.box:hover {
+  color: #1B1B1B;
+}
 
+.summary-box:hover {
+  color: #1B1B1B;
+}
 
 	  
 	}    
