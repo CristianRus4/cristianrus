@@ -23,7 +23,7 @@
 		
 <!--<p>Committed to have an active life (<a href="https://anydistance.club">since 2018!</a>). Every relevant workout I did (and I remembered to share it). Images are created with –the great– <a href="https://anydistance.club">Any Distance</a> app.</p>-->
 
-		<h2>Trends</h2> 
+		<h2>Health status</h2> 
 
 		<div class="trends">
     
@@ -48,29 +48,31 @@
 
   </div>
 
-<h2>Workouts in 2023 so far</h2> 
+<h2>Workouts stats</h2> 
 		
 <div class="container">
     <div class="box duration">
-      <p>Duration</p>
+      <p>Time spent</p>
       <p>6h 59m</p>
     </div>
     <div class="box energy">
-      <p>Active energy</p>
+      <p>Energy burned</p>
       <p>2,197 kcal</p>
     </div>
     <div class="box distance">
-      <p>Distance</p>
+      <p>Distance ran</p>
       <p>11.39km</p>
     </div>
     <div class="box elevation">
-      <p>Elevation</p>
+      <p>Elevation gained</p>
       <p>63m</p>
     </div>
 
 
 
   </div>
+
+
 
 <figure>
 	<img width="100%" height="auto" src="images/workouts/fst6jan23.webp">
@@ -108,6 +110,7 @@
     var fstCount = 0;
     var runningCount = 0;
     var swimmingCount = 0;
+    var totalWorkouts = 0;
 
     // Loop through the figures
     for (var i = 0; i < figures.length; i++) {
@@ -125,24 +128,74 @@
         swimmingCount++;
       }
     }
-// Create the text element
-var text = document.createElement('p');
-text.innerHTML = 'Workouts in 2023 so far: ' + fstCount + ' FST, ' + runningCount + ' Running, ' + swimmingCount + ' Swimming';
+    totalWorkouts = fstCount + runningCount + swimmingCount;
 
-// Create the div element and append the text element to it
-var div = document.createElement('div');
-div.appendChild(text);
+    // Create the text element
+    var text = document.createElement('p');
+    text.innerHTML = 'This year so far I did ' + fstCount + ' FST sessions, ' + runningCount + ' run and ' + swimmingCount + ' swim';
 
-// Give the div the workout-box class
-div.className = 'summary-box';
+    // Create the div element and append the text element to it
+    var div = document.createElement('div');
+    div.appendChild(text);
 
-// Get the container element
-var container = document.getElementsByClassName('container')[0];
+    // Give the div the workout-box class
+    div.className = 'summary-box';
 
-// Insert the div before the container
-document.body.insertBefore(div, container);
-  </script>
+    // Get the container element
+    var container = document.getElementsByClassName('container')[0];
 
+    // Insert the div before the container
+    document.body.insertBefore(div, container);
+</script>
+
+
+
+
+<!-- <script>
+    // Get all figures
+    var figures = document.getElementsByTagName('figure');
+
+    // Initialize the counts to 0
+    var fstCount = 0;
+    var runningCount = 0;
+    var swimmingCount = 0;
+    var totalWorkouts = 0;
+
+    // Loop through the figures
+    for (var i = 0; i < figures.length; i++) {
+      // Get the figcaption of the current figure
+      var figcaption = figures[i].getElementsByTagName('figcaption')[0].innerHTML;
+
+      // Check if the figcaption includes "Running", "FST", or "Swimming"
+      if (figcaption.indexOf('Running') !== -1) {
+        runningCount++;
+      }
+      if (figcaption.indexOf('FST') !== -1) {
+        fstCount++;
+      }
+      if (figcaption.indexOf('Swimming') !== -1) {
+        swimmingCount++;
+      }
+    }
+    totalWorkouts = fstCount + runningCount + swimmingCount;
+
+    // Create the text element
+    var text = document.createElement('p');
+    text.innerHTML = totalWorkouts + ' workouts this year so far: ' + fstCount + ' gym sessions, ' + runningCount + ' runs, ' + swimmingCount + ' swims';
+
+    // Create the div element and append the text element to it
+    var div = document.createElement('div');
+    div.appendChild(text);
+
+    // Give the div the workout-box class
+    div.className = 'summary-box';
+
+    // Get the container element
+    var container = document.getElementsByClassName('container')[0];
+
+    // Insert the div before the container
+    document.body.insertBefore(div, container);
+</script>-->
 
 	</body>
 

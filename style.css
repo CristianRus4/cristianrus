@@ -246,6 +246,7 @@ text-decoration: none;
   justify-content: center;
   flex-wrap: wrap;
   margin: 0 -0.5em;
+  margin-bottom: 2em;
 }
 .box {
   width: calc(23% - 1em);
