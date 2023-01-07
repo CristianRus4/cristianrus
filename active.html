@@ -29,21 +29,43 @@
     
 
     <div class="box move">
-      <p>Daily move average</p>
-      <p>785 kcal</p>
+      <p>Move average</p>
+      <p>842 kcal</p>
     </div>
+    <div class="box exercise">
+      <p>Exercise average</p>
+      <p>37 m</p>
+    </div>
+
+    <div class="box stand">
+      <p>Stand average</p>
+      <p>16 h</p>
+    </div>
+
     <div class="box sleep">
-      <p>Daily sleep average</p>
-      <p>7h 3m</p>
+      <p>Sleep average</p>
+      <p>6h 57m</p>
     </div>
+
     <div class="box cardio">
       <p>Cardio fitness</p>
-      <p>48 VO<sub>2</sub> max</p>
+      <p>47.4 VO<sub>2</sub> max</p>
     </div>
     <div class="box oxygen">
-      <p>Blood oxygen level</p>
+      <p>Blood oxygen average</p>
       <p>96,7%</p>
     </div>
+
+     <div class="box hrv">
+      <p>HRV average</p>
+      <p>64 ms</p>
+    </div>
+    <div class="box water">
+      <p>Water average</p>
+      <p>3,753 ml</p>
+    </div>
+    
+    
 
 
   </div>
@@ -53,19 +75,19 @@
 <div class="container">
     <div class="box duration">
       <p>Time spent</p>
-      <p>6h 59m</p>
+      <p>8h 9m</p>
     </div>
     <div class="box energy">
       <p>Energy burned</p>
-      <p>2,197 kcal</p>
+      <p>3,072 kcal</p>
     </div>
     <div class="box distance">
       <p>Distance ran</p>
-      <p>11.39km</p>
+      <p>21.41km</p>
     </div>
     <div class="box elevation">
       <p>Elevation gained</p>
-      <p>63m</p>
+      <p>153m</p>
     </div>
 
 
@@ -73,6 +95,11 @@
   </div>
 
 
+
+<figure>
+  <img width="100%" height="auto" src="images/workouts/run7jan23.webp">
+  <figcaption>Running / 7th January 2023</figcaption>
+</figure>
 
 <figure>
 	<img width="100%" height="auto" src="images/workouts/fst6jan23.webp">
@@ -132,7 +159,7 @@
 
     // Create the text element
     var text = document.createElement('p');
-    text.innerHTML = 'This year so far I did ' + fstCount + ' FST sessions, ' + runningCount + ' run and ' + swimmingCount + ' swim';
+    text.innerHTML = totalWorkouts + ' workouts this year: ' + fstCount + ' FST sessions, ' + runningCount + ' runs and ' + swimmingCount + ' swim';
 
     // Create the div element and append the text element to it
     var div = document.createElement('div');

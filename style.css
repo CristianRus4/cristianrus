@@ -233,6 +233,7 @@ text-decoration: none;
 
 
 
+
 .trends {
   display: flex;
   justify-content: center;
@@ -271,6 +272,7 @@ text-decoration: none;
 
   
 }
+
 .box p:last-of-type {
 	font-family: 'Inter', sans-serif;
 	font-weight: 700;
@@ -281,34 +283,56 @@ text-decoration: none;
 
 
 
+
+
 .box.move {
 
- color: #F9114F;
+ color: #E33664;
 }
+
+.box.exercise {
+  color: #ADE346;
+}
+
+.box.stand {
+color: #2CE7E0;
+}
+
 .box.sleep {
-color: #54DAD5;
+color: #A28BE1;
 }
 
 .box.cardio {
-  color: #FF932F ;
+  color: #FF7039 ;
 }
 .box.oxygen {
-  color: #00B5FF;
+  color: #42BDFF;
 }
+
+.box.hrv {
+
+ color: #DF3636;
+}
+
+.box.water {
+  color: #4270FF ;
+}
+
+
 
 
 .box.duration {
-  color: #76D010;
+  color: #4BC865;
 }
 .box.energy {
-  color: #76D010;
+  color: #4BC865;
 }
 
 .box.distance {
-color: #76D010 ;
+color: #4BC865 ;
 }
 .box.elevation {
-  color: #76D010;
+  color: #4BC865;
 }
 
 
@@ -321,39 +345,55 @@ color: #76D010 ;
 }
 
 .box.move:hover {
-  background-color: #F9114F;
+  background-color: #E33664;
+}
+
+.box.exercise:hover {
+  background-color: #ADE346;
+}
+
+.box.stand:hover {
+  background-color: #2CE7E0;
 }
 .box.sleep:hover {
-  background-color: #54DAD5;
+  background-color: #A28BE1;
 }
 
 .box.cardio:hover {
-  background-color: #FF932F ;
+  background-color: #FF7039 ;
 }
 .box.oxygen:hover {
-  background-color: #00B5FF;
+  background-color: #42BDFF;
+}
+
+
+.box.hrv:hover {
+  background-color: #DF3636 ;
+}
+.box.water:hover {
+  background-color: #4270FF;
 }
 
 
 .box.duration:hover {
-  background-color: #76D010;
+  background-color: #4BC865;
 }
 .box.energy:hover {
-  background-color: #76D010;
+  background-color: #4BC865;
 }
 
 .box.distance:hover {
-  background-color: #76D010 ;
+  background-color: #4BC865 ;
 }
 .box.elevation:hover {
-  background-color: #76D010;
+  background-color: #4BC865;
 }
 
 
 
 .summary-box {
   background-color: #1b1b1b;
-  color: #76D010;
+  color: #4BC865;
   margin: 0em;
   margin-top: 0.3em;
   margin-bottom: 0.3em;
@@ -368,10 +408,11 @@ color: #76D010 ;
 }
 
 .summary-box:hover {
-  background-color: #76D010;
+  background-color: #4BC865;
   color: #F0F0F0;
 
 }
+
 
 
 
