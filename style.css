@@ -243,6 +243,22 @@ text-decoration: none;
   margin: 0 -0.5em;
 }
 
+.collectibles {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 -0.5em;
+}
+
+.medals {
+  width: calc(25% - 1em);
+  align-items: flex-start;
+  border-radius:12px;
+  justify-content: flex-start;
+  margin: 0.5em;
+
+  
+}
 
 .container {
   display: flex;
@@ -515,6 +531,10 @@ color: #4BC865 ;
     width: calc(46% - 1em);
   }
 
+  .medals {
+    width: calc(50% - 1em);
+  }
+
   .summary-box {
     width: calc(98% - 1em);
     margin: 0.5em auto;
@@ -529,6 +549,11 @@ color: #4BC865 ;
     line-height: 1.2em;
     height: 3.2em;
   }
+
+    .medals {
+    width: calc(50% - 1em);
+  }
+
 
   .box p {
 	
