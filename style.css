@@ -211,6 +211,40 @@
 	}
 
 
+.check {
+  width: 100%;
+
+  
+  border-radius:12px;
+  background-color: #1b1b1b;
+
+
+
+}
+
+.checktext {
+  
+  padding-top: 0.7em;
+  padding-left: 0.5em;
+  padding-bottom: 0.7em;
+  padding-right: 0.5em;
+  line-height: 1.2em;
+  color: #f0f0f0;
+
+
+}
+
+
+.anytitle {
+  
+  text-align: right;
+  margin-top: -1.5em;
+
+
+
+
+}
+
 
 	
 	a:link {
@@ -503,6 +537,15 @@ color: #4BC865 ;
 		font-size: 1.4em;	
 
 	}
+
+	.anytitle {
+  
+  text-align: right;
+  margin-top: -0.7em;
+  font-size: 1.5em;
+
+}
+
 }
 
 @media only screen and (max-width: 555px) {
@@ -516,6 +559,7 @@ color: #4BC865 ;
 
 
 }
+
 
 
 @media only screen and (max-width: 480px) {
