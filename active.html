@@ -69,131 +69,25 @@
 
   </div>
 
-<h2>workout stats</h2> 
-		
-    <div class="container">
-    <div class="box duration">
-      <p>Time spent</p>
-      <p>11h 20m</p>
-    </div>
-    <div class="box energy">
-      <p>Energy burned</p>
-      <p>6,805 kcal</p>
-    </div>
-    <div class="box distance">
-      <p>Distance ran</p>
-      <p>47.65km</p>
-    </div>
-    <div class="box elevation">
-      <p>Elevation gained</p>
-      <p>430m</p>
-    </div>
 
 
 
-  </div>
+
+<h2>active life <a class="any" href="https://anydistance.club">&#215; Any Distance</a></h2> 
+
+
+<h2>check out my <a href="/workouts">WORKOUTS &#10004;</a> and <a href="/collectibles">COLLECTIBLES &#10022;</a></h2>
+
+<p></p>
+
+<img width="100%" height="auto" src="images/super-distance.gif">
+
+<p>Committed to an active life. Every workout it is tracked and shared with –the great– <a href="https://anydistance.club">Any Distance</a> app. Proud member of the Super Distance Club.</p>
 
 
 
 
 
-
- 
-
- <script>
-    // Get all figures
-    var figures = document.getElementsByTagName('figure');
-
-    // Initialize the counts to 0
-    var fstCount = 0;
-    var runningCount = 0;
-    var swimmingCount = 0;
-    var totalWorkouts = 0;
-
-    // Loop through the figures
-    for (var i = 0; i < figures.length; i++) {
-      // Get the figcaption of the current figure
-      var figcaption = figures[i].getElementsByTagName('figcaption')[0].innerHTML;
-
-      // Check if the figcaption includes "Running", "FST", or "Swimming"
-      if (figcaption.indexOf('Running') !== -1) {
-        runningCount++;
-      }
-      if (figcaption.indexOf('FST') !== -1) {
-        fstCount++;
-      }
-      if (figcaption.indexOf('Swimming') !== -1) {
-        swimmingCount++;
-      }
-    }
-    totalWorkouts = fstCount + runningCount + swimmingCount;
-
-    // Create the text element
-    var text = document.createElement('p');
-    text.innerHTML = totalWorkouts + ' workouts this year: ' + fstCount + ' FST sessions, ' + runningCount + ' runs and ' + swimmingCount + ' swims';
-
-    // Create the div element and append the text element to it
-    var div = document.createElement('div');
-    div.appendChild(text);
-
-    // Give the div the workout-box class
-    div.className = 'summary-box';
-
-    // Get the container element
-    var container = document.getElementsByClassName('container')[0];
-
-    // Insert the div before the container
-    document.body.insertBefore(div, container);
-</script>
-
-
-
-
-<!-- <script>
-    // Get all figures
-    var figures = document.getElementsByTagName('figure');
-
-    // Initialize the counts to 0
-    var fstCount = 0;
-    var runningCount = 0;
-    var swimmingCount = 0;
-    var totalWorkouts = 0;
-
-    // Loop through the figures
-    for (var i = 0; i < figures.length; i++) {
-      // Get the figcaption of the current figure
-      var figcaption = figures[i].getElementsByTagName('figcaption')[0].innerHTML;
-
-      // Check if the figcaption includes "Running", "FST", or "Swimming"
-      if (figcaption.indexOf('Running') !== -1) {
-        runningCount++;
-      }
-      if (figcaption.indexOf('FST') !== -1) {
-        fstCount++;
-      }
-      if (figcaption.indexOf('Swimming') !== -1) {
-        swimmingCount++;
-      }
-    }
-    totalWorkouts = fstCount + runningCount + swimmingCount;
-
-    // Create the text element
-    var text = document.createElement('p');
-    text.innerHTML = totalWorkouts + ' workouts this year so far: ' + fstCount + ' gym sessions, ' + runningCount + ' runs, ' + swimmingCount + ' swims';
-
-    // Create the div element and append the text element to it
-    var div = document.createElement('div');
-    div.appendChild(text);
-
-    // Give the div the workout-box class
-    div.className = 'summary-box';
-
-    // Get the container element
-    var container = document.getElementsByClassName('container')[0];
-
-    // Insert the div before the container
-    document.body.insertBefore(div, container);
-</script>-->
 
 	</body>
 

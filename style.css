@@ -1,6 +1,9 @@
 
 		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap');
+
+
 		@font-face {
   	font-family: Quattro;
   	src: url(fonts/Quattro.woff);
@@ -41,7 +44,7 @@
   	src: url(fonts/GothamXNarrow-Ultra.otf);
 		}
 
- 
+
 
 	html{
 		background-color: #F0F0F0;
@@ -200,6 +203,12 @@
 
 	}
 	
+	.any {
+		font-size: 1em;	
+		font-family: 'EB Garamond', serif;
+		font-weight: 600;
+
+	}
 
 
 
@@ -298,8 +307,6 @@ text-decoration: none;
   font-style: italic;
   	
 }
-
-
 
 
 
@@ -489,6 +496,8 @@ color: #4BC865 ;
 
   }
 
+
+
   .subtitle {
 
 		font-size: 1.4em;	
@@ -553,6 +562,8 @@ color: #4BC865 ;
     .medals {
     width: calc(50% - 1em);
   }
+
+
 
 
   .box p {
