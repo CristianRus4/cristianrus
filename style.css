@@ -667,6 +667,12 @@ color: #4BC865 ;
 	
 	}
 
+	.check {
+		background-color: #222222;
+		color: #F0F0F0;
+	
+	}
+
 	.summary-box {
 		background-color: #222222;
 		color: #4BC865;
