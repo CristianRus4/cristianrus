@@ -115,10 +115,18 @@
 		}
 
 
+	nav a:hover {
+
+
+  font-size: 1.2em;
+  transition: font-size 0.1s ease-in-out;
+  
+}
 
 		nav a:hover::before {
 
   width: 0%;
+
   
 }
 
@@ -149,6 +157,7 @@
 		text-align: left;
 		margin-top: 250px;
     margin-left: 250px;
+    margin-bottom: 5%;
     max-width: 500px;
 		
 		}
@@ -245,6 +254,29 @@
 
 	}
 
+
+			table {
+        border: 2px solid #232323;
+        border-collapse: collapse;
+        width: 500px;
+      }
+
+      th, td {
+        border: 2px solid #232323;
+        padding: 10px;
+        text-align: left;
+      }
+
+      th:first-child, td:first-child {
+        width: 65%;
+        font-family: Geogrotesque-Medium;
+        background-color: rgba(0, 0, 0, 0.06);
+      }
+
+		.workouts th:first-child, td:first-child {
+        width: 10%;
+   
+      }
 
 
 
