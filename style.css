@@ -258,7 +258,9 @@
 			table {
         border: 2px solid #232323;
         border-collapse: collapse;
-        width: 500px;
+        max-width: 500px;
+        min-width: 300px;
+        width: 100%;
       }
 
       th, td {
@@ -410,7 +412,7 @@ font-style: italic;
   font-family: 'Geogrotesque-Bold', sans-serif;
   position: fixed;
   left: -10vw;
-  bottom: 150vw;
+  bottom: 145vw;
   transform-origin: bottom left;
   transform: rotate(90deg);
   white-space: nowrap; /* prevent wrapping */
