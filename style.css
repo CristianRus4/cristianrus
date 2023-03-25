@@ -280,6 +280,12 @@
    
       }
 
+      .medical th:first-child, td:first-child {
+        width: 37%;
+   
+      }
+
+
 
 
 
