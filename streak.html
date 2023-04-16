@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
-	<title>Streak – Cristian Rus</title>
+	<title>Streaks – Cristian Rus</title>
 	</head>
 	
 	<body>
@@ -25,8 +25,63 @@
 
 
 
-			<h1>streak</h1>
+			<h1>streaks</h1>
 
+
+
+
+<div class="activity-ring">
+  <svg viewBox="0 0 100 100">
+    <circle class="ring-circle ring-circle-outer" cx="50" cy="50" r="44"></circle>
+    <circle class="ring-circle ring-circle-middle" cx="50" cy="50" r="36"></circle>
+    <circle class="ring-circle ring-circle-inner" cx="50" cy="50" r="28"></circle>
+  </svg>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+const rings = document.querySelectorAll('.ring-circle');
+const now = new Date();
+const hour = now.getHours();
+const redRingMax = 19; // 7pm in 24-hour format
+const greenRingMax = 11; // 1pm in 24-hour format
+const blueRingMax = 17; // 5pm in 24-hour format
+
+rings.forEach((ring) => {
+  const radius = ring.getAttribute('r');
+  const circumference = 2 * Math.PI * radius;
+
+  let progress = 0;
+  switch(ring.getAttribute('class')) {
+    case 'ring-circle ring-circle-outer':
+      progress = (hour >= redRingMax || hour < 0) ? 100 : Math.floor(((hour - 0) / (redRingMax - 0)) * 100);
+      break;
+    case 'ring-circle ring-circle-middle':
+      progress = (hour >= greenRingMax || hour < 0) ? 100 : Math.floor(((hour - 0) / (greenRingMax - 0)) * 100);
+      break;
+    case 'ring-circle ring-circle-inner':
+      const remainingHours = blueRingMax - hour;
+      progress = (remainingHours <= 0) ? 100 : Math.floor(((remainingHours - 0) / (blueRingMax - 0)) * 100);
+      progress = 100 - progress; // calculate the percentage of the remaining hours instead of elapsed hours
+      break;
+    default:
+      break;
+  }
+
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  ring.style.strokeDashoffset = strokeDashoffset;
+});
+</script>
+
+
+
+
+
+
+<h2>#CloseYourRings '23</h2>
 <div class="calendar"></div>
 
 <script>
@@ -43,6 +98,7 @@
       var dotClass = 'day';
       if ((m === 1 && d <= dayOfYear) || (m > 1 && d <= (dayOfYear - monthDays.slice(0, m - 1).reduce((a, b) => a + b)))) {
         dotClass += ' filled';
+
       }
       monthHtml += '<div class="' + dotClass + '" id="' + dotId + '"></div>';
     }

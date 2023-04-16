@@ -428,16 +428,18 @@ font-style: italic;
 
 
 .month {
+	
   display: flex;
   flex-wrap: wrap;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 40px;
   height: auto;
 }
 
 .month h3 {
-	display: none;
-}
+  display: none;
+  }
+
 
 
 .day {
@@ -448,13 +450,46 @@ font-style: italic;
   border-radius: 50%;
   border: 2px solid #232323;
   background-color: transparent;
+
+
 }
 
 .day.filled {
   background-color: #232323;
 }
 
+.activity-ring {
+width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  position: relative;
+}
 
+.ring-circle {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.ring-circle-outer {
+  stroke: #ff3b30;
+  stroke-dasharray: 276;
+  stroke-dashoffset: 0;
+}
+
+.ring-circle-middle {
+  stroke: #4cd964;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 0;
+}
+
+.ring-circle-inner {
+  stroke: #5ac8fa;
+  stroke-dasharray: 169;
+  stroke-dashoffset: 0;
+}
 
 
 
