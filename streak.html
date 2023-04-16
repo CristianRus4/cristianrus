@@ -39,18 +39,18 @@
 
 
 <div>
-<p>Move</p>
-<div class="progress move-progress"><div class="progress-bar" style="width: 0%"></div></div>
+  <p>Move</p>
+  <div class="progress move-progress"><div class="progress-bar" style="width: 0%"></div></div>
 </div>
 
 <div>
-<p>Exercise</p>
-<div class="progress exercise-progress"><div class="progress-bar" style="width: 0%"></div></div>
+  <p>Exercise</p>
+  <div class="progress exercise-progress"><div class="progress-bar" style="width: 0%"></div></div>
 </div>
 
 <div>
-<p>Stand</p>
-<div class="progress stand-progress"><div class="progress-bar" style="width: 0%"></div></div>
+  <p>Stand</p>
+  <div class="progress stand-progress"><div class="progress-bar" style="width: 0%"></div></div>
 </div>
 
 <script type="text/javascript">
@@ -60,34 +60,40 @@
   // Get the hour component of the NZT time
   const nztHour = parseInt(nztTime.slice(11, 13));
 
-  // Determine the width percentage based on the hour of the day
+  // Determine the width percentage based on the hour of the day for each progress bar
   let moveWidthPercent, exerciseWidthPercent, standWidthPercent;
+
   if (nztHour === 0) {
     moveWidthPercent = 0;
     exerciseWidthPercent = 0;
     standWidthPercent = 0;
   } else if (nztHour === 1) {
     moveWidthPercent = 5;
-    exerciseWidthPercent = 5;
-    standWidthPercent = 5;
+    exerciseWidthPercent = 2;
+    standWidthPercent = 4;
   } else if (nztHour === 2) {
     moveWidthPercent = 10;
-    exerciseWidthPercent = 10;
-    standWidthPercent = 10;
+    exerciseWidthPercent = 6;
+    standWidthPercent = 8;
   } else if (nztHour >= 3 && nztHour <= 8) {
     moveWidthPercent = 15;
-    exerciseWidthPercent = 15;
-    standWidthPercent = 15;
+    exerciseWidthPercent = 8;
+    standWidthPercent = 12;
   } else {
-    moveWidthPercent = (nztHour - 8) * 7.72 + 15;
+    // Move progress bar
+    moveWidthPercent = (nztHour - 8) * 7.1 + 15;
     if (moveWidthPercent > 100) {
       moveWidthPercent = 100;
     }
-    exerciseWidthPercent = (nztHour - 8) * 4.85 + 15;
+
+    // Exercise progress bar
+    exerciseWidthPercent = (nztHour - 8) * 18.4 + 15;
     if (exerciseWidthPercent > 100) {
       exerciseWidthPercent = 100;
     }
-    standWidthPercent = (nztHour - 8) * 9.45 + 15;
+
+    // Stand progress bar
+    standWidthPercent = (nztHour - 8) * 6 + 12;
     if (standWidthPercent > 100) {
       standWidthPercent = 100;
     }
@@ -103,6 +109,7 @@
   const standProgressBar = document.querySelector('.stand-progress .progress-bar');
   standProgressBar.style.width = standWidthPercent + '%';
 </script>
+
 
 
 
