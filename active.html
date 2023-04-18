@@ -26,7 +26,7 @@
 		<h1>active</h1>
    
 		
-         <h2>today</h2>
+         <h2>activity today</h2>
 
 
 
@@ -35,80 +35,94 @@
         <span class="tit">Move</span>
         <br>
         <span class="ext"> <div class="progress move-progress"><div class="progress-bar" style="width: 0%"></div></div></span>
-        <span class="dat">0 kcal</span>  <span class="dat-right">850 kcal</span> 
+        <span class="dat"><span id="movePercent" class="moveWidthPercent">0</span> active calories burned</span>
+ <span class="dat-right"></span> 
     </figure>
 
     <figure class="item">
         <span class="tit">Exercise</span>
         <br>
         <span class="ext"> <div class="progress exercise-progress"><div class="progress-bar" style="width: 0%"></div></div></span>
-        <span class="dat">0 min</span>  <span class="dat-right">100 min</span> 
+        <span class="dat"><span id="exercisePercent" class="exerciseWidthPercent">0</span> minutes of exercise</span>  <span class="dat-right"></span> 
     </figure>
 
     <figure class="item">
         <span class="tit">Stand</span>
         <br>
         <span class="ext"> <div class="progress stand-progress"><div class="progress-bar" style="width: 0%"></div></div></span>
-        <span class="dat">0 hours</span>  <span class="dat-right">12 hours</span> 
+        <span class="dat"><span id="standPercent" class="standWidthPercent">0%</span> hours stand up</span>  <span class="dat-right"></span> 
     </figure>
 
 
 
 <script type="text/javascript">
-  // Get the current NZT time
-  const nztTime = new Date().toLocaleString("en-US", {timeZone: "Pacific/Auckland"});
+// Get the current NZT time
+const nztTime = new Date().toLocaleString("en-US", {timeZone: "Pacific/Auckland"});
 
-  // Get the hour component of the NZT time
-  const nztHour = parseInt(nztTime.slice(11, 13));
+// Get the hour component of the NZT time
+const nztHour = parseInt(nztTime.slice(11, 13));
 
-  // Determine the width percentage based on the hour of the day for each progress bar
-  let moveWidthPercent, exerciseWidthPercent, standWidthPercent;
+// Determine the width percentage based on the hour of the day for each progress bar
+let moveWidthPercent, exerciseWidthPercent, standWidthPercent;
 
-  if (nztHour === 0) {
-    moveWidthPercent = 0;
-    exerciseWidthPercent = 0;
-    standWidthPercent = 0;
-  } else if (nztHour === 1) {
-    moveWidthPercent = 5;
-    exerciseWidthPercent = 2;
-    standWidthPercent = 4;
-  } else if (nztHour === 2) {
-    moveWidthPercent = 10;
-    exerciseWidthPercent = 6;
-    standWidthPercent = 8;
-  } else if (nztHour >= 3 && nztHour <= 8) {
-    moveWidthPercent = 15;
-    exerciseWidthPercent = 8;
-    standWidthPercent = 12;
-  } else {
-    // Move progress bar
-    moveWidthPercent = (nztHour - 8) * 7.1 + 15;
-    if (moveWidthPercent > 100) {
-      moveWidthPercent = 100;
-    }
-
-    // Exercise progress bar
-    exerciseWidthPercent = (nztHour - 8) * 18.4 + 15;
-    if (exerciseWidthPercent > 100) {
-      exerciseWidthPercent = 100;
-    }
-
-    // Stand progress bar
-    standWidthPercent = (nztHour - 8) * 6 + 12;
-    if (standWidthPercent > 100) {
-      standWidthPercent = 100;
-    }
+if (nztHour === 0) {
+  moveWidthPercent = 0;
+  exerciseWidthPercent = 0;
+  standWidthPercent = 0;
+} else if (nztHour === 1) {
+  moveWidthPercent = 5;
+  exerciseWidthPercent = 2;
+  standWidthPercent = 4;
+} else if (nztHour === 2) {
+  moveWidthPercent = 10;
+  exerciseWidthPercent = 6;
+  standWidthPercent = 8;
+} else if (nztHour >= 3 && nztHour <= 8) {
+  moveWidthPercent = 15;
+  exerciseWidthPercent = 8;
+  standWidthPercent = 12;
+} else {
+  // Move progress bar
+  moveWidthPercent = (nztHour - 8) * 7.1 + 15;
+  if (moveWidthPercent > 100) {
+    moveWidthPercent = 100;
   }
 
-  // Set the width of the progress bars
-  const moveProgressBar = document.querySelector('.move-progress .progress-bar');
-  moveProgressBar.style.width = moveWidthPercent + '%';
+  // Exercise progress bar
+  exerciseWidthPercent = (nztHour - 8) * 18.4 + 15;
+  if (exerciseWidthPercent > 100) {
+    exerciseWidthPercent = 100;
+  }
 
-  const exerciseProgressBar = document.querySelector('.exercise-progress .progress-bar');
-  exerciseProgressBar.style.width = exerciseWidthPercent + '%';
+  // Stand progress bar
+  standWidthPercent = (nztHour - 8) * 6 + 12;
+  if (standWidthPercent > 100) {
+    standWidthPercent = 100;
+  }
+}
 
-  const standProgressBar = document.querySelector('.stand-progress .progress-bar');
-  standProgressBar.style.width = standWidthPercent + '%';
+// Set the width of the progress bars
+const moveProgressBar = document.querySelector('.move-progress .progress-bar');
+moveProgressBar.style.width = moveWidthPercent + '%';
+
+// Update the percentage in the HTML elements
+const movePercent = document.getElementById('movePercent');
+movePercent.textContent = Math.round(moveWidthPercent * 8.5);
+
+
+const exerciseProgressBar = document.querySelector('.exercise-progress .progress-bar');
+exerciseProgressBar.style.width = exerciseWidthPercent + '%';
+
+const exercisePercent = document.getElementById('exercisePercent');
+exercisePercent.textContent = Math.round(exerciseWidthPercent);
+
+const standProgressBar = document.querySelector('.stand-progress .progress-bar');
+standProgressBar.style.width = standWidthPercent + '%';
+
+const standPercent = document.getElementById('standPercent');
+standPercent.textContent = Math.round((standWidthPercent / 100) * 24);
+
+
 </script>
 
 
@@ -182,21 +196,21 @@
         <span class="tit">Kilometers ran in 2023</span>
         <br>
         <span class="ext"><div class="progress"><div class="progress-bar" style="width: 23%"></div></div></span>
-        <span class="dat">Goal: 1.000 km</span>
+        <span class="dat">238 km of 1.000 km</span>
      </figure>
 
      <figure class="item">
         <span class="tit">Hours of strenght training in 2023</span>
         <br>
         <span class="ext"><div class="progress"><div class="progress-bar" style="width: 21%"></div></div></span>
-        <span class="dat">Goal: 100 hours</span>
+        <span class="dat">21 hours of 100 hours</span>
      </figure>
 
      <figure class="item">
         <span class="tit">Active energy burned in 2023</span>
         <br>
         <span class="ext"><div class="progress"><div class="progress-bar" style="width: 27%"></div></div></span>
-        <span class="dat">Goal: 100.000 kcal</span>
+        <span class="dat">27.011 kcal of 100.000 kcal</span>
      </figure>
 
 
