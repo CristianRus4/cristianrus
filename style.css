@@ -351,7 +351,20 @@
   margin-left: -1px;
   top: 0;
   border-radius: 4px;
+   animation: progress 1s ease-in-out forwards;
+
 }
+
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(0%, --progress-percent);
+  }
+}
+
 
 
 .point-bar {
@@ -364,6 +377,10 @@
   border-radius: 3px;
  
   position: relative;
+
+transform: scaleX(0);
+  transform-origin: left;
+  animation: animate-progress 1.2s ease-out forwards;
 }
 
 .point-bar::before {
@@ -378,6 +395,17 @@
   background-color: #232323;
   opacity: 1;
   border-radius: 4px;
+}
+
+@keyframes animate-progress {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: center;
+  }
 }
 
 
