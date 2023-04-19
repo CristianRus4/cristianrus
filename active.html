@@ -26,7 +26,7 @@
 		<h1>active</h1>
    
 		
-         <h2>activity today</h2>
+         <h2>today</h2>
 
 
 
@@ -35,7 +35,7 @@
         <span class="tit">Move</span>
         <br>
         <span class="ext"> <div class="progress move-progress"><div class="progress-bar" style="width: 0%"></div></div></span>
-        <span class="dat"><span id="movePercent" class="moveWidthPercent">0</span> active calories burned</span>
+        <span class="dat"><span id="movePercent" class="moveWidthPercent">0</span> active calories</span>
  <span class="dat-right"></span> 
     </figure>
 
@@ -60,7 +60,7 @@
 const nztTime = new Date().toLocaleString("en-US", {timeZone: "Pacific/Auckland"});
 
 // Get the hour component of the NZT time
-const nztHour = parseInt(nztTime.slice(11, 13));
+const nztHour = new Date(nztTime).getHours();
 
 // Determine the width percentage based on the hour of the day for each progress bar
 let moveWidthPercent, exerciseWidthPercent, standWidthPercent;
@@ -83,7 +83,7 @@ if (nztHour === 0) {
   standWidthPercent = 12;
 } else {
   // Move progress bar
-  moveWidthPercent = (nztHour - 8) * 7.1 + 15;
+   moveWidthPercent = (nztHour - 8) * 7.1 + 15;
   if (moveWidthPercent > 100) {
     moveWidthPercent = 100;
   }
