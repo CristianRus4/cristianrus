@@ -114,13 +114,13 @@ const exerciseProgressBar = document.querySelector('.exercise-progress .progress
 exerciseProgressBar.style.width = exerciseWidthPercent + '%';
 
 const exercisePercent = document.getElementById('exercisePercent');
-exercisePercent.textContent = Math.round(exerciseWidthPercent);
+exercisePercent.textContent = Math.round((exerciseWidthPercent / 100) * 60);
 
 const standProgressBar = document.querySelector('.stand-progress .progress-bar');
 standProgressBar.style.width = standWidthPercent + '%';
 
 const standPercent = document.getElementById('standPercent');
-standPercent.textContent = Math.round((standWidthPercent / 100) * 24);
+standPercent.textContent = Math.round((standWidthPercent / 100) * 16);
 
 
 </script>
