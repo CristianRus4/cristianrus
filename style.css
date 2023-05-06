@@ -231,6 +231,13 @@
 	
 	}
 
+	hr {
+		margin: 0px;
+		border: solid 2px #232323;
+		border-radius: 4px;
+	
+	}
+
 	
 
 	figure {
@@ -288,7 +295,17 @@
 
 
 
+.but {
+		margin: -4px;
+		position: relative;
+		padding-left: 0.8em;
+		border: solid 4px #232323;
 
+		border-radius: 4px;
+		
+		text-align: center;
+	
+	}
 
 	.item {
   position: relative;
