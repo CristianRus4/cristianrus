@@ -307,6 +307,12 @@
 	
 	}
 
+	.but:hover {
+  background-color: #232323;
+    color: #F0F0F0;
+}
+
+
 	.item {
   position: relative;
   padding-left: 0.8em;
