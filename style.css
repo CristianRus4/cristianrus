@@ -298,7 +298,8 @@
 .but {
 		margin: -4px;
 		position: relative;
-		padding-left: 0.8em;
+		padding-left: 1em;
+		padding-right: 1em;
 		border: solid 4px #232323;
 
 		border-radius: 4px;
