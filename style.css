@@ -133,14 +133,17 @@ figcaption {
 
 /* Links */
 a:link, a:visited {
-    background: linear-gradient(to bottom left, #2A2A95 6%, #1CB5E0 100%);
+    background: #21201C; 
+    font-weight: 400;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
 }
 
 a:hover {
-    background: #21201C; 
+
+    background: linear-gradient(to bottom left, #2A2A95 6%, #1CB5E0 100%);
+    font-weight: 400;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
