@@ -68,12 +68,6 @@ h1 {
     
 }
 
-.title {
-    font-family: 'Geist', sans-serif;
-    font-size: 5em;
-    line-height: 1em;
-    font-weight: 900;
-}
 
 h2 {
      font-size: 1em;
@@ -160,6 +154,7 @@ a:hover {
 .button-container {
   position: relative;
   display: inline-block;
+
 }
 
 .extra-buttons {
@@ -168,20 +163,33 @@ a:hover {
   top: 0;
   left: 100%;
   white-space: nowrap;
+ 
 }
 
 .main-button:hover + .extra-buttons,
 .extra-buttons:hover {
   display: block;
+  
 }
 
-.main-button,
+.main-button {
+  font-size: 1em;
+  border: none;
+  cursor: pointer;
+  background-color: transparent; /* Make buttons completely transparent */
+  color: inherit; /* Inherit text color from parent */
+  padding-left: 0em;
+
+}
+
+
 .extra-button {
   font-size: 1em;
   border: none;
   cursor: pointer;
   background-color: transparent; /* Make buttons completely transparent */
   color: inherit; /* Inherit text color from parent */
+  
 }
 
 .extra-button {
