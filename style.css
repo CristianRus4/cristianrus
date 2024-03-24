@@ -94,6 +94,15 @@ img {
     border-radius: 1em;
 }
 
+figcaption {
+    text-align: right;
+    
+    font-family: 'Geist', sans-serif;
+    margin-top: -0.5em;
+    margin-right: 1em;
+    font-style: italic;
+}
+
 .item {
   position: relative;
   padding-left: 0.8em;
@@ -112,24 +121,20 @@ img {
 }
 
 .tit {
-    font-family: 'Quattro Bold', sans-serif;
+    font-weight: 450;
+    
 }
 
 .ext {
-    font-family: 'Quattro Italic', sans-serif;
+    font-style: italic;
+    
 }
 
 .dat {
-    font-size: 0.8em;
+    
 }
 
-figcaption {
-    text-align: right;
-    font-size: 0.9em;
-    font-family: 'Quattro Italic', sans-serif;
-    margin-top: -0.5em;
-    margin-right: 1em;
-}
+
 
 /* Links */
 a:link, a:visited {
@@ -226,14 +231,16 @@ a:hover {
 
 
     a:link, a:visited {
-    background: linear-gradient(to bottom left, #454597 6%, #5AC4E1 100%);
+    background: #EEEEEC; 
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
 }
 
 a:hover {
-    background: #EEEEEC; 
+
+    background: linear-gradient(to bottom left, #454597 6%, #5AC4E1 100%);
+    
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
