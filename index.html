@@ -8,23 +8,41 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
 	<title>Cristian Rus</title>
+	 <script>
+    function toggleExtraButtons() {
+      var extraButtons = document.querySelector('.extra-buttons');
+      extraButtons.classList.toggle('show-extra-buttons');
+    }
+  </script>
 	</head>
 	
 
 	<body>
-		<script>
-	      var classNames = ['orange-bg', 'pink-bg', 'blue-bg', 'red-bg', 'green-bg', 'yellow-bg'];
-	      var randomIndex = Math.floor(Math.random() * 6);
-	      document.body.classList.add(classNames[randomIndex]);
-		</script>
 		
-	
 
 		<nav><a href="about">about</a><a href="work">work</a><a href="mailto:cristianrus@hey.com">contact</a></nav>
 
-		<div class="subtitle"><a>cristian rus</a><a>design & human behaviour</a><a>auckland, nz</a></div>
+		
 
-		<h1 class="title">CRISTIAN</h1>
+		<h1 class="title">CRISTIAN RUS</h1>
+		<div>design & human behaviour from auckland, nz</a></div>
+
+			<div class="button-container">
+  <button class="main-button"><a href="#">connect</a></button>
+  <div class="extra-buttons">
+  	<button class="extra-button"><a href="mailto:cristianrus@hey.com">mail</a></button>
+    <button class="extra-button"><a href="twitter">twitter</a></button>
+    <button class="extra-button"><a href="sms:+642041926150">text</a></button>
+  </div>
+</div>
+
+	<footer>
+
+	
+
+</footer>
+
+
 
 	</body>
 
