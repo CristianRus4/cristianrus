@@ -50,7 +50,7 @@ body {
     text-align: left;
     margin: 0 auto;
     padding: 0 10%;
-    margin-top: 15%;
+    margin-top: 10%;
     margin-bottom: 2em;
     max-width: 644px;
     
@@ -78,6 +78,22 @@ h2 {
     color: #21201C;
 }
 
+
+.title {
+    
+    margin-top: 0em;
+    margin-bottom: 0em;
+
+ 
+}
+
+.sub {
+    
+    margin-top: -0.5em;
+    margin-bottom: 5em;
+ 
+}
+
 p {
     
     margin-top: 0.5em;
@@ -87,8 +103,8 @@ p {
 
 th {
     text-align: right;
-    font-weight: 350;
-    color: #21201C;
+    font-weight: 450;
+    
  
 }
 
@@ -150,6 +166,9 @@ figcaption {
 
 
 /* Links */
+
+
+
 a:link, a:visited {
     background: #21201C; 
     font-weight: 400;
@@ -166,6 +185,11 @@ a:hover {
     -webkit-text-fill-color: transparent;
     text-decoration: none;
 }
+
+.titlelink {
+    font-weight: 600 !important;
+}
+
 
 
 /* Expand buttons */
