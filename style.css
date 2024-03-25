@@ -85,6 +85,19 @@ p {
  
 }
 
+th {
+    text-align: right;
+    font-weight: 350;
+    color: #21201C;
+ 
+}
+
+td {
+    
+    padding-left: 1em;
+ 
+}
+
 figure {
     margin-left: 0;
     margin-right: 0;
