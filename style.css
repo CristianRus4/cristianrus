@@ -132,6 +132,14 @@ figcaption {
     font-style: italic;
 }
 
+.value {
+    position: fixed; /* Position the element relative to the viewport */
+    top: 50%; /* Align the top edge of the element to the middle of the viewport */
+    left: 50%; /* Align the left edge of the element to the middle of the viewport */
+    transform: translate(-50%, -50%); /* Center the element both vertically and horizontally */
+    text-align: center; /* Center the text horizontally */
+}
+
 .item {
   position: relative;
   padding-left: 0.8em;
