@@ -56,6 +56,12 @@ body {
     
 }
 
+iframe {
+        width: 100vw; /* Full width of the viewport */
+        height: 100vh; /* Full height of the viewport */
+        border: none; /* Remove border */
+    }
+
 
 
 h1 {
