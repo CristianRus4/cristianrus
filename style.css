@@ -51,10 +51,12 @@ body {
     margin: 0 auto;
     padding: 0 10%;
     margin-top: 10%;
-    margin-bottom: 2em;
+    margin-bottom: 5em;
     max-width: 644px;
     
 }
+
+
 
 iframe {
         width: 100vw; /* Full width of the viewport */
