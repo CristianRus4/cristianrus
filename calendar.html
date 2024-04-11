@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+	
+
+
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+	<title>calendar – Cristian Rus</title>
+
+
+
+
+	</head>
+	
+	<body>
+
+		<h1 class="title"><a class="titlelink" href="/">Cristian Rus</a> </h1>
+			<p class="sub">design & human behaviour<p>
+
+   <div id="lastEventContainer">
+        <h2>Last Event</h2>
+        <p>Loading...</p>
+    </div>
+
+    <script>
+        // URL of the public webcal
+        const webcalUrl = "https://racingnews365.com/ics/download/calendar-formula-2024.ics";
+
+        // Function to fetch the webcal data using a proxy
+        async function fetchWebcalData(url) {
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+            const response = await fetch(proxyUrl);
+            const data = await response.text();
+            return data;
+        }
+
+        // Function to parse the iCalendar data and extract the last event
+        function parseICalData(data) {
+            const lines = data.split('\n');
+            let events = [];
+            let currentEvent = null;
+            for (const line of lines) {
+                if (line.startsWith('BEGIN:VEVENT')) {
+                    currentEvent = {};
+                } else if (line.startsWith('END:VEVENT')) {
+                    if (currentEvent) {
+                        events.push(currentEvent);
+                        currentEvent = null;
+                    }
+                } else if (currentEvent) {
+                    const [key, value] = line.split(':');
+                    currentEvent[key] = value;
+                }
+            }
+            // Find the last event
+            const lastEvent = events[events.length - 1];
+            return lastEvent;
+        }
+
+        // Function to display the last event on the webpage
+        function displayLastEvent(event) {
+            const container = document.getElementById("lastEventContainer");
+            container.innerHTML = `<h2>Last Event</h2><p>${JSON.stringify(event)}</p>`;
+        }
+
+        // Main function to fetch, parse, and display the last event
+        async function showLastEvent() {
+            try {
+                const webcalData = await fetchWebcalData(webcalUrl);
+                const lastEvent = parseICalData(webcalData);
+                displayLastEvent(lastEvent);
+            } catch (error) {
+                console.error("Error fetching webcal data:", error);
+                const container = document.getElementById("lastEventContainer");
+                container.innerHTML = "<h2>Last Event</h2><p>Error fetching data</p>";
+            }
+        }
+
+        // Call the main function when the page loads
+        window.onload = showLastEvent;
+
+        // Function to display the last event on the webpage
+function displayLastEvent(event) {
+    const container = document.getElementById("lastEventContainer");
+    container.innerHTML = `
+        <h2>Last Event</h2>
+        <p><strong>Summary:</strong> ${event.SUMMARY}</p>
+        <p><strong>Location:</strong> ${event.LOCATION}</p>
+        <p><strong>Start Date:</strong> ${parseICalDateTime(event['DTSTART;TZID=Europe/Amsterdam'])}</p>
+        <p><strong>End Date:</strong> ${parseICalDateTime(event['DTEND;TZID=Europe/Amsterdam'])}</p>
+    `;
+}
+
+// Function to parse iCalendar date-time format into a readable format
+function parseICalDateTime(dateTimeString) {
+    const year = dateTimeString.slice(0, 4);
+    const month = dateTimeString.slice(4, 6);
+    const day = dateTimeString.slice(6, 8);
+    const hour = dateTimeString.slice(9, 11);
+    const minute = dateTimeString.slice(11, 13);
+    return `${year}-${month}-${day} ${hour}:${minute}`;
+}
+
+    </script>
+
+
+
+
+
+	</body>
+
+	
+
+</html>
+	

@@ -22,7 +22,7 @@
 			<p class="sub">design & human behaviour<p>
 
 
-
+<p><span class="pulse" data-content="Your Original Text" data-random=""></span></p>
 
 
 				<table id="animated-table">
@@ -36,10 +36,10 @@
 				  <tr>
 				    <th>location</td>
 				    <td>
-  <span class="pulse">Auckland</span>
-  <span class="radar">
+  <span id="randomLetters"></span>
+ <!-- <span class="radar">
     <span class="center-dot"></span>
-  </span>
+  </span>-->
 </td>
 				  </tr>
 				  <tr>
@@ -60,7 +60,7 @@
 				  </tr>
 
 				  <tr>
-				    <th>obsession</td>
+				    <th>obsessed</td>
 				    <td id="top-song"></td>
 				  </tr>
 				  
@@ -79,6 +79,58 @@
 
 
 
+
+
+<script>
+  // Function to generate a random letter
+  function getRandomLetter() {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    return alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+  }
+
+  // Function to update the random letters
+  function updateRandomLetters() {
+    let randomLetters = '';
+    for (let i = 0; i < 8; i++) {
+      randomLetters += getRandomLetter(); // All letters are lowercase
+    }
+    // Capitalize the first letter
+    randomLetters = randomLetters.charAt(0).toUpperCase() + randomLetters.slice(1);
+    document.getElementById('randomLetters').textContent = randomLetters;
+  }
+
+  // Change letters every 2 milliseconds
+  const interval = setInterval(updateRandomLetters, 50);
+
+  // After 4 seconds, change all letters to "Auckland"
+  setTimeout(function() {
+    clearInterval(interval); // Stop the interval
+    document.getElementById('randomLetters').textContent = 'Auckland';
+  }, 3000);
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var text = "Your Original Text";
+        var randomText = shuffle(text);
+        document.querySelector('.pulse').setAttribute('data-random', randomText);
+    });
+
+    function shuffle(text) {
+        var shuffledText = '';
+        var chars = text.split('');
+        var len = chars.length;
+        for (var i = 0; i < len; i++) {
+            if (Math.random() < 0.5) {
+                shuffledText += String.fromCharCode(Math.floor(Math.random() * 26) + 97);
+            } else {
+                shuffledText += chars[i];
+            }
+        }
+        return shuffledText;
+    }
+</script>
 
 
 
@@ -326,7 +378,7 @@
             .then(data => {
                 // Extract weather condition and temperature
                 const weatherCondition = data.weather[0].description;
-                const temperature = data.main.temp;
+                const temperature = Math.floor(data.main.temp); // Round down temperature
 
                 // Display weather information
                 const weatherInfoDiv = document.getElementById("weatherInfo");
@@ -343,6 +395,7 @@
     // Call the function to fetch weather when the page loads
     window.onload = getWeather;
 </script>
+
 
 
 <script>

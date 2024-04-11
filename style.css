@@ -224,27 +224,27 @@ a:hover {
 .pulse {
     vertical-align: middle; /* Vertically align spans in the middle */
     display: inline-block;
-    animation: pulse 8s;
+    animation: pulse 4s; /* Reduce animation duration to 4 seconds */
 }
 
 @keyframes pulse {
     0% {
         opacity: 1;
         transform: scale(1);
-        filter: blur(5px); /* Blur effect for the first 1 second */
     }
-    50% {
-        opacity: 0.4;
-        transform: scale(1.01);
-        filter: blur(0); /* Remove blur effect after 1 second */
+    25% {
+        opacity: 1;
+        transform: scale(1);
+        content: attr(data-content); /* Display original content for the first 1 second */
     }
     100% {
         opacity: 1;
         transform: scale(1);
+        content: attr(data-random); /* Display random content after the first 1 second */
     }
 }
 
-
+ 
 
 
 .radar {
@@ -301,7 +301,7 @@ a:hover {
   100% {
     background-color: rgba(0, 100, 0, 1); /* Green in RGBA format */
   }
-}
+} 
 
 
 
