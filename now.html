@@ -23,7 +23,44 @@
 
 
 
-<hr>
+
+				<table>
+				  <tr>
+				    <th>age</td>
+				    <td><span id="counter"></span></td>
+				  </tr>
+
+				  <tr>
+				    <th>location</td>
+				    <td><span class="pulse">Auckland</span></td>
+				  </tr>
+				  <tr>
+				    <th>weather</td>
+				    <td><span id="weatherInfo"></span></td>
+				  </tr>
+				  
+
+				   <tr>
+				    <th> </td>
+				    <td><br></td>
+				  </tr>
+
+
+
+				  <tr>
+				    <th>last workout</td>
+				    <td id="last-item"></td>
+				  </tr>
+				  <tr>
+				    <th>last movie</td>
+				    <td id="last-movie"></td>
+				  </tr>
+				  <tr>
+				    <th>last book</td>
+				    <td id="last-book"></td>
+				  </tr>
+			
+				</table>
 
 
 
@@ -36,6 +73,17 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+<div style="display: none;">
 
 <!-- Script for the first RSS feed (Letterboxd) -->
 <div id="last-movie">
@@ -61,7 +109,7 @@
 
                     // Display last movie watched
                     const lastMovieElement = document.getElementById('last-movie');
-                    lastMovieElement.innerHTML = `<p>Last movie watched: ${title}</p>`;
+                    lastMovieElement.innerHTML = `${title}`;
                 } else {
                     console.error('RSS feed data is empty or invalid');
                 }
@@ -105,7 +153,7 @@
                     // Display last item
                     const lastItemElement = document.getElementById('last-item');
                     lastItemElement.innerHTML = `
-                        <p>${title}, ${description.trim()}, ${formattedDate}</p>
+                        ${title}, ${description.trim()}, ${formattedDate}
                     `;
                 } else {
                     console.error('RSS feed data is empty or invalid');
@@ -153,7 +201,7 @@
 
                         // Display last book read
                         const lastBookElement = document.getElementById('last-book');
-                        lastBookElement.innerHTML = `<p>Last book read: '${title}' by ${author}</p>`;
+                        lastBookElement.innerHTML = `'${title}' by ${author}`;
                     } else {
                         console.error('RSS feed data is empty or invalid');
                     }
@@ -204,7 +252,7 @@
 
                 // Display weather information
                 const weatherInfoDiv = document.getElementById("weatherInfo");
-                weatherInfoDiv.innerHTML = `<p>Weather: ${weatherCondition} and ${temperature}°C.</p>`;
+                weatherInfoDiv.innerHTML = `${weatherCondition} and ${temperature}°C`;
             })
             .catch(error => {
                 console.error('Error fetching weather data:', error);
@@ -248,7 +296,7 @@ updateCounter();
 </script>
 
 
-
+</div>
 
 	</body>
 
