@@ -24,7 +24,7 @@
 
 
 
-				<table>
+				<table id="animated-table">
 
                    
 				  <tr>
@@ -43,11 +43,10 @@
 				  
 
 
-                  </table>
-
-                  <table>
-
-                  
+                 <tr>
+                    <th><br></td>
+                    <td></td>
+                  </tr>
 
 				  <tr>
 				    <th>last workout</td>
@@ -56,7 +55,7 @@
 
 				  <tr>
 				    <th>top song</td>
-				    <td id="last-song"></td>
+				    <td id="top-song"></td>
 				  </tr>
 				  
 				  <tr>
@@ -73,46 +72,62 @@
 				</table>
 
 
+<script type="text/javascript">document.addEventListener("DOMContentLoaded", function() {
+    // Get all table rows
+    const rows = document.querySelectorAll("#animated-table tr");
 
+    // Loop through each row and add a class to trigger the animation
+    rows.forEach((row, index) => {
+        setTimeout(() => {
+            row.style.opacity = "1";
+        }, index * 70); // Delay each row by 0.3 seconds
+    });
+});
+</script>
 
-
-
-
-
-<!-- Script for the Last.fm RSS feed -->
-<div id="last-song">
-    <!-- Last song details will be inserted here -->
-</div>
 
 <script>
     (function() {
-        // Proxy URL to fetch the RSS feed
-        const proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
+        const lastFmApiKey = 'b1181111f4966c86cd00c3ef5fc59a55'; // Replace this with your Last.fm API key
+        const username = 'cristianrus4'; // Replace this with your Last.fm username
 
-        // Fetch the Last.fm RSS feed using the proxy
-        fetch(proxyUrl + encodeURIComponent('https://lfm.xiffy.nl/cristianrus4/toptracks'))
+        // Get the date 7 days ago in UNIX timestamp format
+        const last7DaysTimestamp = Math.floor((new Date().getTime() - (7 * 24 * 60 * 60 * 1000)) / 1000);
+
+        // API endpoint to get top tracks for a user in the last 7 days
+        const apiUrl = `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${username}&api_key=${lastFmApiKey}&format=json&limit=1&from=${last7DaysTimestamp}`;
+
+        // Fetch the top track from the last 7 days
+        fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                // Check if data contains items
-                if (data.items && data.items.length > 0) {
-                    // Get the last song
-                    const lastSong = data.items[0];
+                // Check if data contains tracks
+                if (data && data.toptracks && data.toptracks.track && data.toptracks.track.length > 0) {
+                    // Get the top track
+                    const topTrack = data.toptracks.track[0];
 
-                    // Extract song details
-                    const title = lastSong.title;
+                    // Extract track details
+                    const artist = topTrack.artist.name;
+                    const trackName = topTrack.name;
+                    const playCount = topTrack.playcount;
 
-                    // Display last song played
-                    const lastSongElement = document.getElementById('last-song');
-                    lastSongElement.innerHTML = `${title}`;
+                    // Display top track
+                    const topSongElement = document.getElementById('top-song');
+                    topSongElement.innerHTML = `
+                         <em>${trackName}</em> by ${artist}
+                    `;
                 } else {
-                    console.error('Last.fm RSS feed data is empty or invalid');
+                    console.error('No top tracks found for the user in the last 7 days.');
                 }
             })
             .catch(error => {
-                console.error('Error fetching Last.fm RSS feed:', error);
+                console.error('Error fetching top tracks:', error);
             });
     })();
 </script>
+
+
+
 
 
 
@@ -169,6 +184,7 @@
 <div id="last-item">
     <!-- Last item details will be inserted here -->
 </div>
+
 <script>
     (function() {
         // Proxy URL to fetch the RSS feed
@@ -191,14 +207,17 @@
                     // Remove unwanted text from description
                     description = description.replace("(Feed generated with FetchRSS)", "");
 
-                    // Format the date
-                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                    const formattedDate = pubDate.toLocaleDateString('en-GB', options);
+                    // Convert time to total minutes
+                    const timeParts = description.trim().split(":");
+                    const hours = parseInt(timeParts[0]);
+                    const minutes = parseInt(timeParts[1]);
+                    const seconds = parseInt(timeParts[2]);
+                    const totalMinutes = hours * 60 + minutes + Math.round(seconds / 60);
 
-                    // Display last item
+                    // Display last item with time converted to total minutes
                     const lastItemElement = document.getElementById('last-item');
                     lastItemElement.innerHTML = `
-                        ${title}, ${description.trim()}, ${formattedDate}
+                        ${title} for ${totalMinutes} minutes
                     `;
                 } else {
                     console.error('RSS feed data is empty or invalid');
@@ -209,6 +228,7 @@
             });
     })();
 </script>
+
 
 <!-- Script for the third RSS feed (Goodreads) -->
 <div id="last-book">
@@ -246,7 +266,7 @@
 
                         // Display last book read
                         const lastBookElement = document.getElementById('last-book');
-                        lastBookElement.innerHTML = `'${title}' by ${author}`;
+                        lastBookElement.innerHTML = `<em>${title}</em> by ${author}`;
                     } else {
                         console.error('RSS feed data is empty or invalid');
                     }

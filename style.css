@@ -109,6 +109,13 @@ p {
  
 }
 
+
+#animated-table tr {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+
 th {
     text-align: right;
     font-weight: 450;
@@ -217,19 +224,20 @@ a:hover {
 .pulse {
         display: inline-block;
         animation: pulse 3s infinite;
+        animation-delay: 2s;
     }
 
     @keyframes pulse {
         0% {
-            opacity: 0.4;
+            opacity: 1;
             transform: scale(1);
         }
         50% {
-            opacity: 1;
+            opacity: 0.4;
             transform: scale(1.01);
         }
         100% {
-            opacity: 0.4;
+            opacity: 1;
             transform: scale(1);
         }
 
