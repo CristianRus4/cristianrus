@@ -112,14 +112,14 @@ p {
 th {
     text-align: right;
     font-weight: 450;
-    
+    vertical-align: top;
  
 }
 
 td {
     
     padding-left: 1em;
- 
+    vertical-align: top;
 }
 
 figure {
