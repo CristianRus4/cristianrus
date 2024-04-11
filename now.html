@@ -23,8 +23,21 @@
 
 
 
+<hr>
 
-<!-- Script for the first RSS feed -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Script for the first RSS feed (Letterboxd) -->
 <div id="last-movie">
     <!-- Last movie details will be inserted here -->
 </div>
@@ -59,7 +72,7 @@
     })();
 </script>
 
-<!-- Script for the second RSS feed -->
+<!-- Script for the second RSS feed (FetchRSS) -->
 <div id="last-item">
     <!-- Last item details will be inserted here -->
 </div>
@@ -103,6 +116,53 @@
             });
     })();
 </script>
+
+<!-- Script for the third RSS feed (Goodreads) -->
+<div id="last-book">
+    <!-- Last book details will be inserted here -->
+</div>
+<script>
+        (function() {
+            // Proxy URL to fetch the RSS feed
+            const proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+            // Fetch the RSS feed using the proxy
+            fetch(proxyUrl + encodeURIComponent('https://www.goodreads.com/review/list_rss/74821928?key=camdfkmNuO8PqylPKlVe_AckSkL5KnbljWIRS8Dd_HO_Nq_m&shelf=read'))
+                .then(response => response.json())
+                .then(data => {
+                    // Check if data contains items
+                    if (data.items && data.items.length > 0) {
+                        // Find the most recent book by comparing publication dates
+                        let mostRecentBook = data.items[0];
+                        data.items.forEach(item => {
+                            if (new Date(item.pubDate) > new Date(mostRecentBook.pubDate)) {
+                                mostRecentBook = item;
+                            }
+                        });
+
+                        // Extract book details
+                        const title = mostRecentBook.title;
+                        let author = '';
+
+                        // Search for author information in the description
+                        const description = mostRecentBook.description;
+                        const authorMatch = description.match(/author:\s*(.*?)<br/);
+                        if (authorMatch && authorMatch.length === 2) {
+                            author = authorMatch[1];
+                        }
+
+                        // Display last book read
+                        const lastBookElement = document.getElementById('last-book');
+                        lastBookElement.innerHTML = `<p>Last book read: '${title}' by ${author}</p>`;
+                    } else {
+                        console.error('RSS feed data is empty or invalid');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching RSS feed:', error);
+                });
+        })();
+    </script>
 
 
 
