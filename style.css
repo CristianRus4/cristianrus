@@ -216,20 +216,20 @@ a:hover {
 
 .pulse {
         display: inline-block;
-        animation: pulse 2s infinite;
+        animation: pulse 3s infinite;
     }
 
     @keyframes pulse {
         0% {
-            opacity: 0;
+            opacity: 0.4;
             transform: scale(1);
         }
         50% {
             opacity: 1;
-            transform: scale(1.1);
+            transform: scale(1.01);
         }
         100% {
-            opacity: 0;
+            opacity: 0.4;
             transform: scale(1);
         }
 

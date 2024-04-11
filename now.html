@@ -22,16 +22,51 @@
 			<p class="sub">design & human behaviour<p>
 
 
-<div>Years elapsed since born: <span id="counter"></span></div>
+<p>Years: <span id="counter"></span></p>
 
 
 
- <p>Current location: <span class="pulse">Auckland</span></p>
-
-
-		<h1>Weather in Auckland</h1>
+ <p>Location: <span class="pulse">Auckland</span></p>
 
 <div id="weatherInfo"></div>
+
+
+  <div id="last-movie">
+    <!-- Last movie details will be inserted here -->
+  </div>
+<script>
+    // Proxy URL to fetch the RSS feed
+    const proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+    // Fetch the RSS feed using the proxy
+    fetch(proxyUrl + encodeURIComponent('https://letterboxd.com/cristianrus4/rss/'))
+      .then(response => response.json())
+      .then(data => {
+        // Check if data contains items
+        if (data.items && data.items.length > 0) {
+          // Get the last movie
+          const lastMovie = data.items[0];
+
+          // Extract movie details
+          const title = lastMovie.title;
+
+          // Display last movie watched
+          const lastMovieElement = document.getElementById('last-movie');
+          lastMovieElement.innerHTML = `<p>Last movie watched: ${title}</p>`;
+        } else {
+          console.error('RSS feed data is empty or invalid');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching RSS feed:', error);
+      });
+  </script>
+
+	
+	<iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;border-radius:10px;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/nz/playlist/heavy-rotation-mix/pl.pm-20e9f373919da0803092f207f602b9a3"></iframe>
+
+
+
 
 <script>
     // Function to fetch weather data
@@ -53,7 +88,7 @@
 
                 // Display weather information
                 const weatherInfoDiv = document.getElementById("weatherInfo");
-                weatherInfoDiv.innerHTML = `<p>Currently in Auckland with ${weatherCondition} and ${temperature}°C.</p>`;
+                weatherInfoDiv.innerHTML = `<p>Weather: ${weatherCondition} and ${temperature}°C.</p>`;
             })
             .catch(error => {
                 console.error('Error fetching weather data:', error);
