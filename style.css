@@ -119,14 +119,14 @@ p {
 th {
     text-align: right;
     font-weight: 450;
-    vertical-align: top;
+    vertical-align: center;
  
 }
 
 td {
     
     padding-left: 1em;
-    vertical-align: top;
+    vertical-align: center;
 }
 
 figure {
@@ -224,7 +224,7 @@ a:hover {
 .pulse {
     vertical-align: middle; /* Vertically align spans in the middle */
     display: inline-block;
-    animation: pulse 5s;
+    animation: pulse 8s;
 }
 
 @keyframes pulse {
