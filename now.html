@@ -165,8 +165,11 @@
         // Proxy URL to fetch the RSS feed
         const proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-        // Fetch the RSS feed using the proxy
-        fetch(proxyUrl + encodeURIComponent('https://letterboxd.com/cristianrus4/rss/'))
+        // Generate a random cache-busting parameter
+        const cacheBuster = Date.now();
+
+        // Fetch the RSS feed using the proxy with cache-busting parameter
+        fetch(`${proxyUrl}${encodeURIComponent('https://letterboxd.com/cristianrus4/rss/')}&cacheBuster=${cacheBuster}`)
             .then(response => response.json())
             .then(data => {
                 // Check if data contains items
