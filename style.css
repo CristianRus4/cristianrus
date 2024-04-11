@@ -206,6 +206,12 @@ a:hover {
     font-weight: 600 !important;
 }
 
+ #counter {
+        
+        
+        margin-top: 50px;
+        text-align: left;
+    }
 
 
 /* Expand buttons */

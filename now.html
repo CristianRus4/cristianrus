@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+	
+
+
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+	<title>now – Cristian Rus</title>
+	</head>
+	
+	<body>
+			
+			<div id="counter"></div>
+
+
+		<h1>Weather in Auckland</h1>
+
+<div id="weatherInfo"></div>
+
+<script>
+    // Function to fetch weather data
+    function getWeather() {
+        // Your OpenWeatherMap API key
+        const apiKey = "1def22ce2b0dcb06bec08ed98beda671";
+        // City to get weather for
+        const city = "Auckland,nz";
+        // API endpoint
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+        // Fetch weather data
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Extract weather condition and temperature
+                const weatherCondition = data.weather[0].description;
+                const temperature = data.main.temp;
+
+                // Display weather information
+                const weatherInfoDiv = document.getElementById("weatherInfo");
+                weatherInfoDiv.innerHTML = `<p>The current weather condition in Auckland is ${weatherCondition} with a temperature of ${temperature}°C.</p>`;
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);
+                // Display error message
+                const weatherInfoDiv = document.getElementById("weatherInfo");
+                weatherInfoDiv.innerHTML = "<p>Failed to fetch weather data. Please try again later.</p>";
+            });
+    }
+
+    // Call the function to fetch weather when the page loads
+    window.onload = getWeather;
+</script>
+
+
+<script>
+// Function to calculate the time difference
+function getTimeDifference(startDate) {
+    var currentDate = new Date();
+    var difference = currentDate - startDate;
+
+    var years = Math.floor(difference / (1000 * 60 * 60 * 24 * 365.25));
+    difference -= years * (1000 * 60 * 60 * 24 * 365.25);
+
+    var months = Math.floor(difference / (1000 * 60 * 60 * 24 * 30.4375));
+    difference -= months * (1000 * 60 * 60 * 24 * 30.4375);
+
+    var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    difference -= days * (1000 * 60 * 60 * 24);
+
+    var hours = Math.floor(difference / (1000 * 60 * 60));
+    difference -= hours * (1000 * 60 * 60);
+
+    var minutes = Math.floor(difference / (1000 * 60));
+    difference -= minutes * (1000 * 60);
+
+    var seconds = Math.floor(difference / 1000);
+    difference -= seconds * 1000;
+
+    var milliseconds = difference;
+
+    return {
+        years: years,
+        months: months,
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        milliseconds: milliseconds
+    };
+}
+
+// Function to update the counter
+function updateCounter() {
+    var startDate = new Date(1994, 3, 22, 7, 0, 0); // 7am, April 22, 1994
+    var difference = getTimeDifference(startDate);
+
+    var counterElement = document.getElementById('counter');
+    counterElement.textContent = `${difference.years} years, ${difference.months} months, ${difference.days} days, ${difference.hours}:${difference.minutes}:${difference.seconds}:${difference.milliseconds}`;
+}
+
+// Update the counter every millisecond
+setInterval(updateCounter, 1);
+
+// Initial update
+updateCounter();
+</script>
+
+
+
+
+
+
+	</body>
+
+	
+
+</html>
+	
