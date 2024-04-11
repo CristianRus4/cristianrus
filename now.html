@@ -51,6 +51,12 @@
 				    <th>last workout</td>
 				    <td id="last-item"></td>
 				  </tr>
+
+				  <tr>
+				    <th>song obsession</td>
+				    <td id="last-song"></td>
+				  </tr>
+				  
 				  <tr>
 				    <th>last movie</td>
 				    <td id="last-movie"></td>
@@ -59,6 +65,8 @@
 				    <th>last book</td>
 				    <td id="last-book"></td>
 				  </tr>
+
+				  
 			
 				</table>
 
@@ -69,7 +77,40 @@
 
 
 
+<!-- Script for the Last.fm RSS feed -->
+<div id="last-song">
+    <!-- Last song details will be inserted here -->
+</div>
 
+<script>
+    (function() {
+        // Proxy URL to fetch the RSS feed
+        const proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+        // Fetch the Last.fm RSS feed using the proxy
+        fetch(proxyUrl + encodeURIComponent('https://lfm.xiffy.nl/cristianrus4/toptracks'))
+            .then(response => response.json())
+            .then(data => {
+                // Check if data contains items
+                if (data.items && data.items.length > 0) {
+                    // Get the last song
+                    const lastSong = data.items[0];
+
+                    // Extract song details
+                    const title = lastSong.title;
+
+                    // Display last song played
+                    const lastSongElement = document.getElementById('last-song');
+                    lastSongElement.innerHTML = `${title}`;
+                } else {
+                    console.error('Last.fm RSS feed data is empty or invalid');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching Last.fm RSS feed:', error);
+            });
+    })();
+</script>
 
 
 
@@ -84,6 +125,8 @@
 
 
 <div style="display: none;">
+
+
 
 <!-- Script for the first RSS feed (Letterboxd) -->
 <div id="last-movie">
