@@ -112,7 +112,7 @@ p {
 
 #animated-table tr {
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 1s ease-in-out;
 }
 
 
@@ -254,15 +254,15 @@ a:hover {
   height: 1em;
   position: relative;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 0, 0, 0.2) 30%, rgba(255, 0, 0, 0.4) 50%, rgba(255, 0, 0, 0.6) 70%, rgba(255, 0, 0, 0.8) 90%);
-  border: 0.1em solid rgba(255, 0, 0, 0.6); /* Red border */
+  background: radial-gradient(circle, rgba(139, 0, 0, 0.2) 30%, rgba(139, 0, 0, 0.4) 50%, rgba(139, 0, 0, 0.6) 70%, rgba(139, 0, 0, 0.8) 90%);
+  border: 0.1em solid rgba(139, 0, 0, 0.6); /* Red border */
   animation: changeGradient 1s forwards 5s; /* Apply animation to change gradient */
 }
 
 @keyframes changeGradient {
   0% {
-    background: radial-gradient(circle, rgba(255, 0, 0, 0.2) 30%, rgba(255, 0, 0, 0.4) 50%, rgba(255, 0, 0, 0.6) 70%, rgba(255, 0, 0, 0.8) 90%);
-    border-color: rgba(255, 0, 0, 0.6); /* Red border */
+    background: radial-gradient(circle, rgba(139, 0, 0, 0.2) 30%, rgba(139, 0, 0, 0.4) 50%, rgba(139, 0, 0, 0.6) 70%, rgba(139, 0, 0, 0.8) 90%);
+    border-color: rgba(139, 0, 0, 0.6); /* Red border */
   }
   100% {
     background: radial-gradient(circle, rgba(0, 100, 0, 0.2) 30%, rgba(0, 100, 0, 0.4) 50%, rgba(0, 100, 0, 0.6) 70%, rgba(0, 100, 0, 0.8) 90%);
@@ -278,10 +278,10 @@ a:hover {
   left: 50%;
   margin-top: -0.14em; /* Adjusted margin for perfect alignment */
   margin-left: -0.15em; /* Adjusted margin for perfect alignment */
-  background-color: rgba(255, 0, 0, 1); /* Red in RGBA format */
+  background-color: rgba(139, 0, 0, 0.5); /* Red in RGBA format */
   border-radius: 50%;
   z-index: 2;
-  animation: expandRadar 4s ease-in-out infinite alternate, changeColor 1s forwards 5s;
+  animation: expandRadar 2s ease-in-out infinite alternate, changeColor 1s forwards 5s;
 }
 
 
@@ -296,7 +296,7 @@ a:hover {
 
 @keyframes changeColor {
   0% {
-    background-color: rgba(255, 0, 0, 1); /* Red in RGBA format */
+    background-color: rgba(139, 0, 0, 0.5); /* Red in RGBA format */
   }
   100% {
     background-color: rgba(0, 100, 0, 1); /* Green in RGBA format */
