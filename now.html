@@ -10,11 +10,23 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
 	<title>now – Cristian Rus</title>
+
+
+
+
 	</head>
 	
 	<body>
-			
-			<div id="counter"></div>
+
+		<h1 class="title"><a class="titlelink" href="/">Cristian Rus</a> </h1>
+			<p class="sub">design & human behaviour<p>
+
+
+<div>Years elapsed since born: <span id="counter"></span></div>
+
+
+
+ <p>Current location: <span class="pulse">Auckland</span></p>
 
 
 		<h1>Weather in Auckland</h1>
@@ -41,7 +53,7 @@
 
                 // Display weather information
                 const weatherInfoDiv = document.getElementById("weatherInfo");
-                weatherInfoDiv.innerHTML = `<p>The current weather condition in Auckland is ${weatherCondition} with a temperature of ${temperature}°C.</p>`;
+                weatherInfoDiv.innerHTML = `<p>Currently in Auckland with ${weatherCondition} and ${temperature}°C.</p>`;
             })
             .catch(error => {
                 console.error('Error fetching weather data:', error);
@@ -57,40 +69,15 @@
 
 
 <script>
-// Function to calculate the time difference
+// Function to calculate the time difference in years with 9 decimal places
 function getTimeDifference(startDate) {
     var currentDate = new Date();
     var difference = currentDate - startDate;
 
-    var years = Math.floor(difference / (1000 * 60 * 60 * 24 * 365.25));
-    difference -= years * (1000 * 60 * 60 * 24 * 365.25);
+    var years = difference / (1000 * 60 * 60 * 24 * 365.25); // Convert milliseconds to years
+    years = parseFloat(years.toFixed(9)); // Round to 9 decimal places
 
-    var months = Math.floor(difference / (1000 * 60 * 60 * 24 * 30.4375));
-    difference -= months * (1000 * 60 * 60 * 24 * 30.4375);
-
-    var days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    difference -= days * (1000 * 60 * 60 * 24);
-
-    var hours = Math.floor(difference / (1000 * 60 * 60));
-    difference -= hours * (1000 * 60 * 60);
-
-    var minutes = Math.floor(difference / (1000 * 60));
-    difference -= minutes * (1000 * 60);
-
-    var seconds = Math.floor(difference / 1000);
-    difference -= seconds * 1000;
-
-    var milliseconds = difference;
-
-    return {
-        years: years,
-        months: months,
-        days: days,
-        hours: hours,
-        minutes: minutes,
-        seconds: seconds,
-        milliseconds: milliseconds
-    };
+    return years;
 }
 
 // Function to update the counter
@@ -99,17 +86,15 @@ function updateCounter() {
     var difference = getTimeDifference(startDate);
 
     var counterElement = document.getElementById('counter');
-    counterElement.textContent = `${difference.years} years, ${difference.months} months, ${difference.days} days, ${difference.hours}:${difference.minutes}:${difference.seconds}:${difference.milliseconds}`;
-}
+    counterElement.textContent = difference;
 
-// Update the counter every millisecond
-setInterval(updateCounter, 1);
+    // Update the counter every millisecond
+    setTimeout(updateCounter, 1);
+}
 
 // Initial update
 updateCounter();
 </script>
-
-
 
 
 
