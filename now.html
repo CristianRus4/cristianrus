@@ -276,16 +276,30 @@
                     let description = lastItem.description.replace(/<[^>]*>?/gm, ''); // Remove HTML tags from description
                     const pubDate = new Date(lastItem.pubDate);
 
-                    // Remove unwanted text from description
-                    description = description.replace("(Feed generated with FetchRSS)", "");
+                   // Remove unwanted words from description
+const unwantedWords = ["Pool", "Afternoon", "Morning", "Evening", "Lunch", "Night"];
+unwantedWords.forEach(word => {
+    description = description.replace(new RegExp(word, 'gi'), '');
+});
+
+// Remove "(Feed generated with FetchRSS)"
+description = description.replace("(Feed generated with FetchRSS)", "").trim();
 
                     // Convert time to total minutes
-                    const timeParts = description.trim().split(":");
-                    const hours = parseInt(timeParts[0]);
-                    const minutes = parseInt(timeParts[1]);
-                    const seconds = parseInt(timeParts[2]);
-                    const totalMinutes = hours * 60 + minutes + Math.round(seconds / 60);
-
+let totalMinutes;
+const timeParts = description.trim().split(":");
+if (timeParts.length === 3) {
+    const hours = parseInt(timeParts[0]);
+    const minutes = parseInt(timeParts[1]);
+    const seconds = parseInt(timeParts[2]);
+    totalMinutes = hours * 60 + minutes + Math.round(seconds / 60);
+} else if (timeParts.length === 2) {
+    const minutes = parseInt(timeParts[0]);
+    const seconds = parseInt(timeParts[1]);
+    totalMinutes = minutes + Math.round(seconds / 60);
+} else {
+    totalMinutes = 0; // Set a default value if time format is unexpected
+}
                     // Display last item with time converted to total minutes
                     const lastItemElement = document.getElementById('last-item');
                     lastItemElement.innerHTML = `
