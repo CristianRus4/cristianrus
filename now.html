@@ -259,60 +259,63 @@
 
 <script>
     (function() {
-        // Proxy URL to fetch the RSS feed
-        const proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
+    // Proxy URL to fetch the RSS feed
+    const proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-        // Fetch the RSS feed using the proxy
-        fetch(proxyUrl + encodeURIComponent('https://fetchrss.com/rss/66176ae481670c3fad16444266176aac58588e69ae5b30a2.xml'))
-            .then(response => response.json())
-            .then(data => {
-                // Check if data contains items
-                if (data.items && data.items.length > 0) {
-                    // Get the last item
-                    const lastItem = data.items[0];
+    // Fetch the RSS feed using the proxy
+    fetch(proxyUrl + encodeURIComponent('https://fetchrss.com/rss/66176ae481670c3fad16444266176aac58588e69ae5b30a2.xml'))
+        .then(response => response.json())
+        .then(data => {
+            // Check if data contains items
+            if (data.items && data.items.length > 0) {
+                // Get the last item
+                const lastItem = data.items[0];
 
-                    // Extract item details
-                    const title = lastItem.title;
-                    let description = lastItem.description.replace(/<[^>]*>?/gm, ''); // Remove HTML tags from description
-                    const pubDate = new Date(lastItem.pubDate);
+                // Extract item details
+                const title = lastItem.title.toLowerCase(); // Convert title to lowercase
+                let description = lastItem.description.replace(/<[^>]*>?/gm, ''); // Remove HTML tags from description
+                description = description.toLowerCase(); // Convert description to lowercase
+                const pubDate = new Date(lastItem.pubDate);
 
-                   // Remove unwanted words from description
-const unwantedWords = ["Pool", "Afternoon", "Morning", "Evening", "Lunch", "Night"];
-unwantedWords.forEach(word => {
-    description = description.replace(new RegExp(word, 'gi'), '');
-});
+                // Remove unwanted words from description
+                const unwantedWords = ["pool", "afternoon", "morning", "evening", "lunch", "night"];
+                unwantedWords.forEach(word => {
+                    description = description.replace(new RegExp(word, 'gi'), '');
+                });
 
-// Remove "(Feed generated with FetchRSS)"
-description = description.replace("(Feed generated with FetchRSS)", "").trim();
+                // Remove "(Feed generated with FetchRSS)"
+                description = description.replace("(feed generated with fetchrss)", "").trim();
 
-                    // Convert time to total minutes
-let totalMinutes;
-const timeParts = description.trim().split(":");
-if (timeParts.length === 3) {
-    const hours = parseInt(timeParts[0]);
-    const minutes = parseInt(timeParts[1]);
-    const seconds = parseInt(timeParts[2]);
-    totalMinutes = hours * 60 + minutes + Math.round(seconds / 60);
-} else if (timeParts.length === 2) {
-    const minutes = parseInt(timeParts[0]);
-    const seconds = parseInt(timeParts[1]);
-    totalMinutes = minutes + Math.round(seconds / 60);
-} else {
-    totalMinutes = 0; // Set a default value if time format is unexpected
-}
-                    // Display last item with time converted to total minutes
-                    const lastItemElement = document.getElementById('last-item');
-                    lastItemElement.innerHTML = `
-                        ${title} for ${totalMinutes} minutes
-                    `;
+                // Convert time to total minutes
+                let totalMinutes;
+                const timeParts = description.trim().split(":");
+                if (timeParts.length === 3) {
+                    const hours = parseInt(timeParts[0]);
+                    const minutes = parseInt(timeParts[1]);
+                    const seconds = parseInt(timeParts[2]);
+                    totalMinutes = hours * 60 + minutes + Math.round(seconds / 60);
+                } else if (timeParts.length === 2) {
+                    const minutes = parseInt(timeParts[0]);
+                    const seconds = parseInt(timeParts[1]);
+                    totalMinutes = minutes + Math.round(seconds / 60);
                 } else {
-                    console.error('RSS feed data is empty or invalid');
+                    totalMinutes = 0; // Set a default value if time format is unexpected
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching RSS feed:', error);
-            });
-    })();
+
+                // Display last item with time converted to total minutes
+                const lastItemElement = document.getElementById('last-item');
+                lastItemElement.innerHTML = `
+                    ${title} for ${totalMinutes} minutes
+                `;
+            } else {
+                console.error('RSS feed data is empty or invalid');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching RSS feed:', error);
+        });
+})();
+
 </script>
 
 

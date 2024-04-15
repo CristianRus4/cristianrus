@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+	
+
+
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+	<title>strava – Cristian Rus</title>
+
+
+
+
+	</head>
+	
+	<body>
+
+		<h1 class="title"><a class="titlelink" href="/">Cristian Rus</a> </h1>
+			<p class="sub">design & human behaviour<p>
+
+ 
+
+
+
+
+
+ <h1>Strava Athlete Data</h1>
+    <div id="athlete-info"></div>
+
+    <script>
+        // Function to fetch athlete data from Strava API
+        function fetchAthleteData() {
+            const accessToken = '586c4d0ad3405547d137725e105ba40163f856ac';
+            fetch('https://www.strava.com/api/v3/athlete', {
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display athlete data
+                const athleteInfo = document.getElementById('athlete-info');
+                athleteInfo.innerHTML = `
+                    <p>Name: ${data.firstname} ${data.lastname}</p>
+                    <p>Username: ${data.username}</p>
+                    <p>Email: ${data.email}</p>
+                    <p>City: ${data.city}</p>
+                    <p>Country: ${data.country}</p>
+                `;
+            })
+            .catch(error => console.error('Error fetching athlete data:', error));
+        }
+
+        // Call fetchAthleteData function when the page loads
+        window.onload = fetchAthleteData;
+    </script>
+
+
+
+
+
+
+ 
+</body>
+
+
+
+	
+
+</html>
+	
