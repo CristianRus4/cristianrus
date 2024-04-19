@@ -381,20 +381,12 @@ a:hover {
 }
 
 #playIcon, #pauseIcon {
-  font-size: 10em;
 
 }
 
-#playIcon::after {
+#playIcon::after, #pauseIcon::after {
   content: "";
 }
-
-#pauseIcon::after {
-  content: "";
-}
-
-
-
 
 
 
