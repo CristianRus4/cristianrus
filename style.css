@@ -363,6 +363,31 @@ a:hover {
 }
 
 
+#player {
+      display: none; /* Hide the YouTube player */
+    }
+   #playButton {
+  background: none;
+  color: #21201C;
+  margin-left: -0.5em;
+  border: none;
+  border-radius: 5px;
+
+
+}
+
+#playIcon, #pauseIcon {
+  font-size: 10em;
+}
+
+#playIcon::after {
+  content: "";
+}
+
+#pauseIcon::after {
+  content: "";
+}
+
 
 
 
@@ -376,6 +401,14 @@ a:hover {
        
         color: #B5B3AD;
     }
+
+
+
+   #playButton {
+ color: #EEEEEC;
+
+
+}
     h1,h2 {
        
         color: #EEEEEC;
