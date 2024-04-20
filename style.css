@@ -161,6 +161,8 @@ figcaption {
     font-style: italic;
 }
 
+
+
 .value {
     position: fixed; /* Position the element relative to the viewport */
     top: 50%; /* Align the top edge of the element to the middle of the viewport */
