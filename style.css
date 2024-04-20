@@ -200,6 +200,24 @@ figcaption {
     
 }
 
+.timee {
+    
+font-size: 8em;
+line-height: 1em;
+text-align: right;
+font-weight: 700;
+
+}
+
+
+
+.datee {
+    line-height: 1em;
+ font-size: 3em;
+ text-align: right;
+
+
+}
 
 
 /* Links */

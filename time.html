@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+	
+
+
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+	<title>Time – Cristian Rus</title>
+	</head>
+	
+	<body>
+			
+
+
+
+     <div class="datee">
+        <div id="date"></div>
+    </div>
+    <br>
+
+    <div class="timee">
+        <div id="time"></div>
+    </div>
+
+
+
+
+
+    <script type="text/javascript">
+
+
+
+function updateTime() {
+    var now = new Date();
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var meridiem = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // 0 should be displayed as 12
+    minutes = padZero(minutes);
+
+    var timeString = hours + ":" + minutes + " " + meridiem;
+    document.getElementById('time').innerHTML = timeString;
+
+    // Update every minute
+    setTimeout(updateTime, 60000); // Update every minute (60 seconds)
+}
+
+function padZero(num) {
+    return (num < 10 ? '0' : '') + num;
+}
+
+// Start the clock
+updateTime();
+
+
+
+
+
+
+</script>
+
+
+
+
+<script type="text/javascript">
+	
+
+
+function updateDateTime() {
+    var now = new Date();
+    var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var dayOfWeek = days[now.getDay()];
+    var dayOfMonth = now.getDate();
+    var month = months[now.getMonth()];
+    var year = now.getFullYear();
+
+    // Add ordinal suffix to the day
+    var ordinalSuffix = getOrdinalSuffix(dayOfMonth);
+
+    var dateString = dayOfWeek + ' ' + dayOfMonth + ordinalSuffix + ' ' + month + ' ' + year;
+    document.getElementById('date').innerHTML = dateString;
+
+    // Update every minute
+    setTimeout(updateDateTime, 60000); // Update every minute (60 seconds)
+}
+
+// Function to get the ordinal suffix for a given day of the month
+function getOrdinalSuffix(day) {
+    if (day >= 11 && day <= 13) {
+        return 'th';
+    }
+    switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+    }
+}
+
+// Start the clock
+updateDateTime();
+
+
+
+</script>
+</body>
+
+	
+
+</html>
+	
