@@ -201,21 +201,27 @@ figcaption {
 }
 
 .timee {
+    position: absolute;
+    bottom: 1vw;
+    right: 5vw;
+    font-size: 20vw; /* Adjust the value as needed */
+    line-height: 1em;
+    text-align: right;
+    font-weight: 700;
     
-font-size: 8em;
-line-height: 1em;
-text-align: right;
-font-weight: 700;
-
-
 }
 
 
 
 .datee {
+
+   position: absolute;
+    top: 20vw;
+    right: 5vw;
+    font-size: 5vw; /* Adjust the value as needed */
     line-height: 1em;
- font-size: 3em;
- text-align: right;
+    text-align: right;
+    font-weight: 400;
 
 
 }
