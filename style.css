@@ -82,10 +82,24 @@ h2 {
     font-weight: 400;
     margin-bottom: 0.5em;
     margin-top: 2.5em;
-    font-weight: 450;
+    
     color: #21201C;
 }
 
+h3 {
+     font-size: 1em;
+    font-weight: 300;
+    margin-bottom: 0.5em;
+    margin-top: 2.5em;
+    
+
+}
+
+strong {
+     
+    font-weight: 500;
+    
+}
 
 .title {
     
