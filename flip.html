@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+	
+
+
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+	<title>flip</title>
+	<style>
+    #randomLetters {
+      font-size: 5em;
+      font-weight: 600;
+      position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body>
+<p>
+
+  <span id="randomLetters"></span>
+
+</p>
+
+
+
+
+<script>
+  // Function to generate a random character (uppercase letter or number)
+  function getRandomCharacter() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=<>?';
+    return characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  // Function to randomly select between HEADS and TAILS
+  function getRandomLocation() {
+    const locations = ['HEADS', 'TAILS'];
+    const randomIndex = Math.floor(Math.random() * locations.length);
+    return locations[randomIndex];
+  }
+
+  // Function to update the random letters
+  function updateRandomLetters() {
+    let randomLetters = '';
+    if (Math.random() < 0.5) {
+      randomLetters = getRandomLocation();
+    } else {
+      for (let i = 0; i < 5; i++) {
+        randomLetters += getRandomCharacter(); // Uppercase letters or numbers
+      }
+    }
+    document.getElementById('randomLetters').textContent = randomLetters;
+  }
+
+  // Change letters every 50 milliseconds
+  const interval = setInterval(updateRandomLetters, 50);
+
+  // After 4 seconds, stop changing the letters and display HEADS or TAILS
+  setTimeout(function() {
+    clearInterval(interval); // Stop the interval
+    document.getElementById('randomLetters').textContent = getRandomLocation();
+  }, 5000);
+
+</script>
+
+
+
+
+
+
+</body>
+</html>
+	
