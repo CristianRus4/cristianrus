@@ -75,12 +75,28 @@
   <div class="button-container">
   <button class="main-button"><a href="#">contact</a></button>
   <div class="extra-buttons">
-  	<button class="extra-button"><a href="mailto:cristianrus@hey.com">mail</a></button>
+  	<button class="extra-button"><a id="copy-email" href="#">mail</a></button>
+  <script src="script.js"></script>
+
     <button class="extra-button"><a href="sms:+642041926150">text</a></button>
     <button class="extra-button"><a href="twitter">twitter</a></button>
     
   </div>
   </div>
+
+  <script type="text/javascript">
+
+  	const copyEmail = document.getElementById('copy-email');
+
+copyEmail.addEventListener('click', function() {
+  navigator.clipboard.writeText('cristianrus@hey.com');
+  this.textContent = 'copied ❐';
+  setTimeout(() => {
+    this.textContent = 'mail';
+  }, 1000);
+});
+
+</script>
 
 
 
