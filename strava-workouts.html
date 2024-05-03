@@ -9,119 +9,200 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
-	<title>lorem</title>
+	<title>Strava workouts</title>
 
 
     <style type="text/css">
         
-        #workouts {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+      	
+#profile-info {
+    margin: 50px auto;
+    width: 300px;
 }
 
-.workout {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin: 10px;
-    width: 250px;
-}
-
-.workout h3 {
-    margin-bottom: 5px;
-}
 
 
     </style>
 
     </head>
     
-    <body>  
+    <body>
 
-         <h1>My Latest Strava Workouts</h1>
-    <div id="workouts"></div>
-    <script src="script.js"></script>
+<div id="profile-info">
+  <h1>Loading Profile...</h1>
+  <p id="fetching-data">Fetching athlete information...</p>
+  <p id="name"></p>
+  <p id="age"></p>
+  <p id="fetching-gear">Fetching gear information...</p>
+  <p id="fetching-clubs">Fetching club information...</p>
+  <p id="fetching-routes">Fetching route information...</p>
+  <p id="fetching-workouts">Fetching recent workouts...</p>
+</div>
+<script src="script.js"></script>
 
+<script type="text/javascript">
 
+// Replace with your actual Client ID
+const clientId = '124696';
 
+// Replace with your actual Access Token
+const accessToken = 'feeb0bf37ea71f058372abeb9cac2207ab0b68cb';
 
+// Requesting activity:read_all scope
+const scope = 'activity:read_all';
 
- 
+const profileInfo = document.getElementById('profile-info');
+const nameElement = document.getElementById('name');
+const ageElement = document.getElementById('age');
+const workoutDetails = document.createElement('div');
 
-    <script type="text/javascript">const clientId = '124696'; // Replace with your client ID
-const clientSecret = '3c5a2201dde046a9e0bf3048e0eab7bd5804a263'; // Replace with your client secret
+function getStravaProfile() {
+  const url = `https://www.strava.com/api/v3/athlete?access_token=${accessToken}`;
 
-// Authorization URL with your website's callback URL
-const authUrl = `https://www.strava.com/oauth/authorize?client_id=${clientId}&redirect_uri=https://cristianrus.me/strava-workouts/callback&response_type=code&scope=read_all,activity:read_all`;
-
-// Check if access token is already stored
-const accessToken = localStorage.getItem('accessToken');
-
-
-// Function to fetch access token (if not already stored)
-async function getAccessToken(code) {
-    const response = await fetch('https://www.strava.com/oauth/token', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            client_id: clientId,
-            client_secret: clientSecret,
-            code,
-            grant_type: 'authorization_code'
-        })
-    });
-    const data = await response.json();
-    localStorage.setItem('accessToken', data.access_token);
-    return data.access_token;
-}
-
-// Function to fetch and display workouts
-async function fetchWorkouts(accessToken) {
-    const response = await fetch(`https://www.strava.com/api/v3/athlete/activities?per_page=5&access_token=${accessToken}`);
-    const workouts = await response.json();
-
-    const workoutsContainer = document.getElementById('workouts');
-    workoutsContainer.innerHTML = ''; // Clear previous workouts
-
-    workouts.forEach(workout => {
-        const workoutElement = document.createElement('div');
-        workoutElement.classList.add('workout');
-
-        const title = document.createElement('h3');
-        title.textContent = workout.name;
-        workoutElement.appendChild(title);
-
-        // Add other workout details as needed (e.g., distance, time, date)
-
-        workoutsContainer.appendChild(workoutElement);
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      nameElement.textContent = `Name: ${data.firstname} ${data.lastname}`;
+      ageElement.textContent = `Age: ${data.age}`;
+      profileInfo.querySelector('h1').textContent = 'Strava Profile';
+      profileInfo.querySelector('#fetching-data').textContent = 'Fetching training data...';
+      getLastWorkout(data.id);
+      getAthleteGear(data.id);
+      getAthleteClubs(data.id);
+      getAthleteRoutes(data.id);
+    })
+    .catch(error => {
+      console.error(error);
+      profileInfo.textContent = 'Error fetching profile information';
     });
 }
 
-// Handle authorization flow (if access token is not stored)
-if (!accessToken) {
-    window.location.href = authUrl;
-} else {
-    fetchWorkouts(accessToken);
+function getLastWorkout(athleteId) {
+  const workoutUrl = `https://www.strava.com/api/v3/athletes/${athleteId}/activities?access_token=${accessToken}&per_page=1&scope=${scope}`;
+
+  fetch(workoutUrl)
+    .then(response => response.json())
+    .then(data => {
+      if (data.length > 0) {
+        const lastWorkout = data[0];
+        workoutDetails.innerHTML = `
+          <h2>Last Workout</h2>
+          <p>Name: ${lastWorkout.name}</p>
+          <p>Distance: ${lastWorkout.distance} meters</p>
+          <p>Duration: ${lastWorkout.moving_time} seconds</p>
+          <p>Average Speed: ${lastWorkout.average_speed} m/s</p>
+          <p>Max Speed: ${lastWorkout.max_speed} m/s</p>
+          <p>Average Heart Rate: ${lastWorkout.average_heartrate} bpm (if available)</p>
+          <p>Max Heart Rate: ${lastWorkout.max_heartrate} bpm (if available)</p>
+          <p>Average Power: ${lastWorkout.average_watts} watts (if available)</p>
+          <p>Max Power: ${lastWorkout.max_watts} watts (if available)</p>
+          <p>Cadence: ${lastWorkout.average_cadence} rpm (if available)</p>
+        `;
+      } else {
+        workoutDetails.textContent = 'No recent workouts found.';
+      }
+      profileInfo.appendChild(workoutDetails);
+      profileInfo.querySelector('#fetching-workouts').textContent = '';
+    })
+    .catch(error => {
+      console.error(error);
+      workoutDetails.textContent = 'Error fetching workout details';
+      profileInfo.appendChild(workoutDetails);
+    });
 }
 
-// Handle callback URL (if authorization is successful)
-const urlParams = new URLSearchParams(window.location.search);
-const code = urlParams.get('code');
-if (code) {
-    getAccessToken(code)
-        .then(accessToken => fetchWorkouts(accessToken));
+function getAthleteGear(athleteId) {
+  const gearUrl = `https://www.strava.com/api/v3/athletes/${athleteId}/gears?access_token=${accessToken}`;
+
+  fetch(gearUrl)
+    .then(response => response.json())
+    .then(data => {
+      if (data.length > 0) {
+        const gearList = document.createElement('ul');
+        data.forEach(gear => {
+          const listItem = document.createElement('li');
+          listItem.textContent = `
+            ${gear.name} (${gear.brand})
+          `;
+          gearList.appendChild(listItem);
+        });
+        profileInfo.appendChild(gearList);
+      } else {
+        workoutDetails.textContent = 'No gear information available.';
+        profileInfo.appendChild(workoutDetails);
+      }
+      profileInfo.querySelector('#fetching-gear').textContent = '';
+    })
+    .catch(error => {
+      console.error(error);
+      workoutDetails.textContent = 'Error fetching gear information';
+      profileInfo.appendChild(workoutDetails);
+    });
 }
+
+function getAthleteClubs(athleteId) {
+  const clubsUrl = `https://www.strava.com/api/v3/athletes/${athleteId}/clubs?access_token=${accessToken}`;
+
+  fetch(clubsUrl)
+    .then(response => response.json())
+    .then(data => {
+      if (data.length > 0) {
+        const clubList = document.createElement('ul');
+        data.forEach(club => {
+          const listItem = document.createElement('li');
+          listItem.textContent = club.name;
+          clubList.appendChild(listItem);
+        });
+        profileInfo.appendChild(clubList);
+      } else {
+        workoutDetails.textContent = 'No clubs joined.';
+        profileInfo.appendChild(workoutDetails);
+      }
+      profileInfo.querySelector('#fetching-clubs').textContent = '';
+    })
+    .catch(error => {
+      console.error(error);
+      workoutDetails.textContent = 'Error fetching club information';
+      profileInfo.appendChild(workoutDetails);
+    });
+}
+
+function getAthleteRoutes(athleteId) {
+  const routesUrl = `https://www.strava.com/api/v3/athletes/${athleteId}/routes?access_token=${accessToken}`;
+
+  fetch(routesUrl)
+    .then(response => response.json())
+    .then(data => {
+      if (data.length > 0) {
+        const routeList = document.createElement('ul');
+        data.forEach(route => {
+          const listItem = document.createElement('li');
+          listItem.textContent = route.name;
+          routeList.appendChild(listItem);
+        });
+        profileInfo.appendChild(routeList);
+      } else {
+        workoutDetails.textContent = 'No routes found.';
+        profileInfo.appendChild(workoutDetails);
+      }
+      profileInfo.querySelector('#fetching-routes').textContent = '';
+    })
+    .catch(error => {
+      console.error(error);
+      workoutDetails.textContent = 'Error fetching route information';
+      profileInfo.appendChild(workoutDetails);
+    });
+}
+
+getStravaProfile();
+
 </script>
-
-
-
 
 
 	</body>
 
-	
+
+
 
 </html>
 	
