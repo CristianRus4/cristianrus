@@ -51,11 +51,12 @@
     <script type="text/javascript">const clientId = '124696'; // Replace with your client ID
 const clientSecret = '3c5a2201dde046a9e0bf3048e0eab7bd5804a263'; // Replace with your client secret
 
-// Authorization URL (replace with your redirect URI)
-const authUrl = `https://www.strava.com/oauth/authorize?client_id=${clientId}&redirect_uri=http://localhost:3000/callback&response_type=code&scope=read_all,activity:read_all`;
+// Authorization URL with your website's callback URL
+const authUrl = `https://www.strava.com/oauth/authorize?client_id=${clientId}&redirect_uri=https://cristianrus.me/strava-workouts/callback&response_type=code&scope=read_all,activity:read_all`;
 
 // Check if access token is already stored
 const accessToken = localStorage.getItem('accessToken');
+
 
 // Function to fetch access token (if not already stored)
 async function getAccessToken(code) {
