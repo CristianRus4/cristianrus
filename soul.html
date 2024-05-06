@@ -11,23 +11,77 @@
 	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
 	<title>soul</title>
 	<style>
-    #randomLetters {
-      font-size: 2.5em;
-      line-height: 1.1em;
-      font-weight: 600;
-      position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-    }
+   
+    
+
+
+
+
+
+    #blur {
+  filter: blur(4px);
+}
+
+
+
+
   </style>
 </head>
 <body>
-<p>
 
-  <span id="randomLetters"></span>
 
-</p>
+
+
+<h1 class="title"><a class="titlelink" href="/">the inner jounrey</a> </h1>
+<p class="sub"><span id="randomLetters"></span><p>
+
+
+
+        <table id="animated-table">
+
+                   
+          <tr>
+            <th>I</td>
+            <td><a href="soul-notes/cntxt-rules.html">the cntxt & the rules</a> </td>
+          </tr>
+
+          <tr>
+            <th>II</td>
+            <td><span id="blur">do not try to cheat<span><</td>
+          </tr>
+
+          <tr>
+            <th>III</td>
+            <td><span id="blur">why are you looking here?<span></td>
+          </tr>
+
+          <tr>
+            <th>IV</td>
+            <td><span id="blur">good luck!<span></td>
+          </tr>
+
+          <tr>
+            <th>V</td>
+            <td><span id="blur">this is just random text<span></td>
+          </tr>
+
+          <tr>
+            <th>VI</td>
+            <td><span id="blur">so you can't cheat looking in advance<span></td>
+          </tr>
+
+          <tr>
+            <th>VII</td>
+            <td><span id="blur">a few more<span></td>
+          </tr>
+
+          <tr>
+            <th>VIII</td>
+            <td><span id="blur">we use usually lorem ipsum<span></td>
+          </tr>
+      
+        </table>
+
 
 
 
@@ -35,13 +89,13 @@
 <script>
   // Function to generate a random character (uppercase letter or number)
   function getRandomCharacter() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=<>?';
+    const characters = 'abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-_+=<>?';
     return characters.charAt(Math.floor(Math.random() * characters.length));
   }
 
   // Function to randomly select between HEADS and TAILS
   function getRandomLocation() {
-    const locations = ['WEDNESDAY EVENING MORE CLUES', 'NEXT STEPS WEDNESDAY EVENING'];
+    const locations = ['who are you?', 'who are you?'];
     const randomIndex = Math.floor(Math.random() * locations.length);
     return locations[randomIndex];
   }
@@ -66,12 +120,23 @@
   setTimeout(function() {
     clearInterval(interval); // Stop the interval
     document.getElementById('randomLetters').textContent = getRandomLocation();
-  }, 5000);
+  }, 2000);
 
 </script>
 
 
+<script type="text/javascript">document.addEventListener("DOMContentLoaded", function() {
+    // Get all table rows
+    const rows = document.querySelectorAll("#animated-table tr");
 
+    // Loop through each row and add a class to trigger the animation
+    rows.forEach((row, index) => {
+        setTimeout(() => {
+            row.style.opacity = "1";
+        }, index * 170); 
+    });
+});
+</script>
 
 
 

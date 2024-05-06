@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+	
+
+
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="../style.css">
+	<link rel="shortcut icon" type="image/png" href="../images/favicon.png"/>
+	<title>the cntxt & the rules</title>
+	<style>
+
+
+
+    #blur {
+  filter: blur(4px);
+}
+
+
+  </style>
+</head>
+<body>
+
+
+    <h1 class="title"><a class="titlelink" href="../soul.html">the inner jounrey</a> </h1>
+<p class="sub"><span id="randomLetters"></span><p>
+
+
+      <p>Welcome Mariia, welcome to the inner journey, a place where your spirit will be tested and refined. Here lies the gateway to the next chapter of your life. Prepare to face challenges that will push you beyond your comfort zone, each one designed to unlock a valuable lesson and a deeper understanding of yourself. Embrace the path ahead, for it is through these trials that you will discover the true strength and potential that lies within.</p>
+
+   
+
+<p>Consider this your personal portal during the journey. Here, you'll receive the instructions for your upcoming challenges. This is a private space for your journey, accessible only to you. All communication regarding your challenges and the submission of proof that you might be asked (photos, documents, reflections) must occur exclusively through <a href="mailto:cristianrus4@onmail.com">this email address</a>
+. This ensures the privacy and integrity of your journey, allowing you to fully immerse yourself in the transformative power of each challenge. Consider this email a dialogue with your deepest self, a mirror for you, a space where you can document your progress and confront your limitations without external influence.</p>
+
+ <p>Remember, the strength and insights you gain are yours to discover and nurture. Keep these trials close to your heart, for sharing them with others may dilute their transformative power. Trust yourself, Mariia, and let this be a voyage of self-discovery guided solely by your own spirit.</p>
+
+ 
+<p>To confirm your understanindg of the cntxt & rules, <a href="mailto:cristianrus4@onmail.com">please replay</a> in less than 140 characters if you are willing to explore the inner journey with its rules and what is your commitment to it. The way you communicate and replay, now and in the future, it will be directly reflected in this journey and would have a significant impact on the next steps. Choose wisely.</p>
+
+
+
+
+
+
+<script>
+  // Function to generate a random character (uppercase letter or number)
+  function getRandomCharacter() {
+    const characters = 'abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-_+=<>?';
+    return characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  // Function to randomly select between HEADS and TAILS
+  function getRandomLocation() {
+    const locations = ['who are you?', 'who are you?'];
+    const randomIndex = Math.floor(Math.random() * locations.length);
+    return locations[randomIndex];
+  }
+
+  // Function to update the random letters
+  function updateRandomLetters() {
+    let randomLetters = '';
+    if (Math.random() < 0.5) {
+      randomLetters = getRandomLocation();
+    } else {
+      for (let i = 0; i < 10; i++) {
+        randomLetters += getRandomCharacter(); // Uppercase letters or numbers
+      }
+    }
+    document.getElementById('randomLetters').textContent = randomLetters;
+  }
+
+  // Change letters every 50 milliseconds
+  const interval = setInterval(updateRandomLetters, 50);
+
+  // After 4 seconds, stop changing the letters and display HEADS or TAILS
+  setTimeout(function() {
+    clearInterval(interval); // Stop the interval
+    document.getElementById('randomLetters').textContent = getRandomLocation();
+  }, 2000);
+
+</script>
+
+
+</body>
+</html>
+	
