@@ -22,8 +22,14 @@
   filter: blur(4px);
 }
 
-
-
+.wobbly {
+  border-radius: 100%;
+  border: none;
+  mask-image: radial-gradient(circle, rgba(0,0,0,0.7) 1%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.7) 90%); 
+  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0.7) 1%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.7) 90%); /* For Safari */
+  min-width: 40px;
+  align-items: left;
+}
 
   </style>
 </head>
@@ -34,6 +40,17 @@
 
 <h1 class="title"><a class="titlelink" href="/">the inner jounrey</a> </h1>
 <p class="sub"><span id="randomLetters"></span><p>
+
+
+
+
+       <figure>
+
+      <img class="wobbly" width="20%" height="auto" src="soul/wobbly.gif">
+    
+      </figure>
+
+
 
 
 
@@ -83,6 +100,7 @@
         
       
         </table>
+
 
 
 
