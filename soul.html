@@ -22,13 +22,20 @@
   filter: blur(4px);
 }
 
+.wobbly-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
 .wobbly {
   border-radius: 100%;
   border: none;
   mask-image: radial-gradient(circle, rgba(0,0,0,0.7) 1%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.7) 90%); 
   -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,0.7) 1%, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.7) 90%); /* For Safari */
-  min-width: 40px;
-  align-items: left;
+  max-width: 140px ;
+  min-width: 80px;
 }
 
   </style>
@@ -43,12 +50,6 @@
 
 
 
-
-       <figure>
-
-      <img class="wobbly" width="20%" height="auto" src="soul/wobbly.gif">
-    
-      </figure>
 
 
 
@@ -101,8 +102,18 @@
       
         </table>
 
+<br>
+<br>
+<br>
+<br>
 
 
+     <figure class="wobbly-container">
+
+      <img class="wobbly" width="20%" height="auto" src="soul/wobbly.gif">
+    
+      </figure>
+  
 
 
 
