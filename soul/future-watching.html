@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+	
+
+
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="../style.css">
+	<link rel="shortcut icon" type="image/png" href="../images/favicon.png"/>
+	<title>your future self is watching you</title>
+	<style>
+
+
+
+    #blur {
+  filter: blur(4px);
+}
+
+
+.avatar {
+  border-radius: 100px;
+  border: solid 0.5px black;
+  /* Add shadow properties here */
+  box-shadow: 0 3px 6px rgba(50, 50, 50, 0.5);
+  min-width: 40px;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+
+    <h1 class="title"><a class="titlelink" href="../soul.html">the inner jounrey</a> </h1>
+<p class="sub"><span id="randomLetters"></span><p>
+
+      <figure>
+
+      <img class="avatar" width="7%" height="auto" src="dark.jpeg">
+      
+      </figure>
+
+
+
+
+      <p>Welcome to the second chapter of your journey. Begin by recognizing that friction is the way to improvement. Embrace the discomfort of waking up early, a seemingly small yet significant struggle that foreshadows the challenges ahead. As the morning light filters through the curtains, summon the determination to rise from the warmth of your bed and embark on the task at hand.</p>
+
+
+<p>For this challenge, venture to Mount Eden Summit, where the serenity of nature awaits to greet you. The ascent up the trail mirrors the internal resistance you overcome with each step, a testament to your commitment to growth. Upon reaching the summit, greet the sunrise with a sense of accomplishment, knowing that you have conquered the inertia of comfort for the sake of progress.</p>
+
+<p>Prior to starting your journey to the summit, visit a nearby coffee shop and procure a cup of coffee. While the coffee itself is not the focus, request a newspaper, as it will serve as a token of your morning pilgrimage. Once at the summit, with the newspaper in hand, capture a photo of the sunrise, ensuring the date on the newspaper is visible and the sun is still ascending, mirroring the ascent of your own spirit. This will attest to your commitment to undertaking the challenge early in the day.</p>
+
+<p>As the day unfolds, the impact of your morning endeavor will permeate every aspect of your being. The resilience forged in the early hours infuses your actions with purpose and determination. With each challenge faced head-on, you find yourself growing stronger, more resilient, and more attuned to the transformative power of embracing discomfort.</p>
+
+<p>To complete the task, reflect on the day's journey. How did performing this uncomfortable task at the start of the day affect you? What impact did it have on your daily routine? Articulate this in five sentences and <a href="mailto:cristianrus4@onmail.com">submit your photo along with your reflection</a> to fulfill the challenge. Embrace the struggle, Mariia, for it is through adversity that you will discover the path to self-improvement and fulfillment.</p>
+
+
+<br>
+<br>
+
+
+
+
+
+<script>
+  // Function to generate a random character (uppercase letter or number)
+  function getRandomCharacter() {
+    const characters = 'abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-_+=<>?';
+    return characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  // Function to randomly select between HEADS and TAILS
+  function getRandomLocation() {
+    const locations = ['who are you?', 'who are you?'];
+    const randomIndex = Math.floor(Math.random() * locations.length);
+    return locations[randomIndex];
+  }
+
+  // Function to update the random letters
+  function updateRandomLetters() {
+    let randomLetters = '';
+    if (Math.random() < 0.5) {
+      randomLetters = getRandomLocation();
+    } else {
+      for (let i = 0; i < 10; i++) {
+        randomLetters += getRandomCharacter(); // Uppercase letters or numbers
+      }
+    }
+    document.getElementById('randomLetters').textContent = randomLetters;
+  }
+
+  // Change letters every 50 milliseconds
+  const interval = setInterval(updateRandomLetters, 50);
+
+  // After 4 seconds, stop changing the letters and display HEADS or TAILS
+  setTimeout(function() {
+    clearInterval(interval); // Stop the interval
+    document.getElementById('randomLetters').textContent = getRandomLocation();
+  }, 2000);
+
+</script>
+
+
+</body>
+</html>
+	
