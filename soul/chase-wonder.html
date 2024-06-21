@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+	
+
+
+<html lang="en">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="../style.css">
+	<link rel="shortcut icon" type="image/png" href="../images/favicon.png"/>
+	<title>chase the wonder</title>
+	<style>
+
+
+
+    #blur {
+  filter: blur(4px);
+}
+
+
+.avatar {
+  border-radius: 100px;
+  border: solid 0.5px black;
+  /* Add shadow properties here */
+  box-shadow: 0 3px 6px rgba(50, 50, 50, 0.5);
+  min-width: 40px;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+
+    <h1 class="title"><a class="titlelink" href="../soul.html">the inner journey</a> </h1>
+<p class="sub"><span id="randomLetters"></span><p>
+
+      <figure>
+
+      <img class="avatar" width="7%" height="auto" src="dark.jpeg">
+      
+      </figure>
+
+
+
+
+        <p>The next challange on the inner ourney is here. This time, your quest is to chase the wonder. Seek out an experience that ignites awe within you, something that leaves you breathless and humbled. The aim is to be astonished, to fill your spirit with a sense of positive amazement.</p>
+
+While the most common wellsprings of awe for humankind are nature and the rest of humans that we share this world with, the feeling can be ignited by a multitude of experiences. Music can transport you, art can open your eyes to unseen beauty, and architecture can leave you speechless. It can be as well a long and great conversation with a stranger, or an empty beach, or the forest with a waterfall. Who knows, perhaps you'll find awe in the depths of a religious experience, the thrill of the unknown, or even the quiet satisfaction of your own achievements. The key lies in approaching the surroundings with an open mind, a heart ready to be surprised by the extraordinary. Chase that wonder, it's time.</p>
+
+</p>Once you've captured that feeling of awe, take a moment to reflect. In four paragraphs, <a href="mailto:cristianrus4@onmail.com">write about the experience</a>. Describe the feeling itself – is it a tingling sensation, a sense of vastness, or a rush of pure joy? What triggered this feeling of awe? Was it the sheer beauty of a natural wonder, the complexity of a human creation, or something entirely unexpected? How did this experience benefit you? Did it shift your perspective, spark your creativity, or simply leave you feeling more connected to the world around you? And finally, will you chase this feeling again? Does it hold the potential to become a regular practice. Don't hold back, express yourself freely – let the experience resonate. Finally, <a href="mailto:cristianrus4@onmail.com">attach a photo</a>. It can be a photo from the place you experienced awe, it can be a photo that expresses your feelings or it can be just a photo of something beautiful that you saw. The only condition is that it has to be your photo.</p>
+
+   
+
+
+<script>
+  // Function to generate a random character (uppercase letter or number)
+  function getRandomCharacter() {
+    const characters = 'abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-_+=<>?';
+    return characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  // Function to randomly select between HEADS and TAILS
+  function getRandomLocation() {
+    const locations = ['who are you?', 'who are you?'];
+    const randomIndex = Math.floor(Math.random() * locations.length);
+    return locations[randomIndex];
+  }
+
+  // Function to update the random letters
+  function updateRandomLetters() {
+    let randomLetters = '';
+    if (Math.random() < 0.5) {
+      randomLetters = getRandomLocation();
+    } else {
+      for (let i = 0; i < 10; i++) {
+        randomLetters += getRandomCharacter(); // Uppercase letters or numbers
+      }
+    }
+    document.getElementById('randomLetters').textContent = randomLetters;
+  }
+
+  // Change letters every 50 milliseconds
+  const interval = setInterval(updateRandomLetters, 50);
+
+  // After 4 seconds, stop changing the letters and display HEADS or TAILS
+  setTimeout(function() {
+    clearInterval(interval); // Stop the interval
+    document.getElementById('randomLetters').textContent = getRandomLocation();
+  }, 2000);
+
+</script>
+
+
+</body>
+</html>
+	
