@@ -285,7 +285,7 @@
                 const pubDate = new Date(lastItem.pubDate);
 
                 // Remove unwanted words from description
-                const unwantedWords = ["pool", "afternoon", "morning", "evening", "lunch", "night"];
+                const unwantedWords = ["pool", "afternoon", "morning", "evening", "lunch", "night", "wednesday", "friday", "monday", "saturday"];
                 unwantedWords.forEach(word => {
                     description = description.replace(new RegExp(word, 'gi'), '');
                 });
@@ -312,7 +312,7 @@
                 // Display last item with time converted to total minutes
                 const lastItemElement = document.getElementById('last-item');
                 lastItemElement.innerHTML = `
-                    ${title} for ${totalMinutes} minutes
+                    ${title}
                 `;
             } else {
                 console.error('RSS feed data is empty or invalid');
