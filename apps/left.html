@@ -6,6 +6,31 @@
     <link rel="stylesheet" type="text/css" href="../style.css">
     <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
     <title>Left - Time as never seen</title>
+    <style>
+        /* General responsive styling for single-column layout on small screens */
+        @media screen and (max-width: 768px) {
+            .hero, .views, .for-everyone > div, .widget-previews {
+                display: flex;
+                flex-direction: column; /* Stack elements vertically */
+                align-items: center;
+                text-align: center;
+            }
+
+            .hero > div, 
+            .views > .view-item, 
+            .for-everyone > div > div, 
+            .widget-previews > .widget-item {
+                flex: 1 1 100%; /* Ensure elements take up full width */
+                max-width: 100%; /* Remove width constraints */
+                padding: 10px;
+            }
+
+            img {
+                max-width: 100%; /* Ensure images scale properly */
+                height: auto;
+            }
+        }
+    </style>
 </head>
 
 
@@ -18,28 +43,22 @@
     </header>
 
     <main>
-          <section class="hero" style="text-align: center; display: flex; align-items: center; justify-content: space-around; padding: 20px; max-width: 1200px; margin: 0 auto;">
-  <div style="flex: 1; padding: 20px;">
-    
-    <img src="main.webp" alt="Left app main interface showing year visualization" style="width: 70%; max-width: 400px;">
-  </div>
-  
-  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
-    <h2 style="font-size: 2em; margin-bottom: 20px; text-align: left;">Make every moment count</h2>
-    <p style="font-size: 1.2em; margin-bottom: 30px; text-align: left;">Transform invisible time into beautiful, tangible dots</p>
-    <p style="font-size: 1.2em; margin: 20px 0; color: #007AFF;">Completely Free. No Subscriptions. No Ads.</p>
-    <a href="https://apps.apple.com/us/app/left-time-as-never-seen/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884">
-      <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1736726400" alt="Download on the App Store" style="width: 180px; height: 60px; vertical-align: middle; object-fit: contain;">
-    </a>
-  </div>
-</section>
-
-         <section class="intro">
-            <h3>Understand Time Through Beautiful Visualization</h3>
-            <p>Left transforms how you perceive time through elegant dot visualizations. Each dot represents a unit of time - whether it's days left in the month, weeks in the year, or a broader perspective of your life's journey. This unique approach helps you maintain perspective and make the most of every moment.</p>
-            <p>With powerful widgets that seamlessly integrate into your device, Left provides instant awareness of time remaining at a glance.</p>
+        <!-- Hero Section -->
+        <section class="hero" style="text-align: center; display: flex; align-items: center; justify-content: space-around; padding: 20px; max-width: 1200px; margin: 0 auto;">
+            <div style="flex: 1; padding: 20px;">
+                <img src="main.webp" alt="Left app main interface showing year visualization" style="width: 70%; max-width: 400px;">
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+                <h2 style="font-size: 2em; margin-bottom: 20px; text-align: left;">Make every moment count</h2>
+                <p style="font-size: 1.2em; margin-bottom: 30px; text-align: left;">Transform invisible time into beautiful, tangible dots</p>
+                <p style="font-size: 1.2em; margin: 20px 0; color: #007AFF;">Completely Free. No Subscriptions. No Ads.</p>
+                <a href="https://apps.apple.com/us/app/left-time-as-never-seen/id6740155884?itscg=30200&itsct=apps_box_badge&mttnsubad=6740155884">
+                    <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1736726400" alt="Download on the App Store" style="width: 180px; height: 60px; vertical-align: middle; object-fit: contain;">
+                </a>
+            </div>
         </section>
 
+        <!-- Time Perspectives Section -->
         <section class="time-views">
             <h3>Multiple Time Perspectives</h3>
             <div class="views" style="display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
@@ -61,6 +80,7 @@
             </div>
         </section>
 
+        <!-- For Everyone Section -->
         <section class="for-everyone" style="text-align: center; padding: 40px 20px;">
             <h3>One App, Many Perspectives</h3>
             <div style="display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
@@ -79,20 +99,7 @@
             </div>
         </section>
 
-        <section class="why-free" style="text-align: center; padding: 40px 20px; background: #f5f5f7;">
-            <h3>Why Free?</h3>
-            <p style="max-width: 600px; margin: 20px auto;">Because great tools should be accessible to everyone. Left is my gift to help you visualize and appreciate time in a new way. No hidden costs, no subscriptions, no ads – just a simple, beautiful app for everyone to enjoy.</p>
-        </section>
-
-
-        <section class="customization">
-            <h3>Make It Yours</h3>
-            <p>Personalize your experience with six vibrant colors for the dots and text: white, blue, green, orange, yellow, and pink. Combined with both dark and light backgrounds, you can create the perfect visualization that resonates with your style.</p>
-            <img src="darklight.webp" alt="Dark and light mode comparison" style="width: 90%; max-width: 500px; display: block; margin: 20px auto;">
-        </section>
-
-        
-
+        <!-- Widgets Section -->
         <section class="widgets">
             <h3>Widgets That Matter</h3>
             <p>Left's widgets bring time awareness to your home screen. Choose from various styles and sizes to see:</p>
@@ -111,7 +118,6 @@
                 </div>
             </div>
         </section>
-
         <section class="features">
             <h3>Key Features</h3>
             <ul>
