@@ -7,11 +7,11 @@
     <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
     <title>Left - Time as never seen</title>
     <style>
-        /* General responsive styling for single-column layout on small screens */
+       
         @media screen and (max-width: 768px) {
             .hero, .views, .for-everyone > div, .widget-previews {
                 display: flex;
-                flex-direction: column; /* Stack elements vertically */
+                flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
@@ -20,13 +20,13 @@
             .views > .view-item, 
             .for-everyone > div > div, 
             .widget-previews > .widget-item {
-                flex: 1 1 100%; /* Ensure elements take up full width */
-                max-width: 100%; /* Remove width constraints */
+                flex: 1 1 100%; 
+                max-width: 100%; 
                 padding: 10px;
             }
 
             img {
-                max-width: 100%; /* Ensure images scale properly */
+                max-width: 100%;
                 height: auto;
             }
         }
