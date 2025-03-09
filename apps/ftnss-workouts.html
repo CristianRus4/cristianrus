@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+    <title>ftnss Workouts - Custom Workouts for Apple Watch</title>
+    <style>
+        /* Keep existing media queries */
+        @media screen and (max-width: 768px) {
+            .hero, .views, .for-everyone > div, .widget-previews {
+                display: flex;
+                flex-direction: column;
+                align-items: left;
+                text-align: center;
+            }
+
+            .hero > div, 
+            .views > .view-item, 
+            .for-everyone > div > div, 
+            .widget-previews > .widget-item {
+                flex: 1 1 100%; 
+                max-width: 100%; 
+                padding: 0px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>ftnss Workouts</h1>
+        <p><em>Design custom workouts for your Apple Watch</em></p>
+    </header>
+
+    <main>
+        <section class="hero" style="text-align: left; display: flex; align-items: left; justify-content: left; margin: 0 auto;">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: left;">
+                <br>
+                <a href="https://apps.apple.com/app/id/YOUR_APP_ID">
+                    <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us" alt="Download on the App Store" style="width: 180px; height: 60px; vertical-align: middle; object-fit: contain;">
+                </a>
+                <br>
+            </div>
+            <img src="main.webp" alt="ftnss Workouts main interface" style="width: 100%; max-width: 600px;">
+        </section>
+
+        <section class="features">
+            <h2>Key Features</h2>
+            <div class="views" style="display: flex; justify-content: left; gap: 1em; flex-wrap: wrap;">
+                <div class="view-item" style="flex: 1; min-width: 30%; max-width: 100%;">
+                    <img src="custom.webp" alt="Custom workouts" style="width: 100%;">
+                    <h3>Custom Workouts</h3>
+                    <p>Design workouts with warmups, cooldowns, and interval training blocks. Set specific goals based on distance, time, or calories.</p>
+                </div>
+                <div class="view-item" style="flex: 1; min-width: 30%; max-width: 100%;">
+                    <img src="intervals.webp" alt="Interval training" style="width: 100%;">
+                    <h3>Interval Training</h3>
+                    <p>Create advanced interval sessions with work/recovery cycles and custom repetitions for more effective training.</p>
+                </div>
+                <div class="view-item" style="flex: 1; min-width: 30%; max-width: 100%;">
+                    <img src="integration.webp" alt="Apple Watch integration" style="width: 100%;">
+                    <h3>Apple Watch Integration</h3>
+                    <p>Seamlessly sync your custom workouts with Apple's built-in Workout app on your watch.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-list">
+            <h2>Everything you need</h2>
+            <ul>
+                <li>40+ workout types supported</li>
+                <li>Multiple workout modes (Open, Time, Distance, Calories, Pacer)</li>
+                <li>Custom interval training with work/recovery blocks</li>
+                <li>Warmup and cooldown options</li>
+                <li>Metric and imperial units support</li>
+                <li>Favorite workouts quick access</li>
+                <li>Beautiful, intuitive interface</li>
+                <li>Native Apple Watch integration</li>
+            </ul>
+        </section>
+
+        <section class="privacy-policy">
+            <h2>Privacy Policy</h2>
+            <p>Cristian Rus ("we," "us," or "our") operates the ftnss Workouts mobile application (the "Service"). This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service.</p>
+
+            <p>We do not collect any personal information from our users. ftnss Workouts operates entirely on your device, using WorkoutKit to schedule workouts on your Apple Watch. Your workout configurations remain private and are stored only on your device.</p>
+
+            <p>Your privacy is paramount. ftnss Workouts functions as a standalone application, performing all operations locally on your device. We never transmit or store your personal information on external servers.</p>
+
+            <p>If you have any questions about this Privacy Policy, please <a href="mailto:cristianrus@hey.com">contact us</a>.</p>
+            <br>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 ftnss Workouts. All rights reserved. Coded in New Zealand.</p>
+    </footer>
+</body>
+</html>
