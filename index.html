@@ -50,21 +50,24 @@
   </div>
   </div>-->
 
-  <br>
+
 
   <div class="button-container">
   <button class="main-button"><a href="#">apps</a></button>
   <div class="extra-buttons">
     <button class="extra-button"><a href="/apps/left">Left</a></button>
-    
+    <button class="extra-button"><a href="/apps/notsobusy">NotSoBusy</a></button>
+    <button class="extra-button"><a href="/apps/ftnss-workouts">ftnss Workouts</a></button>
+    <button class="extra-button"><a href="/apps/ftnss">ftnss</a></button>
+    <button class="extra-button"><a href="/apps/next">Next</a></button>
    
 
   </div>
   </div>
 
-<br>
 
-<div class="button-container">
+
+<!--<div class="button-container">
   <button class="main-button"><a href="#">explore</a></button>
   <div class="extra-buttons">
   
@@ -74,16 +77,14 @@
   	
   	
   	<button class="extra-button"><a href="https://cntxt.cristianrus.me">pics</a></button>
-  	<!--<button class="extra-button"><a href="tattoos">tattoos</a></button>-->
-  	
+  	<button class="extra-button"><a href="tattoos">tattoos</a></button>
   	
   
 
     
   </div>
-  </div>
+  </div>-->
 
-<br>
 
 
 
@@ -92,7 +93,6 @@
   <div class="extra-buttons">
   	<button class="extra-button"><a id="copy-email" href="#">mail</a></button>
   <script src="script.js"></script>
-
     <button class="extra-button"><a href="sms:+642041926150">text</a></button>
     <button class="extra-button"><a href="twitter">twitter</a></button>
     
@@ -109,6 +109,83 @@ copyEmail.addEventListener('click', function() {
   setTimeout(() => {
     this.textContent = 'mail';
   }, 1000);
+});
+
+// Improved menu animation logic for stacked dropdowns
+const buttonContainers = document.querySelectorAll('.button-container');
+let openMenuRef = null;
+let closeTimeout = null;
+
+function openMenu(container) {
+  // Close any other open menu
+  buttonContainers.forEach(cont => {
+    const extra = cont.querySelector('.extra-buttons');
+    if (extra && cont !== container) {
+      extra.classList.add('closing');
+      extra.style.animation = 'fadeOutToTopMenu 0.75s cubic-bezier(0.4,0,0.2,1) forwards';
+      setTimeout(() => {
+        extra.classList.remove('closing');
+        extra.style.display = 'none';
+        extra.style.opacity = '0';
+        extra.style.pointerEvents = 'none';
+      }, 750);
+    }
+  });
+  // Open this menu
+  const extraButtons = container.querySelector('.extra-buttons');
+  if (!extraButtons) return;
+  clearTimeout(closeTimeout);
+  extraButtons.classList.remove('closing');
+  extraButtons.style.display = 'flex';
+  extraButtons.style.opacity = '1';
+  extraButtons.style.pointerEvents = 'auto';
+  extraButtons.style.animation = 'fadeInFromBottomMenu 0.75s cubic-bezier(0.4,0,0.2,1) forwards';
+  openMenuRef = container;
+}
+
+function closeMenu(container) {
+  const extraButtons = container.querySelector('.extra-buttons');
+  if (!extraButtons) return;
+  extraButtons.classList.add('closing');
+  extraButtons.style.animation = 'fadeOutToTopMenu 0.75s cubic-bezier(0.4,0,0.2,1) forwards';
+  setTimeout(() => {
+    extraButtons.classList.remove('closing');
+    extraButtons.style.display = 'none';
+    extraButtons.style.opacity = '0';
+    extraButtons.style.pointerEvents = 'none';
+  }, 750);
+  openMenuRef = null;
+}
+
+buttonContainers.forEach(container => {
+  const mainButton = container.querySelector('.main-button');
+  const extraButtons = container.querySelector('.extra-buttons');
+  if (!mainButton || !extraButtons) return;
+
+  // Mouse enter: open this menu, close others
+  container.addEventListener('mouseenter', () => {
+    clearTimeout(closeTimeout);
+    openMenu(container);
+  });
+  container.addEventListener('focusin', () => {
+    clearTimeout(closeTimeout);
+    openMenu(container);
+  });
+
+  // Mouse leave: delay close
+  container.addEventListener('mouseleave', () => {
+    closeTimeout = setTimeout(() => {
+      closeMenu(container);
+    }, 200);
+  });
+  container.addEventListener('focusout', function(e) {
+    // Only close if focus moves outside the container
+    if (!container.contains(e.relatedTarget)) {
+      closeTimeout = setTimeout(() => {
+        closeMenu(container);
+      }, 200);
+    }
+  });
 });
 
 </script>

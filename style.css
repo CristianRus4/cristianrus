@@ -357,15 +357,12 @@ a:hover {
 
 /* Expand buttons */
 
-
-
 .button-container {
   position: relative;
-  display: inline-block;
-
-animation: fadeInFromBottom 1.5s ease forwards;
-    opacity: 0; /* Start with opacity 0 to make elements fade in */
-    margin-top: 0.5em; /* Move the elements 0.5m above their final position */
+  display: block;
+  animation: fadeInFromBottom 2.5s ease forwards;
+  opacity: 0; /* Start with opacity 0 to make elements fade in */
+  margin-top: 0.5em; /* Move the elements 0.5m above their final position */
 }
 
 /* Define the fade animation */
@@ -382,17 +379,47 @@ animation: fadeInFromBottom 1.5s ease forwards;
 
 .extra-buttons {
   display: none;
-  position: absolute;
-  top: 0;
-  left: 100%;
-  white-space: nowrap;
- 
+  position: static;
+  /* margin-top: 0.5em; */ /* Remove gap above first button */
+  flex-direction: column;
+  width: 100%;
+  transition: opacity 0.3s;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.main-button:hover + .extra-buttons,
-.extra-buttons:hover {
-  display: block;
-  
+.button-container:hover .extra-buttons,
+.button-container:focus-within .extra-buttons {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+  animation: fadeInFromBottomMenu 0.75s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.extra-buttons.closing {
+  animation: fadeOutToTopMenu 0.75s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeInFromBottomMenu {
+  from {
+    opacity: 0;
+    margin-top: 0.5em;
+  }
+  to {
+    opacity: 1;
+    margin-top: 0;
+  }
+}
+
+@keyframes fadeOutToTopMenu {
+  from {
+    opacity: 1;
+    margin-top: 0;
+  }
+  to {
+    opacity: 0;
+    margin-top: 0.5em;
+  }
 }
 
 .main-button {
@@ -402,9 +429,7 @@ animation: fadeInFromBottom 1.5s ease forwards;
   background-color: transparent; /* Make buttons completely transparent */
   color: inherit; /* Inherit text color from parent */
   padding-left: 0em;
-
 }
-
 
 .extra-button {
   font-size: 1em;
@@ -412,12 +437,10 @@ animation: fadeInFromBottom 1.5s ease forwards;
   cursor: pointer;
   background-color: transparent; /* Make buttons completely transparent */
   color: inherit; /* Inherit text color from parent */
-  
-}
-
-.extra-button {
-  display: inline-block;
-  margin-top: 0;
+  display: block;
+  margin-top: 0.2em;
+  width: 100%;
+  text-align: left;
 }
 
 .main-button:hover,
@@ -495,3 +518,9 @@ a:hover {
 
 
    
+
+}
+
+
+
+
