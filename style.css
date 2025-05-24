@@ -360,9 +360,10 @@ a:hover {
 .button-container {
   position: relative;
   display: block;
+  margin-bottom: 0.3em;
   animation: fadeInFromBottom 2.5s ease forwards;
   opacity: 0; /* Start with opacity 0 to make elements fade in */
-  margin-top: 0.5em; /* Move the elements 0.5m above their final position */
+  margin-top: 0.3em; /* Reduce vertical space above */
 }
 
 /* Define the fade animation */
@@ -379,10 +380,13 @@ a:hover {
 
 .extra-buttons {
   display: none;
-  position: static;
-  /* margin-top: 0.5em; */ /* Remove gap above first button */
-  flex-direction: column;
-  width: 100%;
+  position: absolute;
+  top: 0.1em;
+  left: 0;
+  margin-left: 4em;
+  white-space: nowrap;
+  flex-direction: row;
+  width: auto;
   transition: opacity 0.3s;
   opacity: 0;
   pointer-events: none;
@@ -429,6 +433,9 @@ a:hover {
   background-color: transparent; /* Make buttons completely transparent */
   color: inherit; /* Inherit text color from parent */
   padding-left: 0em;
+  line-height: 1.2;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
 }
 
 .extra-button {
@@ -437,10 +444,13 @@ a:hover {
   cursor: pointer;
   background-color: transparent; /* Make buttons completely transparent */
   color: inherit; /* Inherit text color from parent */
-  display: block;
-  margin-top: 0.2em;
-  width: 100%;
+  display: inline-block;
+  margin-top: 0;
+  width: auto;
   text-align: left;
+  line-height: 1.2;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
 }
 
 .main-button:hover,

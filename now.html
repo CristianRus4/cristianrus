@@ -89,7 +89,7 @@
   // Function to update the random letters
   function updateRandomLetters() {
     let randomLetters = '';
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 13; i++) {
       randomLetters += getRandomLetter(); // All letters are lowercase
     }
     // Capitalize the first letter
@@ -103,7 +103,7 @@
   // After 4 seconds, change all letters to "Auckland"
   setTimeout(function() {
     clearInterval(interval); // Stop the interval
-    document.getElementById('randomLetters').textContent = 'Auckland';
+    document.getElementById('randomLetters').textContent = 'Wellington, NZ';
   }, 3000);
 
 </script>
@@ -380,7 +380,7 @@
 
 
 
- <p>Location: <span class="pulse">Auckland</span></p>
+ <p>Location: <span class="pulse">Wellington, NZ</span></p>
 
 <div id="weatherInfo"></div>
 
@@ -399,7 +399,7 @@
         // Your OpenWeatherMap API key
         const apiKey = "1def22ce2b0dcb06bec08ed98beda671";
         // City to get weather for
-        const city = "Auckland,nz";
+        const city = "Wellington,nz";
         // API endpoint
         const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
