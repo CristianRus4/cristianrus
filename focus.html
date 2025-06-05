@@ -7,6 +7,7 @@
     <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
     <title>focus</title>
     <style>
+
         .pomodoro {
             text-align: center;
             margin-top: 10vh;
@@ -45,6 +46,13 @@
 
         @media (prefers-color-scheme: dark) {
             .controls button { color: #EEEEEC; border-color: #EEEEEC; }
+
+        .pomodoro { text-align: center; margin-top: 10vh; }
+        .timer { font-size: 20vw; line-height: 1; font-weight: 700; }
+        .controls button { font-size: 1em; padding: 0.5em 1em; margin: 0.5em; }
+        @media (prefers-color-scheme: dark) {
+            .controls button { color: #EEEEEC; background: none; border: 1px solid #EEEEEC; }
+
         }
     </style>
 </head>
@@ -55,6 +63,7 @@
     <div class="pomodoro">
         <div id="timer" class="timer">25:00</div>
         <div class="controls">
+
             <button id="reset">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="1 4 1 10 7 10"></polyline>
@@ -99,10 +108,17 @@
                 </span>
                 <span class="text">sound</span>
             </button>
+
+            <button id="start">play</button>
+            <button id="pause">pause</button>
+            <button id="next">next</button>
+            <button id="reset">reset</button>
+
         </div>
     </div>
 
     <script>
+
         const workDuration = 25 * 60;
         const breakDuration = 5 * 60;
         let timeLeft = workDuration;
@@ -129,6 +145,18 @@
         function updateDisplay() {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
+
+        var workDuration = 25 * 60;
+        var breakDuration = 5 * 60;
+        var timeLeft = workDuration;
+        var isRunning = false;
+        var isBreak = false;
+        var timerInterval = null;
+
+        function updateDisplay() {
+            var minutes = Math.floor(timeLeft / 60);
+            var seconds = timeLeft % 60;
+
             document.getElementById('timer').textContent =
                 minutes.toString().padStart(2, '0') + ':' +
                 seconds.toString().padStart(2, '0');
@@ -137,7 +165,10 @@
         function tick() {
             if (timeLeft > 0) {
                 timeLeft--;
+
                 playTick();
+
+
                 updateDisplay();
             } else {
                 isBreak = !isBreak;
@@ -145,6 +176,7 @@
                 updateDisplay();
             }
         }
+
 
         const playpauseBtn = document.getElementById('playpause');
         const playIcon = playpauseBtn.querySelector('.play-icon');
@@ -169,6 +201,18 @@
                 isRunning = false;
             }
             updatePlayPause();
+
+        document.getElementById('start').addEventListener('click', function() {
+            if (!isRunning) {
+                timerInterval = setInterval(tick, 1000);
+                isRunning = true;
+            }
+        });
+
+        document.getElementById('pause').addEventListener('click', function() {
+            clearInterval(timerInterval);
+            isRunning = false;
+
         });
 
         document.getElementById('reset').addEventListener('click', function() {
@@ -177,7 +221,10 @@
             isBreak = false;
             timeLeft = workDuration;
             updateDisplay();
+
             updatePlayPause();
+
+
         });
 
         document.getElementById('next').addEventListener('click', function() {
@@ -186,6 +233,7 @@
             timeLeft = isBreak ? breakDuration : workDuration;
             updateDisplay();
             isRunning = false;
+
             updatePlayPause();
         });
 
@@ -197,6 +245,10 @@
         });
 
         updatePlayPause();
+
+        });
+
+
         updateDisplay();
     </script>
 </body>
