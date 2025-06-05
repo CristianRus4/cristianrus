@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+    <title>focus</title>
+    <style>
+        .pomodoro {
+            text-align: center;
+            margin-top: 10vh;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .timer {
+            font-size: clamp(6rem, 30vw, 10rem);
+            line-height: 1;
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .controls button {
+            font-size: 1em;
+            padding: 0.4em 1em;
+            margin: 0.5em;
+            border-radius: 999px;
+            border: 1px solid #21201C;
+            background: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4em;
+        }
+
+        .controls svg {
+            width: 1em;
+            height: 1em;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .controls button { color: #EEEEEC; border-color: #EEEEEC; }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title"><a class="titlelink" href="/">Cristian Rus</a> </h1>
+    <p class="sub">design & human behaviour</p>
+    <h1>focus</h1>
+    <div class="pomodoro">
+        <div id="timer" class="timer">25:00</div>
+        <div class="controls">
+            <button id="reset">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 .49-5"></path>
+                </svg>
+                <span class="text">reset</span>
+            </button>
+            <button id="playpause">
+                <span class="play-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                </span>
+                <span class="pause-icon" style="display:none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="6" y="4" width="4" height="16"></rect>
+                        <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                </span>
+                <span class="text">play</span>
+            </button>
+            <button id="next">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                    <line x1="19" y1="5" x2="19" y2="19"></line>
+                </svg>
+                <span class="text">next</span>
+            </button>
+            <button id="mute">
+                <span class="sound-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15 9a3 3 0 0 1 0 6"></path>
+                    </svg>
+                </span>
+                <span class="mute-icon" style="display:none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                </span>
+                <span class="text">sound</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const workDuration = 25 * 60;
+        const breakDuration = 5 * 60;
+        let timeLeft = workDuration;
+        let isRunning = false;
+        let isBreak = false;
+        let timerInterval = null;
+        let muted = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playTick() {
+            if (muted) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'square';
+            osc.frequency.value = 1000;
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent =
+                minutes.toString().padStart(2, '0') + ':' +
+                seconds.toString().padStart(2, '0');
+        }
+
+        function tick() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                playTick();
+                updateDisplay();
+            } else {
+                isBreak = !isBreak;
+                timeLeft = isBreak ? breakDuration : workDuration;
+                updateDisplay();
+            }
+        }
+
+        const playpauseBtn = document.getElementById('playpause');
+        const playIcon = playpauseBtn.querySelector('.play-icon');
+        const pauseIcon = playpauseBtn.querySelector('.pause-icon');
+        const muteBtn = document.getElementById('mute');
+        const soundIcon = muteBtn.querySelector('.sound-icon');
+        const muteIcon = muteBtn.querySelector('.mute-icon');
+
+        function updatePlayPause() {
+            playIcon.style.display = isRunning ? 'none' : 'inline';
+            pauseIcon.style.display = isRunning ? 'inline' : 'none';
+            playpauseBtn.querySelector('.text').textContent = isRunning ? 'pause' : 'play';
+        }
+
+        playpauseBtn.addEventListener('click', function() {
+            audioCtx.resume();
+            if (!isRunning) {
+                timerInterval = setInterval(tick, 1000);
+                isRunning = true;
+            } else {
+                clearInterval(timerInterval);
+                isRunning = false;
+            }
+            updatePlayPause();
+        });
+
+        document.getElementById('reset').addEventListener('click', function() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            isBreak = false;
+            timeLeft = workDuration;
+            updateDisplay();
+            updatePlayPause();
+        });
+
+        document.getElementById('next').addEventListener('click', function() {
+            clearInterval(timerInterval);
+            isBreak = !isBreak;
+            timeLeft = isBreak ? breakDuration : workDuration;
+            updateDisplay();
+            isRunning = false;
+            updatePlayPause();
+        });
+
+        muteBtn.addEventListener('click', function() {
+            muted = !muted;
+            soundIcon.style.display = muted ? 'none' : 'inline';
+            muteIcon.style.display = muted ? 'inline' : 'none';
+            muteBtn.querySelector('.text').textContent = muted ? 'mute' : 'sound';
+        });
+
+        updatePlayPause();
+        updateDisplay();
+    </script>
+</body>
+</html>
