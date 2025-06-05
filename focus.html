@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+    <title>focus</title>
+    <style>
+        .pomodoro { text-align: center; margin-top: 10vh; }
+        .timer { font-size: 20vw; line-height: 1; font-weight: 700; }
+        .controls button { font-size: 1em; padding: 0.5em 1em; margin: 0.5em; }
+        @media (prefers-color-scheme: dark) {
+            .controls button { color: #EEEEEC; background: none; border: 1px solid #EEEEEC; }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title"><a class="titlelink" href="/">Cristian Rus</a> </h1>
+    <p class="sub">design & human behaviour</p>
+    <h1>focus</h1>
+    <div class="pomodoro">
+        <div id="timer" class="timer">25:00</div>
+        <div class="controls">
+            <button id="start">play</button>
+            <button id="pause">pause</button>
+            <button id="next">next</button>
+            <button id="reset">reset</button>
+        </div>
+    </div>
+
+    <script>
+        var workDuration = 25 * 60;
+        var breakDuration = 5 * 60;
+        var timeLeft = workDuration;
+        var isRunning = false;
+        var isBreak = false;
+        var timerInterval = null;
+
+        function updateDisplay() {
+            var minutes = Math.floor(timeLeft / 60);
+            var seconds = timeLeft % 60;
+            document.getElementById('timer').textContent =
+                minutes.toString().padStart(2, '0') + ':' +
+                seconds.toString().padStart(2, '0');
+        }
+
+        function tick() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateDisplay();
+            } else {
+                isBreak = !isBreak;
+                timeLeft = isBreak ? breakDuration : workDuration;
+                updateDisplay();
+            }
+        }
+
+        document.getElementById('start').addEventListener('click', function() {
+            if (!isRunning) {
+                timerInterval = setInterval(tick, 1000);
+                isRunning = true;
+            }
+        });
+
+        document.getElementById('pause').addEventListener('click', function() {
+            clearInterval(timerInterval);
+            isRunning = false;
+        });
+
+        document.getElementById('reset').addEventListener('click', function() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            isBreak = false;
+            timeLeft = workDuration;
+            updateDisplay();
+        });
+
+        document.getElementById('next').addEventListener('click', function() {
+            clearInterval(timerInterval);
+            isBreak = !isBreak;
+            timeLeft = isBreak ? breakDuration : workDuration;
+            updateDisplay();
+            isRunning = false;
+        });
+
+        updateDisplay();
+    </script>
+</body>
+</html>
