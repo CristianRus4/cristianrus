@@ -9,7 +9,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <base href="https://cristianrus.me/apps/txtpod/">
   <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png">
   <link rel="canonical" href="https://cristianrus.me/apps/txtpod/sample-science.html">
+
   <title>We Need a New Science of Progress</title>
 
   <!-- Open Graph -->
@@ -19,12 +21,40 @@
   <meta property="og:url" content="https://cristianrus.me/apps/txtpod/sample-science.html">
   <meta property="og:image" content="https://cristianrus.me/apps/txtpod/science.jpg">
   <meta property="og:image:alt" content="Science">
+  <meta property="og:site_name" content="The Atlantic">
+
+  <!-- Some parsers also check the `name` form -->
+  <meta name="og:site_name" content="The Atlantic">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="We Need a New Science of Progress">
   <meta name="twitter:description" content="Humanity needs to get better at knowing how to get better.">
   <meta name="twitter:image" content="https://cristianrus.me/apps/txtpod/science.jpg">
+  <meta name="twitter:site" content="@TheAtlantic">
+
+  <!-- Application / site name -->
+  <meta name="application-name" content="The Atlantic">
+
+  <!-- Structured data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": "We Need a New Science of Progress",
+    "description": "Humanity needs to get better at knowing how to get better. By Patrick Collison and Tyler Cowen.",
+    "image": "https://cristianrus.me/apps/txtpod/science.jpg",
+    "mainEntityOfPage": "https://cristianrus.me/apps/txtpod/sample-science.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "The Atlantic",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cristianrus.me/apps/txtpod/images/favicon.png"
+      }
+    }
+  }
+  </script>
 </head>
 <body>
   <img src="science.jpg" alt="Science" style="width:100%; height:auto;">
