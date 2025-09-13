@@ -159,6 +159,42 @@ img {
     border-radius: 1em;
 }
 
+/* Header with avatar to the right */
+.header {
+  display: flex;
+  flex-direction: column; /* stack avatar above title */
+  align-items: flex-start;
+  row-gap: 0.75em;
+  margin-bottom: 0; /* no extra spacing; rely on subtitle margin */
+  /* Ensure avatar default border uses the same title color */
+  color: #21201C;
+}
+
+.header-text .sub { /* keep default spacing from .sub rules */ }
+
+.avatar-link {
+  display: inline-block;
+}
+
+.avatar {
+  display: block;
+  height: 2em; /* smaller avatar */
+  aspect-ratio: 1 / 1; /* keep it square */
+  object-fit: cover;
+  border-radius: 50%; /* make it rounded (circle) */
+  transition: transform 220ms ease; /* smooth scale on hover */
+  /* Enter animation to match text */
+  animation: fadeInFromBottom 1.5s ease forwards;
+  opacity: 0; /* start hidden for fade-in */
+  margin-top: 0.5em; /* slight upward motion like titles */
+  border: 0.5px solid #21201C; /* thin black border, part of image */
+}
+
+/* Gradient ring on hover matching link hover gradient */
+/* Slight image scale on hover */
+.avatar-link:hover .avatar { transform: scale(1.05); }
+
+
 figcaption {
     text-align: right;
     
@@ -387,14 +423,7 @@ a:hover {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 0.5em 1em;
-  transition: opacity 0.2s ease;
-  opacity: 0.7; /* visible by default, slightly dimmed */
   pointer-events: auto;
-}
-
-.button-container:hover .extra-buttons,
-.button-container:focus-within .extra-buttons {
-  opacity: 0.9;
 }
 
 .extra-buttons.closing {
@@ -438,9 +467,9 @@ a:hover {
 /* New static section label (not a button/link) */
 .section-label {
   font-size: 1em;
-  font-weight: 500; /* medium weight */
+  font-weight: 400; /* lighter like sub-buttons used to be */
   line-height: 1.2;
-  opacity: 1; /* full opacity for section names */
+  opacity: 0.75; /* dim like sub-buttons */
   padding: 0;
   margin: 0;
 }
@@ -467,11 +496,20 @@ a:hover {
 
 /* Sub-items slightly dimmed; full on hover for feedback */
 .extra-button a {
-  opacity: 0.75;
+  opacity: 1; /* full strength */
+  font-weight: 500; /* stronger like former section label */
+  color: #555555; /* match subtitle color */
+  background: none; /* cancel global gradient link color */
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: currentColor;
 }
 
 .extra-button a:hover {
-  opacity: 1;
+  /* Match standard link gradient on hover */
+  color: inherit;
+  background: linear-gradient(to bottom left, #2A2A95 6%, #1CB5E0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Ensure the first sub-item aligns perfectly under the section label */
@@ -554,6 +592,26 @@ a:hover {
     -webkit-text-fill-color: transparent;
     text-decoration: none;
 }
+
+    /* Darker avatar border in dark mode for subtlety */
+    .header { color: #EEEEEC; }
+    .avatar { border-color: #333333; }
+
+    /* Buttons match subtitle color in dark mode */
+    .extra-button a,
+    .extra-button a:hover {
+      color: #B5B3AD; /* same as body/subtitle in dark */
+      background: none;
+      -webkit-background-clip: initial;
+      -webkit-text-fill-color: currentColor;
+    }
+
+    /* But on hover, use the same gradient as regular links in dark mode */
+    .extra-button a:hover {
+      background: linear-gradient(to bottom left, #454597 6%, #5AC4E1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
 
    
