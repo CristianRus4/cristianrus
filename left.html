@@ -19,7 +19,7 @@
         left: 50%;
         transform: translate(-50%, -50%);
         width: min(90vw, 600px);
-        height: 80vh; /* always 80% viewport height */
+        height: 70vh; /* 70% viewport height */
         min-width: 300px; /* enforce minimum width; grid/footer follow */
         border-radius: 28px;
         background: #f7f7f4;
@@ -82,6 +82,7 @@
         transform: translateX(-50%);
         bottom: 2vh;
         width: min(90vw, 600px);
+        min-width: 300px; /* match main card minimum */
         min-height: 48px; /* auto height based on content */
         border-radius: 28px;
         background: #f7f7f4;
@@ -222,7 +223,8 @@
             const pct = state.totalDays ? Math.max(0, Math.min(100, Math.round((state.daysLeft / state.totalDays) * 100))) : 0;
             return pct + '% left';
           }
-          return state.daysLeft + ' days left';
+          const unit = state.kind === 'life' ? 'years' : 'days';
+          return state.daysLeft + ' ' + unit + ' left';
         }
 
         function renderGrid() {
