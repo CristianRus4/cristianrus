@@ -120,9 +120,23 @@
       .actions-right {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 0.6rem;
       }
-      /* no special swatch styling; using plain text labels */
+      .color-swatch {
+        display: inline-block;
+        width: 2em;   /* pill width */
+        height: 1em;  /* pill height */
+        border-radius: 9999px; /* capsule shape */
+        vertical-align: middle;
+        border: 1px solid rgba(0,0,0,0.85);
+        opacity: 0.9; /* match button text opacity */
+      }
+      #symbolPreview.symbol-circle {
+        display: inline-block;
+        border-radius: 50%;
+        background: currentColor;
+        vertical-align: middle;
+      }
       .action-sep { display:none; }
       .action-btn, .action-select, .actions-card a.action-btn {
         background: transparent;
@@ -132,6 +146,9 @@
         cursor: pointer;
         text-decoration: none;
         opacity: 0.9;
+        display: inline-flex;
+        align-items: center;
+        line-height: 1; /* avoid extra vertical space */
       }
       /* Override global link gradient styles inside the actions card */
       .actions-card a.action-btn,
@@ -165,6 +182,7 @@
           -webkit-background-clip: initial !important;
           -webkit-text-fill-color: currentColor !important;
         }
+        .color-swatch { border-color: rgba(255,255,255,0.35); }
       }
     </style>
   </head>
@@ -179,13 +197,13 @@
     <div class="actions-card">
       <div class="actions">
         <div class="actions-left">
-          <button id="bdayBtn" aria-label="Calculate your life left" class="action-btn">Your life left</button>
+          <button id="bdayBtn" aria-label="Calculate your life left" class="action-btn">Your life</button>
         </div>
         <div class="actions-right">
-          <button id="colorBtn" class="action-btn" aria-label="Change color">Color</button>
-          <button id="symbolBtn" class="action-btn" aria-label="Change symbol">Symbol</button>
+          <button id="symbolBtn" class="action-btn" aria-label="Change symbol"><span id="symbolPreview"></span></button>
+          <button id="colorBtn" class="action-btn" aria-label="Change color"><span class="color-swatch"></span></button>
           <button id="shareBtn" aria-label="Share snapshot" class="action-btn">Share</button>
-          <a id="appBtn" class="action-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">Get the app</a>
+          <a id="appBtn" class="action-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">Get app</a>
         </div>
       </div>
       <div id="bdayPanel" class="bday-panel">
@@ -286,13 +304,38 @@
         function toggleSymbol() { symbolIndex = (symbolIndex + 1) % symbols.length; renderGrid(); try { localStorage.setItem('left_symbol_index', String(symbolIndex)); } catch(_) {} }
 
         function updateActionLabels() {
-          // Keep plain word labels
-          symbolBtn.textContent = 'Symbol';
-          colorBtn.textContent = 'Color';
+          // Symbol button shows current glyph
           try {
             const sym = currentSymbol();
+            const preview = document.getElementById('symbolPreview');
+            symbolBtn.style.fontSize = '1em'; // reset
+            if (sym.key === 'dot') {
+              // Use real HTML circle sized by scale factor
+              const sizeEm = 1; // 100%
+              preview.className = 'symbol-circle';
+              preview.textContent = '';
+              preview.style.width = sizeEm + 'em';
+              preview.style.height = sizeEm + 'em';
+            } else {
+              // Use glyphs for other symbols
+              preview.className = '';
+              preview.textContent = sym.char || '•';
+              let size;
+              if (sym.key === 'square') size = '2em';
+              else if (sym.key === 'hexagon') size = '1.5em';
+              else size = '1.2em';
+              symbolBtn.style.fontSize = size;
+              // ensure preview itself has no extra styles
+              preview.style.width = preview.style.height = '';
+            }
             symbolBtn.setAttribute('aria-label', 'Change symbol: ' + sym.label);
+          } catch(_) {}
+          // Color button shows a swatch with current color
+          try {
             const t = themes[themeIndex];
+            const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const sw = document.querySelector('.color-swatch');
+            if (sw) sw.style.background = isDark ? (t.dark || '#EEEEEC') : (t.light || '#f7f7f4');
             colorBtn.setAttribute('aria-label', 'Change color: ' + t.name);
           } catch(_) {}
         }
