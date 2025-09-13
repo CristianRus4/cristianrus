@@ -360,7 +360,7 @@ a:hover {
 .button-container {
   position: relative;
   display: block;
-  margin-bottom: 0.3em;
+  margin-bottom: 1.25em; /* more space between sections */
   animation: fadeInFromBottom 2.5s ease forwards;
   opacity: 0; /* Start with opacity 0 to make elements fade in */
   margin-top: 0.3em; /* Reduce vertical space above */
@@ -379,25 +379,22 @@ a:hover {
 }
 
 .extra-buttons {
-  display: none;
-  position: absolute;
-  top: 0.1em;
-  left: 0;
-  margin-left: 4em;
-  white-space: nowrap;
+  display: flex;
+  position: static;
+  margin-left: 0;
+  margin-top: 0.25em;
+  white-space: normal;
   flex-direction: row;
-  width: auto;
-  transition: opacity 0.3s;
-  opacity: 0;
-  pointer-events: none;
+  flex-wrap: wrap;
+  gap: 0.5em 1em;
+  transition: opacity 0.2s ease;
+  opacity: 0.7; /* visible by default, slightly dimmed */
+  pointer-events: auto;
 }
 
 .button-container:hover .extra-buttons,
 .button-container:focus-within .extra-buttons {
-  display: flex;
-  opacity: 1;
-  pointer-events: auto;
-  animation: fadeInFromBottomMenu 0.75s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0.9;
 }
 
 .extra-buttons.closing {
@@ -438,6 +435,21 @@ a:hover {
   padding-bottom: 0.1em;
 }
 
+/* New static section label (not a button/link) */
+.section-label {
+  font-size: 1em;
+  font-weight: 500; /* medium weight */
+  line-height: 1.2;
+  opacity: 1; /* full opacity for section names */
+  padding: 0;
+  margin: 0;
+}
+
+/* Make section labels (about, apps, contact) a bit heavier */
+.main-button a {
+  font-weight: 550;
+}
+
 .extra-button {
   font-size: 1em;
   border: none;
@@ -446,11 +458,28 @@ a:hover {
   color: inherit; /* Inherit text color from parent */
   display: inline-block;
   margin-top: 0;
+  margin-left: 0; /* ensure no left offset */
   width: auto;
   text-align: left;
   line-height: 1.2;
-  padding-top: 0.1em;
-  padding-bottom: 0.1em;
+  padding: 0.1em 0; /* no left padding */
+}
+
+/* Sub-items slightly dimmed; full on hover for feedback */
+.extra-button a {
+  opacity: 0.75;
+}
+
+.extra-button a:hover {
+  opacity: 1;
+}
+
+/* Ensure the first sub-item aligns perfectly under the section label */
+.extra-buttons {
+  padding-left: 0;
+}
+.extra-buttons .extra-button:first-child {
+  margin-left: 0;
 }
 
 .main-button:hover,
@@ -530,7 +559,3 @@ a:hover {
    
 
 }
-
-
-
-
