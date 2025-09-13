@@ -155,6 +155,16 @@
         align-items: center;
         line-height: 1; /* avoid extra vertical space */
       }
+      /* Constrain symbol preview box to prevent overflow on mobile */
+      #symbolPreview {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.1em;
+        height: 1.1em;
+        line-height: 1;
+        overflow: hidden; /* clamp oversized glyphs */
+      }
       /* Override global link gradient styles inside the actions card */
       .actions-card a.action-btn,
       .actions-card a.action-btn:visited {
@@ -168,15 +178,20 @@
       .bday-panel {
         position: absolute;
         left: 1rem;
+        right: 1rem; /* match actions card width (inside padding) */
         bottom: calc(100% + 6px);
         display: none;
         gap: 8px;
-        align-items: center;
+        align-items: flex-start;
+        flex-direction: column;
         background: var(--panel-bg);
         border-radius: 14px;
         box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
-        padding: 6px 8px;
+        padding: 8px 10px;
+        box-sizing: border-box;
       }
+      .bday-label { font-size: 0.9em; opacity: 0.8; }
+      .bday-row { display: flex; align-items: center; gap: 8px; }
       @media (prefers-color-scheme: dark) {
         .actions-card, .bday-panel { background: #141413; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); color: var(--accent-dark, #EEEEEC); }
         .actions-card a.action-btn,
@@ -212,9 +227,12 @@
         </div>
       </div>
       <div id="bdayPanel" class="bday-panel">
-        <select id="bdayMonth" class="action-select"></select>
-        <select id="bdayYear" class="action-select"></select>
-        <button id="bdayConfirm" class="action-btn">Calculate</button>
+        <div class="bday-label">When were you born?</div>
+        <div class="bday-row">
+          <select id="bdayMonth" class="action-select"></select>
+          <select id="bdayYear" class="action-select"></select>
+          <button id="bdayConfirm" class="action-btn">Calculate</button>
+        </div>
       </div>
     </div>
 
@@ -275,8 +293,29 @@
           return { labelLeft: monthsFull[m], startUTC, totalDays, todayIndex, cols, rows, daysLeft };
         }
 
+        // Determine initial mode/state using stored preference
         let mode = 'year';
-        let state = yearState();
+        try {
+          const savedMode = localStorage.getItem('left_mode');
+          if (savedMode === 'month' || savedMode === 'life' || savedMode === 'year') {
+            mode = savedMode;
+          }
+        } catch(_) {}
+
+        let state;
+        if (mode === 'life') {
+          try {
+            const saved = localStorage.getItem('left_birthdate');
+            if (saved) {
+              const [yy, mm] = saved.split('-').map(Number);
+              if (yy && mm) state = lifeState(new Date(yy, (mm-1)||0, 1));
+            }
+          } catch(_) {}
+        }
+        if (!state) {
+          state = (mode === 'month') ? monthState() : yearState();
+          mode = (mode === 'month') ? 'month' : 'year';
+        }
 
         let showPercent = false; // right label mode
 
@@ -362,11 +401,12 @@
               preview.className = '';
               preview.textContent = sym.char || '•';
               // Scale glyph inside the preview span, not the button
-              let size;
-              if (sym.key === 'square') size = '2em';
-              else if (sym.key === 'hexagon') size = '1.5em';
-              else size = '1.2em';
-              preview.style.fontSize = size;
+              const basePx = parseFloat(getComputedStyle(symbolBtn).fontSize) || 16;
+              let scale = 1.0;
+              if (sym.key === 'square') scale = 1.6;       // 160% inside 1.1em box
+              else if (sym.key === 'hexagon') scale = 1.3; // 130%
+              else scale = 1.1;                            // slight boost
+              preview.style.fontSize = (basePx * scale) + 'px';
               // ensure preview itself has no extra styles
               preview.style.width = preview.style.height = '';
             }
@@ -441,10 +481,38 @@
           }
         });
 
-        // Tap/click on the left label to toggle between year and current month
+        // Helper to parse saved birthdate (YYYY-MM)
+        function getSavedBirthDate() {
+          try {
+            const saved = localStorage.getItem('left_birthdate');
+            if (!saved) return null;
+            const [yy, mm] = saved.split('-').map(Number);
+            if (!yy || !mm) return null;
+            return new Date(yy, (mm - 1) || 0, 1);
+          } catch(_) { return null; }
+        }
+
+        // Tap/click on the left label to toggle views.
+        // If a saved birthday exists: Year → Month → Life → Year ...
+        // Otherwise: Year ↔ Month
         yearEl.addEventListener('click', () => {
-          mode = mode === 'year' ? 'month' : 'year';
-          state = mode === 'year' ? yearState() : monthState();
+          const savedBirth = getSavedBirthDate();
+          if (savedBirth) {
+            if (mode === 'year') {
+              mode = 'month';
+              state = monthState();
+            } else if (mode === 'month') {
+              mode = 'life';
+              state = lifeState(savedBirth);
+            } else {
+              mode = 'year';
+              state = yearState();
+            }
+          } else {
+            mode = mode === 'year' ? 'month' : 'year';
+            state = mode === 'year' ? yearState() : monthState();
+          }
+          try { localStorage.setItem('left_mode', mode); } catch(_) {}
           renderGrid();
         });
 
@@ -484,6 +552,7 @@
             try {
               const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; // YYYY-MM
               localStorage.setItem('left_birthdate', key);
+              localStorage.setItem('left_mode', 'life');
             } catch (_) {}
             renderGrid();
           } catch (_) {}
@@ -501,7 +570,18 @@
 
         // Hook up birthday button and panel
         bdayBtn.addEventListener('click', () => {
-          // Load saved value, if any
+          const savedBirth = getSavedBirthDate();
+          // If a birthday is saved and we are not in life mode, jump straight to life
+          if (savedBirth && mode !== 'life') {
+            mode = 'life';
+            state = lifeState(savedBirth);
+            try { localStorage.setItem('left_mode', 'life'); } catch(_) {}
+            bdayPanel.style.display = 'none';
+            renderGrid();
+            return;
+          }
+
+          // Otherwise, open the panel (also allow changing when already in life)
           try {
             const saved = localStorage.getItem('left_birthdate');
             if (saved) {
@@ -510,7 +590,6 @@
             }
           } catch(_){}
           bdayPanel.style.display = bdayPanel.style.display === 'none' ? 'flex' : 'none';
-          positionShareButton();
         });
         bdayConfirm.addEventListener('click', () => {
           const yy = parseInt(bdayYear.value, 10);
@@ -520,14 +599,7 @@
             bdayPanel.style.display = 'none';
           }
         });
-        // Autoload life mode if previously stored
-        try {
-          const saved = localStorage.getItem('left_birthdate');
-          if (saved) {
-            const [yy, mm] = saved.split('-').map(Number);
-            if (yy && mm) startLifeModeWith(new Date(yy, mm-1, 1));
-          }
-        } catch(_) {}
+        // Initial render uses the chosen mode/state above
 
         // Toggle right label between days left and % left
         infoEl.addEventListener('click', () => {
