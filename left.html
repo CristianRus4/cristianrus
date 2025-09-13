@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Year Left</title>
+    <style>
+      :root {
+        --dot-size: clamp(10px, 1.6vw, 22px);
+        --gap: clamp(10px, 1.2vw, 18px);
+        --bg: #f3f3f0;
+        --panel: #f7f7f4;
+        --text: #111;
+        --muted: #8b8b8b;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        display: grid;
+        place-items: center;
+      }
+
+      .card {
+        width: min(92vw, 720px);
+        background: var(--panel);
+        border-radius: 28px;
+        padding: clamp(16px, 4vw, 36px);
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        min-height: min(92vh, 1200px);
+      }
+
+      .stage {
+        width: calc(15 * var(--dot-size) + 14 * var(--gap));
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(16px, 3vh, 48px);
+        margin: clamp(16px, 4vh, 80px) 0;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(15, var(--dot-size));
+        grid-auto-rows: var(--dot-size);
+        gap: var(--gap);
+        align-content: start;
+        justify-content: center;
+      }
+
+      .dot {
+        width: var(--dot-size);
+        height: var(--dot-size);
+        border-radius: 50%;
+        background: #000;
+      }
+
+      .dot.past { opacity: 0.5; }
+
+      .bottom {
+        width: calc(15 * var(--dot-size) + 14 * var(--gap));
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--muted);
+        font-size: clamp(14px, 1.8vw, 18px);
+        letter-spacing: 0.02em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="stage">
+        <div id="grid" class="grid" aria-label="Days of the year"></div>
+        <div class="bottom">
+          <span id="year"></span>
+          <span id="left"></span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const grid = document.getElementById('grid');
+        const yearEl = document.getElementById('year');
+        const leftEl = document.getElementById('left');
+
+        const now = new Date();
+        const y = now.getFullYear();
+
+        // Use UTC math to avoid DST/timezone edge cases
+        const startUTC = Date.UTC(y, 0, 1);
+        const nextStartUTC = Date.UTC(y + 1, 0, 1);
+        const totalDays = Math.round((nextStartUTC - startUTC) / 86400000);
+        const todayIndex = Math.floor((Date.UTC(y, now.getMonth(), now.getDate()) - startUTC) / 86400000); // 0-based
+
+        const daysLeft = totalDays - (todayIndex + 1); // exclude today from "left"
+
+        for (let i = 0; i < totalDays; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'dot' + (i <= todayIndex ? ' past' : '');
+          grid.appendChild(dot);
+        }
+
+        yearEl.textContent = y;
+        leftEl.textContent = daysLeft + ' days left';
+      })();
+    </script>
+  </body>
+  </html>
+
