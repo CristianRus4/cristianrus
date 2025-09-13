@@ -74,6 +74,74 @@
         }
         .bottom { opacity: 1; }
       }
+
+      /* Actions card at the bottom (10% viewport height) */
+      .actions-card {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 2vh;
+        width: min(90vw, 600px);
+        min-height: 48px; /* auto height based on content */
+        border-radius: 28px;
+        background: #f7f7f4;
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 14px; /* tighter padding around text */
+        box-sizing: border-box;
+        z-index: 3;
+      }
+      .actions-card .actions {
+        display: flex;
+        gap: 1rem 2rem;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+      .action-btn, .action-select, .actions-card a.action-btn {
+        background: transparent;
+        border: none;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+        text-decoration: none;
+        opacity: 0.9;
+      }
+      /* Override global link gradient styles inside the actions card */
+      .actions-card a.action-btn,
+      .actions-card a.action-btn:visited {
+        color: inherit !important;
+        background: none !important;
+        -webkit-background-clip: initial !important;
+        -webkit-text-fill-color: currentColor !important;
+        text-decoration: none;
+      }
+      .actions-card a.action-btn:hover { text-decoration: none; }
+      .bday-panel {
+        position: absolute;
+        left: 1rem;
+        bottom: calc(100% + 6px);
+        display: none;
+        gap: 8px;
+        align-items: center;
+        background: #f7f7f4;
+        border-radius: 14px;
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        padding: 6px 8px;
+      }
+      @media (prefers-color-scheme: dark) {
+        .actions-card, .bday-panel { background: #141413; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); }
+        .actions-card a.action-btn,
+        .actions-card a.action-btn:hover,
+        .actions-card a.action-btn:visited {
+          color: inherit !important;
+          background: none !important;
+          -webkit-background-clip: initial !important;
+          -webkit-text-fill-color: currentColor !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -84,9 +152,18 @@
         <span id="right-info"></span>
       </div>
     </div>
-    <button id="shareBtn" aria-label="Share snapshot" style="position:fixed; opacity:0.9; font-size:0.9em; background:transparent; border:none; cursor:pointer;">
-      Share
-    </button>
+    <div class="actions-card">
+      <div class="actions">
+        <button id="bdayBtn" aria-label="Calculate your life left" class="action-btn">Your life left</button>
+        <button id="shareBtn" aria-label="Share snapshot" class="action-btn">Share</button>
+        <a id="appBtn" class="action-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">Get the app</a>
+      </div>
+      <div id="bdayPanel" class="bday-panel">
+        <select id="bdayMonth" class="action-select"></select>
+        <select id="bdayYear" class="action-select"></select>
+        <button id="bdayConfirm" class="action-btn">Calculate</button>
+      </div>
+    </div>
 
     <!-- html2canvas for snapshotting the card -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -97,6 +174,11 @@
         const yearEl = document.getElementById('year');
         const infoEl = document.getElementById('right-info');
         const shareBtn = document.getElementById('shareBtn');
+        const bdayBtn = document.getElementById('bdayBtn');
+        const bdayPanel = document.getElementById('bdayPanel');
+        const bdayMonth = document.getElementById('bdayMonth');
+        const bdayYear = document.getElementById('bdayYear');
+        const bdayConfirm = document.getElementById('bdayConfirm');
 
         const now = new Date();
         const y = now.getFullYear();
@@ -149,8 +231,12 @@
           for (let i = 0; i < state.totalDays; i++) {
             const dot = document.createElement('div');
             dot.className = 'dot' + (i <= state.todayIndex ? ' past' : '');
-            const d = new Date(state.startUTC + i * DAY_MS);
-            dot.title = formatDate(d);
+            if (state.kind === 'life') {
+              dot.title = String(state.birthYear + i);
+            } else {
+              const d = new Date(state.startUTC + i * DAY_MS);
+              dot.title = formatDate(d);
+            }
             grid.appendChild(dot);
           }
 
@@ -179,6 +265,87 @@
           state = mode === 'year' ? yearState() : monthState();
           renderGrid();
         });
+
+        // Birthday flow → Life mode (7x12 = 84 years)
+        function lifeState(birth) {
+          const birthDate = new Date(birth.getFullYear(), birth.getMonth(), birth.getDate());
+          const birthYear = birthDate.getFullYear();
+          const targetLifespan = 84; // years
+          // Completed years
+          const today = new Date();
+          let yearsCompleted = today.getFullYear() - birthYear;
+          // Adjust if before birthday this year
+          const hadBirthday = (today.getMonth() > birth.getMonth()) || (today.getMonth() === birth.getMonth() && today.getDate() >= birth.getDate());
+          if (!hadBirthday) yearsCompleted -= 1;
+          yearsCompleted = Math.max(0, Math.min(targetLifespan, yearsCompleted));
+          const yearsLeft = Math.max(0, targetLifespan - yearsCompleted);
+
+          return {
+            kind: 'life',
+            labelLeft: 'My life',
+            totalDays: targetLifespan,
+            todayIndex: yearsCompleted - 1, // mark completed years as past
+            cols: 7,
+            rows: 12,
+            daysLeft: yearsLeft,
+            birthYear
+          };
+        }
+
+        function startLifeModeWith(input) {
+          try {
+            const d = input instanceof Date ? input : new Date(input);
+            if (isNaN(d.getTime())) return;
+            mode = 'life';
+            state = lifeState(d);
+            // Persist
+            try {
+              const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; // YYYY-MM
+              localStorage.setItem('left_birthdate', key);
+            } catch (_) {}
+            renderGrid();
+          } catch (_) {}
+        }
+
+        // Populate dropdowns
+        (function initBirthdayDropdowns(){
+          const monthsFull  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+          bdayMonth.innerHTML = monthsFull.map((m, i) => `<option value="${i}">${m}</option>`).join('');
+          const thisYear = new Date().getFullYear();
+          const years = [];
+          for (let yv = thisYear; yv >= 1900; yv--) years.push(`<option value="${yv}">${yv}</option>`);
+          bdayYear.innerHTML = years.join('');
+        })();
+
+        // Hook up birthday button and panel
+        bdayBtn.addEventListener('click', () => {
+          // Load saved value, if any
+          try {
+            const saved = localStorage.getItem('left_birthdate');
+            if (saved) {
+              const [yy, mm] = saved.split('-').map(Number);
+              if (yy && mm) { bdayYear.value = String(yy); bdayMonth.value = String(mm-1); }
+            }
+          } catch(_){}
+          bdayPanel.style.display = bdayPanel.style.display === 'none' ? 'flex' : 'none';
+          positionShareButton();
+        });
+        bdayConfirm.addEventListener('click', () => {
+          const yy = parseInt(bdayYear.value, 10);
+          const mm = parseInt(bdayMonth.value, 10);
+          if (!isNaN(yy) && !isNaN(mm)) {
+            startLifeModeWith(new Date(yy, mm, 1));
+            bdayPanel.style.display = 'none';
+          }
+        });
+        // Autoload life mode if previously stored
+        try {
+          const saved = localStorage.getItem('left_birthdate');
+          if (saved) {
+            const [yy, mm] = saved.split('-').map(Number);
+            if (yy && mm) startLifeModeWith(new Date(yy, mm-1, 1));
+          }
+        } catch(_) {}
 
         // Toggle right label between days left and % left
         infoEl.addEventListener('click', () => {
@@ -226,20 +393,7 @@
         window.addEventListener('resize', recalcGap);
         window.addEventListener('orientationchange', recalcGap);
 
-        // --- Share button positioning below card, bottom-right ---
-        function positionShareButton() {
-          const card = document.querySelector('.card');
-          const rect = card.getBoundingClientRect();
-          const btn = shareBtn;
-          const margin = 8; // px gap below card
-          btn.style.top = Math.round(rect.bottom + margin) + 'px';
-          // Place right aligned to card's right edge
-          const btnRect = btn.getBoundingClientRect();
-          btn.style.left = Math.round(rect.right - btnRect.width) + 'px';
-        }
-        positionShareButton();
-        window.addEventListener('resize', positionShareButton);
-        window.addEventListener('orientationchange', positionShareButton);
+        // No manual positioning needed; actions are in an anchored card
 
         // --- Share: capture card and download ---
         async function shareSnapshot() {
