@@ -61,7 +61,7 @@
         align-items: center;
         opacity: 1; /* match full-opacity future dots */
         font-size: 0.95em;
-        pointer-events: none;
+        pointer-events: auto; /* allow clicking/tapping labels */
         z-index: 2;
       }
 
@@ -97,9 +97,10 @@
         const DAY_MS = 86400000;
 
         // Helpers
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const monthsFull  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         const ordinal = n => { const s = ["th","st","nd","rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); };
-        const formatDate = d => `${ordinal(d.getUTCDate())} ${months[d.getUTCMonth()]}, ${d.getUTCFullYear()}`;
+        const formatDate = d => `${ordinal(d.getUTCDate())} ${monthsShort[d.getUTCMonth()]}, ${d.getUTCFullYear()}`;
 
         function yearState() {
           const startUTC = Date.UTC(y, 0, 1);
@@ -107,7 +108,7 @@
           const totalDays = Math.round((nextStartUTC - startUTC) / DAY_MS);
           const todayIndex = Math.floor((Date.UTC(y, now.getMonth(), now.getDate()) - startUTC) / DAY_MS);
           const daysLeft = totalDays - (todayIndex + 1);
-          return { labelLeft: String(y), startUTC, totalDays, todayIndex, cols: 15, rows: 25, rightText: daysLeft + ' days left' };
+          return { labelLeft: String(y), startUTC, totalDays, todayIndex, cols: 15, rows: 25, daysLeft };
         }
 
         function monthState() {
@@ -118,11 +119,22 @@
           const cols = 7;
           const rows = Math.ceil(totalDays / cols);
           const daysLeft = Math.max(0, totalDays - (todayIndex + 1));
-          return { labelLeft: months[m] + ' ' + y, startUTC, totalDays, todayIndex, cols, rows, rightText: daysLeft + ' days left' };
+          return { labelLeft: monthsFull[m], startUTC, totalDays, todayIndex, cols, rows, daysLeft };
         }
 
         let mode = 'year';
         let state = yearState();
+
+        let showPercent = false; // right label mode
+
+        function rightText() {
+          if (!state) return '';
+          if (showPercent) {
+            const pct = state.totalDays ? Math.max(0, Math.min(100, Math.round((state.daysLeft / state.totalDays) * 100))) : 0;
+            return pct + '% left';
+          }
+          return state.daysLeft + ' days left';
+        }
 
         function renderGrid() {
           grid.innerHTML = '';
@@ -136,7 +148,7 @@
           }
 
           yearEl.textContent = state.labelLeft;
-          infoEl.textContent = state.rightText;
+          infoEl.textContent = rightText();
           recalcGap();
         }
 
@@ -150,7 +162,7 @@
         grid.addEventListener('mouseout', (e) => {
           const t = e.target;
           if (t && t.classList && t.classList.contains('dot')) {
-            infoEl.textContent = state.rightText;
+            infoEl.textContent = rightText();
           }
         });
 
@@ -159,6 +171,12 @@
           mode = mode === 'year' ? 'month' : 'year';
           state = mode === 'year' ? yearState() : monthState();
           renderGrid();
+        });
+
+        // Toggle right label between days left and % left
+        infoEl.addEventListener('click', () => {
+          showPercent = !showPercent;
+          infoEl.textContent = rightText();
         });
 
         // Compute gap so the grid uses 90% of card height, never resizing dots
@@ -174,14 +192,26 @@
           const paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
           const cardInnerW = Math.max(0, card.clientWidth - paddingX);
           const cardInnerH = Math.max(0, card.clientHeight - paddingY);
-          const targetH = cardInnerH * 0.9;
-          const gapH = (targetH - rows * dotPx) / (rows - 1 || 1);
-          const gapW = (cardInnerW - cols * dotPx) / (cols - 1 || 1);
-          const gap = Math.max(0, Math.min(gapW, gapH));
-          const gridWidth = cols * dotPx + (cols - 1) * gap;
-          grid.style.gap = gap + 'px';
-          grid.style.width = gridWidth + 'px';
-          document.documentElement.style.setProperty('--footer-width', gridWidth + 'px');
+
+          const compute = (cCols, cRows, availW) => {
+            const targetH = cardInnerH * 0.9;
+            const gapH = (targetH - cRows * dotPx) / (cRows - 1 || 1);
+            const gapW = (availW - cCols * dotPx) / (cCols - 1 || 1);
+            const gap = Math.max(0, Math.min(gapW, gapH));
+            const width = cCols * dotPx + (cCols - 1) * gap;
+            return { gap, width };
+          };
+
+          // Compute how wide the YEAR grid would be in this viewport
+          const yearMetrics = compute(15, 25, cardInnerW);
+
+          // For month view, do not exceed the year width
+          const allowedW = mode === 'month' ? Math.min(cardInnerW, yearMetrics.width) : cardInnerW;
+
+          const current = compute(cols, rows, allowedW);
+          grid.style.gap = current.gap + 'px';
+          grid.style.width = current.width + 'px';
+          document.documentElement.style.setProperty('--footer-width', current.width + 'px');
         }
 
         // Initial and on-resize calculations
