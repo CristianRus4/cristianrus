@@ -15,9 +15,9 @@
       /* App-specific layout (minimal; uses site styles) */
       .card {
         position: fixed;
-        top: 50%;
+        top: 4vh; /* small space from top */
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translateX(-50%);
         width: min(90vw, 600px);
         height: 70vh; /* 70% viewport height */
         min-width: 300px; /* enforce minimum width; grid/footer follow */
@@ -101,6 +101,12 @@
         justify-content: space-between;
         width: 100%;
       }
+      .actions-right {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .action-sep { opacity: 0.5; }
       .action-btn, .action-select, .actions-card a.action-btn {
         background: transparent;
         border: none;
@@ -155,9 +161,14 @@
     </div>
     <div class="actions-card">
       <div class="actions">
-        <button id="bdayBtn" aria-label="Calculate your life left" class="action-btn">Your life left</button>
-        <button id="shareBtn" aria-label="Share snapshot" class="action-btn">Share</button>
-        <a id="appBtn" class="action-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">Get the app</a>
+        <div class="actions-left">
+          <button id="bdayBtn" aria-label="Calculate your life left" class="action-btn">Your life left</button>
+        </div>
+        <div class="actions-right">
+          <button id="shareBtn" aria-label="Share snapshot" class="action-btn">Share</button>
+          <span class="action-sep">—</span>
+          <a id="appBtn" class="action-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">Get the app</a>
+        </div>
       </div>
       <div id="bdayPanel" class="bday-panel">
         <select id="bdayMonth" class="action-select"></select>
