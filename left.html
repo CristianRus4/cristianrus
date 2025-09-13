@@ -84,12 +84,19 @@
         <span id="right-info"></span>
       </div>
     </div>
+    <button id="shareBtn" aria-label="Share snapshot" style="position:fixed; opacity:0.9; font-size:0.9em; background:transparent; border:none; cursor:pointer;">
+      Share
+    </button>
+
+    <!-- html2canvas for snapshotting the card -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
     <script>
       (function () {
         const grid = document.getElementById('grid');
         const yearEl = document.getElementById('year');
         const infoEl = document.getElementById('right-info');
+        const shareBtn = document.getElementById('shareBtn');
 
         const now = new Date();
         const y = now.getFullYear();
@@ -218,6 +225,158 @@
         renderGrid();
         window.addEventListener('resize', recalcGap);
         window.addEventListener('orientationchange', recalcGap);
+
+        // --- Share button positioning below card, bottom-right ---
+        function positionShareButton() {
+          const card = document.querySelector('.card');
+          const rect = card.getBoundingClientRect();
+          const btn = shareBtn;
+          const margin = 8; // px gap below card
+          btn.style.top = Math.round(rect.bottom + margin) + 'px';
+          // Place right aligned to card's right edge
+          const btnRect = btn.getBoundingClientRect();
+          btn.style.left = Math.round(rect.right - btnRect.width) + 'px';
+        }
+        positionShareButton();
+        window.addEventListener('resize', positionShareButton);
+        window.addEventListener('orientationchange', positionShareButton);
+
+        // --- Share: capture card and download ---
+        async function shareSnapshot() {
+          if (typeof window.html2canvas !== 'function') {
+            alert('Sharing not available offline.');
+            return;
+          }
+
+          // Build an offscreen 2000x2000 export with a square card inside
+          const OUTER = 2000; // final image size
+          const CARD = 1800;  // inner card a bit smaller
+          const EXPORT_DOT = 16; // larger dots for export image
+
+          const exportRoot = document.createElement('div');
+          exportRoot.style.position = 'fixed';
+          exportRoot.style.left = '-99999px';
+          exportRoot.style.top = '0';
+          exportRoot.style.width = OUTER + 'px';
+          exportRoot.style.height = OUTER + 'px';
+          const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const siteBg = isDark ? '#222222' : '#FDFDFC'; // solid to avoid banding
+          exportRoot.style.background = siteBg;
+          exportRoot.style.overflow = 'hidden';
+
+          const exportCard = document.createElement('div');
+          exportCard.style.position = 'absolute';
+          exportCard.style.left = Math.round((OUTER - CARD) / 2) + 'px';
+          exportCard.style.top = Math.round((OUTER - CARD) / 2) + 'px';
+          exportCard.style.width = CARD + 'px';
+          exportCard.style.height = CARD + 'px';
+          const cardComp = getComputedStyle(document.querySelector('.card'));
+          exportCard.style.background = cardComp.backgroundColor || '#f7f7f4';
+          exportCard.style.borderRadius = '80px';
+          exportCard.style.boxShadow = 'none'; /* avoid corner artifacts */
+          exportCard.style.overflow = 'hidden';
+          exportCard.style.boxSizing = 'border-box';
+          exportCard.style.border = isDark ? '2px solid rgba(255,255,255,0.08)' : '2px solid rgba(0,0,0,0.06)';
+          exportCard.style.display = 'flex';
+          exportCard.style.flexDirection = 'column';
+          exportCard.style.alignItems = 'center';
+          exportCard.style.justifyContent = 'flex-start';
+          exportCard.style.padding = '120px';
+          exportCard.style.boxSizing = 'border-box';
+
+          const exportGrid = document.createElement('div');
+          exportGrid.style.display = 'grid';
+          exportGrid.style.gridTemplateColumns = `repeat(${state.cols}, ${EXPORT_DOT}px)`;
+          exportGrid.style.margin = '0 auto';
+
+          const exportFooter = document.createElement('div');
+          exportFooter.style.position = 'absolute';
+          exportFooter.style.bottom = '120px';
+          exportFooter.style.display = 'flex';
+          exportFooter.style.justifyContent = 'space-between';
+          exportFooter.style.opacity = '1';
+          exportFooter.style.fontFamily = getComputedStyle(document.body).fontFamily;
+          exportFooter.style.fontSize = '36px';
+
+          const leftLabel = document.createElement('span');
+          leftLabel.textContent = state.labelLeft;
+          const rightLabel = document.createElement('span');
+          rightLabel.textContent = rightText();
+          exportFooter.appendChild(leftLabel);
+          exportFooter.appendChild(rightLabel);
+
+          // Build dots for export
+          for (let i = 0; i < state.totalDays; i++) {
+            const dot = document.createElement('div');
+            dot.style.width = EXPORT_DOT + 'px';
+            dot.style.height = EXPORT_DOT + 'px';
+            dot.style.borderRadius = '50%';
+            const isPast = i <= state.todayIndex;
+            dot.style.background = isDark ? '#EEEEEC' : '#111110';
+            dot.style.opacity = isPast ? '0.5' : '1';
+            exportGrid.appendChild(dot);
+          }
+
+          exportCard.appendChild(exportGrid);
+          exportCard.appendChild(exportFooter);
+          exportRoot.appendChild(exportCard);
+          document.body.appendChild(exportRoot);
+
+          // Compute spacing inside export card to center-top grid and align footer width
+          (function calcExportLayout(){
+            const dotPx = EXPORT_DOT; // fixed for export
+            const padding = 120 * 2; // left+right and top+bottom equal
+            const innerW = CARD - padding;
+            const innerH = CARD - padding;
+
+            const compute = (cols, rows, availW) => {
+              const targetH = innerH * 0.9;
+              const gapH = (targetH - rows * dotPx) / (rows - 1 || 1);
+              const gapW = (availW - cols * dotPx) / (cols - 1 || 1);
+              const gap = Math.max(0, Math.min(gapW, gapH));
+              const gridW = cols * dotPx + (cols - 1) * gap;
+              return { gap, gridW };
+            };
+
+            // Base: compute how wide the YEAR grid would be in this export card
+            const yearBase = compute(15, 25, innerW);
+
+            // Current grid (month or year) is capped to the year width
+            const cols = state.cols, rows = state.rows;
+            const capped = compute(cols, rows, Math.min(innerW, yearBase.gridW));
+
+            exportGrid.style.gap = capped.gap + 'px';
+            exportGrid.style.width = capped.gridW + 'px';
+
+            // Footer matches grid width and is centered horizontally
+            exportFooter.style.width = capped.gridW + 'px';
+            const left = Math.round((CARD - capped.gridW) / 2);
+            exportFooter.style.left = left + 'px';
+          })();
+
+          const canvas = await window.html2canvas(exportRoot, {
+            backgroundColor: siteBg,
+            scale: 1,
+            width: OUTER,
+            height: OUTER
+          });
+
+          // Cleanup the offscreen DOM
+          exportRoot.remove();
+
+          canvas.toBlob((blob) => {
+            if (!blob) return;
+            const a = document.createElement('a');
+            const modeLabel = yearEl.textContent.trim();
+            a.download = `left-${modeLabel.replace(/\s+/g,'-').toLowerCase()}.png`;
+            a.href = URL.createObjectURL(blob);
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(a.href);
+            a.remove();
+          }, 'image/png');
+        }
+        shareBtn.addEventListener('click', shareSnapshot);
       })();
     </script>
   </body>
