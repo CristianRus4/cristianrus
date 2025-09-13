@@ -22,8 +22,8 @@
 			<p class="sub">design & human behaviour</p>
 			
 			
-			<div class="button-container">
-  <button class="main-button"><a href="#">about</a></button>
+            <div class="button-container">
+  <div class="section-label">about</div>
   <div class="extra-buttons">
   	
   	
@@ -53,15 +53,17 @@
 
 
   <div class="button-container">
-  <button class="main-button"><a href="#">apps</a></button>
+  <div class="section-label">apps</div>
   <div class="extra-buttons">
     <button class="extra-button"><a href="/apps/left">Left</a></button>
-    <button class="extra-button"><a href="/apps/notsobusy">NotSoBusy</a></button>
-    <button class="extra-button"><a href="/apps/ftnss-workouts">ftnss Workouts</a></button>
     <button class="extra-button"><a href="/apps/ftnss">ftnss</a></button>
-    <!--<button class="extra-button"><a href="/apps/kiwicamping">KiwiCamping</a></button>-->
-   
-
+    <button class="extra-button"><a href="/apps/txtpod">txtpod</a></button>
+    <button id="apps-ellipsis" class="extra-button" aria-expanded="false">···</button>
+  </div>
+  <div id="more-apps" class="extra-buttons" style="display:none;">
+    <button class="extra-button"><a href="/apps/notsobusy">NotSoBusy</a></button>
+    <button class="extra-button"><a href="/apps/kiwicamping">KiwiCamping</a></button>
+    <button class="extra-button"><a href="/apps/ftnss-workouts">ftnss Workouts</a></button>
   </div>
   </div>
 
@@ -89,7 +91,7 @@
 
 
   <div class="button-container">
-  <button class="main-button"><a href="#">contact</a></button>
+  <div class="section-label">contact</div>
   <div class="extra-buttons">
   	<button class="extra-button"><a id="copy-email" href="#">mail</a></button>
   <script src="script.js"></script>
@@ -100,95 +102,25 @@
   </div>
 
   <script type="text/javascript">
-
-  	const copyEmail = document.getElementById('copy-email');
-
-copyEmail.addEventListener('click', function() {
-  navigator.clipboard.writeText('cristianrus@hey.com');
-  this.textContent = 'address copied';
-  setTimeout(() => {
-    this.textContent = 'mail';
-  }, 1000);
-});
-
-// Improved menu animation logic for stacked dropdowns
-const buttonContainers = document.querySelectorAll('.button-container');
-let openMenuRef = null;
-let closeTimeout = null;
-
-function openMenu(container) {
-  // Close any other open menu
-  buttonContainers.forEach(cont => {
-    const extra = cont.querySelector('.extra-buttons');
-    if (extra && cont !== container) {
-      extra.classList.add('closing');
-      extra.style.animation = 'fadeOutToTopMenu 0.75s cubic-bezier(0.4,0,0.2,1) forwards';
-      setTimeout(() => {
-        extra.classList.remove('closing');
-        extra.style.display = 'none';
-        extra.style.opacity = '0';
-        extra.style.pointerEvents = 'none';
-      }, 750);
-    }
+  const copyEmail = document.getElementById('copy-email');
+  copyEmail.addEventListener('click', function() {
+    navigator.clipboard.writeText('cristianrus@hey.com');
+    this.textContent = 'address copied';
+    setTimeout(() => {
+      this.textContent = 'mail';
+    }, 1000);
   });
-  // Open this menu
-  const extraButtons = container.querySelector('.extra-buttons');
-  if (!extraButtons) return;
-  clearTimeout(closeTimeout);
-  extraButtons.classList.remove('closing');
-  extraButtons.style.display = 'flex';
-  extraButtons.style.opacity = '1';
-  extraButtons.style.pointerEvents = 'auto';
-  extraButtons.style.animation = 'fadeInFromBottomMenu 0.75s cubic-bezier(0.4,0,0.2,1) forwards';
-  openMenuRef = container;
-}
-
-function closeMenu(container) {
-  const extraButtons = container.querySelector('.extra-buttons');
-  if (!extraButtons) return;
-  extraButtons.classList.add('closing');
-  extraButtons.style.animation = 'fadeOutToTopMenu 0.75s cubic-bezier(0.4,0,0.2,1) forwards';
-  setTimeout(() => {
-    extraButtons.classList.remove('closing');
-    extraButtons.style.display = 'none';
-    extraButtons.style.opacity = '0';
-    extraButtons.style.pointerEvents = 'none';
-  }, 750);
-  openMenuRef = null;
-}
-
-buttonContainers.forEach(container => {
-  const mainButton = container.querySelector('.main-button');
-  const extraButtons = container.querySelector('.extra-buttons');
-  if (!mainButton || !extraButtons) return;
-
-  // Mouse enter: open this menu, close others
-  container.addEventListener('mouseenter', () => {
-    clearTimeout(closeTimeout);
-    openMenu(container);
-  });
-  container.addEventListener('focusin', () => {
-    clearTimeout(closeTimeout);
-    openMenu(container);
-  });
-
-  // Mouse leave: delay close
-  container.addEventListener('mouseleave', () => {
-    closeTimeout = setTimeout(() => {
-      closeMenu(container);
-    }, 200);
-  });
-  container.addEventListener('focusout', function(e) {
-    // Only close if focus moves outside the container
-    if (!container.contains(e.relatedTarget)) {
-      closeTimeout = setTimeout(() => {
-        closeMenu(container);
-      }, 200);
-    }
-  });
-});
-
-</script>
+  // Reveal extra apps when tapping the ellipsis and hide the ellipsis
+  const appsEllipsis = document.getElementById('apps-ellipsis');
+  const moreApps = document.getElementById('more-apps');
+  if (appsEllipsis && moreApps) {
+    appsEllipsis.addEventListener('click', function() {
+      moreApps.style.display = 'flex';
+      appsEllipsis.style.display = 'none';
+      appsEllipsis.setAttribute('aria-expanded', 'true');
+    });
+  }
+  </script>
 
 
 
