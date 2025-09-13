@@ -4,86 +4,84 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Year Left</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <style>
       :root {
-        --dot-size: clamp(10px, 1.6vw, 22px);
-        --gap: clamp(10px, 1.2vw, 18px);
-        --bg: #f3f3f0;
-        --panel: #f7f7f4;
-        --text: #111;
-        --muted: #8b8b8b;
+        /* Fixed sizes: dots never change size */
+        --dot-size: 8px;
+        --gap: 6px; /* updated by JS; only spacing changes */
       }
 
-      * { box-sizing: border-box; }
-      html, body { height: 100%; }
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--text);
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-        display: grid;
-        place-items: center;
-      }
-
+      /* App-specific layout (minimal; uses site styles) */
       .card {
-        width: min(92vw, 720px);
-        background: var(--panel);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: min(90vw, 600px);
+        height: 80vh; /* always 80% viewport height */
+        min-width: 300px; /* enforce minimum width; grid/footer follow */
         border-radius: 28px;
-        padding: clamp(16px, 4vw, 36px);
+        background: #f7f7f4;
         box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        min-height: min(92vh, 1200px);
-      }
-
-      .stage {
-        width: calc(15 * var(--dot-size) + 14 * var(--gap));
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: clamp(16px, 3vh, 48px);
-        margin: clamp(16px, 4vh, 80px) 0;
+        justify-content: flex-start; /* grid top aligned */
+        padding: 2rem;
+        box-sizing: border-box;
+        overflow: hidden; /* keep content inside */
+        z-index: 1;
       }
 
       .grid {
         display: grid;
-        grid-template-columns: repeat(15, var(--dot-size));
         grid-auto-rows: var(--dot-size);
-        gap: var(--gap);
-        align-content: start;
-        justify-content: center;
+        gap: var(--gap); /* updated by JS */
+        margin: 0; /* positioned by card */
       }
 
       .dot {
         width: var(--dot-size);
         height: var(--dot-size);
         border-radius: 50%;
-        background: #000;
+        background: #111110; /* visible in light mode too (site text color is dark) */
       }
-
       .dot.past { opacity: 0.5; }
 
+      /* Bottom labels pinned to viewport edges (match site padding) */
       .bottom {
-        width: calc(15 * var(--dot-size) + 14 * var(--gap));
+        position: absolute; /* inside the card */
+        bottom: 1.25rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: var(--footer-width, auto);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: var(--muted);
-        font-size: clamp(14px, 1.8vw, 18px);
-        letter-spacing: 0.02em;
+        opacity: 1; /* match full-opacity future dots */
+        font-size: 0.95em;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      /* Respect dark mode */
+      @media (prefers-color-scheme: dark) {
+        .dot { background: #EEEEEC; }
+        .card {
+          background: #141413;
+          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+        }
+        .bottom { opacity: 1; }
       }
     </style>
   </head>
   <body>
     <div class="card">
-      <div class="stage">
-        <div id="grid" class="grid" aria-label="Days of the year"></div>
-        <div class="bottom">
-          <span id="year"></span>
-          <span id="left"></span>
-        </div>
+      <div id="grid" class="grid" aria-label="Days of the year"></div>
+      <div class="bottom">
+        <span id="year"></span>
+        <span id="right-info"></span>
       </div>
     </div>
 
@@ -91,29 +89,106 @@
       (function () {
         const grid = document.getElementById('grid');
         const yearEl = document.getElementById('year');
-        const leftEl = document.getElementById('left');
+        const infoEl = document.getElementById('right-info');
 
         const now = new Date();
         const y = now.getFullYear();
+        const m = now.getMonth();
+        const DAY_MS = 86400000;
 
-        // Use UTC math to avoid DST/timezone edge cases
-        const startUTC = Date.UTC(y, 0, 1);
-        const nextStartUTC = Date.UTC(y + 1, 0, 1);
-        const totalDays = Math.round((nextStartUTC - startUTC) / 86400000);
-        const todayIndex = Math.floor((Date.UTC(y, now.getMonth(), now.getDate()) - startUTC) / 86400000); // 0-based
+        // Helpers
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const ordinal = n => { const s = ["th","st","nd","rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); };
+        const formatDate = d => `${ordinal(d.getUTCDate())} ${months[d.getUTCMonth()]}, ${d.getUTCFullYear()}`;
 
-        const daysLeft = totalDays - (todayIndex + 1); // exclude today from "left"
-
-        for (let i = 0; i < totalDays; i++) {
-          const dot = document.createElement('div');
-          dot.className = 'dot' + (i <= todayIndex ? ' past' : '');
-          grid.appendChild(dot);
+        function yearState() {
+          const startUTC = Date.UTC(y, 0, 1);
+          const nextStartUTC = Date.UTC(y + 1, 0, 1);
+          const totalDays = Math.round((nextStartUTC - startUTC) / DAY_MS);
+          const todayIndex = Math.floor((Date.UTC(y, now.getMonth(), now.getDate()) - startUTC) / DAY_MS);
+          const daysLeft = totalDays - (todayIndex + 1);
+          return { labelLeft: String(y), startUTC, totalDays, todayIndex, cols: 15, rows: 25, rightText: daysLeft + ' days left' };
         }
 
-        yearEl.textContent = y;
-        leftEl.textContent = daysLeft + ' days left';
+        function monthState() {
+          const startUTC = Date.UTC(y, m, 1);
+          const nextStartUTC = Date.UTC(y, m + 1, 1);
+          const totalDays = Math.round((nextStartUTC - startUTC) / DAY_MS);
+          const todayIndex = Math.floor((Date.UTC(y, now.getMonth(), now.getDate()) - startUTC) / DAY_MS);
+          const cols = 7;
+          const rows = Math.ceil(totalDays / cols);
+          const daysLeft = Math.max(0, totalDays - (todayIndex + 1));
+          return { labelLeft: months[m] + ' ' + y, startUTC, totalDays, todayIndex, cols, rows, rightText: daysLeft + ' days left' };
+        }
+
+        let mode = 'year';
+        let state = yearState();
+
+        function renderGrid() {
+          grid.innerHTML = '';
+          grid.style.gridTemplateColumns = `repeat(${state.cols}, var(--dot-size))`;
+          for (let i = 0; i < state.totalDays; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i <= state.todayIndex ? ' past' : '');
+            const d = new Date(state.startUTC + i * DAY_MS);
+            dot.title = formatDate(d);
+            grid.appendChild(dot);
+          }
+
+          yearEl.textContent = state.labelLeft;
+          infoEl.textContent = state.rightText;
+          recalcGap();
+        }
+
+        // Hover handlers: show date of hovered dot; revert on leave
+        grid.addEventListener('mouseover', (e) => {
+          const t = e.target;
+          if (t && t.classList && t.classList.contains('dot')) {
+            infoEl.textContent = t.title;
+          }
+        });
+        grid.addEventListener('mouseout', (e) => {
+          const t = e.target;
+          if (t && t.classList && t.classList.contains('dot')) {
+            infoEl.textContent = state.rightText;
+          }
+        });
+
+        // Tap/click on the left label to toggle between year and current month
+        yearEl.addEventListener('click', () => {
+          mode = mode === 'year' ? 'month' : 'year';
+          state = mode === 'year' ? yearState() : monthState();
+          renderGrid();
+        });
+
+        // Compute gap so the grid uses 90% of card height, never resizing dots
+        function recalcGap() {
+          const sample = grid.querySelector('.dot');
+          if (!sample) return;
+          const dotPx = sample.getBoundingClientRect().width || 8;
+
+          const cols = state.cols, rows = state.rows;
+          const card = document.querySelector('.card');
+          const cs = getComputedStyle(card);
+          const paddingX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+          const paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+          const cardInnerW = Math.max(0, card.clientWidth - paddingX);
+          const cardInnerH = Math.max(0, card.clientHeight - paddingY);
+          const targetH = cardInnerH * 0.9;
+          const gapH = (targetH - rows * dotPx) / (rows - 1 || 1);
+          const gapW = (cardInnerW - cols * dotPx) / (cols - 1 || 1);
+          const gap = Math.max(0, Math.min(gapW, gapH));
+          const gridWidth = cols * dotPx + (cols - 1) * gap;
+          grid.style.gap = gap + 'px';
+          grid.style.width = gridWidth + 'px';
+          document.documentElement.style.setProperty('--footer-width', gridWidth + 'px');
+        }
+
+        // Initial and on-resize calculations
+        renderGrid();
+        window.addEventListener('resize', recalcGap);
+        window.addEventListener('orientationchange', recalcGap);
       })();
     </script>
   </body>
   </html>
-
