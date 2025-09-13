@@ -320,11 +320,12 @@
               // Use glyphs for other symbols
               preview.className = '';
               preview.textContent = sym.char || '•';
+              // Scale glyph inside the preview span, not the button
               let size;
               if (sym.key === 'square') size = '2em';
               else if (sym.key === 'hexagon') size = '1.5em';
               else size = '1.2em';
-              symbolBtn.style.fontSize = size;
+              preview.style.fontSize = size;
               // ensure preview itself has no extra styles
               preview.style.width = preview.style.height = '';
             }
