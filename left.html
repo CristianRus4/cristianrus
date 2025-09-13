@@ -10,6 +10,9 @@
         /* Fixed sizes: dots never change size */
         --dot-size: 8px;
         --gap: 6px; /* updated by JS; only spacing changes */
+        --panel-bg: #f7f7f4; /* light background for cards */
+        --accent-dark: #EEEEEC; /* dark mode accent for dots/text */
+        --footer-color: inherit;
       }
 
       /* App-specific layout (minimal; uses site styles) */
@@ -22,7 +25,7 @@
         height: 70vh; /* 70% viewport height */
         min-width: 300px; /* enforce minimum width; grid/footer follow */
         border-radius: 28px;
-        background: #f7f7f4;
+        background: var(--panel-bg);
         box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
         display: flex;
         flex-direction: column;
@@ -47,6 +50,17 @@
         border-radius: 50%;
         background: #111110; /* visible in light mode too (site text color is dark) */
       }
+      /* Glyph-based symbols */
+      .dot.glyph {
+        background: none;
+        border-radius: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: calc(var(--dot-size) + 2px);
+        line-height: 1;
+        color: #111110;
+      }
       .dot.past { opacity: 0.5; }
 
       /* Bottom labels pinned to viewport edges (match site padding) */
@@ -60,6 +74,7 @@
         justify-content: space-between;
         align-items: center;
         opacity: 1; /* match full-opacity future dots */
+        color: var(--footer-color);
         font-size: 0.95em;
         pointer-events: auto; /* allow clicking/tapping labels */
         z-index: 2;
@@ -67,12 +82,13 @@
 
       /* Respect dark mode */
       @media (prefers-color-scheme: dark) {
-        .dot { background: #EEEEEC; }
+        .dot { background: var(--accent-dark, #EEEEEC); }
+        .dot.glyph { color: var(--accent-dark, #EEEEEC); }
         .card {
           background: #141413;
           box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
         }
-        .bottom { opacity: 1; }
+        .bottom { opacity: 1; color: var(--accent-dark, #EEEEEC); }
       }
 
       /* Actions card at the bottom (10% viewport height) */
@@ -85,7 +101,7 @@
         min-width: 300px; /* match main card minimum */
         min-height: 48px; /* auto height based on content */
         border-radius: 28px;
-        background: #f7f7f4;
+        background: var(--panel-bg);
         box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
         display: flex;
         align-items: center;
@@ -106,6 +122,7 @@
         align-items: center;
         gap: 1rem;
       }
+      /* no special swatch styling; using plain text labels */
       .action-sep { display:none; }
       .action-btn, .action-select, .actions-card a.action-btn {
         background: transparent;
@@ -133,13 +150,13 @@
         display: none;
         gap: 8px;
         align-items: center;
-        background: #f7f7f4;
+        background: var(--panel-bg);
         border-radius: 14px;
         box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
         padding: 6px 8px;
       }
       @media (prefers-color-scheme: dark) {
-        .actions-card, .bday-panel { background: #141413; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); }
+        .actions-card, .bday-panel { background: #141413; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); color: var(--accent-dark, #EEEEEC); }
         .actions-card a.action-btn,
         .actions-card a.action-btn:hover,
         .actions-card a.action-btn:visited {
@@ -165,6 +182,8 @@
           <button id="bdayBtn" aria-label="Calculate your life left" class="action-btn">Your life left</button>
         </div>
         <div class="actions-right">
+          <button id="colorBtn" class="action-btn" aria-label="Change color">Color</button>
+          <button id="symbolBtn" class="action-btn" aria-label="Change symbol">Symbol</button>
           <button id="shareBtn" aria-label="Share snapshot" class="action-btn">Share</button>
           <a id="appBtn" class="action-btn" href="https://apps.apple.com/us/app/left-widgets-for-time-left/id6740155884" target="_blank" rel="noopener">Get the app</a>
         </div>
@@ -185,6 +204,8 @@
         const yearEl = document.getElementById('year');
         const infoEl = document.getElementById('right-info');
         const shareBtn = document.getElementById('shareBtn');
+        const colorBtn = document.getElementById('colorBtn');
+        const symbolBtn = document.getElementById('symbolBtn');
         const bdayBtn = document.getElementById('bdayBtn');
         const bdayPanel = document.getElementById('bdayPanel');
         const bdayMonth = document.getElementById('bdayMonth');
@@ -227,6 +248,55 @@
 
         let showPercent = false; // right label mode
 
+        // Theme colors and symbols
+        const themes = [
+          { name: 'Monochrome', light: '#f7f7f4', dark: '#EEEEEC' },
+          { name: 'Red',        light: '#FADADA', dark: '#FF6B6B' },
+          { name: 'Blue',       light: '#EAF0F9', dark: '#6BA8FF' },
+          { name: 'Green',      light: '#E9F5EC', dark: '#4CAF6B' },
+          { name: 'Purple',     light: '#F0EAF9', dark: '#A07CFF' },
+          { name: 'Orange',     light: '#FBE7DA', dark: '#FFA347' },
+        ];
+        const symbols = [
+          { key: 'dot', label: 'Dot' },
+          { key: 'square', label: 'Square', char: '■' },
+          { key: 'triangle', label: 'Triangle', char: '▲' },
+          { key: 'star', label: 'Star', char: '★' },
+          { key: 'hexagon', label: 'Hexagon', char: '⬢' },
+        ];
+        let themeIndex = 0;
+        let symbolIndex = 0; // 0 = dot
+
+        function applyTheme() {
+          const t = themes[themeIndex];
+          const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (isDark) {
+            document.documentElement.style.setProperty('--accent-dark', t.dark);
+            document.documentElement.style.setProperty('--footer-color', t.dark);
+          } else {
+            document.documentElement.style.setProperty('--panel-bg', t.light);
+            document.documentElement.style.setProperty('--footer-color', 'inherit');
+          }
+          try { localStorage.setItem('left_theme_index', String(themeIndex)); } catch(_) {}
+        }
+
+        function currentSymbol() { return symbols[symbolIndex]; }
+        function isGlyphSymbol() { return currentSymbol().key !== 'dot'; }
+        function toggleColor() { themeIndex = (themeIndex + 1) % themes.length; applyTheme(); }
+        function toggleSymbol() { symbolIndex = (symbolIndex + 1) % symbols.length; renderGrid(); try { localStorage.setItem('left_symbol_index', String(symbolIndex)); } catch(_) {} }
+
+        function updateActionLabels() {
+          // Keep plain word labels
+          symbolBtn.textContent = 'Symbol';
+          colorBtn.textContent = 'Color';
+          try {
+            const sym = currentSymbol();
+            symbolBtn.setAttribute('aria-label', 'Change symbol: ' + sym.label);
+            const t = themes[themeIndex];
+            colorBtn.setAttribute('aria-label', 'Change color: ' + t.name);
+          } catch(_) {}
+        }
+
         function rightText() {
           if (!state) return '';
           if (showPercent) {
@@ -242,7 +312,18 @@
           grid.style.gridTemplateColumns = `repeat(${state.cols}, var(--dot-size))`;
           for (let i = 0; i < state.totalDays; i++) {
             const dot = document.createElement('div');
-            dot.className = 'dot' + (i <= state.todayIndex ? ' past' : '');
+            const past = (i <= state.todayIndex);
+            if (isGlyphSymbol()) {
+              dot.className = 'dot glyph' + (past ? ' past' : '');
+              const sym = currentSymbol();
+              dot.textContent = sym.char || '•';
+              // Make square and hexagon visually larger
+              if (sym.key === 'square' || sym.key === 'hexagon') {
+                dot.style.fontSize = `calc(${getComputedStyle(document.documentElement).getPropertyValue('--dot-size').trim()} * 2)`;
+              }
+            } else {
+              dot.className = 'dot' + (past ? ' past' : '');
+            }
             if (state.kind === 'life') {
               dot.title = String(state.birthYear + i);
             } else {
@@ -255,6 +336,7 @@
           yearEl.textContent = state.labelLeft;
           infoEl.textContent = rightText();
           recalcGap();
+          updateActionLabels();
         }
 
         // Hover handlers: show date of hovered dot; revert on leave
@@ -325,7 +407,7 @@
           bdayMonth.innerHTML = monthsFull.map((m, i) => `<option value="${i}">${m}</option>`).join('');
           const thisYear = new Date().getFullYear();
           const years = [];
-          for (let yv = thisYear; yv >= 1900; yv--) years.push(`<option value="${yv}">${yv}</option>`);
+          for (let yv = thisYear; yv >= 1945; yv--) years.push(`<option value="${yv}">${yv}</option>`);
           bdayYear.innerHTML = years.join('');
         })();
 
@@ -407,6 +489,20 @@
 
         // No manual positioning needed; actions are in an anchored card
 
+        // Color and Symbol controls
+        colorBtn.addEventListener('click', () => { toggleColor(); updateActionLabels(); });
+        symbolBtn.addEventListener('click', () => { toggleSymbol(); updateActionLabels(); });
+
+        // Load persisted theme/symbol
+        try {
+          const ti = parseInt(localStorage.getItem('left_theme_index') || '0', 10);
+          if (!Number.isNaN(ti)) { themeIndex = (ti % themes.length + themes.length) % themes.length; }
+          const si = parseInt(localStorage.getItem('left_symbol_index') || '0', 10);
+          if (!Number.isNaN(si)) { symbolIndex = (si % symbols.length + symbols.length) % symbols.length; }
+        } catch(_) {}
+        applyTheme();
+        updateActionLabels();
+
         // --- Share: capture card and download ---
         async function shareSnapshot() {
           if (typeof window.html2canvas !== 'function') {
@@ -471,17 +567,45 @@
           exportFooter.appendChild(leftLabel);
           exportFooter.appendChild(rightLabel);
 
-          // Build dots for export
+          // Build dots or symbols for export
+          const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent-dark').trim() || '#EEEEEC';
+          const useGlyph = (function(){
+            try { return (document.getElementById('symbolBtn') && (localStorage.getItem('left_symbol_index')|0) !== 0) || (typeof symbolIndex !== 'undefined' && symbolIndex !== 0); } catch(_) { return false; }
+          })();
+          const symMap = ['•','■','▲','★','⬢'];
+          const symChar = symMap[(function(){ try { return (localStorage.getItem('left_symbol_index')|0); } catch(_) { return 0; }})()];
           for (let i = 0; i < state.totalDays; i++) {
-            const dot = document.createElement('div');
-            dot.style.width = EXPORT_DOT + 'px';
-            dot.style.height = EXPORT_DOT + 'px';
-            dot.style.borderRadius = '50%';
             const isPast = i <= state.todayIndex;
-            dot.style.background = isDark ? '#EEEEEC' : '#111110';
-            dot.style.opacity = isPast ? '0.5' : '1';
-            exportGrid.appendChild(dot);
+            if (useGlyph) {
+              const cell = document.createElement('div');
+              cell.style.width = EXPORT_DOT + 'px';
+              cell.style.height = EXPORT_DOT + 'px';
+              cell.style.display = 'flex';
+              cell.style.alignItems = 'center';
+              cell.style.justifyContent = 'center';
+              // Make square/hexagon larger in export
+              const exportedSymbolIndex = (function(){ try { return (localStorage.getItem('left_symbol_index')|0); } catch(_) { return 0; }})();
+              const baseSize = EXPORT_DOT + 2;
+              const fontSize = (exportedSymbolIndex === 1 || exportedSymbolIndex === 4) ? baseSize * 2 : baseSize; // 1=square,4=hexagon
+              cell.style.fontSize = fontSize + 'px';
+              cell.style.lineHeight = '1';
+              cell.style.color = isDark ? accent : '#111110';
+              cell.style.opacity = isPast ? '0.5' : '1';
+              cell.textContent = symChar || '•';
+              exportGrid.appendChild(cell);
+            } else {
+              const dot = document.createElement('div');
+              dot.style.width = EXPORT_DOT + 'px';
+              dot.style.height = EXPORT_DOT + 'px';
+              dot.style.borderRadius = '50%';
+              dot.style.background = isDark ? accent : '#111110';
+              dot.style.opacity = isPast ? '0.5' : '1';
+              exportGrid.appendChild(dot);
+            }
           }
+
+          // Footer color in dark mode uses accent
+          if (isDark) { exportFooter.style.color = accent; }
 
           exportCard.appendChild(exportGrid);
           exportCard.appendChild(exportFooter);
