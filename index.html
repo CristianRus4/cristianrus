@@ -68,10 +68,15 @@
     <button class="extra-button"><a href="/apps/txtpod">txtpod</a></button>
     <button id="apps-ellipsis" class="extra-button" aria-expanded="false">···</button>
   </div>
-  <div id="more-apps" class="extra-buttons" style="display:none;">
-    <button class="extra-button"><a href="/apps/notsobusy">NotSoBusy</a></button>
-    <button class="extra-button"><a href="/apps/kiwicamping">KiwiCamping</a></button>
-    <button class="extra-button"><a href="/apps/ftnss-workouts">ftnss Workouts</a></button>
+  <div id="more-apps" style="display:none;">
+    <div class="extra-buttons">
+      <button class="extra-button"><a href="/apps/bites">Bites</a></button>
+      <button class="extra-button"><a href="/apps/notsobusy">NotSoBusy</a></button>
+    </div>
+    <div class="extra-buttons">
+      <button class="extra-button"><a href="/apps/kiwicamping">KiwiCamping</a></button>
+      <button class="extra-button"><a href="/apps/ftnss-workouts">ftnss Workouts</a></button>
+    </div>
   </div>
   </div>
 
@@ -123,7 +128,7 @@
   const moreApps = document.getElementById('more-apps');
   if (appsEllipsis && moreApps) {
     appsEllipsis.addEventListener('click', function() {
-      moreApps.style.display = 'flex';
+      moreApps.style.display = 'block';
       appsEllipsis.style.display = 'none';
       appsEllipsis.setAttribute('aria-expanded', 'true');
     });
