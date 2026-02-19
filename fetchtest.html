@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Fetch Test - Rich API Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+    body { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    h1 { margin-bottom: 6px; }
+    .subtitle { opacity: 0.75; margin-bottom: 24px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+    .card { border: 1px solid rgba(255,255,255,.2); border-radius: 10px; padding: 14px 16px; background: rgba(255,255,255,.03); }
+    .card h2 { margin: 0 0 8px; font-size: 1.1rem; }
+    .status { font-size: .9rem; opacity: .8; margin-bottom: 8px; }
+    .muted { font-size: .9rem; opacity: .75; }
+    ul { margin: 8px 0 0 18px; }
+    code { font-size: .85rem; }
+    .insight { margin-top: 10px; padding: 10px; border-left: 3px solid #7bc8ff; background: rgba(123,200,255,.08); }
+  </style>
+</head>
+<body>
+  <h1><a class="titlelink" href="/">Cristian Rus</a> / fetchtest</h1>
+  <p class="subtitle">Experimental data-heavy page that fetches as much useful public data as possible from Last.fm, Letterboxd, GitHub, Strava, and Goodreads.</p>
+
+  <div class="grid">
+    <section class="card" id="lastfm-card">
+      <h2>🎧 Last.fm</h2>
+      <div class="status" id="lastfm-status">Loading...</div>
+      <div id="lastfm-content"></div>
+      <div class="insight" id="lastfm-insight"></div>
+    </section>
+
+    <section class="card" id="letterboxd-card">
+      <h2>🎬 Letterboxd</h2>
+      <div class="status" id="letterboxd-status">Loading...</div>
+      <div id="letterboxd-content"></div>
+      <div class="insight" id="letterboxd-insight"></div>
+    </section>
+
+    <section class="card" id="github-card">
+      <h2>💻 GitHub</h2>
+      <div class="status" id="github-status">Loading...</div>
+      <div id="github-content"></div>
+      <div class="insight" id="github-insight"></div>
+    </section>
+
+    <section class="card" id="strava-card">
+      <h2>🏃 Strava</h2>
+      <div class="status" id="strava-status">Loading...</div>
+      <div id="strava-content"></div>
+      <div class="insight" id="strava-insight"></div>
+    </section>
+
+    <section class="card" id="goodreads-card">
+      <h2>📚 Goodreads</h2>
+      <div class="status" id="goodreads-status">Loading...</div>
+      <div id="goodreads-content"></div>
+      <div class="insight" id="goodreads-insight"></div>
+    </section>
+  </div>
+
+<script>
+(function() {
+  const rssProxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+  const setStatus = (id, text) => document.getElementById(id).textContent = text;
+  const setHTML = (id, text) => document.getElementById(id).innerHTML = text;
+
+  async function fetchJSON(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  }
+
+  function minutes(seconds) {
+    return Math.round(seconds / 60);
+  }
+
+  async function loadLastFm() {
+    const apiKey = 'b1181111f4966c86cd00c3ef5fc59a55';
+    const user = 'cristianrus4';
+    setStatus('lastfm-status', 'Fetching listening profile...');
+
+    const endpoints = {
+      recent: `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${user}&api_key=${apiKey}&format=json&limit=8`,
+      topTracks7d: `https://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=${user}&api_key=${apiKey}&format=json&period=7day&limit=5`,
+      topArtists1m: `https://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=${user}&api_key=${apiKey}&format=json&period=1month&limit=5`,
+      topAlbums7d: `https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${user}&api_key=${apiKey}&format=json&period=7day&limit=3`,
+      info: `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=${user}&api_key=${apiKey}&format=json`
+    };
+
+    const [recent, topTracks, topArtists, topAlbums, info] = await Promise.all([
+      fetchJSON(endpoints.recent),
+      fetchJSON(endpoints.topTracks7d),
+      fetchJSON(endpoints.topArtists1m),
+      fetchJSON(endpoints.topAlbums7d),
+      fetchJSON(endpoints.info)
+    ]);
+
+    const recentTracks = (recent.recenttracks?.track || []).slice(0, 5);
+    const topTrack = topTracks.toptracks?.track?.[0];
+    const topArtist = topArtists.topartists?.artist?.[0];
+    const topAlbum = topAlbums.topalbums?.album?.[0];
+
+    setHTML('lastfm-content', `
+      <div><strong>Total scrobbles:</strong> ${info.user?.playcount || 'n/a'}</div>
+      <div><strong>Now/recent:</strong></div>
+      <ul>${recentTracks.map(t => `<li><em>${t.name}</em> — ${t.artist['#text'] || t.artist?.name}</li>`).join('')}</ul>
+      <div><strong>Top 7-day track:</strong> ${topTrack ? `<em>${topTrack.name}</em> by ${topTrack.artist.name} (${topTrack.playcount} plays)` : 'n/a'}</div>
+      <div><strong>Top 1-month artist:</strong> ${topArtist ? `${topArtist.name} (${topArtist.playcount} plays)` : 'n/a'}</div>
+      <div><strong>Top 7-day album:</strong> ${topAlbum ? `${topAlbum.name} by ${topAlbum.artist.name}` : 'n/a'}</div>
+    `);
+
+    setHTML('lastfm-insight', topTrack
+      ? `Most repeat energy this week appears to be <strong>${topTrack.name}</strong> (${topTrack.playcount} plays), while long-run preference points to <strong>${topArtist?.name || 'n/a'}</strong>.`
+      : 'No playable insight available from Last.fm right now.');
+
+    setStatus('lastfm-status', 'Loaded ✓');
+  }
+
+  async function loadLetterboxd() {
+    setStatus('letterboxd-status', 'Fetching diary feed...');
+    const feedUrl = `${rssProxy}${encodeURIComponent('https://letterboxd.com/cristianrus4/rss/')}&cacheBuster=${Date.now()}`;
+    const data = await fetchJSON(feedUrl);
+    const items = (data.items || []).slice(0, 6);
+
+    setHTML('letterboxd-content', `
+      <div><strong>Recent watches:</strong></div>
+      <ul>${items.map(item => `<li>${item.title} <span class="muted">(${new Date(item.pubDate).toLocaleDateString()})</span></li>`).join('')}</ul>
+      <div class="muted">Source: public RSS via rss2json proxy.</div>
+    `);
+
+    const latest = items[0]?.title || 'n/a';
+    setHTML('letterboxd-insight', `Latest logged title is <strong>${latest}</strong>. Showing the 6 newest entries to track momentum and frequency.`);
+    setStatus('letterboxd-status', 'Loaded ✓');
+  }
+
+  async function loadGithub() {
+    const user = 'cristianrus4';
+    setStatus('github-status', 'Fetching profile, events, repos...');
+
+    const [profile, events, repos] = await Promise.all([
+      fetchJSON(`https://api.github.com/users/${user}`),
+      fetchJSON(`https://api.github.com/users/${user}/events/public`),
+      fetchJSON(`https://api.github.com/users/${user}/repos?sort=updated&per_page=6`)
+    ]);
+
+    const pushEvents = events.filter(e => e.type === 'PushEvent');
+    const topLanguages = {};
+    repos.forEach(repo => {
+      if (repo.language) topLanguages[repo.language] = (topLanguages[repo.language] || 0) + 1;
+    });
+
+    setHTML('github-content', `
+      <div><strong>Followers:</strong> ${profile.followers} | <strong>Public repos:</strong> ${profile.public_repos}</div>
+      <div><strong>Recent pushes:</strong> ${pushEvents.length}</div>
+      <div><strong>Recently updated repos:</strong></div>
+      <ul>${repos.map(r => `<li><a href="${r.html_url}" target="_blank" rel="noreferrer">${r.name}</a> <span class="muted">(${r.language || 'n/a'})</span></li>`).join('')}</ul>
+      <div><strong>Language distribution (in latest repos):</strong> ${Object.entries(topLanguages).map(([k,v]) => `${k}: ${v}`).join(', ') || 'n/a'}</div>
+    `);
+
+    const mostActiveRepo = repos[0]?.name || 'n/a';
+    setHTML('github-insight', `Most recently updated repository is <strong>${mostActiveRepo}</strong>; recent public events show <strong>${events.length}</strong> traceable actions.`);
+    setStatus('github-status', 'Loaded ✓');
+  }
+
+  async function loadStrava() {
+    setStatus('strava-status', 'Fetching athlete + activity metrics...');
+
+    const accessToken = 'feeb0bf37ea71f058372abeb9cac2207ab0b68cb';
+    const athlete = await fetchJSON(`https://www.strava.com/api/v3/athlete?access_token=${accessToken}`);
+    const athleteId = athlete.id;
+
+    const [stats, activities] = await Promise.all([
+      fetchJSON(`https://www.strava.com/api/v3/athletes/${athleteId}/stats?access_token=${accessToken}`),
+      fetchJSON(`https://www.strava.com/api/v3/athlete/activities?access_token=${accessToken}&per_page=5&page=1`)
+    ]);
+
+    const latest = activities[0];
+    const runYtdKm = ((stats.ytd_run_totals?.distance || 0) / 1000).toFixed(1);
+    const rideYtdKm = ((stats.ytd_ride_totals?.distance || 0) / 1000).toFixed(1);
+
+    setHTML('strava-content', `
+      <div><strong>Athlete:</strong> ${athlete.firstname} ${athlete.lastname}</div>
+      <div><strong>YTD run distance:</strong> ${runYtdKm} km</div>
+      <div><strong>YTD ride distance:</strong> ${rideYtdKm} km</div>
+      <div><strong>YTD run count:</strong> ${stats.ytd_run_totals?.count || 0}</div>
+      <div><strong>Last 5 activities:</strong></div>
+      <ul>${activities.map(a => `<li>${a.name} — ${(a.distance/1000).toFixed(2)} km, ${minutes(a.moving_time)} min, ${new Date(a.start_date_local).toLocaleDateString()}</li>`).join('')}</ul>
+      <div><strong>Latest effort:</strong> ${latest ? `${latest.type} • ${(latest.distance / 1000).toFixed(2)} km • ${minutes(latest.moving_time)} min` : 'n/a'}</div>
+    `);
+
+    setHTML('strava-insight', latest
+      ? `Most recent activity was <strong>${latest.name}</strong>. Current YTD totals suggest steady movement with <strong>${runYtdKm} km run</strong> and <strong>${rideYtdKm} km ridden</strong>.`
+      : 'No activity data returned right now.');
+
+    setStatus('strava-status', 'Loaded ✓');
+  }
+
+  async function loadGoodreads() {
+    setStatus('goodreads-status', 'Fetching reading RSS...');
+    const rss = 'https://www.goodreads.com/review/list_rss/74821928?key=camdfkmNuO8PqylPKlVe_AckSkL5KnbljWIRS8Dd_HO_Nq_m&shelf=read';
+    const data = await fetchJSON(`${rssProxy}${encodeURIComponent(rss)}`);
+    const items = (data.items || []).slice(0, 6);
+
+    const parsed = items.map(item => {
+      const description = item.description || '';
+      const author = (description.match(/author:\s*(.*?)<br\s*\/?/i) || [])[1] || 'Unknown';
+      const rating = (description.match(/user rating:\s*(.*?)<br\s*\/?/i) || [])[1] || 'n/a';
+      return { title: item.title, author, rating, pubDate: item.pubDate };
+    });
+
+    setHTML('goodreads-content', `
+      <div><strong>Latest books from read shelf:</strong></div>
+      <ul>${parsed.map(book => `<li><em>${book.title}</em> by ${book.author} <span class="muted">(rating: ${book.rating}; ${new Date(book.pubDate).toLocaleDateString()})</span></li>`).join('')}</ul>
+      <div class="muted">This parses author and rating directly from Goodreads RSS descriptions.</div>
+    `);
+
+    const latest = parsed[0];
+    setHTML('goodreads-insight', latest
+      ? `Most recent logged book is <strong>${latest.title}</strong> by ${latest.author}. Keeping rating metadata visible helps compare reading taste over time.`
+      : 'No Goodreads items returned.');
+
+    setStatus('goodreads-status', 'Loaded ✓');
+  }
+
+  async function safeLoad(loader, source) {
+    try {
+      await loader();
+    } catch (err) {
+      console.error(source, err);
+      setStatus(`${source}-status`, `Error: ${err.message}`);
+      setHTML(`${source}-content`, `<div class="muted">Could not fetch ${source} data right now.</div>`);
+      setHTML(`${source}-insight`, 'Try again later or rotate token/API key if rate-limited.');
+    }
+  }
+
+  safeLoad(loadLastFm, 'lastfm');
+  safeLoad(loadLetterboxd, 'letterboxd');
+  safeLoad(loadGithub, 'github');
+  safeLoad(loadStrava, 'strava');
+  safeLoad(loadGoodreads, 'goodreads');
+})();
+</script>
+</body>
+</html>
