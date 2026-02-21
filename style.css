@@ -1,3 +1,20 @@
+/* Color Palette */
+:root {
+    --bg: #FDFDFC;
+    --bg-dark: #111110;
+    --text: #555555;
+    --text-dark: #B5B3AD;
+    --title: #21201C;
+    --title-dark: #EEEEEC;
+    --link-hover-start: #2A2A95;
+    --link-hover-end: #1CB5E0;
+    --link-hover-start-dark: #454597;
+    --link-hover-end-dark: #5AC4E1;
+    --avatar-border: #21201C;
+    --avatar-border-dark: #333333;
+    --item-bar: #555555;
+}
+
 /* Font Face */
 @font-face {
     font-family: 'Quattro';
@@ -24,7 +41,7 @@
 
 /* General Styles */
 html {
-    background-color: #FDFDFC;
+    background-color: var(--bg);
     font-family: 'Geist', sans-serif;
         font-weight: 350;
 
@@ -45,7 +62,7 @@ nav a {
 
 body {
     font-size: 1em;
-    color: #555555;
+    color: var(--text);
     line-height: 1.65em;
     text-align: left;
     margin: 0 auto;
@@ -71,7 +88,7 @@ h1 {
     margin-bottom: 1.5em;
     margin-top: 1.5em;
          font-weight: 500;
-         color: #21201C;
+         color: var(--title);
 
     
 }
@@ -83,7 +100,7 @@ h2 {
     margin-bottom: 0.5em;
     margin-top: 2.5em;
     
-    color: #21201C;
+    color: var(--title);
 }
 
 h3 {
@@ -167,10 +184,8 @@ img {
   row-gap: 0.75em;
   margin-bottom: 0; /* no extra spacing; rely on subtitle margin */
   /* Ensure avatar default border uses the same title color */
-  color: #21201C;
+  color: var(--title);
 }
-
-.header-text .sub { /* keep default spacing from .sub rules */ }
 
 .avatar-link {
   display: inline-block;
@@ -187,7 +202,7 @@ img {
   animation: fadeInFromBottom 1.5s ease forwards;
   opacity: 0; /* start hidden for fade-in */
   margin-top: 0.5em; /* slight upward motion like titles */
-  border: 0.5px solid #21201C; /* thin black border, part of image */
+  border: 0.5px solid var(--title); /* thin black border, part of image */
 }
 
 /* Gradient ring on hover matching link hover gradient */
@@ -227,7 +242,7 @@ figcaption {
   top: 0;
   height: 100%;
   width: 3px;
-  background-color: #555555;
+  background-color: var(--text);
   border-radius: 4px; 
 }
 
@@ -277,7 +292,7 @@ figcaption {
 
 
 a:link, a:visited {
-    background: #21201C; 
+    background: var(--title); 
     font-weight: 400;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -286,7 +301,7 @@ a:link, a:visited {
 
 a:hover {
 
-    background: linear-gradient(to bottom left, #2A2A95 6%, #1CB5E0 100%);
+    background: linear-gradient(to bottom left, var(--link-hover-start) 6%, var(--link-hover-end) 100%);
     font-weight: 400;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -303,90 +318,6 @@ a:hover {
         margin-top: 50px;
         text-align: left;
     }
-
-
-.pulse {
-    vertical-align: middle; /* Vertically align spans in the middle */
-    display: inline-block;
-    animation: pulse 4s; /* Reduce animation duration to 4 seconds */
-}
-
-@keyframes pulse {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    25% {
-        opacity: 1;
-        transform: scale(1);
-        content: attr(data-content); /* Display original content for the first 1 second */
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-        content: attr(data-random); /* Display random content after the first 1 second */
-    }
-}
-
- 
-
-
-.radar {
-  vertical-align: middle; /* Vertically align spans in the middle */
-  display: inline-block; /* Ensure the span behaves like a block element */
-  width: 1em;
-  height: 1em;
-  position: relative;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(139, 0, 0, 0.2) 30%, rgba(139, 0, 0, 0.4) 50%, rgba(139, 0, 0, 0.6) 70%, rgba(139, 0, 0, 0.8) 90%);
-  border: 0.1em solid rgba(139, 0, 0, 0.6); /* Red border */
-  animation: changeGradient 1s forwards 5s; /* Apply animation to change gradient */
-}
-
-@keyframes changeGradient {
-  0% {
-    background: radial-gradient(circle, rgba(139, 0, 0, 0.2) 30%, rgba(139, 0, 0, 0.4) 50%, rgba(139, 0, 0, 0.6) 70%, rgba(139, 0, 0, 0.8) 90%);
-    border-color: rgba(139, 0, 0, 0.6); /* Red border */
-  }
-  100% {
-    background: radial-gradient(circle, rgba(0, 100, 0, 0.2) 30%, rgba(0, 100, 0, 0.4) 50%, rgba(0, 100, 0, 0.6) 70%, rgba(0, 100, 0, 0.8) 90%);
-    border-color: rgba(0, 100, 0, 0.6); /* Green border */
-  }
-}
-
-.center-dot {
-  width: 0.27em;
-  height: 0.27em;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -0.14em; /* Adjusted margin for perfect alignment */
-  margin-left: -0.15em; /* Adjusted margin for perfect alignment */
-  background-color: rgba(139, 0, 0, 0.5); /* Red in RGBA format */
-  border-radius: 50%;
-  z-index: 2;
-  animation: expandRadar 2s ease-in-out infinite alternate, changeColor 1s forwards 5s;
-}
-
-
-@keyframes expandRadar {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(2);
-  }
-}
-
-@keyframes changeColor {
-  0% {
-    background-color: rgba(139, 0, 0, 0.5); /* Red in RGBA format */
-  }
-  100% {
-    background-color: rgba(0, 100, 0, 1); /* Green in RGBA format */
-  }
-} 
-
 
 
 
@@ -498,7 +429,7 @@ a:hover {
 .extra-button a {
   opacity: 1; /* full strength */
   font-weight: 500; /* stronger like former section label */
-  color: #555555; /* match subtitle color */
+  color: var(--text); /* match subtitle color */
   background: none; /* cancel global gradient link color */
   -webkit-background-clip: initial;
   -webkit-text-fill-color: currentColor;
@@ -507,7 +438,7 @@ a:hover {
 .extra-button a:hover {
   /* Match standard link gradient on hover */
   color: inherit;
-  background: linear-gradient(to bottom left, #2A2A95 6%, #1CB5E0 100%);
+  background: linear-gradient(to bottom left, var(--link-hover-start) 6%, var(--link-hover-end) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -534,7 +465,7 @@ a:hover {
 
 #playButton {
   background: none;
-  color: #21201C;
+  color: var(--title);
   border: none;
   border-radius: 5px;
   position: fixed;
@@ -543,42 +474,34 @@ a:hover {
   transform: translate(-50%, -50%);
 }
 
-#playIcon, #pauseIcon {
-
-}
-
-#playIcon::after, #pauseIcon::after {
-  content: "";
-}
-
 
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
     html {
-        background-color: #111110;
+        background-color: var(--bg-dark);
     }
 
     body {
        
-        color: #B5B3AD;
+        color: var(--text-dark);
     }
 
 
 
    #playButton {
- color: #EEEEEC;
+ color: var(--title-dark);
 
 
 }
     h1,h2 {
        
-        color: #EEEEEC;
+        color: var(--title-dark);
     }
 
 
     a:link, a:visited {
-    background: #EEEEEC; 
+    background: var(--title-dark); 
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
@@ -586,7 +509,7 @@ a:hover {
 
 a:hover {
 
-    background: linear-gradient(to bottom left, #454597 6%, #5AC4E1 100%);
+    background: linear-gradient(to bottom left, var(--link-hover-start-dark) 6%, var(--link-hover-end-dark) 100%);
     
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -594,13 +517,13 @@ a:hover {
 }
 
     /* Darker avatar border in dark mode for subtlety */
-    .header { color: #EEEEEC; }
-    .avatar { border-color: #333333; }
+    .header { color: var(--title-dark); }
+    .avatar { border-color: var(--avatar-border-dark); }
 
     /* Buttons match subtitle color in dark mode */
     .extra-button a,
     .extra-button a:hover {
-      color: #B5B3AD; /* same as body/subtitle in dark */
+      color: var(--text-dark); /* same as body/subtitle in dark */
       background: none;
       -webkit-background-clip: initial;
       -webkit-text-fill-color: currentColor;
@@ -608,7 +531,7 @@ a:hover {
 
     /* But on hover, use the same gradient as regular links in dark mode */
     .extra-button a:hover {
-      background: linear-gradient(to bottom left, #454597 6%, #5AC4E1 100%);
+      background: linear-gradient(to bottom left, var(--link-hover-start-dark) 6%, var(--link-hover-end-dark) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }

@@ -1,30 +1,24 @@
+<!-- TOOL PAGE: lofi -->
 <!DOCTYPE html>
-
-	
-
-
 <html lang="en">
 	<head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="description" content="Lofi music player. Press play.">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://www.cristianrus.me/lofi">
+	<meta property="og:title" content="Lofi — Cristian Rus">
+	<meta property="og:description" content="Lofi music player. Press play.">
+	<meta property="og:image" content="https://www.cristianrus.me/images/avatar.jpg">
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+	<link rel="stylesheet" type="text/css" href="tools.css">
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
 	<title>lofi</title>
-	
-    
 </head>
 <body>
 
-	<h1 class="title"><a class="titlelink" href="/">Cristian Rus</a> </h1>
-			<p class="sub">design & human behaviour</p>
-
-
-
-
-	
-
-			
-
+	<h1 class="title"><a class="titlelink" href="/">Cristian Rus</a></h1>
+	<p class="sub">design & human behaviour</p>
 
 	<button id="playButton" onclick="togglePlayPause()">
   <span id="playIcon"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -37,18 +31,12 @@
 </span>
 </button>
 
-
-
-
-
-
   <div id="player"></div>
-
 
   <script type="text/javascript">function togglePlayPause() {
   var playIcon = document.getElementById('playIcon');
   var pauseIcon = document.getElementById('pauseIcon');
-  
+
   playIcon.style.display = playIcon.style.display === 'none' ? 'inline' : 'none';
   pauseIcon.style.display = pauseIcon.style.display === 'none' ? 'inline' : 'none';
 }
@@ -58,18 +46,18 @@
   <script>
     var player;
     var isPlaying = false;
-    
+
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('player', {
         height: '0', // Set player height to 0 to hide the video
         width: '0', // Set player width to 0 to hide the video
-        videoId: 'jfKfPfyJRdk', // Replace with your desired YouTube video ID
+        videoId: 'jfKfPfyJRdk',
         events: {
           'onReady': onPlayerReady
         }
       });
     }
-    
+
     function onPlayerReady(event) {
       document.getElementById('playButton').addEventListener('click', function() {
         if (!isPlaying) {
@@ -86,15 +74,6 @@
     }
   </script>
 
-
-
-
 </body>
 
-
-
-
-	
-
 </html>
-	
