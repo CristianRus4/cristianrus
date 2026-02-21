@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Core pages -->
+  <url><loc>https://www.cristianrus.me/</loc><priority>1.0</priority></url>
+  <url><loc>https://www.cristianrus.me/about</loc><priority>0.9</priority></url>
+  <url><loc>https://www.cristianrus.me/now</loc><priority>0.9</priority></url>
+
+  <!-- Content pages -->
+  <url><loc>https://www.cristianrus.me/books</loc><priority>0.7</priority></url>
+  <url><loc>https://www.cristianrus.me/homescreen</loc><priority>0.7</priority></url>
+  <url><loc>https://www.cristianrus.me/tattoos</loc><priority>0.6</priority></url>
+  <url><loc>https://www.cristianrus.me/attitude</loc><priority>0.6</priority></url>
+  <url><loc>https://www.cristianrus.me/experience</loc><priority>0.6</priority></url>
+
+  <!-- App pages -->
+  <url><loc>https://www.cristianrus.me/apps/left</loc><priority>0.8</priority></url>
+  <url><loc>https://www.cristianrus.me/apps/ftnss</loc><priority>0.8</priority></url>
+  <url><loc>https://www.cristianrus.me/apps/ftnss-workouts</loc><priority>0.7</priority></url>
+  <url><loc>https://www.cristianrus.me/apps/txtpod</loc><priority>0.8</priority></url>
+  <url><loc>https://www.cristianrus.me/apps/kiwicamping</loc><priority>0.8</priority></url>
+  <url><loc>https://www.cristianrus.me/apps/notsobusy</loc><priority>0.8</priority></url>
+  <url><loc>https://www.cristianrus.me/apps/bites</loc><priority>0.8</priority></url>
+
+  <!-- Tool pages -->
+  <url><loc>https://www.cristianrus.me/focus</loc><priority>0.5</priority></url>
+  <url><loc>https://www.cristianrus.me/flip</loc><priority>0.5</priority></url>
+  <url><loc>https://www.cristianrus.me/think</loc><priority>0.5</priority></url>
+  <url><loc>https://www.cristianrus.me/time</loc><priority>0.5</priority></url>
+  <url><loc>https://www.cristianrus.me/lofi</loc><priority>0.5</priority></url>
+
+  <!-- Reading -->
+  <url><loc>https://www.cristianrus.me/books/meditations</loc><priority>0.4</priority></url>
+  <url><loc>https://www.cristianrus.me/books/discourses</loc><priority>0.4</priority></url>
+
+</urlset>

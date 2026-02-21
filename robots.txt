@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Emergency info page — noindex, keep crawlers out
+Disallow: /sos
+
+Sitemap: https://www.cristianrus.me/sitemap.xml
