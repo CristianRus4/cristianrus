@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nightly</title>
-<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-@font-face { font-family: "Quattro"; src: url("/fonts/Quattro.woff") format("woff"); }
-@font-face { font-family: "Quattro Italic"; src: url("/fonts/Quattro-Italic.woff") format("woff"); }
-@font-face { font-family: "Erode Italic"; src: url("/fonts/Erode-Italic.ttf") format("truetype"); }
+@font-face { font-family: "Quattro"; src: url("../fonts/Quattro.woff") format("woff"); }
+@font-face { font-family: "Quattro Italic"; src: url("../fonts/Quattro-Italic.woff") format("woff"); }
 :root {
   color-scheme: light dark;
   --bg:#f6f4ef; --surface:#ece9e2; --surface2:#efebe4; --border:#d6d1c5;
   --text:#2b2720; --dim:#726a5f; --accent:#8b6b2f; --accent-dim:#9a8560;
   --green-text:#2b7a55; --red-text:#b24a3b; --green:#2b7a55; --red:#b24a3b;
+  --leading-inset:0.25rem;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -26,27 +26,27 @@
 html { background: var(--bg); color: var(--text); font-family: "Quattro", serif; font-size: 18px; line-height: 1.78; }
 body { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 6rem; }
 .date-line { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 2.5rem; }
-h1 { font-family: "Erode Italic", serif; font-size: 2.1rem; font-weight: 400; color: var(--accent); line-height: 1.2; margin-bottom: 2rem; }
-h2 { font-family: "Erode Italic", serif; font-size: 1.15rem; font-weight: 400; color: var(--accent); margin: 2.3rem 0 1rem; }
+h1 { font-family: "Quattro Italic", serif; font-size: 2.1rem; font-weight: 400; color: var(--accent); line-height: 1.2; margin-bottom: 2rem; }
+h2 { font-family: "Quattro Italic", serif; font-size: 1.15rem; font-weight: 400; color: var(--accent); margin: 2.3rem 0 1rem; }
 p { margin-bottom: 1rem; }
 hr { border: none; border-top: 1px solid var(--border); margin: 2.3rem 0; }
-blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding: 0.2rem 1.3rem; color: var(--dim); font-family: "Quattro Italic", serif; }
+blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0 1.8rem var(--leading-inset); padding: 0.2rem 1.3rem 0.2rem 1.4rem; color: var(--dim); font-family: "Quattro Italic", serif; }
 .section { margin-top: 2.3rem; }
-.section-rule { border-top: 1px solid var(--border); padding-top: 0.25rem; }
-.section-filled { background: var(--surface); border: 1px solid var(--border); padding: 0.25rem 1.5rem 1.3rem; }
-.number-callout .num { font-family: "Erode Italic", serif; font-size: 3.1rem; color: var(--accent); display: block; margin-bottom: 0.2rem; line-height: 1; }
+.section-rule { border-top: 1px solid var(--border); padding-top: 0.45rem; }
+.section-filled { background: var(--surface); border: 1px solid var(--border); padding: 0.45rem 1.5rem 1.3rem; }
+.number-callout .num { font-family: "Quattro Italic", serif; font-size: 3.1rem; color: var(--accent); display: block; margin-bottom: 0.2rem; line-height: 1; }
 .number-callout .num-label { font-size: 0.9rem; color: var(--text); font-family: "Quattro", serif; }
 .fiction, .word-block, .answers-block { background: var(--surface); border: 1px solid var(--border); padding: 1.3rem 1.5rem; }
-.fiction { color: var(--dim); font-family: "Quattro Italic", serif; border-left: 2px solid var(--accent-dim); background: transparent; border-right: 0; border-top: 0; border-bottom: 0; padding: 0.2rem 1.3rem; }
-.word-term { font-family: "Erode Italic", serif; font-size: 3.1rem; color: var(--accent); margin-bottom: 0.2rem; line-height: 1; }
+.fiction { color: var(--dim); font-family: "Quattro Italic", serif; border-left: 2px solid var(--accent-dim); background: transparent; border-right: 0; border-top: 0; border-bottom: 0; margin-left: var(--leading-inset); padding: 0.2rem 1.3rem 0.2rem 1.4rem; }
+.word-term { font-family: "Quattro Italic", serif; font-size: 3.1rem; color: var(--accent); margin-bottom: 0.2rem; line-height: 1; }
 .word-origin { font-size: 0.74rem; letter-spacing: 0.06em; color: var(--dim); margin-bottom: 0.7rem; }
 .person-block { border-left: 0; padding-left: 0; }
-.person-name { font-family: "Erode Italic", serif; font-size: 1.45rem; color: var(--accent); margin-bottom: 0.2rem; }
+.person-name { font-family: "Quattro Italic", serif; font-size: 1.45rem; color: var(--accent); margin-bottom: 0.2rem; }
 .person-dates { font-size: 0.74rem; color: var(--dim); letter-spacing: 0.06em; margin-bottom: 0.7rem; }
-.questions { list-style: none; counter-reset: q; }
+.questions { list-style: none; counter-reset: q; margin-left: var(--leading-inset); }
 .questions li { counter-increment: q; margin-bottom: 1.8rem; }
 .q-text-wrap { display: flex; gap: 0.9rem; align-items: flex-start; margin-bottom: 0.7rem; }
-.q-text-wrap::before { content: counter(q); font-family: "Erode Italic", serif; color: var(--accent-dim); font-size: 0.85rem; min-width: 1rem; padding-top: 0.15rem; }
+.q-text-wrap::before { content: counter(q); font-family: "Quattro Italic", serif; color: var(--accent-dim); font-size: 0.85rem; min-width: 1rem; padding-top: 0.15rem; }
 .q-text { font-family: "Quattro Italic", serif; }
 .q-btns { display: flex; gap: 0.85rem; margin-left: 1.9rem; flex-wrap: wrap; }
 .q-btn { background: none; border: 1px solid var(--border); color: var(--dim); font-family: "Quattro", serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.28rem 0.7rem; cursor: pointer; }
@@ -56,7 +56,7 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
 .trivia-opts li { counter-increment: opt; display: flex; gap: 0.6rem; margin-bottom: 0.3rem; color: var(--dim); }
 .trivia-opts li::before { content: counter(opt, upper-alpha) "."; color: var(--accent-dim); font-size: 0.8rem; padding-top: 0.12rem; }
 .game-box { margin-top: 1rem; background: transparent; border: 0; padding: 0; }
-.game-title { font-family: "Erode Italic", serif; color: var(--accent); margin-bottom: 0.5rem; }
+.game-title { font-family: "Quattro Italic", serif; color: var(--accent); margin-bottom: 0.5rem; }
 .game-row { display: grid; gap: 0.45rem; }
 .game-two { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
 .actions { display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; }
@@ -74,7 +74,7 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
 .result.bad { color: var(--red-text); }
 .answers-block p { margin-bottom: 0.55rem; color: var(--dim); font-size: 0.9rem; opacity: 0.55; }
 .answers-block strong { color: var(--accent); font-weight: 400; }
-.heading-row h2, .box-label { margin: 0 0 0.35rem; text-align: right; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.62; color: var(--accent-dim); font-family: "Erode Italic", serif; }
+.heading-row h2, .box-label { margin: 0 0 0.35rem; padding-right: 0.075rem; text-align: right; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.62; color: var(--accent-dim); font-family: "Quattro Italic", serif; }
 </style>
 </head>
 <body>

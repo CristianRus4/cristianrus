@@ -15,23 +15,18 @@
       content="A nightly reading ritual with one digest per day."
     >
     <meta property="og:image" content="https://www.cristianrus.me/images/avatar.jpg">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico">
     <title>Nightly Digest</title>
     <style>
       @font-face {
         font-family: "Quattro";
-        src: url("/fonts/Quattro.woff") format("woff");
+        src: url("../fonts/Quattro.woff") format("woff");
       }
 
       @font-face {
         font-family: "Quattro Italic";
-        src: url("/fonts/Quattro-Italic.woff") format("woff");
-      }
-
-      @font-face {
-        font-family: "Erode Italic";
-        src: url("/fonts/Erode-Italic.ttf") format("truetype");
+        src: url("../fonts/Quattro-Italic.woff") format("woff");
       }
 
       :root {
@@ -47,6 +42,7 @@
         --green: #2b7a55;
         --red: #b24a3b;
         --quote-text: #3a342a;
+        --leading-inset: 0.45rem;
         --radius: 18px;
         --shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
       }
@@ -76,13 +72,14 @@
       }
 
       body {
-        margin: 0;
-        min-height: 100vh;
-        background: radial-gradient(circle at top, rgba(196, 169, 110, 0.08), transparent 32%),
-          var(--bg);
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 6rem;
+        background: var(--bg);
         color: var(--text);
         font-family: "Quattro", serif;
-        line-height: 1.65;
+        font-size: 18px;
+        line-height: 1.78;
       }
 
       button,
@@ -100,18 +97,18 @@
       }
 
       .page {
-        width: min(100%, 680px);
-        margin: 0 auto;
-        padding: 2rem 1.15rem 5rem;
+        width: auto;
+        margin: 0;
+        padding: 0;
       }
 
       .masthead {
-        margin-bottom: 1.5rem;
+        display: none;
       }
 
       .site-link {
         display: inline-block;
-        font-family: "Erode Italic", serif;
+        font-family: "Quattro Italic", serif;
         font-size: 1.45rem;
         color: var(--accent);
       }
@@ -125,8 +122,7 @@
       }
 
       .stack {
-        display: grid;
-        gap: 0.95rem;
+        display: block;
       }
 
       .card {
@@ -138,18 +134,22 @@
       }
 
       .card + .card {
-        margin-top: 4.5rem;
+        margin-top: 2.3rem;
       }
 
       .section-rule {
         border-top: 1px solid var(--border);
-        padding-top: 0.35rem;
+        padding-top: 0.45rem;
+      }
+
+      .section-rule > .section-label {
+        padding-right: 1.1rem;
       }
 
       .section-filled {
         background: var(--surface);
         border: 1px solid var(--border);
-        padding: 0.35rem 1.1rem 1rem;
+        padding: 0.45rem 1.1rem 1rem;
       }
 
       .card > :first-child {
@@ -163,31 +163,45 @@
       .section-label {
         margin: 0 0 0.4rem;
         color: var(--accent-dim);
-        font-family: "Erode Italic", serif;
+        font-family: "Quattro Italic", serif;
         font-size: 0.72rem;
         opacity: 0.62;
         text-align: right;
         letter-spacing: 0.08em;
         text-transform: uppercase;
+        padding-right: 0.075rem;
+      }
+
+      .answer-card .section-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        text-transform: none;
+        text-align: left;
+        padding-right: 0;
+        margin-bottom: 0.35rem;
       }
 
       .date-line {
-        margin: 0;
-        color: var(--accent);
-        font-size: 0.95rem;
+        margin: 0 0 2.5rem;
+        color: var(--dim);
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
       }
 
       .entry-title {
-        margin: 0.2rem 0 0.16rem;
-        font-family: "Erode Italic", serif;
-        font-size: clamp(2rem, 7vw, 2.9rem);
-        line-height: 1.05;
+        margin: 0 0 1rem;
+        font-family: "Quattro Italic", serif;
+        font-size: 2.1rem;
+        font-weight: 400;
+        color: var(--accent);
+        line-height: 1.2;
       }
 
       .entry-subtitle {
         margin: 0;
         color: var(--dim);
-        font-size: 1rem;
+        font-size: 0.9rem;
       }
 
       .fiction-box,
@@ -195,7 +209,7 @@
       .answers-box {
         background: var(--surface);
         border: 1px solid var(--border);
-        padding: 1rem 1.1rem;
+        padding: 1.3rem 1.5rem;
       }
       .interactive-plain {
         background: transparent;
@@ -204,8 +218,8 @@
       }
 
       .person-block {
-        border-left: 2px solid var(--border);
-        padding-left: 0.9rem;
+        border-left: 0;
+        padding-left: 0;
       }
 
       .prose p {
@@ -213,11 +227,23 @@
       }
 
       .essay-blockquote,
-      .quote-block {
-        margin: 1.1rem 0;
-        padding-left: 1rem;
+      .quote-block,
+      .fragment-rail {
+        margin: 1.8rem 0 1.8rem var(--leading-inset);
+        padding: 0.2rem 1.3rem 0.2rem 1.4rem;
         border-left: 2px solid var(--accent-dim);
-        color: var(--quote-text);
+        color: var(--dim);
+        background: transparent;
+      }
+
+      .fragment-rail {
+        border-right: 0;
+        border-top: 0;
+        border-bottom: 0;
+      }
+
+      .fragment-rail p {
+        font-family: "Quattro Italic", serif;
       }
 
       .essay-blockquote p,
@@ -240,25 +266,27 @@
 
       .number-value {
         margin: 0 0 0.45rem;
-        font-family: "Erode Italic", serif;
-        font-size: clamp(4rem, 16vw, 6rem);
-        line-height: 1.05;
+        font-family: "Quattro Italic", serif;
+        font-size: 3.1rem;
+        line-height: 1;
         color: var(--accent);
       }
 
       .word-term {
-        margin: 0 0 0.35rem;
-        font-family: "Erode Italic", serif;
-        font-size: clamp(4rem, 16vw, 6rem);
-        line-height: 1.05;
+        margin: 0 0 0.2rem;
+        font-family: "Quattro Italic", serif;
+        font-size: 3.1rem;
+        line-height: 1;
+        color: var(--accent);
       }
 
       .person-name,
       .game-title {
-        margin: 0 0 0.35rem;
-        font-family: "Erode Italic", serif;
-        font-size: 1.55rem;
-        line-height: 1.15;
+        margin: 0 0 0.2rem;
+        font-family: "Quattro Italic", serif;
+        font-size: 1.45rem;
+        line-height: 1.2;
+        color: var(--accent);
       }
 
       .word-origin,
@@ -277,16 +305,44 @@
         gap: 0.85rem;
       }
 
-      .question-card,
+      .question-list {
+        list-style: none;
+        counter-reset: q;
+        margin-left: 0;
+      }
+
+      .question-card {
+        counter-increment: q;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        padding-left: var(--leading-inset);
+      }
+
+      .question-prompt {
+        display: flex;
+        gap: 0.9rem;
+        align-items: baseline;
+        margin-bottom: 0.7rem;
+      }
+
+      .question-prompt::before {
+        content: counter(q);
+        font-family: "Quattro Italic", serif;
+        color: var(--accent-dim);
+        font-size: 0.85rem;
+        min-width: 1rem;
+        line-height: 1.78;
+      }
+
+      .question-text {
+        font-family: "Quattro Italic", serif;
+      }
+
       .answer-card {
         padding: 0;
         border: 0;
-        border-radius: 0;
         background: transparent;
-      }
-
-      .question-card p:last-of-type {
-        margin-bottom: 0;
       }
 
       .question-actions,
@@ -294,7 +350,8 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.9rem;
-        margin-top: 0.85rem;
+        margin-top: 0;
+        margin-left: 1.9rem;
       }
 
       .pill-button,
@@ -364,9 +421,11 @@
 
       .question-panel {
         margin-top: 0.8rem;
-        padding: 0.6rem 0.7rem;
+        margin-left: 1.9rem;
+        padding: 0 0 0 1rem;
         border-radius: 0;
-        border: 1px solid rgba(196, 169, 110, 0.14);
+        border: 0;
+        border-left: 1px solid var(--border);
         background: transparent;
       }
       .answers-box p {
@@ -391,7 +450,7 @@
       .option-title {
         display: block;
         margin-bottom: 0.2rem;
-        font-family: "Erode Italic", serif;
+        font-family: "Quattro Italic", serif;
         font-size: 1.02rem;
         color: inherit;
       }
@@ -444,7 +503,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.35rem;
-        font-family: "Erode Italic", serif;
+        font-family: "Quattro Italic", serif;
         font-size: 1.35rem;
         color: var(--accent);
       }
@@ -494,22 +553,13 @@
       }
 
       @media (max-width: 640px) {
-        .page {
-          padding-top: 1.5rem;
-          padding-bottom: 4rem;
-        }
-
-        .card {
-          padding: 1rem;
-        }
-
         .choice-grid.two-column {
           grid-template-columns: 1fr;
         }
 
         .question-actions,
         .inline-actions {
-          flex-direction: column;
+          margin-left: 1.9rem;
         }
       }
     </style>
@@ -517,7 +567,7 @@
   <body>
     <main class="page">
       <header class="masthead">
-        <a class="site-link" href="/">Cristian Rus</a>
+        <a class="site-link" href="../">Cristian Rus</a>
         <p class="site-kicker">nightly digest</p>
       </header>
       <div id="app" class="stack">
@@ -528,7 +578,7 @@
     </main>
 
     <script>
-      const DIGESTS_DIR = "/nightly/data/digests";
+      const DIGESTS_DIR = new URL("./data/digests/", window.location.href);
       const app = document.getElementById("app");
 
       document.addEventListener("DOMContentLoaded", init);
@@ -537,7 +587,7 @@
         const today = getTodayDate();
 
         try {
-          const response = await fetch(`${DIGESTS_DIR}/${today}.json`, { cache: "no-store" });
+          const response = await fetch(new URL(`${today}.json`, DIGESTS_DIR), { cache: "no-store" });
           if (!response.ok) {
             throw new Error("Failed to fetch nightly digests.");
           }
@@ -588,22 +638,22 @@
 
           <section class="card section-filled">
             <p class="section-label">Today's Number</p>
-              <p class="number-value">${escapeHtml(normalized.number.value)}</p>
-              <p>${escapeHtml(normalized.number.label)}</p>
+            <p class="number-value">${escapeHtml(normalized.number.value)}</p>
+            <p>${escapeHtml(normalized.number.label)}</p>
           </section>
 
           <section class="card section-rule prose">
             <p class="section-label">Fragment</p>
-            <div class="fiction-box">
+            <div class="fragment-rail">
               <p>${escapeHtml(normalized.fragment)}</p>
             </div>
           </section>
 
           <section class="card section-filled prose">
             <p class="section-label">Word Of The Night</p>
-              <h2 class="word-term">${escapeHtml(normalized.word.term)}</h2>
-              <p class="word-origin">${escapeHtml(normalized.word.origin)}</p>
-              <p>${escapeHtml(normalized.word.definition)}</p>
+            <h2 class="word-term">${escapeHtml(normalized.word.term)}</h2>
+            <p class="word-origin">${escapeHtml(normalized.word.origin)}</p>
+            <p>${escapeHtml(normalized.word.definition)}</p>
           </section>
 
           <section class="card section-rule prose">
@@ -626,14 +676,18 @@
 
           <section class="card section-rule">
             <p class="section-label">Three Questions</p>
-            <div class="question-list">
+            <ul class="question-list">
               ${renderQuestions(normalized.questions)}
-            </div>
+            </ul>
           </section>
 
           <section class="card section-rule">
-            <p class="section-label">Trivia</p>
+            <p class="section-label">Games</p>
+          </section>
+
+          <section class="card">
             <div class="word-box interactive-plain">
+              <h2 class="game-title">Trivia</h2>
               <p class="game-prompt">${escapeHtml(normalized.trivia.question)}</p>
               <div class="choice-grid" data-trivia-options>
                 ${normalized.trivia.options
@@ -651,17 +705,13 @@
             </div>
           </section>
 
-          <section class="card section-rule">
-            <p class="section-label">Game</p>
+          <section class="card">
             <div class="word-box interactive-plain">
               <div id="nightly-game" class="game-shell">
                 ${renderGameMarkup(normalized.game, normalized.date)}
               </div>
             </div>
           </section>
-
-          <div class="scroll-hint">Scroll a little further for tonight's answers.</div>
-          <div class="spacer" aria-hidden="true"></div>
 
           <section class="card section-rule">
             <p class="section-label">Answers</p>
@@ -785,8 +835,10 @@
         return questions
           .map(
             (question, index) => `
-              <article class="question-card" data-question-card="${index}">
-                <p>${escapeHtml(question.text)}</p>
+              <li class="question-card" data-question-card="${index}">
+                <div class="question-prompt">
+                  <p class="question-text">${escapeHtml(question.text)}</p>
+                </div>
                 <div class="question-actions">
                   <button class="pill-button" type="button" data-question-toggle="deeper" aria-expanded="false">
                     go deeper
@@ -801,7 +853,7 @@
                 <div class="question-panel" data-question-panel="experiment" hidden>
                   <p>${escapeHtml(question.experiment)}</p>
                 </div>
-              </article>
+              </li>
             `
           )
           .join("");
