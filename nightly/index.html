@@ -147,9 +147,19 @@
       }
 
       .section-filled {
-        background: var(--surface);
-        border: 1px solid var(--border);
+        background: var(--text);
+        border: 1px solid var(--text);
+        color: var(--bg);
         padding: 0.45rem 1.1rem 1rem;
+      }
+
+      .section-filled .section-label,
+      .section-filled .number-value,
+      .section-filled .word-term,
+      .section-filled .word-origin,
+      .section-filled p,
+      .section-filled h2 {
+        color: inherit;
       }
 
       .card > :first-child {
@@ -227,7 +237,14 @@
       }
 
       .essay-blockquote,
-      .quote-block,
+      .quote-block {
+        margin: 1.8rem 0 1.8rem var(--leading-inset);
+        padding: 0.2rem 1.3rem 0.2rem 1.4rem;
+        border-left: 4px solid var(--accent-dim);
+        color: var(--dim);
+        background: transparent;
+      }
+
       .fragment-rail {
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
@@ -406,7 +423,6 @@
       .option-button:disabled,
       .secondary-button:disabled,
       .primary-button:disabled {
-        opacity: 0.55;
         cursor: default;
       }
 
@@ -428,10 +444,6 @@
         border-left: 1px solid var(--border);
         background: transparent;
       }
-      .answers-box p {
-        opacity: 0.55;
-      }
-
       .choice-grid {
         display: grid;
         gap: 0.75rem;
@@ -497,7 +509,7 @@
         align-items: center;
         flex-wrap: wrap;
       }
-      .quote-translation { font-style: normal; opacity: 0.9; }
+      .quote-translation { font-style: normal; }
 
       .mask {
         display: flex;
