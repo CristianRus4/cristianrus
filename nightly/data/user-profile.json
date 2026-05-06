@@ -1,0 +1,84 @@
+{
+  "authors": {
+    "primary": [
+      "Seneca",
+      "Marcus Aurelius",
+      "Mircea Cartarescu",
+      "Mircea Eliade",
+      "Fernando Pessoa"
+    ],
+    "secondary": [
+      "Emil Cioran",
+      "Jorge Luis Borges",
+      "Albert Camus",
+      "Fyodor Dostoyevsky",
+      "Simone de Beauvoir",
+      "Sartre",
+      "Kierkegaard",
+      "Tolstoy",
+      "Murakami",
+      "Svetlana Alexievich",
+      "Epictetus",
+      "Carl Jung",
+      "Nassim Taleb",
+      "Joseph Campbell",
+      "Nietzsche",
+      "Erich Fromm",
+      "Lucretius",
+      "Alejandro Zambra",
+      "Robert Sapolsky",
+      "Oliver Sacks"
+    ]
+  },
+  "books_read": [
+    "The Denial of Death — Ernest Becker",
+    "Solenoid — Mircea Cartarescu",
+    "The Book of Disquiet — Fernando Pessoa",
+    "Meditations — Marcus Aurelius",
+    "The Great Mental Models Vol 1-4 — Shane Parrish"
+  ],
+  "films": [
+    "The Tree of Life — Malick",
+    "To the Wonder — Malick",
+    "Stalker — Tarkovsky",
+    "Mirror — Tarkovsky",
+    "Persona — Bergman",
+    "Scenes from a Marriage — Bergman",
+    "L'Avventura — Antonioni",
+    "Au Hasard Balthazar — Bresson"
+  ],
+  "music": [],
+  "interests": [
+    "forests",
+    "autumn",
+    "fermentation",
+    "decay",
+    "moss",
+    "slow cinema",
+    "existentialism",
+    "phenomenology",
+    "iOS development",
+    "minimalist design",
+    "Apple ecosystem",
+    "vegan food",
+    "Romanian culture",
+    "Spanish culture",
+    "systems thinking",
+    "cognitive science",
+    "neuroscience",
+    "mental models",
+    "complexity theory"
+  ],
+  "avoid": [
+    "self-help framing",
+    "productivity advice",
+    "inspirational uplift",
+    "tidy resolution in essays"
+  ],
+  "languages": [
+    "Spanish",
+    "Romanian",
+    "English"
+  ],
+  "location": "Wellington, New Zealand"
+}

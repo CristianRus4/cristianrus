@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nightly</title>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@font-face { font-family: "Quattro"; src: url("/fonts/Quattro.woff") format("woff"); }
+@font-face { font-family: "Quattro Italic"; src: url("/fonts/Quattro-Italic.woff") format("woff"); }
+@font-face { font-family: "Erode Italic"; src: url("/fonts/Erode-Italic.ttf") format("truetype"); }
+:root {
+  --bg:#0e0d0b; --surface:#161510; --surface2:#1c1b16; --border:#2a2820;
+  --text:#c8c2b4; --dim:#6b6560; --accent:#c4a96e; --accent-dim:#7a6840;
+  --green-text:#7ab090; --red-text:#c07060; --green:#5a8060; --red:#7a4a40;
+}
+html { background: var(--bg); color: var(--text); font-family: "Quattro", serif; font-size: 18px; line-height: 1.78; }
+body { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 6rem; }
+.date-line { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 2.5rem; }
+h1 { font-family: "Erode Italic", serif; font-size: 2.1rem; font-weight: 400; color: var(--accent); line-height: 1.2; margin-bottom: 2rem; }
+h2 { font-family: "Erode Italic", serif; font-size: 1.15rem; font-weight: 400; color: var(--accent); margin: 2.3rem 0 1rem; }
+p { margin-bottom: 1rem; }
+hr { border: none; border-top: 1px solid var(--border); margin: 2.3rem 0; }
+blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding: 0.2rem 1.3rem; color: var(--dim); font-family: "Quattro Italic", serif; }
+.number-callout .num { font-family: "Erode Italic", serif; font-size: 3.1rem; color: var(--accent); display: block; margin-bottom: 0.2rem; line-height: 1; }
+.number-callout .num-label { font-size: 0.9rem; color: var(--text); font-family: "Quattro", serif; }
+.fiction, .word-block, .answers-block { background: var(--surface); border: 1px solid var(--border); padding: 1.3rem 1.5rem; }
+.fiction { color: var(--dim); font-family: "Quattro Italic", serif; border-left: 2px solid var(--accent-dim); background: transparent; border-right: 0; border-top: 0; border-bottom: 0; padding: 0.2rem 1.3rem; }
+.word-term { font-family: "Erode Italic", serif; font-size: 3.1rem; color: var(--accent); margin-bottom: 0.2rem; line-height: 1; }
+.word-origin { font-size: 0.74rem; letter-spacing: 0.06em; color: var(--dim); margin-bottom: 0.7rem; }
+.person-block { border-left: 0; padding-left: 0; }
+.person-name { font-family: "Erode Italic", serif; font-size: 1.45rem; color: var(--accent); margin-bottom: 0.2rem; }
+.person-dates { font-size: 0.74rem; color: var(--dim); letter-spacing: 0.06em; margin-bottom: 0.7rem; }
+.questions { list-style: none; counter-reset: q; }
+.questions li { counter-increment: q; margin-bottom: 1.8rem; }
+.q-text-wrap { display: flex; gap: 0.9rem; align-items: flex-start; margin-bottom: 0.7rem; }
+.q-text-wrap::before { content: counter(q); font-family: "Erode Italic", serif; color: var(--accent-dim); font-size: 0.85rem; min-width: 1rem; padding-top: 0.15rem; }
+.q-text { font-family: "Quattro Italic", serif; }
+.q-btns { display: flex; gap: 0.4rem; margin-left: 1.9rem; flex-wrap: wrap; }
+.q-btn { background: none; border: 1px solid var(--border); color: var(--dim); font-family: "Quattro", serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.28rem 0.7rem; cursor: pointer; }
+.q-expand { display: none; margin-top: 0.7rem; margin-left: 1.9rem; border-left: 1px solid var(--border); padding-left: 1rem; font-size: 0.85rem; color: var(--dim); }
+.q-expand.open { display: block; }
+.trivia-opts { list-style: none; counter-reset: opt; }
+.trivia-opts li { counter-increment: opt; display: flex; gap: 0.6rem; margin-bottom: 0.3rem; color: var(--dim); }
+.trivia-opts li::before { content: counter(opt, upper-alpha) "."; color: var(--accent-dim); font-size: 0.8rem; padding-top: 0.12rem; }
+.game-box { margin-top: 1rem; background: transparent; border: 0; padding: 0; }
+.game-title { font-family: "Erode Italic", serif; color: var(--accent); margin-bottom: 0.5rem; }
+.game-row { display: grid; gap: 0.45rem; }
+.game-two { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+.game-btn, .game-input, .match-item { background: none; border: 1px solid var(--border); color: var(--text); border-radius: 0; padding: 0.28rem 0.7rem; font-size: 0.68rem; line-height: 1.45; font-family: "Quattro", serif; letter-spacing: 0.1em; text-transform: uppercase; }
+.game-btn { cursor: pointer; text-align: left; }
+.game-btn { width: fit-content; min-width: 9.8rem; }
+.game-btn { opacity: 0.72; }
+.game-btn.ok { border-color: var(--green); color: var(--green-text); opacity: 1; }
+.game-btn.bad { border-color: var(--red); color: var(--red-text); opacity: 1; }
+.match-item.selected { border-color: var(--accent); }
+.match-item.paired { border-color: var(--green); color: var(--green-text); }
+.result { font-size: 0.86rem; color: var(--dim); min-height: 1.2rem; margin-top: 0.4rem; }
+.result.ok { color: var(--green-text); }
+.result.bad { color: var(--red-text); }
+.answers-block p { margin-bottom: 0.55rem; color: var(--dim); font-size: 0.9rem; opacity: 0.55; }
+.answers-block strong { color: var(--accent); font-weight: 400; }
+.heading-row { margin-top: 6rem; }
+.heading-row hr { border: none; border-top: 1px solid var(--border); margin: 0 0 0.25rem; }
+.heading-row h2 { margin: 0; text-align: right; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.62; color: var(--accent-dim); font-family: "Erode Italic", serif; }
+</style>
+</head>
+<body>
+
+<div class="date-line">Monday, 19 May 2026</div>
+<h1 style="margin-bottom:1rem;">The Animal That Knows It Will Die</h1>
+
+<p>In 1974, Ernest Becker published <em>The Denial of Death</em>, arguing that much of culture is organized around mortality awareness. The human animal knows it will die and spends extraordinary energy trying not to feel that fact directly.</p>
+<p>Otto Rank called this the immortality project: systems that promise symbolic continuity. Legacy, family, ideology, and even taste become ways to push back against annihilation.</p>
+<p>Terror Management Theory later tested this experimentally. Small mortality reminders made people more defensive, more tribal, and more attached to worldview boundaries.</p>
+<blockquote>We do not act despite knowing we will die. We act because of it — and rarely notice which mode we are in.</blockquote>
+<p>There is still a minority response: mortality awareness as clarification rather than panic. That is the unresolved part of Becker's project.</p>
+<hr>
+
+<div class="number-callout">
+  <div class="word-block">
+  <span class="num">15 milliseconds</span>
+  <span class="num-label">Subliminal mortality-prime exposure used in classic TMT experiments.</span>
+  </div>
+</div>
+
+<div class="heading-row"><hr><h2>Fragment</h2></div>
+<div class="fiction">His father left a list of every book he had owned, dated and marked with one word each. Not judgment, only evidence of having been present. He stood in the kitchen holding the pages and understood that the list was a life written in private grammar.</div>
+
+<div class="heading-row"><hr><h2>Word of the night</h2></div>
+<div class="word-block">
+  <div class="word-term">Hiraeth</div>
+  <div class="word-origin">Welsh — no direct one-word English equivalent</div>
+  <p>A longing for a home that cannot be returned to, or may never have existed in retrievable form.</p>
+</div>
+
+<div class="heading-row"><hr><h2>Tonight's voice</h2></div>
+<blockquote>Nu am nicio patrie. Patria mea e o durere.<br><em>I have no homeland. My homeland is a suffering.</em></blockquote>
+
+<div class="heading-row"><hr><h2>Person you've never heard of</h2></div>
+<div class="person-block">
+  <div class="person-name">Ernest Becker</div>
+  <div class="person-dates">1924 – 1974 — Springfield MA, Vancouver</div>
+  <p>He was repeatedly pushed out of institutions and died shortly before winning the Pulitzer.</p>
+  <p>Late interviews show him discussing death with unusual practical calm, not rhetoric.</p>
+</div>
+
+<div class="heading-row"><hr><h2>Three questions</h2></div>
+<ul class="questions">
+  <li>
+    <div class="q-text-wrap"><span class="q-text">How much of your current work is desire, and how much is immortality project?</span></div>
+    <div class="q-btns"><button class="q-btn" onclick="toggleQ('q1d', this)">+ go deeper</button><button class="q-btn" onclick="toggleQ('q1e', this)">+ experiment</button></div>
+    <div class="q-expand" id="q1d">Trace one project to its fear source and one to its genuine curiosity source.</div>
+    <div class="q-expand" id="q1e">Imagine nothing you make survives you. What would you still do tomorrow?</div>
+  </li>
+  <li>
+    <div class="q-text-wrap"><span class="q-text">When disagreement feels threatening, what is actually at stake in identity terms?</span></div>
+    <div class="q-btns"><button class="q-btn" onclick="toggleQ('q2d', this)">+ go deeper</button><button class="q-btn" onclick="toggleQ('q2e', this)">+ experiment</button></div>
+    <div class="q-expand" id="q2d">Revisit one argument where you felt urgency and map the hidden fear beneath topic content.</div>
+    <div class="q-expand" id="q2e">Strip the topic away and write what would have changed about you if you were wrong.</div>
+  </li>
+  <li>
+    <div class="q-text-wrap"><span class="q-text">What private record of your days would describe you more truthfully than your public one?</span></div>
+    <div class="q-btns"><button class="q-btn" onclick="toggleQ('q3d', this)">+ go deeper</button><button class="q-btn" onclick="toggleQ('q3e', this)">+ experiment</button></div>
+    <div class="q-expand" id="q3d">Look at notes, photos, open tabs. Which pattern repeats without declaration?</div>
+    <div class="q-expand" id="q3e">Write a one-page index of the last month as if nobody would read it.</div>
+  </li>
+</ul>
+
+<div class="heading-row"><hr><h2>Games</h2></div>
+
+<div class="game-box">
+  <div class="game-title">Game 0 — Trivia</div>
+  <p class="person-dates">Select the correct historical timing.</p>
+  <p>When was Becker awarded the Pulitzer for <em>The Denial of Death</em>?</p>
+  <div class="game-row game-two" id="triviaGame"></div>
+</div>
+
+<div class="game-box">
+  <div class="game-title">Game 1 — Reveal</div>
+  <p class="person-dates">Guess the hidden word with as few clues as possible.</p>
+  <div id="revealClues"><p>Inference to best explanation.</p></div>
+  <div class="actions"><button class="game-btn" id="revealMoreBtn" onclick="revealMore()">✓ clue</button><input class="game-input" id="revealInput" placeholder="guess"><button class="game-btn" id="revealSubmitBtn" onclick="revealSubmit()">✓ submit</button></div>
+</div>
+
+<div class="game-box">
+  <div class="game-title">Game 3 — Two Truths, One Lie</div>
+  <p class="person-dates">Pick the fabricated definition.</p>
+  <div class="game-row" id="ttl"></div>
+</div>
+
+<div class="game-box">
+  <div class="game-title">Game 4 — Missing Word</div>
+  <p class="person-dates">Fill the missing term from context.</p>
+  <p>Mortality awareness makes people more <strong>_____</strong> in worldview defense.</p>
+  <div class="actions"><input class="game-input" id="mwInput" placeholder="missing word"><button class="game-btn" id="mwBtn" onclick="mwSubmit()">✓ check</button></div>
+</div>
+
+<div class="game-box">
+  <div class="game-title">Game 5 — Concept Match</div>
+  <p class="person-dates">Select a term, then its matching definition.</p>
+  <div class="game-two"><div class="game-row" id="cmWords"></div><div class="game-row" id="cmDefs"></div></div>
+  <div class="result" id="cmResult"></div>
+</div>
+
+<div class="game-box">
+  <div class="game-title">Game 6 — Letter by Letter</div>
+  <p class="person-dates">Guess one letter at a time.</p>
+  <p id="lblMask"></p>
+  <div class="actions"><input class="game-input" id="lblInput" maxlength="1" placeholder="letter"><button class="game-btn" id="lblBtn" onclick="lblSubmit()">✓ submit</button></div>
+</div>
+
+<div class="game-box">
+  <div class="game-title">Game 7 — First and Last</div>
+  <p class="person-dates">Fill the hidden middle letters.</p>
+  <p>M _ _ _ O</p>
+  <div class="actions"><input class="game-input" id="falInput" placeholder="middle"><button class="game-btn" id="falBtn" onclick="falSubmit()">✓ check</button></div>
+</div>
+
+<div class="game-box">
+  <div class="game-title">Game 8 — False Cognate</div>
+  <p class="person-dates">Decide if the pair is historically connected.</p>
+  <p>Embarazada vs embarrassed — connected or false cognate?</p>
+  <div class="actions"><button class="game-btn" id="fcConnected" onclick="fcSubmit('connected')">✓ connected</button><button class="game-btn" id="fcFalse" onclick="fcSubmit('false_cognate')">✓ false cognate</button></div>
+</div>
+
+<div class="game-box">
+  <div class="game-title">Game 9 — Odd One Out</div>
+  <p class="person-dates">Find the word that does not share the hidden rule.</p>
+  <div class="game-row" id="ooo"></div><div class="result" id="oooResult"></div>
+</div>
+
+<div class="heading-row"><hr><h2>Answers</h2></div>
+<div class="answers-block" style="background:transparent;border:0;padding:0;">
+  <p><strong>Trivia:</strong> Two months after his death.</p>
+  <p><strong>Reveal:</strong> ABDUCTION.</p>
+  <p><strong>Two Truths, One Lie:</strong> Eigengrau definition is the lie.</p>
+  <p><strong>Missing Word:</strong> defensive.</p>
+  <p><strong>Concept Match:</strong> TMT/framework, Immortality project/Rank term, Memento mori/stoic reminder, Hiraeth/unreturnable home longing.</p>
+  <p><strong>Letter by Letter:</strong> SURVIVORSHIP.</p>
+  <p><strong>First and Last:</strong> MEMENTO.</p>
+  <p><strong>False Cognate:</strong> false cognate.</p>
+  <p><strong>Odd One Out:</strong> Palimpsest.</p>
+</div>
+
+<script>
+function toggleQ(id, btn) {
+  const panel = document.getElementById(id);
+  const isOpen = panel.classList.contains('open');
+  const item = btn.closest('li');
+  item.querySelectorAll('.q-expand').forEach((p) => p.classList.remove('open'));
+  item.querySelectorAll('.q-btn').forEach((b) => { b.textContent = '+ ' + b.textContent.replace(/^[−+] /, ''); });
+  if (!isOpen) { panel.classList.add('open'); btn.textContent = '− ' + btn.textContent.replace(/^[−+] /, ''); }
+}
+
+const revealData = { answer: 'abduction', clues: ['Inference to best explanation.', 'Linked to Peirce.', 'Used in diagnostic reasoning.', 'Starts with AB-'] };
+let revealIndex = 1;
+function revealMore() { if (revealIndex >= revealData.clues.length) return; const p = document.createElement('p'); p.textContent = revealData.clues[revealIndex++]; document.getElementById('revealClues').appendChild(p); }
+function revealSubmit() {
+  const ok = norm(document.getElementById('revealInput').value) === revealData.answer;
+  const btn = document.getElementById('revealSubmitBtn');
+  btn.textContent = ok ? '✓ submit' : '✕ submit';
+  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+}
+
+const ttlData = [
+  { w: 'Petrichor', d: 'smell after rain.', lie: false },
+  { w: 'Eigengrau', d: 'bright yellow in darkness.', lie: true },
+  { w: 'Sonder', d: 'others have full inner lives.', lie: false }
+];
+document.getElementById('ttl').innerHTML = ttlData.map((o, i) => `<button class="game-btn" data-ttl="${i}"><strong>${esc(o.w)}</strong><br>${esc(o.d)}</button>`).join('');
+document.querySelectorAll('[data-ttl]').forEach((btn) => btn.addEventListener('click', () => {
+  const ok = ttlData[Number(btn.getAttribute('data-ttl'))].lie;
+  document.querySelectorAll('[data-ttl]').forEach((b) => { b.disabled = true; });
+  btn.textContent = ok ? '✓ selected' : '✕ selected';
+  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+}));
+
+function mwSubmit() {
+  const ok = norm(document.getElementById('mwInput').value) === 'defensive';
+  const btn = document.getElementById('mwBtn');
+  btn.textContent = ok ? '✓ check' : '✕ check';
+  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+}
+
+const triviaData = [
+  'The year before publication',
+  'The same year as publication',
+  'Two months after his death',
+  'Five years later'
+];
+document.getElementById('triviaGame').innerHTML = triviaData.map((t, i) => `<button class="game-btn" data-trivia="${i}">${esc(t)}</button>`).join('');
+document.querySelectorAll('[data-trivia]').forEach((btn) => btn.addEventListener('click', () => {
+  const ok = Number(btn.getAttribute('data-trivia')) === 2;
+  document.querySelectorAll('[data-trivia]').forEach((b) => (b.disabled = true));
+  btn.textContent = ok ? `✓ ${btn.textContent}` : `✕ ${btn.textContent}`;
+  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+}));
+
+const cmPairs = [
+  { id: 'a', w: 'Terror Management Theory', d: 'Mortality-driven cultural behavior framework.' },
+  { id: 'b', w: 'Immortality project', d: 'Rank term for symbolic continuity systems.' },
+  { id: 'c', w: 'Memento mori', d: 'Stoic mortality reminder as clarifier.' },
+  { id: 'd', w: 'Hiraeth', d: 'Longing for an unreturnable home.' }
+];
+document.getElementById('cmWords').innerHTML = cmPairs.map((p) => `<button class="match-item" data-cmw="${p.id}">${esc(p.w)}</button>`).join('');
+document.getElementById('cmDefs').innerHTML = shuffle(cmPairs, 20260519).map((p) => `<button class="match-item" data-cmd="${p.id}">${esc(p.d)}</button>`).join('');
+let cmWord = null; let cmDef = null; let cmCount = 0;
+document.querySelectorAll('[data-cmw]').forEach((btn) => btn.addEventListener('click', () => { document.querySelectorAll('[data-cmw]').forEach((b) => b.classList.remove('selected')); btn.classList.add('selected'); cmWord = btn.getAttribute('data-cmw'); tryCm(); }));
+document.querySelectorAll('[data-cmd]').forEach((btn) => btn.addEventListener('click', () => { document.querySelectorAll('[data-cmd]').forEach((b) => b.classList.remove('selected')); btn.classList.add('selected'); cmDef = btn.getAttribute('data-cmd'); tryCm(); }));
+function tryCm() {
+  if (!cmWord || !cmDef) return;
+  const wb = document.querySelector(`[data-cmw='${cmWord}']`);
+  const db = document.querySelector(`[data-cmd='${cmDef}']`);
+  if (cmWord === cmDef) { cmCount += 1; wb.className = 'match-item paired'; db.className = 'match-item paired'; wb.disabled = true; db.disabled = true; setResult('cmResult', cmCount === 4 ? 'All four matched.' : 'Match made.', true); }
+  else { setResult('cmResult', 'Not a match.', false); wb.classList.remove('selected'); db.classList.remove('selected'); }
+  cmWord = null; cmDef = null;
+}
+
+const lblAnswer = 'SURVIVORSHIP'; let lblUsed = []; let lblWrong = 0;
+document.getElementById('lblMask').textContent = mask(lblAnswer, lblUsed);
+function lblSubmit() {
+  const letter = String(document.getElementById('lblInput').value || '').trim().toUpperCase();
+  if (!/^[A-Z]$/.test(letter) || lblUsed.includes(letter)) return;
+  lblUsed.push(letter); if (!lblAnswer.includes(letter)) lblWrong += 1;
+  const m = mask(lblAnswer, lblUsed); document.getElementById('lblMask').textContent = m;
+  const btn = document.getElementById('lblBtn');
+  const ok = !m.includes('_');
+  btn.textContent = ok ? '✓ submit' : '✕ submit';
+  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+}
+
+function falSubmit() {
+  const ok = norm(`m${document.getElementById('falInput').value}o`) === 'memento';
+  const btn = document.getElementById('falBtn');
+  btn.textContent = ok ? '✓ check' : '✕ check';
+  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+}
+function fcSubmit(choice) {
+  const ok = choice === 'false_cognate';
+  const connected = document.getElementById('fcConnected');
+  const falseBtn = document.getElementById('fcFalse');
+  connected.disabled = true;
+  falseBtn.disabled = true;
+  const target = ok ? falseBtn : connected;
+  target.textContent = ok ? '✓ false cognate' : `✕ ${target.textContent.replace(/^✓ |^✕ /, '')}`;
+  target.className = ok ? 'game-btn ok' : 'game-btn bad';
+}
+
+const oooData = [{w:'Anchoring',o:false},{w:'Availability',o:false},{w:'Palimpsest',o:true},{w:'Confirmation',o:false}];
+document.getElementById('ooo').className = 'game-two';
+document.getElementById('ooo').innerHTML = oooData.map((o, i) => `<button class="game-btn" data-ooo="${i}">${esc(o.w)}</button>`).join('');
+document.querySelectorAll('[data-ooo]').forEach((btn) => btn.addEventListener('click', () => {
+  const ok = oooData[Number(btn.getAttribute('data-ooo'))].o;
+  document.querySelectorAll('[data-ooo]').forEach((b) => b.disabled = true);
+  btn.textContent = ok ? `✓ ${btn.textContent}` : `✕ ${btn.textContent}`;
+  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+}));
+
+function setResult(id, text, ok) { const el = document.getElementById(id); el.textContent = text; el.className = ok ? 'result ok' : 'result bad'; }
+function norm(v) { return String(v || '').trim().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, ' '); }
+function esc(v) { return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function mask(answer, used) { return answer.split('').map((c) => used.includes(c) ? c : '_').join(' '); }
+function shuffle(arr, seed) { let s = seed; const a = [...arr]; for (let i = a.length - 1; i > 0; i -= 1) { s = (s * 1664525 + 1013904223) & 0xffffffff; const j = Math.abs(s) % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+</script>
+</body>
+</html>
