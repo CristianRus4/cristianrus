@@ -11,9 +11,17 @@
 @font-face { font-family: "Quattro Italic"; src: url("/fonts/Quattro-Italic.woff") format("woff"); }
 @font-face { font-family: "Erode Italic"; src: url("/fonts/Erode-Italic.ttf") format("truetype"); }
 :root {
-  --bg:#0e0d0b; --surface:#161510; --surface2:#1c1b16; --border:#2a2820;
-  --text:#c8c2b4; --dim:#6b6560; --accent:#c4a96e; --accent-dim:#7a6840;
-  --green-text:#7ab090; --red-text:#c07060; --green:#5a8060; --red:#7a4a40;
+  color-scheme: light dark;
+  --bg:#f6f4ef; --surface:#ece9e2; --surface2:#efebe4; --border:#d6d1c5;
+  --text:#2b2720; --dim:#726a5f; --accent:#8b6b2f; --accent-dim:#9a8560;
+  --green-text:#2b7a55; --red-text:#b24a3b; --green:#2b7a55; --red:#b24a3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:#0e0d0b; --surface:#161510; --surface2:#1c1b16; --border:#2a2820;
+    --text:#c8c2b4; --dim:#6b6560; --accent:#c4a96e; --accent-dim:#7a6840;
+    --green-text:#7ab090; --red-text:#c07060; --green:#5a8060; --red:#7a4a40;
+  }
 }
 html { background: var(--bg); color: var(--text); font-family: "Quattro", serif; font-size: 18px; line-height: 1.78; }
 body { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 6rem; }
@@ -23,6 +31,9 @@ h2 { font-family: "Erode Italic", serif; font-size: 1.15rem; font-weight: 400; c
 p { margin-bottom: 1rem; }
 hr { border: none; border-top: 1px solid var(--border); margin: 2.3rem 0; }
 blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding: 0.2rem 1.3rem; color: var(--dim); font-family: "Quattro Italic", serif; }
+.section { margin-top: 2.3rem; }
+.section-rule { border-top: 1px solid var(--border); padding-top: 0.25rem; }
+.section-filled { background: var(--surface); border: 1px solid var(--border); padding: 0.25rem 1.5rem 1.3rem; }
 .number-callout .num { font-family: "Erode Italic", serif; font-size: 3.1rem; color: var(--accent); display: block; margin-bottom: 0.2rem; line-height: 1; }
 .number-callout .num-label { font-size: 0.9rem; color: var(--text); font-family: "Quattro", serif; }
 .fiction, .word-block, .answers-block { background: var(--surface); border: 1px solid var(--border); padding: 1.3rem 1.5rem; }
@@ -37,7 +48,7 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
 .q-text-wrap { display: flex; gap: 0.9rem; align-items: flex-start; margin-bottom: 0.7rem; }
 .q-text-wrap::before { content: counter(q); font-family: "Erode Italic", serif; color: var(--accent-dim); font-size: 0.85rem; min-width: 1rem; padding-top: 0.15rem; }
 .q-text { font-family: "Quattro Italic", serif; }
-.q-btns { display: flex; gap: 0.4rem; margin-left: 1.9rem; flex-wrap: wrap; }
+.q-btns { display: flex; gap: 0.85rem; margin-left: 1.9rem; flex-wrap: wrap; }
 .q-btn { background: none; border: 1px solid var(--border); color: var(--dim); font-family: "Quattro", serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.28rem 0.7rem; cursor: pointer; }
 .q-expand { display: none; margin-top: 0.7rem; margin-left: 1.9rem; border-left: 1px solid var(--border); padding-left: 1rem; font-size: 0.85rem; color: var(--dim); }
 .q-expand.open { display: block; }
@@ -48,12 +59,14 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
 .game-title { font-family: "Erode Italic", serif; color: var(--accent); margin-bottom: 0.5rem; }
 .game-row { display: grid; gap: 0.45rem; }
 .game-two { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; }
 .game-btn, .game-input, .match-item { background: none; border: 1px solid var(--border); color: var(--text); border-radius: 0; padding: 0.28rem 0.7rem; font-size: 0.68rem; line-height: 1.45; font-family: "Quattro", serif; letter-spacing: 0.1em; text-transform: uppercase; }
 .game-btn { cursor: pointer; text-align: left; }
 .game-btn { width: fit-content; min-width: 9.8rem; }
 .game-btn { opacity: 0.72; }
 .game-btn.ok { border-color: var(--green); color: var(--green-text); opacity: 1; }
 .game-btn.bad { border-color: var(--red); color: var(--red-text); opacity: 1; }
+.game-btn.retry { border-color: var(--red); color: var(--red-text); opacity: 1; }
 .match-item.selected { border-color: var(--accent); }
 .match-item.paired { border-color: var(--green); color: var(--green-text); }
 .result { font-size: 0.86rem; color: var(--dim); min-height: 1.2rem; margin-top: 0.4rem; }
@@ -61,9 +74,7 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
 .result.bad { color: var(--red-text); }
 .answers-block p { margin-bottom: 0.55rem; color: var(--dim); font-size: 0.9rem; opacity: 0.55; }
 .answers-block strong { color: var(--accent); font-weight: 400; }
-.heading-row { margin-top: 6rem; }
-.heading-row hr { border: none; border-top: 1px solid var(--border); margin: 0 0 0.25rem; }
-.heading-row h2 { margin: 0; text-align: right; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.62; color: var(--accent-dim); font-family: "Erode Italic", serif; }
+.heading-row h2, .box-label { margin: 0 0 0.35rem; text-align: right; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.62; color: var(--accent-dim); font-family: "Erode Italic", serif; }
 </style>
 </head>
 <body>
@@ -76,29 +87,26 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
 <p>Terror Management Theory later tested this experimentally. Small mortality reminders made people more defensive, more tribal, and more attached to worldview boundaries.</p>
 <blockquote>We do not act despite knowing we will die. We act because of it — and rarely notice which mode we are in.</blockquote>
 <p>There is still a minority response: mortality awareness as clarification rather than panic. That is the unresolved part of Becker's project.</p>
-<hr>
-
-<div class="number-callout">
-  <div class="word-block">
+<div class="section section-filled number-callout">
+  <span class="box-label">Today's Number</span>
   <span class="num">15 milliseconds</span>
   <span class="num-label">Subliminal mortality-prime exposure used in classic TMT experiments.</span>
-  </div>
 </div>
 
-<div class="heading-row"><hr><h2>Fragment</h2></div>
+<div class="section section-rule heading-row"><h2>Fragment</h2></div>
 <div class="fiction">His father left a list of every book he had owned, dated and marked with one word each. Not judgment, only evidence of having been present. He stood in the kitchen holding the pages and understood that the list was a life written in private grammar.</div>
 
-<div class="heading-row"><hr><h2>Word of the night</h2></div>
-<div class="word-block">
+<div class="section section-filled">
+  <span class="box-label">Word of the night</span>
   <div class="word-term">Hiraeth</div>
   <div class="word-origin">Welsh — no direct one-word English equivalent</div>
   <p>A longing for a home that cannot be returned to, or may never have existed in retrievable form.</p>
 </div>
 
-<div class="heading-row"><hr><h2>Tonight's voice</h2></div>
+<div class="section section-rule heading-row"><h2>Tonight's voice</h2></div>
 <blockquote>Nu am nicio patrie. Patria mea e o durere.<br><em>I have no homeland. My homeland is a suffering.</em></blockquote>
 
-<div class="heading-row"><hr><h2>Person you've never heard of</h2></div>
+<div class="section section-rule heading-row"><h2>Person you've never heard of</h2></div>
 <div class="person-block">
   <div class="person-name">Ernest Becker</div>
   <div class="person-dates">1924 – 1974 — Springfield MA, Vancouver</div>
@@ -106,7 +114,7 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
   <p>Late interviews show him discussing death with unusual practical calm, not rhetoric.</p>
 </div>
 
-<div class="heading-row"><hr><h2>Three questions</h2></div>
+<div class="section section-rule heading-row"><h2>Three questions</h2></div>
 <ul class="questions">
   <li>
     <div class="q-text-wrap"><span class="q-text">How much of your current work is desire, and how much is immortality project?</span></div>
@@ -128,7 +136,7 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
   </li>
 </ul>
 
-<div class="heading-row"><hr><h2>Games</h2></div>
+<div class="section section-rule heading-row"><h2>Games</h2></div>
 
 <div class="game-box">
   <div class="game-title">Game 0 — Trivia</div>
@@ -141,7 +149,7 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
   <div class="game-title">Game 1 — Reveal</div>
   <p class="person-dates">Guess the hidden word with as few clues as possible.</p>
   <div id="revealClues"><p>Inference to best explanation.</p></div>
-  <div class="actions"><button class="game-btn" id="revealMoreBtn" onclick="revealMore()">✓ clue</button><input class="game-input" id="revealInput" placeholder="guess"><button class="game-btn" id="revealSubmitBtn" onclick="revealSubmit()">✓ submit</button></div>
+  <div class="actions"><button class="game-btn" id="revealMoreBtn" onclick="revealMore()">? clue</button><input class="game-input" id="revealInput" placeholder="guess"><button class="game-btn" id="revealSubmitBtn" onclick="revealSubmit()">↑ submit</button></div>
 </div>
 
 <div class="game-box">
@@ -154,7 +162,7 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
   <div class="game-title">Game 4 — Missing Word</div>
   <p class="person-dates">Fill the missing term from context.</p>
   <p>Mortality awareness makes people more <strong>_____</strong> in worldview defense.</p>
-  <div class="actions"><input class="game-input" id="mwInput" placeholder="missing word"><button class="game-btn" id="mwBtn" onclick="mwSubmit()">✓ check</button></div>
+  <div class="actions"><input class="game-input" id="mwInput" placeholder="missing word"><button class="game-btn" id="mwBtn" onclick="mwSubmit()">↑ check</button></div>
 </div>
 
 <div class="game-box">
@@ -168,14 +176,14 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
   <div class="game-title">Game 6 — Letter by Letter</div>
   <p class="person-dates">Guess one letter at a time.</p>
   <p id="lblMask"></p>
-  <div class="actions"><input class="game-input" id="lblInput" maxlength="1" placeholder="letter"><button class="game-btn" id="lblBtn" onclick="lblSubmit()">✓ submit</button></div>
+  <div class="actions"><input class="game-input" id="lblInput" maxlength="1" placeholder="letter"><button class="game-btn" id="lblBtn" onclick="lblSubmit()">↑ submit</button></div>
 </div>
 
 <div class="game-box">
   <div class="game-title">Game 7 — First and Last</div>
   <p class="person-dates">Fill the hidden middle letters.</p>
   <p>M _ _ _ O</p>
-  <div class="actions"><input class="game-input" id="falInput" placeholder="middle"><button class="game-btn" id="falBtn" onclick="falSubmit()">✓ check</button></div>
+  <div class="actions"><input class="game-input" id="falInput" placeholder="middle"><button class="game-btn" id="falBtn" onclick="falSubmit()">↑ check</button></div>
 </div>
 
 <div class="game-box">
@@ -191,17 +199,17 @@ blockquote { border-left: 2px solid var(--accent-dim); margin: 1.8rem 0; padding
   <div class="game-row" id="ooo"></div><div class="result" id="oooResult"></div>
 </div>
 
-<div class="heading-row"><hr><h2>Answers</h2></div>
+<div class="section section-rule heading-row"><h2>Answers</h2></div>
 <div class="answers-block" style="background:transparent;border:0;padding:0;">
-  <p><strong>Trivia:</strong> Two months after his death.</p>
-  <p><strong>Reveal:</strong> ABDUCTION.</p>
-  <p><strong>Two Truths, One Lie:</strong> Eigengrau definition is the lie.</p>
-  <p><strong>Missing Word:</strong> defensive.</p>
-  <p><strong>Concept Match:</strong> TMT/framework, Immortality project/Rank term, Memento mori/stoic reminder, Hiraeth/unreturnable home longing.</p>
-  <p><strong>Letter by Letter:</strong> SURVIVORSHIP.</p>
-  <p><strong>First and Last:</strong> MEMENTO.</p>
-  <p><strong>False Cognate:</strong> false cognate.</p>
-  <p><strong>Odd One Out:</strong> Palimpsest.</p>
+  <p><strong>Trivia:</strong> Two months after his death</p>
+  <p><strong>Reveal:</strong> ABDUCTION</p>
+  <p><strong>Two Truths, One Lie:</strong> Eigengrau definition is the lie</p>
+  <p><strong>Missing Word:</strong> defensive</p>
+  <p><strong>Concept Match:</strong> TMT/framework, Immortality project/Rank term, Memento mori/stoic reminder, Hiraeth/unreturnable home longing</p>
+  <p><strong>Letter by Letter:</strong> SURVIVORSHIP</p>
+  <p><strong>First and Last:</strong> MEMENTO</p>
+  <p><strong>False Cognate:</strong> false cognate</p>
+  <p><strong>Odd One Out:</strong> Palimpsest</p>
 </div>
 
 <script>
@@ -220,8 +228,8 @@ function revealMore() { if (revealIndex >= revealData.clues.length) return; cons
 function revealSubmit() {
   const ok = norm(document.getElementById('revealInput').value) === revealData.answer;
   const btn = document.getElementById('revealSubmitBtn');
-  btn.textContent = ok ? '✓ submit' : '✕ submit';
-  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+  btn.textContent = ok ? '✓ correct' : '✕ try again';
+  btn.className = ok ? 'game-btn ok' : 'game-btn retry';
 }
 
 const ttlData = [
@@ -240,8 +248,8 @@ document.querySelectorAll('[data-ttl]').forEach((btn) => btn.addEventListener('c
 function mwSubmit() {
   const ok = norm(document.getElementById('mwInput').value) === 'defensive';
   const btn = document.getElementById('mwBtn');
-  btn.textContent = ok ? '✓ check' : '✕ check';
-  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+  btn.textContent = ok ? '✓ correct' : '✕ try again';
+  btn.className = ok ? 'game-btn ok' : 'game-btn retry';
 }
 
 const triviaData = [
@@ -287,15 +295,15 @@ function lblSubmit() {
   const m = mask(lblAnswer, lblUsed); document.getElementById('lblMask').textContent = m;
   const btn = document.getElementById('lblBtn');
   const ok = !m.includes('_');
-  btn.textContent = ok ? '✓ submit' : '✕ submit';
-  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+  btn.textContent = ok ? '✓ correct' : '✕ try again';
+  btn.className = ok ? 'game-btn ok' : 'game-btn retry';
 }
 
 function falSubmit() {
   const ok = norm(`m${document.getElementById('falInput').value}o`) === 'memento';
   const btn = document.getElementById('falBtn');
-  btn.textContent = ok ? '✓ check' : '✕ check';
-  btn.className = ok ? 'game-btn ok' : 'game-btn bad';
+  btn.textContent = ok ? '✓ correct' : '✕ try again';
+  btn.className = ok ? 'game-btn ok' : 'game-btn retry';
 }
 function fcSubmit(choice) {
   const ok = choice === 'false_cognate';
@@ -323,6 +331,23 @@ function norm(v) { return String(v || '').trim().toLowerCase().replace(/[^a-z0-9
 function esc(v) { return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function mask(answer, used) { return answer.split('').map((c) => used.includes(c) ? c : '_').join(' '); }
 function shuffle(arr, seed) { let s = seed; const a = [...arr]; for (let i = a.length - 1; i > 0; i -= 1) { s = (s * 1664525 + 1013904223) & 0xffffffff; const j = Math.abs(s) % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+document.getElementById('revealInput').addEventListener('input', () => {
+  const btn = document.getElementById('revealSubmitBtn');
+  if (!btn.classList.contains('ok')) { btn.textContent = '↑ submit'; btn.className = 'game-btn'; }
+});
+document.getElementById('mwInput').addEventListener('input', () => {
+  const btn = document.getElementById('mwBtn');
+  if (!btn.classList.contains('ok')) { btn.textContent = '↑ check'; btn.className = 'game-btn'; }
+});
+document.getElementById('lblInput').addEventListener('input', () => {
+  const btn = document.getElementById('lblBtn');
+  if (!btn.classList.contains('ok')) { btn.textContent = '↑ submit'; btn.className = 'game-btn'; }
+});
+document.getElementById('falInput').addEventListener('input', () => {
+  const btn = document.getElementById('falBtn');
+  if (!btn.classList.contains('ok')) { btn.textContent = '↑ check'; btn.className = 'game-btn'; }
+});
 </script>
 </body>
 </html>
