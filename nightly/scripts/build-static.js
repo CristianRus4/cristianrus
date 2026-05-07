@@ -19,7 +19,6 @@ const PAGE_STYLE = `
       }
 
       :root {
-        color-scheme: light dark;
         font-size: 18px;
         --black-rgb: 17, 17, 17;
         --gold-rgb: 112, 84, 28;
@@ -58,14 +57,15 @@ const PAGE_STYLE = `
         box-sizing: border-box;
       }
 
-      html {
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+        background: #ffffff;
         background: var(--bg);
       }
 
       body {
-        min-height: 100vh;
-        background: #ffffff;
-        background: var(--bg);
         color: #111111;
         color: var(--text);
         max-width: 680px;
@@ -127,14 +127,14 @@ const PAGE_STYLE = `
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 3.15rem;
-        height: 3.15rem;
+        width: 2.2rem;
+        height: 2.2rem;
         padding: 0;
-        border: 1px solid var(--text);
+        border: 1px solid var(--accent);
         border-radius: 0;
-        background: var(--text);
+        background: var(--accent);
         color: var(--bg);
-        font-size: 1.45rem;
+        font-size: 1.15rem;
         line-height: 1;
       }
 
@@ -178,13 +178,16 @@ const PAGE_STYLE = `
       }
 
       .section-filled {
-        background: var(--text);
-        border: 1px solid var(--text);
+        background: var(--accent);
         color: var(--bg);
         padding: 0.45rem 1.1rem 1rem;
       }
 
-      .section-filled .section-label,
+      .section-filled .section-label {
+        color: var(--bg);
+        opacity: 0.8;
+      }
+
       .section-filled .number-value,
       .section-filled .word-term,
       .section-filled .word-origin,
@@ -408,11 +411,11 @@ const PAGE_STYLE = `
         content: counter(q);
         font-family: "Quattro Italic", serif;
         color: var(--accent);
-        font-size: 2.55rem;
-        min-width: 2.2rem;
-        line-height: 1;
+        font-size: 1.5rem;
+        min-width: 1.6rem;
+        line-height: 1.2;
         align-self: flex-start;
-        transform: translateY(-0.08rem);
+        margin-top: 0.15rem;
       }
 
       .question-text {
@@ -445,7 +448,6 @@ const PAGE_STYLE = `
       .primary-button {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
         gap: 0.45rem;
         min-height: 2.6rem;
         padding: 0.5rem 0.7rem;
@@ -459,6 +461,7 @@ const PAGE_STYLE = `
 
       .primary-button,
       .secondary-button {
+        justify-content: center;
         width: fit-content;
         min-width: 9.8rem;
       }

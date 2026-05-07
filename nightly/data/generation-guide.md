@@ -1,15 +1,15 @@
 # Nightly Generation Guide
 
 ## Core principle
-There is no content pool to draw from. Everything — essay topics, words, people, quotes — is generated fresh each batch by reasoning directly from `user-profile.json`. Read the profile, understand the person, and derive content that fits. Do not recycle, do not default to the obvious. The profile exists to constrain quality and direction, not to supply pre-approved answers.
+There is no content pool to draw from. Everything — essay topics, words, people, quotes — is generated fresh each batch. Read `user-profile.json` to understand who this person is: what they have read, what they watch, what they care about, how they think. Use that understanding to generate content that feels true to them. The profile is a window into a personality, not a boundary around permitted topics. Go wherever the essay territory and genuine intellectual curiosity leads.
 
 ## How to generate a batch
-1. Read `user-profile.json` in full. Internalise the interests, authors, sensibility, and languages.
+1. Read `user-profile.json` in full. Form a picture of the person — their sensibility, their intellectual range, the kinds of things they find meaningful.
 2. Read the last 10 files in `data/digests/` and extract what has already been used: essay topics, words, authors quoted, people featured, game types. Do not repeat any of these within the new batch or within those last 10 entries.
 3. Generate one `DigestEntry` JSON object per requested day, saved to `data/digests/YYYY-MM-DD.json`.
 
 ## Essay rules
-- Derive topics from the owner's interests as described in `user-profile.json`. Any genuine interest is fair territory. Do not restrict to a predetermined list.
+- Generate topics that a person with this sensibility would find genuinely resonant. The profile gives you a sense of what that means — use it to calibrate, not to restrict. Topics are not limited to anything listed there.
 - No topic from the last 10 digests may be repeated, but similarity of angle counts — a rephrase does not constitute a different topic.
 - Essays must not mention the author of the quote. The quote section is the only place authors appear.
 - Essays should end in tension, not resolution. No tidy moral, no call to action.
@@ -19,7 +19,7 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 
 ## Word rules
 - Choose any word from any language that fits the essay's territory organically. The word should emerge from or sit directly beside the essay's thematic core — not appended arbitrarily.
-- Any real word from any language is valid if the fit is precise and the word is genuinely interesting. Do not restrict to a list.
+- Any real word from any language is valid if the fit is precise and the word is genuinely interesting.
 - Never reuse a word from any existing digest.
 - Rotate language families across a batch. No family should dominate.
 - The `origin` field names the language and gives etymological or cultural context. The `definition` field is the lived sense of the word, not a dictionary entry.
