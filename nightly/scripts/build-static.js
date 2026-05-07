@@ -29,7 +29,7 @@ const PAGE_STYLE = `
         --text: rgb(var(--black-rgb));
         --dim: rgba(var(--black-rgb), 0.7);
         --accent: rgb(var(--gold-rgb));
-        --accent-dim: rgba(var(--gold-rgb), 0.58);
+        --accent-dim: rgba(var(--gold-rgb), 0.6);
         --green: #2b7a55;
         --red: #b24a3b;
         --quote-text: rgba(var(--black-rgb), 0.88);
@@ -47,7 +47,7 @@ const PAGE_STYLE = `
           --text: rgb(var(--black-rgb));
           --dim: rgba(var(--black-rgb), 0.7);
           --accent: rgb(var(--gold-rgb));
-          --accent-dim: rgba(var(--gold-rgb), 0.62);
+          --accent-dim: rgba(var(--gold-rgb), 0.6);
           --green: #7ab090;
           --red: #c07060;
           --quote-text: rgba(var(--black-rgb), 0.88);
@@ -160,7 +160,7 @@ const PAGE_STYLE = `
       }
 
       .section-rule {
-        border-top: 1px solid var(--accent-dim);
+        border-top: 2px solid var(--accent-dim);
         padding-top: 0.45rem;
       }
 
@@ -266,7 +266,7 @@ const PAGE_STYLE = `
       .quote-block {
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
-        border-left: 4px solid var(--accent-dim);
+        border-left: 4px solid var(--accent);
         color: var(--dim);
         background: transparent;
       }
@@ -274,7 +274,7 @@ const PAGE_STYLE = `
       .fragment-quote {
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
-        border-left: 4px solid var(--accent-dim);
+        border-left: 4px solid var(--accent);
         color: var(--dim);
         background: transparent;
       }
@@ -368,10 +368,11 @@ const PAGE_STYLE = `
       .question-prompt::before {
         content: counter(q);
         font-family: "Quattro Italic", serif;
-        color: var(--accent-dim);
-        font-size: 0.85rem;
-        min-width: 1rem;
-        line-height: 1.78;
+        color: var(--accent);
+        font-size: 2.55rem;
+        min-width: 2.2rem;
+        line-height: 1;
+        transform: translateY(0.08rem);
       }
 
       .question-text {
@@ -478,7 +479,7 @@ const PAGE_STYLE = `
       .button-marker {
         display: inline-block;
         min-width: 0.65rem;
-        color: var(--accent-dim);
+        color: var(--text);
       }
 
       .choice-grid {
@@ -505,7 +506,7 @@ const PAGE_STYLE = `
       .trivia-option-marker {
         display: inline-block;
         min-width: 0.8rem;
-        color: var(--accent-dim);
+        color: var(--accent);
       }
 
       .option-button.is-incorrect .trivia-option-marker,
@@ -517,6 +518,7 @@ const PAGE_STYLE = `
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.75rem;
+        margin-bottom: 1rem;
       }
 
       .option-title {
