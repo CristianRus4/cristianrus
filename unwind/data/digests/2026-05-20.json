@@ -83,18 +83,10 @@
   "game": {
     "type": "letter_by_letter",
     "data": {
-      "word": "supernova",
-      "clues": [
-        "S — what a dying massive star becomes when its core collapses",
-        "SU — the Latin prefix meaning 'above' or 'beyond', here marking something that exceeds ordinary stellar brightness",
-        "SUP — involves the sudden release of more energy than the Sun will emit in its entire ten-billion-year lifetime",
-        "SUPE — the event that seeded the interstellar medium with the heavy elements needed for planets and life",
-        "SUPER — the explosion is visible from other galaxies; SN 1987A in the Large Magellanic Cloud was visible to the naked eye",
-        "SUPERN — the remnant expands outward for thousands of years after the event itself",
-        "SUPERNO — Jocelyn Bell Burnell's pulsars are neutron stars left behind by events of this kind",
-        "SUPERNOV — the Chinese astronomers of 1054 CE called what they saw a 'guest star' — it appeared without announcement and stayed for two years",
-        "SUPERNOVA — the word itself entered scientific usage in the 1930s, coined by Walter Baade and Fritz Zwicky"
-      ]
+      "answer": "supernova",
+      "definition": "The explosive death of a massive star, which ejects heavy elements into space and can leave behind a neutron star or black hole.",
+      "max_wrong": 6,
+      "success_note": "A star's ending is also the distribution system for what later becomes planets, blood, bone, and atmosphere."
     }
   },
   "movie": {

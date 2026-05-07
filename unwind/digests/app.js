@@ -279,7 +279,9 @@ function setupRevealGame(container, data) {
 }
 
 function setupTwoTruthsGame(container, data) {
-  var options = Array.isArray(data && data.options) ? data.options.slice(0, 3) : [];
+  var options = Array.isArray(data && data.options)
+    ? data.options.slice(0, 3)
+    : (Array.isArray(data && data.statements) ? data.statements.slice(0, 3) : []);
   var buttons = container.querySelectorAll("[data-lie-option]");
   var status = container.querySelector("[data-lie-status]");
   var index;

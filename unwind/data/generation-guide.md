@@ -81,6 +81,28 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 - Game content must relate to the essay topic of that day. Do not reuse essay words verbatim in game options.
 - For `reveal`: the hidden word should be a concept from the essay, not the exact title word.
 - For `missing_word`: use the `_` character with spaces between them (e.g., `_ _ _ _ _`) to represent the missing word, matching its exact character count.
+- Game JSON must match one of the exact schemas below. Do not rename fields, do not invent alternative shapes, and do not mix schemas from different game types.
+- `reveal` schema:
+  `{"type":"reveal","data":{"answer":"string","clues":["string","string","string","string"],"score_labels":["string","string","string","string"]}}`
+- `two_truths_one_lie` schema:
+  `{"type":"two_truths_one_lie","data":{"prompt":"string","statements":[{"text":"string","is_lie":false},{"text":"string","is_lie":true},{"text":"string","is_lie":false}],"explanation":"string"}}`
+- `missing_word` schema:
+  `{"type":"missing_word","data":{"before":"string","after":"string","answer":"string","hint":"string"}}`
+- `concept_match` schema:
+  `{"type":"concept_match","data":{"pairs":[{"id":"a","word":"string","definition":"string"},{"id":"b","word":"string","definition":"string"},{"id":"c","word":"string","definition":"string"},{"id":"d","word":"string","definition":"string"}]}}`
+- `letter_by_letter` schema:
+  `{"type":"letter_by_letter","data":{"answer":"string","definition":"string","max_wrong":6,"success_note":"string"}}`
+- `first_and_last` schema:
+  `{"type":"first_and_last","data":{"answer":"string","display_length":10,"definition":"string"}}`
+- `false_cognate` schema:
+  `{"type":"false_cognate","data":{"word_a":{"term":"string","language":"string","meaning":"string"},"word_b":{"term":"string","language":"string","meaning":"string"},"question":"string","answer":"true_cognate|false_cognate","explanation":"string"}}`
+- `odd_one_out` schema:
+  `{"type":"odd_one_out","data":{"prompt":"string","options":[{"word":"string","is_odd":false},{"word":"string","is_odd":false},{"word":"string","is_odd":true},{"word":"string","is_odd":false},{"word":"string","is_odd":false}],"explanation":"string"}}`
+- For `two_truths_one_lie`, use `statements`, not `options`, and use `explanation`, not `lie_explanation`.
+- For `reveal` and `letter_by_letter`, the answer field name is always `answer`, never `word`.
+- For `odd_one_out`, use `prompt`, not `question`, and each option must be an object with `word` and `is_odd`.
+- For `first_and_last`, do not supply `pairs`, `prompt`, or multiple answers. It is a single answer game only.
+- Before saving, validate the game payload against the exact schema for its type and compare it with at least one existing working digest of the same game type.
 
 ## Movie time rules
 - This section appears after the games and before the answers.

@@ -83,12 +83,21 @@
   "game": {
     "type": "two_truths_one_lie",
     "data": {
+      "prompt": "Three statements about silence, acoustic ecology, and John Cage. Two are true. One is false.",
       "statements": [
-        "The World Health Organisation has classified noise above 65 dB as a chronic public health risk equivalent in seriousness to air pollution at comparable exposure levels.",
-        "R. Murray Schafer coined the term 'soundscape' and founded the field of acoustic ecology with his 1977 book The Tuning of the World.",
-        "John Cage's 4'33\" has a strict requirement that the performer must leave the stage entirely during its duration, returning only after the final movement ends."
+        {
+          "text": "The World Health Organisation has classified noise above 65 dB as a chronic public health risk equivalent in seriousness to air pollution at comparable exposure levels.",
+          "is_lie": false
+        },
+        {
+          "text": "R. Murray Schafer coined the term 'soundscape' and founded the field of acoustic ecology with his 1977 book The Tuning of the World.",
+          "is_lie": false
+        },
+        {
+          "text": "John Cage's 4'33\" has a strict requirement that the performer must leave the stage entirely during its duration, returning only after the final movement ends.",
+          "is_lie": true
+        }
       ],
-      "lie_index": 2,
       "explanation": "The third statement is false. In 4'33\", the performer remains at their instrument throughout the entire piece — the three movements are indicated by the performer closing and opening the keyboard lid (in the piano version) or by other gestures. The performer does not leave the stage. The piece is precisely about the relationship between performer, audience, and space when the expected action is withheld."
     }
   },

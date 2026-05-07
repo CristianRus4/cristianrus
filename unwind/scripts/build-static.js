@@ -1416,12 +1416,16 @@ function renderGameAnswer(game) {
         "            </article>"
       ].join("\n");
     case "two_truths_one_lie": {
-      const lie = (Array.isArray(game.data && game.data.options) ? game.data.options : []).find((item) => item && item.is_lie);
+      const items = Array.isArray(game.data && game.data.options)
+        ? game.data.options
+        : (Array.isArray(game.data && game.data.statements) ? game.data.statements : []);
+      const lie = items.find((item) => item && item.is_lie);
+      const lieLabel = safeText(lie && lie.word, "") || safeText(lie && lie.text, "Lie unavailable");
       return [
         "            <article class=\"answer-card\">",
         "              <p class=\"section-label\">Game answer</p>",
-        "              <p><strong>" + escapeHtml(stripTrailingPeriod(safeText(lie && lie.word, "Lie unavailable"))) + "</strong></p>",
-        "              <p>" + escapeHtml(safeText(game.data && game.data.lie_explanation, "Explanation unavailable.")) + "</p>",
+        "              <p><strong>" + escapeHtml(stripTrailingPeriod(lieLabel)) + "</strong></p>",
+        "              <p>" + escapeHtml(safeText(game.data && game.data.explanation, safeText(game.data && game.data.lie_explanation, "Explanation unavailable."))) + "</p>",
         "            </article>"
       ].join("\n");
     }
@@ -1802,7 +1806,9 @@ function setupRevealGame(container, data) {
 }
 
 function setupTwoTruthsGame(container, data) {
-  var options = Array.isArray(data && data.options) ? data.options.slice(0, 3) : [];
+  var options = Array.isArray(data && data.options)
+    ? data.options.slice(0, 3)
+    : (Array.isArray(data && data.statements) ? data.statements.slice(0, 3) : []);
   var buttons = container.querySelectorAll("[data-lie-option]");
   var status = container.querySelector("[data-lie-status]");
   var index;

@@ -83,24 +83,9 @@
   "game": {
     "type": "first_and_last",
     "data": {
-      "prompt": "Name something that connects the first and last of each pair",
-      "pairs": [
-        {
-          "first": "Anaximander's boundless origin of all things",
-          "last": "The quality of a universe with no detectable edge",
-          "answer": "apeiron / unboundedness"
-        },
-        {
-          "first": "The element that makes up 73% of the observable universe by mass",
-          "last": "The element Cecilia Payne-Gaposchkin correctly identified as dominant in stars",
-          "answer": "hydrogen"
-        },
-        {
-          "first": "What Pascal felt in the face of infinite spaces",
-          "last": "What cosmological scale produces in a mind that genuinely confronts it",
-          "answer": "fright / vertigo / dread"
-        }
-      ]
+      "answer": "apeiron",
+      "display_length": 7,
+      "definition": "Anaximander's term for the boundless — that which has no limit, edge, or determinate form, and from which all things emerge."
     }
   },
   "movie": {

@@ -83,12 +83,18 @@
   "game": {
     "type": "reveal",
     "data": {
-      "word": "saudade",
+      "answer": "saudade",
       "clues": [
         "It names an emotion so specific that its home language has exported it to philosophy",
         "It is the grief that has no object except the fact of absence itself",
         "Fado is its musical form — a tradition built entirely around its texture",
         "It can be felt for something that may never have existed"
+      ],
+      "score_labels": [
+        "First clue — exceptional",
+        "Second clue — sharp",
+        "Third clue — solid",
+        "Fourth clue — there"
       ]
     }
   },

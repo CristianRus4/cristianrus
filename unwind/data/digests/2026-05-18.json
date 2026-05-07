@@ -83,14 +83,25 @@
   "game": {
     "type": "odd_one_out",
     "data": {
-      "question": "Three of these objects have been found as burial goods in Neolithic or Bronze Age graves across Europe. Which one has not?",
+      "prompt": "Four of these appear as burial goods in Neolithic or Bronze Age graves across Europe. One does not belong to those periods. Find the outlier.",
       "options": [
-        "Polished stone axes",
-        "Ceramic vessels containing food or drink",
-        "Iron ploughshares",
-        "Personal ornaments of amber or bone"
+        {
+          "word": "Polished stone axes",
+          "is_odd": false
+        },
+        {
+          "word": "Ceramic vessels containing food or drink",
+          "is_odd": false
+        },
+        {
+          "word": "Iron ploughshares",
+          "is_odd": true
+        },
+        {
+          "word": "Personal ornaments of amber or bone",
+          "is_odd": false
+        }
       ],
-      "correct": 2,
       "explanation": "Iron ploughshares belong to the Iron Age, which begins after the Neolithic and early Bronze Age periods that produced most of Europe's earliest burial assemblages. Polished stone axes, ceramic vessels, and personal ornaments made from amber, shell, or bone are consistently found in Neolithic and Bronze Age burials across the continent."
     }
   },
