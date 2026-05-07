@@ -443,9 +443,24 @@ const PAGE_STYLE = `
       }
 
       .pill-button,
-      .option-button,
       .secondary-button,
       .primary-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        min-height: 2.1rem;
+        padding: 0.3rem 0.85rem;
+        border-radius: 0;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        font-size: 0.88rem;
+        transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+        cursor: pointer;
+      }
+
+      .option-button {
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
@@ -461,9 +476,7 @@ const PAGE_STYLE = `
 
       .primary-button,
       .secondary-button {
-        justify-content: center;
         width: fit-content;
-        min-width: 9.8rem;
       }
 
       .primary-button {
@@ -499,6 +512,14 @@ const PAGE_STYLE = `
       .secondary-button:disabled,
       .primary-button:disabled {
         cursor: default;
+      }
+
+      .pill-button:hover,
+      .secondary-button:hover,
+      .primary-button:hover {
+        border-color: var(--accent);
+        background-color: var(--accent);
+        color: var(--bg);
       }
 
       .pill-button:focus-visible,
@@ -644,6 +665,9 @@ const PAGE_STYLE = `
 
       .quote-translation {
         font-style: normal;
+        font-size: 1rem;
+        color: var(--text);
+        margin: 1.1rem 0 0.5rem;
       }
 
       .mask {
@@ -690,7 +714,6 @@ const PAGE_STYLE = `
       }
 
       .answers-toggle-button {
-        min-width: 12rem;
       }
 
       .spacer {
@@ -907,10 +930,10 @@ function renderDigestContent(entry) {
     "          <blockquote class=\"quote-block\">",
     "            <p>" + escapeHtml(entry.quote.text) + "</p>",
     "          </blockquote>",
-    entry.quote.translation
-      ? "          <p class=\"meta-line quote-translation\">" + escapeHtml(entry.quote.translation) + "</p>"
-      : "",
     "          <p class=\"quote-source\">" + escapeHtml(entry.quote.author) + " · " + escapeHtml(entry.quote.source) + "</p>",
+    entry.quote.translation
+      ? "          <p class=\"quote-translation\">" + escapeHtml(entry.quote.translation) + "</p>"
+      : "",
     "        </section>",
     "",
     "        <section class=\"card section-rule prose\">",
@@ -1509,7 +1532,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
     if (isCorrect) {
       button.classList.add("is-correct");
       if (marker) {
-        marker.textContent = "";
+        marker.textContent = "✓";
       }
       if (explanation) {
         explanation.hidden = false;
@@ -1517,7 +1540,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
     } else {
       button.classList.add("is-incorrect");
       if (marker) {
-        marker.textContent = "";
+        marker.textContent = "×";
       }
       if (explanation) {
         explanation.hidden = true;

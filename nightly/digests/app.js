@@ -173,7 +173,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
     if (isCorrect) {
       button.classList.add("is-correct");
       if (marker) {
-        marker.textContent = "";
+        marker.textContent = "✓";
       }
       if (explanation) {
         explanation.hidden = false;
@@ -181,7 +181,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
     } else {
       button.classList.add("is-incorrect");
       if (marker) {
-        marker.textContent = "";
+        marker.textContent = "×";
       }
       if (explanation) {
         explanation.hidden = true;

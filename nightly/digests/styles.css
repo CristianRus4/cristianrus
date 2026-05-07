@@ -433,9 +433,24 @@
       }
 
       .pill-button,
-      .option-button,
       .secondary-button,
       .primary-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        min-height: 2.1rem;
+        padding: 0.3rem 0.85rem;
+        border-radius: 0;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        font-size: 0.88rem;
+        transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+        cursor: pointer;
+      }
+
+      .option-button {
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
@@ -451,9 +466,7 @@
 
       .primary-button,
       .secondary-button {
-        justify-content: center;
         width: fit-content;
-        min-width: 9.8rem;
       }
 
       .primary-button {
@@ -489,6 +502,14 @@
       .secondary-button:disabled,
       .primary-button:disabled {
         cursor: default;
+      }
+
+      .pill-button:hover,
+      .secondary-button:hover,
+      .primary-button:hover {
+        border-color: var(--accent);
+        background-color: var(--accent);
+        color: var(--bg);
       }
 
       .pill-button:focus-visible,
@@ -634,6 +655,9 @@
 
       .quote-translation {
         font-style: normal;
+        font-size: 1rem;
+        color: var(--text);
+        margin: 1.1rem 0 0.5rem;
       }
 
       .mask {
@@ -680,7 +704,6 @@
       }
 
       .answers-toggle-button {
-        min-width: 12rem;
       }
 
       .spacer {
