@@ -63,6 +63,14 @@
         line-height: 1.78;
       }
 
+      h1, h2, h3, h4, p {
+        margin-top: 0;
+      }
+
+      p {
+        margin-bottom: 1.15rem;
+      }
+
       button,
       input {
         font: inherit;
@@ -210,15 +218,37 @@
         opacity: 1;
       }
 
-      .date-line {
-        margin: 0 0 2.5rem;
+      .date-line,
+      .back-to-nightly {
         display: block;
         width: 100%;
         color: var(--accent-dim);
         font-size: 0.72rem;
         letter-spacing: 0.2em;
-        text-align: right;
         text-transform: uppercase;
+      }
+
+      .meta-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 2.5rem;
+      }
+
+      .meta-row .date-line,
+      .meta-row .back-to-nightly {
+        margin: 0;
+        width: auto;
+      }
+
+      .date-line {
+        margin: 0 0 2.5rem;
+        text-align: right;
+      }
+
+      .back-to-nightly {
+        margin: 2.5rem 0 0;
+        text-align: left;
       }
 
       .entry-title {
@@ -288,7 +318,7 @@
       }
 
       .number-value {
-        margin: 0 0 0.55rem;
+        margin: 0 0 0.65rem;
         font-family: "Quattro Italic", serif;
         font-size: 3.1rem;
         line-height: 1;
@@ -296,7 +326,7 @@
       }
 
       .word-term {
-        margin: 0 0 0.55rem;
+        margin: 0 0 0.65rem;
         font-family: "Quattro Italic", serif;
         font-size: 3.1rem;
         line-height: 1;
@@ -320,7 +350,11 @@
         color: var(--dim);
         font-size: 0.74rem;
         letter-spacing: 0.06em;
-        margin-bottom: 0.55rem;
+        margin-bottom: 0.65rem;
+      }
+
+      .game-shell .game-description {
+        margin-top: -0.7rem;
       }
 
       .question-list,
@@ -356,11 +390,11 @@
         content: counter(q);
         font-family: "Quattro Italic", serif;
         color: var(--accent);
-        font-size: 2.55rem;
-        min-width: 2.2rem;
-        line-height: 1;
+        font-size: 1.45rem;
+        min-width: 1.25rem;
+        line-height: 1.2;
         align-self: flex-start;
-        transform: translateY(-0.08rem);
+        transform: translateY(0.18rem);
       }
 
       .question-text {
