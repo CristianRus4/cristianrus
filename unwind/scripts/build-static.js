@@ -574,7 +574,7 @@ const PAGE_STYLE = `
         padding: 0 0 0 1rem;
         border-radius: 0;
         border: 0;
-        border-left: 1px solid var(--border);
+        border-left: 2px solid var(--accent);
         background: transparent;
       }
 
@@ -1683,7 +1683,7 @@ function setupRevealGame(container, data) {
   var form = container.querySelector("[data-reveal-form]");
   var input = container.querySelector("#reveal-guess");
   var status = container.querySelector("[data-reveal-status]");
-  var submitButton = form.querySelector("button");
+  var submitButton = form.querySelector('button[type="submit"]');
   var clueCount = 1;
 
   button.onclick = function () {

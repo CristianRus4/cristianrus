@@ -224,7 +224,7 @@ function setupRevealGame(container, data) {
   var form = container.querySelector("[data-reveal-form]");
   var input = container.querySelector("#reveal-guess");
   var status = container.querySelector("[data-reveal-status]");
-  var submitButton = form.querySelector("button");
+  var submitButton = form.querySelector('button[type="submit"]');
   var clueCount = 1;
 
   button.onclick = function () {
