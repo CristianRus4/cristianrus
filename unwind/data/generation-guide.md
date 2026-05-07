@@ -30,6 +30,11 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 - Any real word from any language is valid if the fit is precise and the word is genuinely interesting.
 - Never reuse a word from any existing digest.
 - Rotate language families across a batch. No family should dominate.
+- Always include a pronunciation line in `word.pronunciation`.
+- `word.pronunciation` must be a slash-delimited IPA transcription, not an English respelling. Write `/saʊˈdɑːdə/`, not `sow-DAH-duh`.
+- Use broad IPA for the intended reading of the featured term in the digest. Keep it consistent and readable; do not mix IPA with explanatory text.
+- If the word's original writing system is non-Latin, also include it in `word.original` exactly as written in that script. If the word is already normally written in the Latin alphabet, set `word.original` to `null`.
+- The rendered order is: `word.term`, then the pronunciation line, then the existing origin/context line, then the definition.
 - The `origin` field names the language and gives etymological or cultural context. The `definition` field is the lived sense of the word, not a dictionary entry.
 
 ## Quote rules
@@ -129,6 +134,8 @@ Each digest entry must contain exactly:
 - `number.label`
 - `fragment`
 - `word.term`
+- `word.pronunciation` (slash-delimited IPA only, e.g. `/ˈjuːɡɛn/`)
+- `word.original` (null if normally written in the Latin alphabet)
 - `word.origin`
 - `word.definition`
 - `quote.text`

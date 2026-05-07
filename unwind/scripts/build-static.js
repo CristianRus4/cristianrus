@@ -380,6 +380,7 @@ const PAGE_STYLE = `
       }
 
       .word-origin,
+      .word-pronunciation,
       .person-dates,
       .quote-source,
       .section-meta {
@@ -991,6 +992,7 @@ function renderDigestContent(entry) {
     "        <section class=\"card section-filled prose\">",
     "          <p class=\"section-label\">THE WORD TO KNOW</p>",
     "          <h2 class=\"word-term\">" + escapeHtml(entry.word.term) + "</h2>",
+    "          <p class=\"word-pronunciation\">" + escapeHtml(buildWordPronunciationLine(entry.word)) + "</p>",
     "          <p class=\"word-origin\">" + escapeHtml(entry.word.origin) + "</p>",
     "          <p>" + escapeHtml(entry.word.definition) + "</p>",
     "        </section>",
@@ -1006,8 +1008,6 @@ function renderDigestContent(entry) {
       : "",
     "        </section>",
     "",
-    renderOnThisDay(entry.on_this_day),
-    "",
     "        <section class=\"card section-rule prose\">",
     "          <p class=\"section-label\">THE NOT SO KNOWN</p>",
     "          <div class=\"person-block\">",
@@ -1018,6 +1018,8 @@ function renderDigestContent(entry) {
     "        </section>",
     "",
     renderNowHere(entry.now_here),
+    "",
+    renderOnThisDay(entry.on_this_day),
     "",
     "        <section class=\"card section-rule\">",
     "          <p class=\"section-label\">THREE QUESTIONS FOR YOU</p>",
@@ -1088,9 +1090,9 @@ function renderOnThisDay(onThisDay) {
   }
 
   return [
-    "        <section class=\"card section-rule prose\">",
+    "        <section class=\"card section-filled prose\">",
     "          <p class=\"section-label\">ON THIS DAY</p>",
-    "          <h2 class=\"section-heading\">" + escapeHtml(onThisDay.year) + "</h2>",
+    "          <h2 class=\"number-value\">" + escapeHtml(onThisDay.year) + "</h2>",
     onThisDay.place
       ? "          <p class=\"section-meta\">" + escapeHtml(onThisDay.place) + "</p>"
       : "",
@@ -1134,6 +1136,12 @@ function renderMovie(movie) {
     "          <p>" + escapeHtml(movie.text) + "</p>",
     "        </section>"
   ].filter(Boolean).join("\n");
+}
+
+function buildWordPronunciationLine(word) {
+  var pronunciation = safeText(word && word.pronunciation, "Pronunciation unavailable.");
+  var original = safeNullableText(word && word.original);
+  return original ? pronunciation + " — " + original : pronunciation;
 }
 
 function getGameDisplayName(type) {
@@ -2403,6 +2411,8 @@ function normalizeEntry(entry, fallbackDate) {
     fragment: safeText(entry && entry.fragment, "Tonight's fragment is not available yet."),
     word: {
       term: safeText(entry && entry.word && entry.word.term, "Word unavailable"),
+      pronunciation: safeText(entry && entry.word && entry.word.pronunciation, "Pronunciation unavailable."),
+      original: safeNullableText(entry && entry.word && entry.word.original),
       origin: safeText(entry && entry.word && entry.word.origin, "Origin unavailable."),
       definition: safeText(entry && entry.word && entry.word.definition, "Definition unavailable.")
     },
