@@ -45,7 +45,8 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 - One real historical event only, and it must have happened on that calendar date.
 - Choose for thematic resonance with the essay, not because it is the most famous event available.
 - Avoid trivia. The event should recontextualise the essay's territory through actual time.
-- Use `on_this_day.year` for the event year and `on_this_day.text` for a single paragraph.
+- Always include a place line beneath the year. If the event spans multiple sites, choose the most meaningful location or the clearest geographic frame.
+- Use `on_this_day.year`, `on_this_day.place`, and `on_this_day.text`.
 
 ## Person rules
 - Feature someone the reader is genuinely unlikely to know. The person should require real effort to recognise.
@@ -113,6 +114,7 @@ Each digest entry must contain exactly:
 - `quote.author`
 - `quote.source`
 - `on_this_day.year`
+- `on_this_day.place`
 - `on_this_day.text`
 - `person.name`
 - `person.dates`

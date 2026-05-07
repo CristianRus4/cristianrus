@@ -1091,9 +1091,12 @@ function renderOnThisDay(onThisDay) {
     "        <section class=\"card section-rule prose\">",
     "          <p class=\"section-label\">ON THIS DAY</p>",
     "          <h2 class=\"section-heading\">" + escapeHtml(onThisDay.year) + "</h2>",
+    onThisDay.place
+      ? "          <p class=\"section-meta\">" + escapeHtml(onThisDay.place) + "</p>"
+      : "",
     "          <p>" + escapeHtml(onThisDay.text) + "</p>",
     "        </section>"
-  ].join("\n");
+  ].filter(Boolean).join("\n");
 }
 
 function renderNowHere(nowHere) {
@@ -2404,7 +2407,7 @@ function normalizeEntry(entry, fallbackDate) {
       author: safeText(entry && entry.quote && entry.quote.author, "Unknown author"),
       source: safeText(entry && entry.quote && entry.quote.source, "Unknown source")
     },
-    on_this_day: normalizeOptionalBlock(entry && entry.on_this_day, ["year", "text"]),
+    on_this_day: normalizeOptionalBlock(entry && entry.on_this_day, ["year", "place", "text"]),
     person: {
       name: safeText(entry && entry.person && entry.person.name, "Unknown person"),
       dates: safeText(entry && entry.person && entry.person.dates, "Dates unavailable."),
