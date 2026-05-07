@@ -1380,7 +1380,6 @@ function renderFalseCognateMarkup(data) {
 function renderOddOneOutMarkup(data) {
   const options = Array.isArray(data && data.options) ? data.options.slice(0, 5) : [];
   return [
-    "              <h2 class=\"game-title\">Odd one out</h2>",
     "              <p class=\"game-prompt\">" + escapeHtml(safeText(data && data.prompt, "Find the outlier.")) + "</p>",
     "              <div class=\"choice-grid\">",
     options.map((option, index) => {
