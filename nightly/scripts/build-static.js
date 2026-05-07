@@ -4,6 +4,8 @@ const path = require("path");
 const ROOT_DIR = path.resolve(__dirname, "..");
 const DATA_DIR = path.join(ROOT_DIR, "data", "digests");
 const OUTPUT_DIR = path.join(ROOT_DIR, "digests");
+const SHARED_STYLE_NAME = "styles.css";
+const SHARED_SCRIPT_NAME = "app.js";
 
 const PAGE_STYLE = `
       @font-face {
@@ -583,6 +585,8 @@ const PAGE_STYLE = `
 
 function main() {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+  fs.writeFileSync(path.join(OUTPUT_DIR, SHARED_STYLE_NAME), buildSharedStyle(), "utf8");
+  fs.writeFileSync(path.join(OUTPUT_DIR, SHARED_SCRIPT_NAME), buildSharedScript(), "utf8");
 
   const files = fs.readdirSync(DATA_DIR)
     .filter((name) => /^\d{4}-\d{2}-\d{2}\.json$/.test(name))
@@ -628,10 +632,8 @@ function renderDigestPage(entry) {
     "    <meta property=\"og:image\" content=\"https://www.cristianrus.me/images/avatar.jpg\">",
     "    <link rel=\"icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
     "    <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
+    "    <link rel=\"stylesheet\" href=\"./" + SHARED_STYLE_NAME + "\">",
     "    <title>" + escapeHtml(entry.title) + " — Nightly Digest</title>",
-    "    <style>",
-    PAGE_STYLE,
-    "    </style>",
     "  </head>",
     "  <body>",
     "    <main class=\"page\">",
@@ -643,9 +645,8 @@ function renderDigestPage(entry) {
     renderDigestContent(entry),
     "      </div>",
     "    </main>",
-    "    <script>",
-    buildInteractionScript(entry),
-    "    </script>",
+    "    <script id=\"nightly-page-data\" type=\"application/json\">" + escapeHtml(safeJson(entry)) + "</script>",
+    "    <script src=\"./" + SHARED_SCRIPT_NAME + "\"></script>",
     "  </body>",
     "</html>",
     ""
@@ -677,10 +678,8 @@ function renderArchivePage(digests) {
     "    <meta name=\"description\" content=\"Nightly Digest archive.\">",
     "    <link rel=\"icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
     "    <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
+    "    <link rel=\"stylesheet\" href=\"./" + SHARED_STYLE_NAME + "\">",
     "    <title>Nightly Digest Archive</title>",
-    "    <style>",
-    PAGE_STYLE,
-    "    </style>",
     "  </head>",
     "  <body>",
     "    <main class=\"page\">",
@@ -1135,6 +1134,30 @@ function buildInteractionScript(entry) {
     "  setupGame(NIGHTLY_PAGE_DATA.game, NIGHTLY_PAGE_DATA.date);",
     "});",
     interactionFunctions()
+  ].join("\n");
+}
+
+function buildSharedStyle() {
+  return PAGE_STYLE.replace(/^\n/, "") + "\n";
+}
+
+function buildSharedScript() {
+  return [
+    "var app;",
+    "var NIGHTLY_PAGE_DATA;",
+    "document.addEventListener(\"DOMContentLoaded\", function () {",
+    "  var dataElement = document.getElementById(\"nightly-page-data\");",
+    "  app = document.getElementById(\"app\");",
+    "  if (!app || !dataElement) {",
+    "    return;",
+    "  }",
+    "  NIGHTLY_PAGE_DATA = JSON.parse(dataElement.textContent || \"{}\");",
+    "  setupQuestionToggles();",
+    "  setupTrivia(NIGHTLY_PAGE_DATA.trivia);",
+    "  setupGame(NIGHTLY_PAGE_DATA.game, NIGHTLY_PAGE_DATA.date);",
+    "});",
+    interactionFunctions().trim(),
+    ""
   ].join("\n");
 }
 
