@@ -235,7 +235,7 @@ function setupRevealGame(container, data) {
     }
 
     item = document.createElement("p");
-    item.textContent = clues[clueCount];
+    item.textContent = (clueCount + 1) + ". " + clues[clueCount];
     list.appendChild(item);
     clueCount += 1;
 
@@ -294,8 +294,7 @@ function attachLieButton(button, buttons, options, container, status) {
     var selected;
     var isLie;
     var index;
-    var correctIndex;
-    var correctButton;
+    var marker;
 
     if (button.disabled) {
       return;
@@ -303,28 +302,23 @@ function attachLieButton(button, buttons, options, container, status) {
 
     selected = Number(button.getAttribute("data-lie-option"));
     isLie = Boolean(options[selected] && options[selected].is_lie);
-
-    for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].disabled = true;
-    }
+    marker = button.querySelector(".trivia-option-marker");
 
     if (isLie) {
-      button.classList.add("is-correct");
+      for (index = 0; index < buttons.length; index += 1) {
+        buttons[index].disabled = true;
+      }
+      button.classList.add("is-matched");
+      if (marker) {
+        marker.textContent = "✓";
+      }
       setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
+      if (marker) {
+        marker.textContent = "×";
+      }
       setStatus(status, "", false);
-      correctIndex = -1;
-      for (index = 0; index < options.length; index += 1) {
-        if (options[index] && options[index].is_lie) {
-          correctIndex = index;
-          break;
-        }
-      }
-      correctButton = container.querySelector('[data-lie-option="' + correctIndex + '"]');
-      if (correctButton) {
-        correctButton.classList.add("is-correct");
-      }
     }
   };
 }
@@ -399,6 +393,7 @@ function setupConceptMatchGame(container, data) {
         wordButtons[buttonIndex].classList.remove("is-selected");
       }
       button.classList.add("is-selected");
+      button.classList.remove("is-incorrect");
       selectedWordId = button.getAttribute("data-match-word");
       attemptMatch();
     };
@@ -415,6 +410,7 @@ function setupConceptMatchGame(container, data) {
         definitionButtons[buttonIndex].classList.remove("is-selected");
       }
       button.classList.add("is-selected");
+      button.classList.remove("is-incorrect");
       selectedDefinitionId = button.getAttribute("data-match-definition");
       attemptMatch();
     };

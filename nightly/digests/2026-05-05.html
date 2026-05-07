@@ -136,6 +136,7 @@
         <section class="card">
           <div class="word-box interactive-plain">
             <h2 class="game-title">Trivia</h2>
+            <p class="section-instruction">Identify the correct response from the options below.</p>
             <p class="game-prompt">Which writer coined the term &#39;third culture kid&#39; to describe people who spend their formative years outside their parents&#39; home culture?</p>
             <div class="choice-grid" data-trivia-options>
               <button class="option-button" type="button" data-trivia-option="0">
@@ -157,10 +158,27 @@
         <section class="card">
           <div class="word-box interactive-plain">
             <div id="nightly-game" class="game-shell">
-              <h2 class="game-title">Two Truths, One Lie</h2>
-              <p class="game-prompt">One definition is fabricated. Find the lie.</p>
+              <h2 class="game-title">Two truths, one lie</h2>
+              <p class="section-instruction">Distinguish the single false statement from the truths.</p>
               <div class="choice-grid">
-
+                <button class="option-button" style="display: flex; flex-direction: row; align-items: flex-start; padding: 1rem; gap: 0.75rem; text-align: left;" type="button" data-lie-option="0">
+                  <div style="display: flex; flex-direction: column; gap: 0.35rem; flex: 1;">
+                    <span>Samuel Beckett chose to write in French rather than his native English, later translating his own work back, because he found it easier to write without style in a language that was not his first.</span>
+                  </div>
+                  <span class="trivia-option-marker" aria-hidden="true" style="margin-top: 0.12rem;"></span>
+                </button>
+                <button class="option-button" style="display: flex; flex-direction: row; align-items: flex-start; padding: 1rem; gap: 0.75rem; text-align: left;" type="button" data-lie-option="1">
+                  <div style="display: flex; flex-direction: column; gap: 0.35rem; flex: 1;">
+                    <span>Vladimir Nabokov claimed that when he switched from Russian to English he experienced a complete loss of his literary personality for three years, and considered abandoning writing entirely.</span>
+                  </div>
+                  <span class="trivia-option-marker" aria-hidden="true" style="margin-top: 0.12rem;"></span>
+                </button>
+                <button class="option-button" style="display: flex; flex-direction: row; align-items: flex-start; padding: 1rem; gap: 0.75rem; text-align: left;" type="button" data-lie-option="2">
+                  <div style="display: flex; flex-direction: column; gap: 0.35rem; flex: 1;">
+                    <span>Milan Kundera wrote his later novels in French, having left Czechoslovakia after 1968, and eventually renounced his Czech citizenship.</span>
+                  </div>
+                  <span class="trivia-option-marker" aria-hidden="true" style="margin-top: 0.12rem;"></span>
+                </button>
               </div>
               <p class="game-status" data-lie-status aria-live="polite"></p>
             </div>

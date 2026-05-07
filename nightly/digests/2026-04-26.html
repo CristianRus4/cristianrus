@@ -135,6 +135,7 @@
         <section class="card">
           <div class="word-box interactive-plain">
             <h2 class="game-title">Trivia</h2>
+            <p class="section-instruction">Identify the correct response from the options below.</p>
             <p class="game-prompt">What is the Latin term for the philosophical concept of time as subjectively experienced, rather than measured?</p>
             <div class="choice-grid" data-trivia-options>
               <button class="option-button" type="button" data-trivia-option="0">
@@ -157,16 +158,14 @@
           <div class="word-box interactive-plain">
             <div id="nightly-game" class="game-shell">
               <h2 class="game-title">Reveal</h2>
-              <p class="game-prompt">Guess the hidden word after as few clues as possible.</p>
+              <p class="section-instruction">Uncover the solution by requesting additional clues.</p>
               <div data-reveal-clues>
-                <p>It lives in the gap between now and a fixed future point.</p>
-              </div>
-              <div class="inline-actions">
-                <button class="secondary-button" type="button" data-reveal-more>Clue</button>
+                <p class="game-prompt">1. It lives in the gap between now and a fixed future point.</p>
               </div>
               <form class="guess-form" data-reveal-form>
                 <label class="visually-hidden" for="reveal-guess">Your guess</label>
                 <input class="text-input" id="reveal-guess" type="text" autocomplete="off" placeholder="Type your guess">
+                <button class="secondary-button" type="button" data-reveal-more>Clue</button>
                 <button class="primary-button" type="submit" data-default-label="Submit">Submit</button>
               </form>
               <p class="game-status" data-reveal-status aria-live="polite"></p>

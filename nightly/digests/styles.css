@@ -360,12 +360,20 @@
 
       .word-origin,
       .person-dates,
+      .section-instruction,
       .meta-line,
       .quote-source {
         color: var(--dim);
         font-size: 0.74rem;
-        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
         margin-bottom: 0.55rem;
+      }
+
+      .section-instruction {
+        text-transform: none;
+        letter-spacing: normal;
+        margin: 0.15rem 0 1.2rem;
       }
 
       .question-list,
@@ -475,10 +483,13 @@
       }
 
       .pill-button.is-active,
-      .option-button.is-selected,
       .secondary-button.is-active {
         border-color: var(--accent);
         color: var(--accent);
+      }
+
+      .option-button.is-selected {
+        font-weight: 700;
       }
 
       .option-button.is-correct {
@@ -492,8 +503,8 @@
       }
 
       .option-button.is-matched {
-        border-color: var(--text);
-        background: var(--text);
+        border-color: var(--accent);
+        background: var(--accent);
         color: var(--bg);
       }
 
@@ -597,18 +608,25 @@
         color: var(--red);
       }
 
+      .game-title {
+        margin: 0 0 0.2rem;
+        font-family: "Quattro Italic", serif;
+        font-size: 1.45rem;
+        line-height: 1.2;
+        color: var(--accent);
+      }
+
       .option-title {
         display: block;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0;
         font-family: "Quattro", serif;
-        font-weight: 700;
+        font-weight: 400;
         font-size: 1.02rem;
         color: inherit;
       }
 
       .game-shell {
-        display: grid;
-        gap: 0.9rem;
+        display: block;
       }
 
       .game-prompt {
@@ -617,7 +635,7 @@
 
       .game-status,
       .feedback {
-        margin: 0;
+        margin: 1.2rem 0 0;
         color: var(--dim);
       }
 
@@ -682,13 +700,9 @@
       }
 
       .primary-button.is-success {
-        border-color: var(--green);
-        color: var(--green);
       }
 
       .primary-button.is-error {
-        border-color: var(--red);
-        color: var(--red);
       }
 
       .scroll-hint {

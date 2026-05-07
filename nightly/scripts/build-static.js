@@ -370,12 +370,20 @@ const PAGE_STYLE = `
 
       .word-origin,
       .person-dates,
+      .section-instruction,
       .meta-line,
       .quote-source {
         color: var(--dim);
         font-size: 0.74rem;
-        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
         margin-bottom: 0.55rem;
+      }
+
+      .section-instruction {
+        text-transform: none;
+        letter-spacing: normal;
+        margin: 0.15rem 0 1.2rem;
       }
 
       .question-list,
@@ -485,10 +493,13 @@ const PAGE_STYLE = `
       }
 
       .pill-button.is-active,
-      .option-button.is-selected,
       .secondary-button.is-active {
         border-color: var(--accent);
         color: var(--accent);
+      }
+
+      .option-button.is-selected {
+        font-weight: 700;
       }
 
       .option-button.is-correct {
@@ -502,8 +513,8 @@ const PAGE_STYLE = `
       }
 
       .option-button.is-matched {
-        border-color: var(--text);
-        background: var(--text);
+        border-color: var(--accent);
+        background: var(--accent);
         color: var(--bg);
       }
 
@@ -607,18 +618,25 @@ const PAGE_STYLE = `
         color: var(--red);
       }
 
+      .game-title {
+        margin: 0 0 0.2rem;
+        font-family: "Quattro Italic", serif;
+        font-size: 1.45rem;
+        line-height: 1.2;
+        color: var(--accent);
+      }
+
       .option-title {
         display: block;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0;
         font-family: "Quattro", serif;
-        font-weight: 700;
+        font-weight: 400;
         font-size: 1.02rem;
         color: inherit;
       }
 
       .game-shell {
-        display: grid;
-        gap: 0.9rem;
+        display: block;
       }
 
       .game-prompt {
@@ -627,7 +645,7 @@ const PAGE_STYLE = `
 
       .game-status,
       .feedback {
-        margin: 0;
+        margin: 1.2rem 0 0;
         color: var(--dim);
       }
 
@@ -692,13 +710,9 @@ const PAGE_STYLE = `
       }
 
       .primary-button.is-success {
-        border-color: var(--green);
-        color: var(--green);
       }
 
       .primary-button.is-error {
-        border-color: var(--red);
-        color: var(--red);
       }
 
       .scroll-hint {
@@ -959,6 +973,7 @@ function renderDigestContent(entry) {
     "        <section class=\"card\">",
     "          <div class=\"word-box interactive-plain\">",
     "            <h2 class=\"game-title\">Trivia</h2>",
+    "            <p class=\"section-instruction\">" + getGameInstruction("trivia") + "</p>",
     "            <p class=\"game-prompt\">" + escapeHtml(entry.trivia.question) + "</p>",
     "            <div class=\"choice-grid\" data-trivia-options>",
     renderTriviaOptions(entry.trivia.options),
@@ -988,6 +1003,21 @@ function renderDigestContent(entry) {
   ]
     .filter(Boolean)
     .join("\n");
+}
+
+function getGameInstruction(type) {
+  const instructions = {
+    reveal: "Uncover the solution by requesting additional clues.",
+    two_truths_one_lie: "Distinguish the single false statement from the truths.",
+    missing_word: "Provide the missing term to complete the passage.",
+    concept_match: "Forge the correct links between words and their meanings.",
+    letter_by_letter: "Deduce the complete word through individual letter guesses.",
+    first_and_last: "Reconstruct the full word using its start and end points.",
+    false_cognate: "Spot the deceptive similarity between these terms.",
+    odd_one_out: "Select the element that does not fit the established pattern.",
+    trivia: "Identify the correct response from the options below."
+  };
+  return instructions[type] || "Complete the challenge below.";
 }
 
 function renderParagraphs(paragraphs, indent, blockquoteText) {
@@ -1080,16 +1110,14 @@ function renderRevealMarkup(data) {
   const clues = toStringArray(data && data.clues, 4, "Clue unavailable.");
   return [
     "              <h2 class=\"game-title\">Reveal</h2>",
-    "              <p class=\"game-prompt\">Guess the hidden word after as few clues as possible.</p>",
+    "              <p class=\"section-instruction\">" + getGameInstruction("reveal") + "</p>",
     "              <div data-reveal-clues>",
-    "                <p>" + escapeHtml(clues[0]) + "</p>",
-    "              </div>",
-    "              <div class=\"inline-actions\">",
-    "                <button class=\"secondary-button\" type=\"button\" data-reveal-more>Clue</button>",
+    "                <p class=\"game-prompt\">1. " + escapeHtml(clues[0]) + "</p>",
     "              </div>",
     "              <form class=\"guess-form\" data-reveal-form>",
     "                <label class=\"visually-hidden\" for=\"reveal-guess\">Your guess</label>",
     "                <input class=\"text-input\" id=\"reveal-guess\" type=\"text\" autocomplete=\"off\" placeholder=\"Type your guess\">",
+    "                <button class=\"secondary-button\" type=\"button\" data-reveal-more>Clue</button>",
     "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Submit\">Submit</button>",
     "              </form>",
     "              <p class=\"game-status\" data-reveal-status aria-live=\"polite\"></p>"
@@ -1097,21 +1125,26 @@ function renderRevealMarkup(data) {
 }
 
 function renderTwoTruthsMarkup(data) {
-  const options = Array.isArray(data && data.options) ? data.options.slice(0, 3) : [];
+  const items = Array.isArray(data && data.options)
+    ? data.options.slice(0, 3)
+    : (Array.isArray(data && data.statements) ? data.statements.slice(0, 3) : []);
+
   return [
-    "              <h2 class=\"game-title\">Two Truths, One Lie</h2>",
-    "              <p class=\"game-prompt\">One definition is fabricated. Find the lie.</p>",
+    "              <h2 class=\"game-title\">Two truths, one lie</h2>",
+    "              <p class=\"section-instruction\">" + getGameInstruction("two_truths_one_lie") + "</p>",
     "              <div class=\"choice-grid\">",
-    options.map((option, index) => {
+    items.map((item, index) => {
+      const title = safeText(item && item.word, "");
+      const definition = safeText(item && item.definition, "") || safeText(item && item.text, "Statement unavailable.");
       return [
         "                <button class=\"option-button\" style=\"display: flex; flex-direction: row; align-items: flex-start; padding: 1rem; gap: 0.75rem; text-align: left;\" type=\"button\" data-lie-option=\"" + index + "\">",
         "                  <div style=\"display: flex; flex-direction: column; gap: 0.35rem; flex: 1;\">",
-        "                    <span class=\"option-title\" style=\"text-transform: uppercase; margin: 0;\">" + escapeHtml(safeText(option && option.word, "Word unavailable")) + "</span>",
-        "                    <span>" + escapeHtml(safeText(option && option.definition, "Definition unavailable.")) + "</span>",
+        title ? "                    <span class=\"option-title\" style=\"text-transform: uppercase; margin: 0;\">" + escapeHtml(title) + "</span>" : "",
+        "                    <span>" + escapeHtml(definition) + "</span>",
         "                  </div>",
         "                  <span class=\"trivia-option-marker\" aria-hidden=\"true\" style=\"margin-top: 0.12rem;\"></span>",
         "                </button>"
-      ].join("\n");
+      ].filter(Boolean).join("\n");
     }).join("\n"),
     "              </div>",
     "              <p class=\"game-status\" data-lie-status aria-live=\"polite\"></p>"
@@ -1121,7 +1154,9 @@ function renderTwoTruthsMarkup(data) {
 function renderMissingWordMarkup(data) {
   return [
     "              <h2 class=\"game-title\">Missing Word</h2>",
-    "              <p class=\"game-prompt\">" + escapeHtml(safeText(data && data.before, "")) + " <strong>_____</strong> " + escapeHtml(safeText(data && data.after, "")) + "</p>",
+    "              <p class=\"section-instruction\">" + getGameInstruction("missing_word") + "</p>",
+    "              <p class=\"game-prompt\">Find the word that has been removed from this passage.</p>",
+    "              <p>" + escapeHtml(safeText(data && data.before, "")) + " <strong>_____</strong> " + escapeHtml(safeText(data && data.after, "")) + "</p>",
     "              <form class=\"guess-form\" data-missing-form>",
     "                <label class=\"visually-hidden\" for=\"missing-word-guess\">Missing word</label>",
     "                <input class=\"text-input\" id=\"missing-word-guess\" type=\"text\" autocomplete=\"off\" placeholder=\"Type the missing word\">",
@@ -1143,13 +1178,13 @@ function renderConceptMatchMarkup(data, dateString) {
   );
 
   return [
-    "              <h2 class=\"game-title\">Concept Match</h2>",
-    "              <p class=\"game-prompt\">Tap one word and one definition to pair them.</p>",
+    "              <h2 class=\"game-title\">Concept match</h2>",
+    "              <p class=\"section-instruction\">" + getGameInstruction("concept_match") + "</p>",
     "              <div class=\"match-words-grid\">",
     pairs.map((pair) => {
       return [
         "                <button class=\"option-button\" type=\"button\" data-match-word=\"" + escapeAttribute(safeText(pair && pair.id, "")) + "\">",
-        "                  <span class=\"match-option-content\"><span class=\"option-title\">" + escapeHtml(safeText(pair && pair.word, "Word unavailable")) + "</span><span class=\"match-option-marker\" aria-hidden=\"true\"></span></span>",
+        "                  <span class=\"match-option-content\"><span>" + escapeHtml(safeText(pair && pair.word, "Word unavailable")) + "</span><span class=\"match-option-marker\" aria-hidden=\"true\"></span></span>",
         "                </button>"
       ].join("\n");
     }).join("\n"),
@@ -1169,8 +1204,10 @@ function renderConceptMatchMarkup(data, dateString) {
 function renderLetterByLetterMarkup(data) {
   const answer = safeText(data && data.answer, "");
   return [
-    "              <h2 class=\"game-title\">Letter By Letter</h2>",
-    "              <p class=\"game-prompt\">" + escapeHtml(safeText(data && data.definition, "Definition unavailable.")) + "</p>",
+    "              <h2 class=\"game-title\">Letter by Letter</h2>",
+    "              <p class=\"section-instruction\">" + getGameInstruction("letter_by_letter") + "</p>",
+    "              <p class=\"game-prompt\">Guess the hidden word one letter at a time.</p>",
+    "              <p>" + escapeHtml(safeText(data && data.definition, "Definition unavailable.")) + "</p>",
     "              <div class=\"mask\" data-letter-mask>" + renderMask(answer, []) + "</div>",
     "              <form class=\"guess-form\" data-letter-form>",
     "                <label class=\"visually-hidden\" for=\"letter-guess\">Guess one letter</label>",
@@ -1187,8 +1224,10 @@ function renderFirstAndLastMarkup(data) {
   const answer = safeText(data && data.answer, "");
   const mask = renderFirstAndLastMask(answer, data && data.display_length);
   return [
-    "              <h2 class=\"game-title\">First And Last</h2>",
-    "              <p class=\"game-prompt\">" + escapeHtml(safeText(data && data.definition, "Definition unavailable.")) + "</p>",
+    "              <h2 class=\"game-title\">First and Last</h2>",
+    "              <p class=\"section-instruction\">" + getGameInstruction("first_and_last") + "</p>",
+    "              <p class=\"game-prompt\">Fill in the missing letters between the first and the last.</p>",
+    "              <p>" + escapeHtml(safeText(data && data.definition, "Definition unavailable.")) + "</p>",
     "              <div class=\"mask\">" + mask + "</div>",
     "              <form class=\"guess-form\" data-first-last-form>",
     "                <label class=\"visually-hidden\" for=\"first-last-guess\">Middle letters</label>",
@@ -1202,7 +1241,9 @@ function renderFirstAndLastMarkup(data) {
 function renderFalseCognateMarkup(data) {
   return [
     "              <h2 class=\"game-title\">False Cognate</h2>",
-    "              <p class=\"game-prompt\">" + escapeHtml(safeText(data && data.word_a && data.word_a.term, "Word A")) + " and " + escapeHtml(safeText(data && data.word_b && data.word_b.term, "Word B")) + "</p>",
+    "              <p class=\"section-instruction\">" + getGameInstruction("false_cognate") + "</p>",
+    "              <p class=\"game-prompt\">One of these words is a false cognate. Which one is it?</p>",
+    "              <p>" + escapeHtml(safeText(data && data.word_a && data.word_a.term, "Word A")) + " and " + escapeHtml(safeText(data && data.word_b && data.word_b.term, "Word B")) + "</p>",
     "              <p>" + escapeHtml(safeText(data && data.question, "Are they truly connected?")) + "</p>",
     "              <div class=\"inline-actions\">",
     "                <button class=\"option-button\" type=\"button\" data-cognate-choice=\"connected\">connected</button>",
@@ -1594,7 +1635,7 @@ function setupRevealGame(container, data) {
     }
 
     item = document.createElement("p");
-    item.textContent = clues[clueCount];
+    item.textContent = (clueCount + 1) + ". " + clues[clueCount];
     list.appendChild(item);
     clueCount += 1;
 
@@ -1653,8 +1694,7 @@ function attachLieButton(button, buttons, options, container, status) {
     var selected;
     var isLie;
     var index;
-    var correctIndex;
-    var correctButton;
+    var marker;
 
     if (button.disabled) {
       return;
@@ -1662,28 +1702,23 @@ function attachLieButton(button, buttons, options, container, status) {
 
     selected = Number(button.getAttribute("data-lie-option"));
     isLie = Boolean(options[selected] && options[selected].is_lie);
-
-    for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].disabled = true;
-    }
+    marker = button.querySelector(".trivia-option-marker");
 
     if (isLie) {
-      button.classList.add("is-correct");
+      for (index = 0; index < buttons.length; index += 1) {
+        buttons[index].disabled = true;
+      }
+      button.classList.add("is-matched");
+      if (marker) {
+        marker.textContent = "✓";
+      }
       setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
+      if (marker) {
+        marker.textContent = "×";
+      }
       setStatus(status, "", false);
-      correctIndex = -1;
-      for (index = 0; index < options.length; index += 1) {
-        if (options[index] && options[index].is_lie) {
-          correctIndex = index;
-          break;
-        }
-      }
-      correctButton = container.querySelector('[data-lie-option="' + correctIndex + '"]');
-      if (correctButton) {
-        correctButton.classList.add("is-correct");
-      }
     }
   };
 }
@@ -1758,6 +1793,7 @@ function setupConceptMatchGame(container, data) {
         wordButtons[buttonIndex].classList.remove("is-selected");
       }
       button.classList.add("is-selected");
+      button.classList.remove("is-incorrect");
       selectedWordId = button.getAttribute("data-match-word");
       attemptMatch();
     };
@@ -1774,6 +1810,7 @@ function setupConceptMatchGame(container, data) {
         definitionButtons[buttonIndex].classList.remove("is-selected");
       }
       button.classList.add("is-selected");
+      button.classList.remove("is-incorrect");
       selectedDefinitionId = button.getAttribute("data-match-definition");
       attemptMatch();
     };
