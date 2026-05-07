@@ -154,47 +154,39 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
     var isCorrect;
     var index;
     var marker;
-
-    if (button.classList.contains("is-correct") || button.disabled) {
-      return;
-    }
+    var loopMarker;
 
     selected = Number(button.getAttribute("data-trivia-option"));
     isCorrect = selected === trivia.correct;
+    marker = button.querySelector(".trivia-option-marker");
 
     for (index = 0; index < buttons.length; index += 1) {
       buttons[index].classList.remove("is-selected");
+      buttons[index].classList.remove("is-correct");
+      loopMarker = buttons[index].querySelector(".trivia-option-marker");
+      if (buttons[index] !== button && buttons[index].classList.contains("is-incorrect") && loopMarker) {
+        loopMarker.textContent = "×";
+      }
     }
 
     button.classList.add("is-selected");
+    button.classList.remove("is-incorrect");
 
     if (isCorrect) {
-      for (index = 0; index < buttons.length; index += 1) {
-        buttons[index].classList.remove("is-incorrect");
-        buttons[index].classList.remove("is-selected");
-        var m = buttons[index].querySelector(".trivia-option-marker");
-        if (m) {
-          m.textContent = "";
-        }
-      }
       button.classList.add("is-correct");
-      button.classList.add("is-selected");
-      marker = button.querySelector(".trivia-option-marker");
       if (marker) {
         marker.textContent = "✓";
       }
       if (explanation) {
         explanation.hidden = false;
       }
-      // Optional: disable all once correct
-      for (index = 0; index < buttons.length; index += 1) {
-        buttons[index].disabled = true;
-      }
     } else {
       button.classList.add("is-incorrect");
-      marker = button.querySelector(".trivia-option-marker");
       if (marker) {
         marker.textContent = "×";
+      }
+      if (explanation) {
+        explanation.hidden = true;
       }
     }
   };
@@ -304,9 +296,10 @@ function attachLieButton(button, buttons, options, container, status) {
     var selected;
     var isLie;
     var index;
-    var marker;
+    var correctIndex;
+    var correctButton;
 
-    if (button.disabled || button.classList.contains("is-correct")) {
+    if (button.disabled) {
       return;
     }
 
@@ -314,37 +307,26 @@ function attachLieButton(button, buttons, options, container, status) {
     isLie = Boolean(options[selected] && options[selected].is_lie);
 
     for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].classList.remove("is-selected");
+      buttons[index].disabled = true;
     }
 
-    button.classList.add("is-selected");
-
     if (isLie) {
-      for (index = 0; index < buttons.length; index += 1) {
-        buttons[index].classList.remove("is-incorrect");
-        buttons[index].classList.remove("is-selected");
-        var m = buttons[index].querySelector(".trivia-option-marker");
-        if (m) {
-          m.textContent = "";
-        }
-      }
       button.classList.add("is-correct");
-      button.classList.add("is-selected");
-      marker = button.querySelector(".trivia-option-marker");
-      if (marker) {
-        marker.textContent = "✓";
-      }
-      setStatus(status, "You found the lie.", true);
-      for (index = 0; index < buttons.length; index += 1) {
-        buttons[index].disabled = true;
-      }
+      setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
-      marker = button.querySelector(".trivia-option-marker");
-      if (marker) {
-        marker.textContent = "×";
+      setStatus(status, "", false);
+      correctIndex = -1;
+      for (index = 0; index < options.length; index += 1) {
+        if (options[index] && options[index].is_lie) {
+          correctIndex = index;
+          break;
+        }
       }
-      setStatus(status, "That's a truth. Try again.", false);
+      correctButton = container.querySelector('[data-lie-option="' + correctIndex + '"]');
+      if (correctButton) {
+        correctButton.classList.add("is-correct");
+      }
     }
   };
 }
@@ -615,45 +597,27 @@ function attachCognateButton(button, buttons, container, status, answer) {
   button.onclick = function () {
     var choice;
     var index;
-    var marker;
+    var correctButton;
 
-    if (button.disabled || button.classList.contains("is-correct")) {
+    if (button.disabled) {
       return;
     }
 
     choice = button.getAttribute("data-cognate-choice");
     for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].classList.remove("is-selected");
+      buttons[index].disabled = true;
     }
 
-    button.classList.add("is-selected");
-
     if (choice === answer) {
-      for (index = 0; index < buttons.length; index += 1) {
-        buttons[index].classList.remove("is-incorrect");
-        buttons[index].classList.remove("is-selected");
-        var m = buttons[index].querySelector(".trivia-option-marker");
-        if (m) {
-          m.textContent = "";
-        }
-      }
       button.classList.add("is-correct");
-      button.classList.add("is-selected");
-      marker = button.querySelector(".trivia-option-marker");
-      if (marker) {
-        marker.textContent = "✓";
-      }
-      setStatus(status, "Correct.", true);
-      for (index = 0; index < buttons.length; index += 1) {
-        buttons[index].disabled = true;
-      }
+      setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
-      marker = button.querySelector(".trivia-option-marker");
-      if (marker) {
-        marker.textContent = "×";
+      setStatus(status, "", false);
+      correctButton = container.querySelector('[data-cognate-choice="' + answer + '"]');
+      if (correctButton) {
+        correctButton.classList.add("is-correct");
       }
-      setStatus(status, "Not that one. Try again.", false);
     }
   };
 }
@@ -674,9 +638,10 @@ function attachOddButton(button, buttons, options, container, status) {
     var selected;
     var isOdd;
     var index;
-    var marker;
+    var correctIndex;
+    var correctButton;
 
-    if (button.disabled || button.classList.contains("is-correct")) {
+    if (button.disabled) {
       return;
     }
 
@@ -684,37 +649,26 @@ function attachOddButton(button, buttons, options, container, status) {
     isOdd = Boolean(options[selected] && options[selected].is_odd);
 
     for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].classList.remove("is-selected");
+      buttons[index].disabled = true;
     }
 
-    button.classList.add("is-selected");
-
     if (isOdd) {
-      for (index = 0; index < buttons.length; index += 1) {
-        buttons[index].classList.remove("is-incorrect");
-        buttons[index].classList.remove("is-selected");
-        var m = buttons[index].querySelector(".trivia-option-marker");
-        if (m) {
-          m.textContent = "";
-        }
-      }
       button.classList.add("is-correct");
-      button.classList.add("is-selected");
-      marker = button.querySelector(".trivia-option-marker");
-      if (marker) {
-        marker.textContent = "✓";
-      }
-      setStatus(status, "Correct.", true);
-      for (index = 0; index < buttons.length; index += 1) {
-        buttons[index].disabled = true;
-      }
+      setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
-      marker = button.querySelector(".trivia-option-marker");
-      if (marker) {
-        marker.textContent = "×";
+      setStatus(status, "", false);
+      correctIndex = -1;
+      for (index = 0; index < options.length; index += 1) {
+        if (options[index] && options[index].is_odd) {
+          correctIndex = index;
+          break;
+        }
       }
-      setStatus(status, "Try again.", false);
+      correctButton = container.querySelector('[data-odd-option="' + correctIndex + '"]');
+      if (correctButton) {
+        correctButton.classList.add("is-correct");
+      }
     }
   };
 }

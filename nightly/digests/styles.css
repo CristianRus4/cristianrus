@@ -11,35 +11,36 @@
       :root {
         color-scheme: light dark;
         font-size: 18px;
-        --black-rgb: 248, 245, 239;
-        --gold-rgb: 196, 169, 110;
-        --bg: #0e0d0b;
-        --surface: #161510;
-        --border: rgba(var(--black-rgb), 0.18);
+        --black-rgb: 17, 17, 17;
+        --gold-rgb: 112, 84, 28;
+        --bg: #ffffff;
+        --surface: #f5f5f5;
+        --border: rgba(var(--black-rgb), 0.16);
         --text: rgb(var(--black-rgb));
         --dim: rgba(var(--black-rgb), 0.7);
         --accent: rgb(var(--gold-rgb));
         --accent-dim: rgba(var(--gold-rgb), 0.6);
-        --green: #7ab090;
-        --red: #c07060;
+        --green: #2b7a55;
+        --red: #b24a3b;
         --quote-text: rgba(var(--black-rgb), 0.88);
         --leading-inset: 0.45rem;
         --radius: 18px;
       }
 
-      @media (prefers-color-scheme: light) {
+      @media (prefers-color-scheme: dark) {
         :root {
-          --black-rgb: 17, 17, 17;
-          --gold-rgb: 112, 84, 28;
-          --bg: #ffffff;
-          --surface: #f5f5f5;
-          --border: rgba(var(--black-rgb), 0.16);
+          --black-rgb: 248, 245, 239;
+          --gold-rgb: 196, 169, 110;
+          --bg: #0e0d0b;
+          --surface: #161510;
+          --border: rgba(var(--black-rgb), 0.18);
           --text: rgb(var(--black-rgb));
           --dim: rgba(var(--black-rgb), 0.7);
           --accent: rgb(var(--gold-rgb));
           --accent-dim: rgba(var(--gold-rgb), 0.6);
-          --green: #2b7a55;
-          --red: #b24a3b;
+          --green: #7ab090;
+          --red: #c07060;
+          --quote-text: rgba(var(--black-rgb), 0.88);
         }
       }
 
@@ -52,22 +53,17 @@
       }
 
       body {
+        min-height: 100vh;
+        background: #ffffff;
+        background: var(--bg);
+        color: #111111;
+        color: var(--text);
         max-width: 680px;
         margin: 0 auto;
         padding: 2.5rem 1.5rem 6rem;
-        background: var(--bg);
-        color: var(--text);
         font-family: "Quattro", serif;
         font-size: 18px;
         line-height: 1.78;
-      }
-
-      h1, h2, h3, h4, p {
-        margin-top: 0;
-      }
-
-      p {
-        margin-bottom: 1.15rem;
       }
 
       button,
@@ -121,12 +117,12 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 1.575rem;
-        height: 1.575rem;
+        width: 3.15rem;
+        height: 3.15rem;
         padding: 0;
-        border: 0;
+        border: 1px solid var(--text);
         border-radius: 0;
-        background: rgba(var(--gold-rgb), 0.8);
+        background: var(--text);
         color: var(--bg);
         font-size: 1.45rem;
         line-height: 1;
@@ -143,7 +139,7 @@
         width: 100%;
         height: 100%;
         font-family: system-ui, sans-serif;
-        transform: translateY(-0.22em);
+        transform: translateY(-0.08em);
       }
 
       .stack {
@@ -163,7 +159,7 @@
       }
 
       .section-rule {
-        border-top: 2px solid rgba(var(--gold-rgb), 0.372);
+        border-top: 2px solid var(--accent-dim);
         padding-top: 0.45rem;
       }
 
@@ -172,8 +168,8 @@
       }
 
       .section-filled {
-        background: rgba(var(--gold-rgb), 0.8);
-        border: 0;
+        background: var(--text);
+        border: 1px solid var(--text);
         color: var(--bg);
         padding: 0.45rem 1.1rem 1rem;
       }
@@ -217,7 +213,16 @@
         opacity: 1;
       }
 
-      .date-line,
+      .date-line {
+        margin: 0;
+        float: right;
+        text-align: right;
+        color: var(--accent-dim);
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
       .back-to-nightly {
         display: inline-block;
         color: var(--accent-dim);
@@ -242,11 +247,6 @@
       .meta-row .back-to-nightly {
         margin: 0;
         width: auto;
-      }
-
-      .date-line {
-        float: right;
-        text-align: right;
       }
 
       .back-to-nightly {
@@ -301,7 +301,7 @@
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
         border-left: 4px solid var(--accent);
-        color: var(--text);
+        color: var(--dim);
         background: transparent;
       }
 
@@ -309,7 +309,7 @@
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
         border-left: 4px solid var(--accent);
-        color: var(--text);
+        color: var(--dim);
         background: transparent;
       }
 
@@ -325,7 +325,7 @@
       }
 
       .number-value {
-        margin: 0 0 0.65rem;
+        margin: 0 0 0.55rem;
         font-family: "Quattro Italic", serif;
         font-size: 2.1rem;
         font-weight: 400;
@@ -336,7 +336,7 @@
       }
 
       .word-term {
-        margin: 0 0 0.65rem;
+        margin: 0 0 0.55rem;
         font-family: "Quattro Italic", serif;
         font-size: 2.1rem;
         font-weight: 400;
@@ -358,16 +358,11 @@
       .word-origin,
       .person-dates,
       .meta-line,
-      .quote-source,
-      .game-description {
+      .quote-source {
         color: var(--dim);
         font-size: 0.74rem;
         letter-spacing: 0.06em;
-        margin-bottom: 0.65rem;
-      }
-
-      .game-shell .game-description {
-        margin-top: -0.7rem;
+        margin-bottom: 0.55rem;
       }
 
       .question-list,
@@ -403,11 +398,11 @@
         content: counter(q);
         font-family: "Quattro Italic", serif;
         color: var(--accent);
-        font-size: 1.45rem;
-        min-width: 1.25rem;
-        line-height: 1.2;
+        font-size: 2.55rem;
+        min-width: 2.2rem;
+        line-height: 1;
         align-self: flex-start;
-        transform: translateY(0.18rem);
+        transform: translateY(-0.08rem);
       }
 
       .question-text {
@@ -534,7 +529,6 @@
       .option-button {
         width: 100%;
         border-radius: 0;
-        justify-content: flex-start;
         text-align: left;
       }
 
@@ -546,8 +540,9 @@
 
       .trivia-option-marker {
         display: inline-block;
-        min-width: 0.8rem;
+        min-width: 1.1rem;
         color: var(--accent);
+        flex-shrink: 0;
       }
 
       .option-button.is-incorrect .trivia-option-marker,
@@ -577,7 +572,8 @@
       .option-title {
         display: block;
         margin-bottom: 0.2rem;
-        font-family: "Quattro Italic", serif;
+        font-family: "Quattro", serif;
+        font-weight: 700;
         font-size: 1.02rem;
         color: inherit;
       }
@@ -588,7 +584,7 @@
       }
 
       .game-prompt {
-        margin: 0.65rem 0 0;
+        margin: 0;
       }
 
       .game-status,

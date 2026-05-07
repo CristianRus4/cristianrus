@@ -1,69 +1,73 @@
 # Nightly Generation Guide
 
+## Core principle
+There is no content pool to draw from. Everything — essay topics, words, people, quotes — is generated fresh each batch by reasoning directly from `user-profile.json`. Read the profile, understand the person, and derive content that fits. Do not recycle, do not default to the obvious. The profile exists to constrain quality and direction, not to supply pre-approved answers.
+
 ## How to generate a batch
-- A batch is 7 digests (one week). Generate 7 complete `DigestEntry` JSON objects.
-- Read `user-profile.json` first. All content choices must be consistent with it.
-- Read `content-bible.md` for the pool of available essay topics, words, people, and quote sources.
-- If files already exist in `data/digests/`, read the latest 10 dated files and extract: essay topics used, authors quoted, words used, game types used, and people featured. Do not repeat any of these within the new batch or within the last 10 entries.
-- Output valid JSON only: one `DigestEntry` object per day, saved to `data/digests/YYYY-MM-DD.json`.
+1. Read `user-profile.json` in full. Internalise the interests, authors, sensibility, and languages.
+2. Read the last 10 files in `data/digests/` and extract what has already been used: essay topics, words, authors quoted, people featured, game types. Do not repeat any of these within the new batch or within those last 10 entries.
+3. Generate one `DigestEntry` JSON object per requested day, saved to `data/digests/YYYY-MM-DD.json`.
 
-## Quote rotation rules
-- Primary authors from `user-profile.json` may appear at most once every 5 days.
-- Secondary authors may appear at most once every 14 days.
-- Never use the same quote twice. Track by source title plus approximate location.
-- Prefer lesser-known passages over canonical ones.
-- If the quote is not in English, include the original language text first, then the translation.
-
-## Essay topic rules
-- No topic from the last 10 digests may be repeated.
-- Rotate across the 10 territory categories in `content-bible.md`. No more than 2 digests per batch from the same territory.
+## Essay rules
+- Derive topics from the owner's interests as described in `user-profile.json`. Any genuine interest is fair territory. Do not restrict to a predetermined list.
+- No topic from the last 10 digests may be repeated, but similarity of angle counts — a rephrase does not constitute a different topic.
 - Essays must not mention the author of the quote. The quote section is the only place authors appear.
-- Essays should end in tension, not resolution.
-- Do not use a call to action or tidy moral.
-- The `crosslink` field connects the essay to a concept from a different field entirely. One sentence only.
-
-## Game rotation rules
-- Every digest must always include `trivia` plus exactly one main game in `game`.
-- Available main game types: `reveal`, `two_truths_one_lie`, `missing_word`, `concept_match`, `letter_by_letter`, `first_and_last`, `false_cognate`, `odd_one_out`.
-- In any 8-day window, each type should appear once.
-- Within a 7-day batch, no type repeats.
-- Game content must relate to the essay topic of that day.
-- Never reuse essay words verbatim in game options.
-- For `concept_match`, include the word of the night as one of the four pairs.
-- For `reveal`, the hidden word should be a concept from the essay, not the exact title word.
+- Essays should end in tension, not resolution. No tidy moral, no call to action.
+- Aim for 4–6 paragraphs. Prefer concrete images over abstract statements. Let moods accumulate rather than arguing toward a conclusion.
+- The blockquote appears inside the essay, not at the end. It is a single sentence the essay has earned, stated plainly. After the blockquote, the essay continues — at least one paragraph follows it before the essay closes.
+- The `blockquote` field holds that sentence. It is not attributed to any author.
 
 ## Word rules
-- Never use a Greek-origin word two batches in a row.
-- Rotate language families: Latin, Germanic, Celtic, Slavic, Japanese, Arabic, Portuguese or Spanish, French.
+- Choose any word from any language that fits the essay's territory organically. The word should emerge from or sit directly beside the essay's thematic core — not appended arbitrarily.
+- Any real word from any language is valid if the fit is precise and the word is genuinely interesting. Do not restrict to a list.
 - Never reuse a word from any existing digest.
-- The word should appear organically in the essay or sit directly beside its theme.
+- Rotate language families across a batch. No family should dominate.
+- The `origin` field names the language and gives etymological or cultural context. The `definition` field is the lived sense of the word, not a dictionary entry.
+
+## Quote rules
+- Draw from authors in `user-profile.json`. Authors marked as primary may appear at most once every 5 days. Secondary authors at most once every 14 days.
+- Never reuse a quote. Track by source title and approximate location.
+- Prefer lesser-known passages over canonical ones. Avoid the quotes everyone already knows.
+- If the quote is not in English, include the original language text first, then the English translation.
+- The quote should resonate with the essay's territory without illustrating it literally.
 
 ## Person rules
+- Feature someone the reader is genuinely unlikely to know. The person should require real effort to recognise.
+- Derive the person freely — anyone who fits the essay's territory and the owner's intellectual range is a valid candidate. Do not rely on a fixed list.
 - Do not repeat a person from the last 10 digests.
-- Avoid famous figures. The person should require genuine effort to recognise.
-- Use two paragraphs maximum: achievement first, complication or irony second.
+- Two paragraphs: achievement or contribution first, complication or irony second.
 - Format dates and location exactly as `1824 – 1907 — City, Country`.
 
-## Number callout rules
-- One number per digest.
-- Use a real, verifiable figure, not an approximate number unless it is labelled as such.
-- The number should recontextualise something from the essay, not merely illustrate it.
-- Format as a display value plus a single sentence label.
+## Number rules
+- One real, verifiable figure per digest. Label approximate figures explicitly.
+- The number should recontextualise something from the essay — shift its scale or complicate its premise — not merely illustrate it.
+- Format: a display value and a single sentence label.
 
 ## Fiction fragment rules
-- Write 4 to 6 sentences.
-- Use an unnamed narrator or unnamed subject.
-- Do not add resolution or moral.
-- Keep it in the same thematic neighborhood as the essay without spelling the connection out.
-- Aim for a precise, imagistic, slightly strange register.
+- 4 to 6 sentences.
+- Unnamed narrator or unnamed subject.
+- No resolution, no moral.
+- Same thematic territory as the essay, but approached obliquely — do not spell the connection out.
+- Register: precise, imagistic, slightly strange. Not poetic in a decorative sense.
 
-## Output schema reminder
-Each digest entry must contain:
+## Game rules
+- Every digest includes `trivia` plus exactly one main game.
+- Available game types: `reveal`, `two_truths_one_lie`, `missing_word`, `concept_match`, `letter_by_letter`, `first_and_last`, `false_cognate`, `odd_one_out`.
+- Do not repeat a game type that has appeared recently. Check the last 10 digests and avoid types used there.
+- Game content must relate to the essay topic of that day. Do not reuse essay words verbatim in game options.
+- For `reveal`: the hidden word should be a concept from the essay, not the exact title word.
+
+## Questions rules
+- Exactly 3 questions per digest.
+- Each question has a `text` (the main prompt), a `deeper` (a follow-up that goes further), and an `experiment` (a small concrete action the reader can do today).
+- Questions should be genuinely open — not rhetorical, not leading. They should feel like the essay left something unresolved and the question inhabits that gap.
+
+## Output schema
+Each digest entry must contain exactly:
 - `date`
 - `title`
-- `essay.paragraphs`
+- `essay.paragraphs` (array of strings)
 - `essay.blockquote`
-- `essay.crosslink`
 - `number.value`
 - `number.label`
 - `fragment`
@@ -71,20 +75,21 @@ Each digest entry must contain:
 - `word.origin`
 - `word.definition`
 - `quote.text`
-- `quote.translation`
+- `quote.translation` (null if English)
 - `quote.author`
 - `quote.source`
 - `person.name`
 - `person.dates`
-- `person.paragraphs`
-- `questions` with exactly 3 items
-- `trivia`
-- `game` (exactly one main game from the 8-type pool)
+- `person.paragraphs` (array, 2 items)
+- `questions` (array of 3 items, each with `text`, `deeper`, `experiment`)
+- `trivia.question`
+- `trivia.options` (array of 4 strings)
+- `trivia.correct` (0-indexed integer)
+- `trivia.explanation`
+- `game.type`
+- `game.data` (structure depends on type — see existing digests for reference)
 
-## Owner workflow
-1. Generate one 7-day batch, usually on Sunday.
-2. Review quote attribution, game correctness, and visible topic repetition before merging.
-3. Save each digest as its own file in `data/digests/` using `YYYY-MM-DD.json`.
-4. Run `node nightly/scripts/build-static.js` to generate static pages in `nightly/digests/`.
-5. Keep at least 14 future dated files in `data/digests/` at all times.
-6. Commit and push both the JSON source files and the generated `nightly/digests/*.html` pages. GitHub Pages will serve the updated files immediately.
+## Workflow
+1. Review quote attribution, game correctness, and visible topic repetition before saving.
+2. Save each digest as its own file in `data/digests/` using `YYYY-MM-DD.json`.
+3. Run `node nightly/scripts/build-static.js` to generate static pages in `nightly/digests/`.

@@ -63,11 +63,14 @@ const PAGE_STYLE = `
       }
 
       body {
+        min-height: 100vh;
+        background: #ffffff;
+        background: var(--bg);
+        color: #111111;
+        color: var(--text);
         max-width: 680px;
         margin: 0 auto;
         padding: 2.5rem 1.5rem 6rem;
-        background: var(--bg);
-        color: var(--text);
         font-family: "Quattro", serif;
         font-size: 18px;
         line-height: 1.78;
@@ -442,6 +445,7 @@ const PAGE_STYLE = `
       .primary-button {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.45rem;
         min-height: 2.6rem;
         padding: 0.5rem 0.7rem;
@@ -546,8 +550,9 @@ const PAGE_STYLE = `
 
       .trivia-option-marker {
         display: inline-block;
-        min-width: 0.8rem;
+        min-width: 1.1rem;
         color: var(--accent);
+        flex-shrink: 0;
       }
 
       .option-button.is-incorrect .trivia-option-marker,
@@ -577,7 +582,8 @@ const PAGE_STYLE = `
       .option-title {
         display: block;
         margin-bottom: 0.2rem;
-        font-family: "Quattro Italic", serif;
+        font-family: "Quattro", serif;
+        font-weight: 700;
         font-size: 1.02rem;
         color: inherit;
       }
@@ -1030,9 +1036,12 @@ function renderTwoTruthsMarkup(data) {
     "              <div class=\"choice-grid\">",
     options.map((option, index) => {
       return [
-        "                <button class=\"option-button\" style=\"flex-direction: column; align-items: flex-start; padding: 0.8rem 1rem; gap: 0.35rem;\" type=\"button\" data-lie-option=\"" + index + "\">",
-        "                  <span class=\"option-title\" style=\"text-transform: uppercase; margin: 0;\">" + escapeHtml(safeText(option && option.word, "Word unavailable")) + "</span>",
-        "                  <span class=\"trivia-option-content\"><span class=\"trivia-option-marker\" aria-hidden=\"true\"></span><span>" + escapeHtml(safeText(option && option.definition, "Definition unavailable.")) + "</span></span>",
+        "                <button class=\"option-button\" style=\"display: flex; flex-direction: row; align-items: flex-start; padding: 1rem; gap: 0.75rem; text-align: left;\" type=\"button\" data-lie-option=\"" + index + "\">",
+        "                  <span class=\"trivia-option-marker\" aria-hidden=\"true\" style=\"margin-top: 0.12rem;\"></span>",
+        "                  <div style=\"display: flex; flex-direction: column; gap: 0.35rem;\">",
+        "                    <span class=\"option-title\" style=\"text-transform: uppercase; margin: 0;\">" + escapeHtml(safeText(option && option.word, "Word unavailable")) + "</span>",
+        "                    <span>" + escapeHtml(safeText(option && option.definition, "Definition unavailable.")) + "</span>",
+        "                  </div>",
         "                </button>"
       ].join("\n");
     }).join("\n"),
