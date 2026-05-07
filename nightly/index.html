@@ -30,26 +30,26 @@
       }
 
       :root {
-        color-scheme: light dark;
+        color-scheme: dark;
         font-size: 18px;
-        --black-rgb: 17, 17, 17;
-        --gold-rgb: 112, 84, 28;
-        --bg: #ffffff;
-        --surface: rgb(var(--black-rgb));
-        --border: rgba(var(--black-rgb), 0.16);
+        --black-rgb: 248, 245, 239;
+        --gold-rgb: 196, 169, 110;
+        --bg: #0e0d0b;
+        --surface: #161510;
+        --border: rgba(var(--black-rgb), 0.18);
         --text: rgb(var(--black-rgb));
         --dim: rgba(var(--black-rgb), 0.7);
         --accent: rgb(var(--gold-rgb));
         --accent-dim: rgba(var(--gold-rgb), 0.6);
       }
 
-      @media (prefers-color-scheme: dark) {
+      @media (prefers-color-scheme: light_disabled) {
         :root {
-          --black-rgb: 248, 245, 239;
-          --gold-rgb: 196, 169, 110;
-          --bg: #0e0d0b;
-          --surface: #161510;
-          --border: rgba(var(--black-rgb), 0.18);
+          --black-rgb: 17, 17, 17;
+          --gold-rgb: 112, 84, 28;
+          --bg: #ffffff;
+          --surface: rgb(var(--black-rgb));
+          --border: rgba(var(--black-rgb), 0.16);
           --text: rgb(var(--black-rgb));
           --dim: rgba(var(--black-rgb), 0.7);
           --accent: rgb(var(--gold-rgb));

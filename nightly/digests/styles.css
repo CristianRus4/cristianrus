@@ -9,38 +9,38 @@
       }
 
       :root {
-        color-scheme: light dark;
+        color-scheme: dark;
         font-size: 18px;
-        --black-rgb: 17, 17, 17;
-        --gold-rgb: 112, 84, 28;
-        --bg: #ffffff;
-        --surface: rgb(var(--black-rgb));
-        --border: rgba(var(--black-rgb), 0.16);
+        --black-rgb: 248, 245, 239;
+        --gold-rgb: 196, 169, 110;
+        --bg: #0e0d0b;
+        --surface: #161510;
+        --border: rgba(var(--black-rgb), 0.18);
         --text: rgb(var(--black-rgb));
         --dim: rgba(var(--black-rgb), 0.7);
         --accent: rgb(var(--gold-rgb));
         --accent-dim: rgba(var(--gold-rgb), 0.6);
-        --green: #2b7a55;
-        --red: #b24a3b;
+        --green: #7ab090;
+        --red: #c07060;
         --quote-text: rgba(var(--black-rgb), 0.88);
         --leading-inset: 0.45rem;
         --radius: 18px;
       }
 
-      @media (prefers-color-scheme: dark) {
+      /* Future-proofing: Light mode kept here for reference or future toggling */
+      @media (prefers-color-scheme: light_disabled) {
         :root {
-          --black-rgb: 248, 245, 239;
-          --gold-rgb: 196, 169, 110;
-          --bg: #0e0d0b;
-          --surface: #161510;
-          --border: rgba(var(--black-rgb), 0.18);
+          --black-rgb: 17, 17, 17;
+          --gold-rgb: 112, 84, 28;
+          --bg: #ffffff;
+          --surface: rgb(var(--black-rgb));
+          --border: rgba(var(--black-rgb), 0.16);
           --text: rgb(var(--black-rgb));
           --dim: rgba(var(--black-rgb), 0.7);
           --accent: rgb(var(--gold-rgb));
           --accent-dim: rgba(var(--gold-rgb), 0.6);
-          --green: #7ab090;
-          --red: #c07060;
-          --quote-text: rgba(var(--black-rgb), 0.88);
+          --green: #2b7a55;
+          --red: #b24a3b;
         }
       }
 
@@ -125,9 +125,9 @@
         width: 1.575rem;
         height: 1.575rem;
         padding: 0;
-        border: 1px solid var(--text);
+        border: 1px solid rgba(var(--black-rgb), 0.8);
         border-radius: 0;
-        background: var(--text);
+        background: rgba(var(--black-rgb), 0.8);
         color: var(--bg);
         font-size: 1.45rem;
         line-height: 1;
