@@ -40,7 +40,7 @@ function setupSectionJumpButton() {
   button.type = "button";
   button.className = "section-jump-button";
   button.setAttribute("aria-label", "Jump to next section");
-  button.innerHTML = "<span aria-hidden=\"true\">&minus;</span>";
+  button.innerHTML = "<span class=\"section-jump-line\" aria-hidden=\"true\"></span>";
 
   button.onclick = function () {
     jumpToNextSection();

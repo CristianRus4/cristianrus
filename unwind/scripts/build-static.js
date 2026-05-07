@@ -29,6 +29,7 @@ const PAGE_STYLE = `
         --dim: rgba(var(--black-rgb), 0.7);
         --accent: rgb(var(--gold-rgb));
         --accent-dim: rgba(var(--gold-rgb), 0.6);
+        --section-accent: rgba(var(--gold-rgb), 0.37);
         --green: #2b7a55;
         --red: #b24a3b;
         --quote-text: rgba(var(--black-rgb), 0.88);
@@ -47,6 +48,7 @@ const PAGE_STYLE = `
           --dim: rgba(var(--black-rgb), 0.7);
           --accent: rgb(var(--gold-rgb));
           --accent-dim: rgba(var(--gold-rgb), 0.6);
+          --section-accent: rgba(var(--gold-rgb), 0.37);
           --green: #7ab090;
           --red: #c07060;
           --quote-text: rgba(var(--black-rgb), 0.88);
@@ -130,10 +132,10 @@ const PAGE_STYLE = `
         min-width: 2.1rem;
         min-height: 2.1rem;
         padding: 0.3rem 0.85rem;
-        border: 1px solid var(--border);
+        border: 1px solid var(--accent);
         border-radius: 0;
-        background: transparent;
-        color: var(--text);
+        background: var(--accent);
+        color: var(--bg);
         font-size: 0.88rem;
         line-height: 1;
         transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
@@ -147,18 +149,17 @@ const PAGE_STYLE = `
       .section-jump-button:hover,
       .section-jump-button:focus-visible {
         border-color: var(--accent);
-        background-color: var(--accent);
+        background: var(--accent);
         color: var(--bg);
       }
 
-      .section-jump-button span {
+      .section-jump-line {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        height: 100%;
-        font-family: system-ui, sans-serif;
-        line-height: 1;
+        width: 1.1rem;
+        border-top: 2px solid currentColor;
+        flex-shrink: 0;
       }
 
       .stack {
@@ -178,7 +179,7 @@ const PAGE_STYLE = `
       }
 
       .section-rule {
-        border-top: 2px solid var(--accent-dim);
+        border-top: 2px solid var(--section-accent);
         padding-top: 0.45rem;
       }
 
@@ -215,10 +216,10 @@ const PAGE_STYLE = `
 
       .section-label {
         margin: 0 0 0.4rem;
-        color: var(--accent-dim);
+        color: var(--section-accent);
         font-family: "Quattro Italic", serif;
         font-size: 0.72rem;
-        opacity: 0.62;
+        opacity: 1;
         text-align: right;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -425,23 +426,27 @@ const PAGE_STYLE = `
       .question-prompt {
         display: flex;
         gap: 0.9rem;
-        align-items: flex-start;
+        align-items: start;
         margin-bottom: 0.35rem;
-      }
-
-      .question-prompt::before {
-        content: counter(q);
-        font-family: "Quattro Italic", serif;
-        color: var(--accent);
-        font-size: 1.5rem;
-        min-width: 1.6rem;
-        line-height: 1;
-        align-self: flex-start;
-        margin-top: 0.72rem;
       }
 
       .question-text {
         font-family: "Quattro Italic", serif;
+        flex: 1 1 auto;
+        margin: 0;
+        line-height: inherit;
+      }
+
+      .question-number {
+        display: block;
+        flex: 0 0 1.6rem;
+        font-family: "Quattro Italic", serif;
+        color: var(--accent);
+        font-size: 1.5rem;
+        line-height: 1.12;
+        margin: 0;
+        padding: 0;
+        text-align: left;
       }
 
       .answer-card {
@@ -1092,6 +1097,7 @@ function renderQuestions(questions) {
       return [
         "            <li class=\"question-card\" data-question-card=\"" + index + "\">",
         "              <div class=\"question-prompt\">",
+        "                <span class=\"question-number\">" + escapeHtml(String(index + 1)) + "</span>",
         "                <p class=\"question-text\">" + escapeHtml(question.text) + "</p>",
         "              </div>",
         "              <div class=\"question-actions\">",
@@ -1493,7 +1499,7 @@ function setupSectionJumpButton() {
   button.type = "button";
   button.className = "section-jump-button";
   button.setAttribute("aria-label", "Jump to next section");
-  button.innerHTML = "<span aria-hidden=\\"true\\">&minus;</span>";
+  button.innerHTML = "<span class=\\"section-jump-line\\" aria-hidden=\\"true\\"></span>";
 
   button.onclick = function () {
     jumpToNextSection();
