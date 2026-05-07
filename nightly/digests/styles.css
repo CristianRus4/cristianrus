@@ -706,9 +706,14 @@
       }
 
       .hint-line,
-      .used-letters,
       .match-line {
         color: var(--dim);
+        font-size: 0.95rem;
+      }
+
+      .used-letters {
+        color: var(--text);
+        font-style: italic;
         font-size: 0.95rem;
       }
 

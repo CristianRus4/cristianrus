@@ -716,9 +716,14 @@ const PAGE_STYLE = `
       }
 
       .hint-line,
-      .used-letters,
       .match-line {
         color: var(--dim);
+        font-size: 0.95rem;
+      }
+
+      .used-letters {
+        color: var(--text);
+        font-style: italic;
         font-size: 0.95rem;
       }
 
@@ -1225,18 +1230,16 @@ function renderConceptMatchMarkup(data, dateString) {
 function renderLetterByLetterMarkup(data) {
   const answer = safeText(data && data.answer, "");
   return [
-    "              <h2 class=\"game-title\">Letter by Letter</h2>",
+    "              <h2 class=\"game-title\">Letter by letter</h2>",
     "              <p class=\"section-instruction\">" + getGameInstruction("letter_by_letter") + "</p>",
-    "              <p class=\"game-prompt\">Guess the hidden word one letter at a time.</p>",
     "              <p>" + escapeHtml(safeText(data && data.definition, "Definition unavailable.")) + "</p>",
     "              <div class=\"mask\" data-letter-mask>" + renderMask(answer, []) + "</div>",
     "              <form class=\"guess-form\" data-letter-form>",
+    "                <p class=\"used-letters\" data-letter-used>Used letters: none</p>",
     "                <label class=\"visually-hidden\" for=\"letter-guess\">Guess one letter</label>",
     "                <input class=\"text-input\" id=\"letter-guess\" type=\"text\" maxlength=\"1\" autocomplete=\"off\" placeholder=\"Type one letter\">",
-    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Submit\">Submit</button>",
+    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Check\">Check</button>",
     "              </form>",
-    "              <p class=\"used-letters\" data-letter-used>Used letters: none</p>",
-    "              <p class=\"hint-line\" data-letter-wrong>Wrong guesses: 0</p>",
     "              <p class=\"game-status\" data-letter-status aria-live=\"polite\"></p>"
   ].join("\n");
 }
@@ -1913,7 +1916,6 @@ function setupLetterByLetterGame(container, data) {
   var successNote = safeNullableText(data && data.success_note);
   var mask = container.querySelector("[data-letter-mask]");
   var used = container.querySelector("[data-letter-used]");
-  var wrong = container.querySelector("[data-letter-wrong]");
   var status = container.querySelector("[data-letter-status]");
   var form = container.querySelector("[data-letter-form]");
   var input = container.querySelector("#letter-guess");
@@ -1955,15 +1957,12 @@ function setupLetterByLetterGame(container, data) {
       }
     } else {
       wrongCount += 1;
-      wrong.textContent = "Wrong guesses: " + wrongCount + " / " + maxWrong;
       if (wrongCount >= maxWrong) {
         setStatus(status, "No more guesses. The answer is below.", false);
-        setActionButtonState(submitButton, "error");
         submitButton.disabled = true;
         input.disabled = true;
       } else {
-        setStatus(status, "Not in the word.", false);
-        setActionButtonState(submitButton, "error");
+        setStatus(status, "", false);
       }
     }
 

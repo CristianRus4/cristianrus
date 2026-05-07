@@ -156,18 +156,16 @@
         <section class="card">
           <div class="word-box interactive-plain">
             <div id="nightly-game" class="game-shell">
-              <h2 class="game-title">Letter by Letter</h2>
+              <h2 class="game-title">Letter by letter</h2>
               <p class="section-instruction">Deduce the complete word through individual letter guesses.</p>
-              <p class="game-prompt">Guess the hidden word one letter at a time.</p>
               <p>Occupying a threshold or transitional position between two states, spaces, or conditions — neither fully one thing nor the other.</p>
               <div class="mask" data-letter-mask><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span><span>_</span></div>
               <form class="guess-form" data-letter-form>
+                <p class="used-letters" data-letter-used>Used letters: none</p>
                 <label class="visually-hidden" for="letter-guess">Guess one letter</label>
                 <input class="text-input" id="letter-guess" type="text" maxlength="1" autocomplete="off" placeholder="Type one letter">
-                <button class="primary-button" type="submit" data-default-label="Submit">Submit</button>
+                <button class="primary-button" type="submit" data-default-label="Check">Check</button>
               </form>
-              <p class="used-letters" data-letter-used>Used letters: none</p>
-              <p class="hint-line" data-letter-wrong>Wrong guesses: 0</p>
               <p class="game-status" data-letter-status aria-live="polite"></p>
             </div>
           </div>

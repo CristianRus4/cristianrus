@@ -492,7 +492,6 @@ function setupLetterByLetterGame(container, data) {
   var successNote = safeNullableText(data && data.success_note);
   var mask = container.querySelector("[data-letter-mask]");
   var used = container.querySelector("[data-letter-used]");
-  var wrong = container.querySelector("[data-letter-wrong]");
   var status = container.querySelector("[data-letter-status]");
   var form = container.querySelector("[data-letter-form]");
   var input = container.querySelector("#letter-guess");
@@ -534,15 +533,12 @@ function setupLetterByLetterGame(container, data) {
       }
     } else {
       wrongCount += 1;
-      wrong.textContent = "Wrong guesses: " + wrongCount + " / " + maxWrong;
       if (wrongCount >= maxWrong) {
         setStatus(status, "No more guesses. The answer is below.", false);
-        setActionButtonState(submitButton, "error");
         submitButton.disabled = true;
         input.disabled = true;
       } else {
-        setStatus(status, "Not in the word.", false);
-        setActionButtonState(submitButton, "error");
+        setStatus(status, "", false);
       }
     }
 
