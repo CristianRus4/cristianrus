@@ -5,7 +5,7 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 
 ## How to generate a batch
 1. Read `user-profile.json` in full. Form a picture of the person — their sensibility, their intellectual range, the kinds of things they find meaningful.
-2. Read the last 10 files in `data/digests/` and extract what has already been used: essay topics, words, authors quoted, people featured, game types. Do not repeat any of these within the new batch or within those last 10 entries.
+2. Read the last 10 files in `data/digests/` and extract what has already been used: essay topics, words, authors quoted, people featured, places, films, and game types. Do not repeat any of these within the new batch or within those last 10 entries.
 3. Generate one `DigestEntry` JSON object per requested day, saved to `data/digests/YYYY-MM-DD.json`.
 
 ## Essay rules
@@ -17,6 +17,13 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 - The `blockquote` renders after all paragraphs. Treat it as the sentence the essay has been building toward — not a summary, but a crystallisation. The paragraphs must earn it.
 - Write the essay so that the final 2–3 paragraphs drive toward the blockquote: the last paragraph before it should arrive at the tension or image the blockquote then states plainly.
 - The `blockquote` field holds a single sentence, stated without attribution.
+
+## Tension rules
+- This section appears immediately after the essay.
+- `tension.positions` must contain exactly 2 items.
+- Each item is one position on the essay's central idea, written as exactly 2 sentences.
+- Across the whole section, there are 4 sentences total. No synthesis, no winner, no compromise language.
+- The goal is philosophical antinomy, not a debate-club "both sides" summary.
 
 ## Word rules
 - Choose any word from any language that fits the essay's territory organically. The word should emerge from or sit directly beside the essay's thematic core — not appended arbitrarily.
@@ -33,12 +40,26 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 - The quote should resonate with the essay's territory without illustrating it literally.
 - Use a middle dot ` · ` as a separator for both the quote attribution (Author · Source) and the person info (Years · Location).
 
+## On this day rules
+- This section appears between the quote and the person section.
+- One real historical event only, and it must have happened on that calendar date.
+- Choose for thematic resonance with the essay, not because it is the most famous event available.
+- Avoid trivia. The event should recontextualise the essay's territory through actual time.
+- Use `on_this_day.year` for the event year and `on_this_day.text` for a single paragraph.
+
 ## Person rules
 - Feature someone the reader is genuinely unlikely to know. The person should require real effort to recognise.
 - Derive the person freely — anyone who fits the essay's territory and the owner's intellectual range is a valid candidate. Do not rely on a fixed list.
 - Do not repeat a person from the last 10 digests.
 - Two paragraphs: achievement or contribution first, complication or irony second.
 - Format dates and location exactly as `1824 – 1907 · City, Country`.
+
+## Now here rules
+- This section appears after the person section and before the questions.
+- Choose one specific location in the world: a forest, monastery, street, river, mountain, cave, ruin, island, valley, or similarly concrete place.
+- This is not travel writing. No recommendation voice, no itinerary language, no "visit" framing.
+- The place should fit the essay's sensibility, not merely its subject.
+- Use `now_here.name`, `now_here.location`, and `now_here.text` for one paragraph.
 
 ## Number rules
 - One real, verifiable figure per digest. Label approximate figures explicitly.
@@ -60,6 +81,14 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 - For `reveal`: the hidden word should be a concept from the essay, not the exact title word.
 - For `missing_word`: use the `_` character with spaces between them (e.g., `_ _ _ _ _`) to represent the missing word, matching its exact character count.
 
+## Movie time rules
+- This section appears after the games and before the answers.
+- Recommend exactly one film.
+- Before choosing, read the `films` list in `user-profile.json` and avoid recommending anything already present there.
+- Also avoid repeating films used in recent digests.
+- The film should come from territory adjacent to the essay, not serve as a literal illustration of it.
+- Keep the blurb to 3 sentences maximum.
+- Use `movie.title`, `movie.director`, `movie.year`, and `movie.text`.
 
 ## Questions rules
 - Exactly 3 questions per digest.
@@ -72,6 +101,7 @@ Each digest entry must contain exactly:
 - `title`
 - `essay.paragraphs` (array of strings)
 - `essay.blockquote`
+- `tension.positions` (array of 2 strings, each 2 sentences)
 - `number.value`
 - `number.label`
 - `fragment`
@@ -82,9 +112,14 @@ Each digest entry must contain exactly:
 - `quote.translation` (null if English)
 - `quote.author`
 - `quote.source`
+- `on_this_day.year`
+- `on_this_day.text`
 - `person.name`
 - `person.dates`
 - `person.paragraphs` (array, 2 items)
+- `now_here.name`
+- `now_here.location`
+- `now_here.text`
 - `questions` (array of 3 items, each with `text`, `deeper`, `experiment`)
 - `trivia.question`
 - `trivia.options` (array of 4 strings)
@@ -92,6 +127,10 @@ Each digest entry must contain exactly:
 - `trivia.explanation`
 - `game.type`
 - `game.data` (structure depends on type — see existing digests for reference)
+- `movie.title`
+- `movie.director`
+- `movie.year`
+- `movie.text`
 
 ## Workflow
 1. Review quote attribution, game correctness, and visible topic repetition before saving.

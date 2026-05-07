@@ -12,6 +12,12 @@
     ],
     "blockquote": "A civilisation's complexity is also a map of its failure modes."
   },
+  "tension": {
+    "positions": [
+      "Complexity is one of the highest achievements of collective life because it allows scale, refinement, and forms of cooperation no village could invent alone. The dense interdependence of a civilisation is also the record of how much intelligence has been stored in relation rather than isolation.",
+      "Every increase in interdependence multiplies the paths along which damage can travel, making elegance inseparable from vulnerability. What looks like advancement from inside the system may be only the delayed perfection of a future breakdown."
+    ]
+  },
   "number": {
     "value": "50 years",
     "label": "The approximate span within which multiple palace civilisations across the eastern Mediterranean collapsed between roughly 1200–1150 BCE — a compression of catastrophe that remains one of history's most dramatic discontinuities."
@@ -28,6 +34,10 @@
     "author": "Seneca",
     "source": "Epistulae Morales, Letter I"
   },
+  "on_this_day": {
+    "year": "1940",
+    "text": "On 13 May 1940, Winston Churchill faced the House of Commons for the first time as prime minister and offered not reassurance but the terms of endurance: blood, toil, tears, and sweat. There are moments when lucidity matters more than optimism, and when naming the scale of a threatened ending is the only honest beginning."
+  },
   "person": {
     "name": "Eric Cline",
     "dates": "1960 – present — Washington, D.C., USA",
@@ -35,6 +45,11 @@
       "Eric Cline is an American archaeologist and classicist whose work on the Late Bronze Age collapse argues that no single cause can account for what happened after 1200 BCE — that what we are looking at is a systems collapse, in which drought, migration, internal revolt, disrupted trade, and political instability fed back into each other until the whole exceeded the sum of its parts. His book 1177 B.C.: The Year Civilisation Collapsed reached a broad audience by treating the ancient Mediterranean as a genuinely interconnected world whose end was tragic in ways we are still unpacking.",
       "His more recent work has focused on the implications of Bronze Age collapse for understanding contemporary fragility — the ways in which globalisation, interdependence, and optimised supply chains produce precisely the vulnerabilities that made the Late Bronze Age world susceptible. He tends to resist the word 'lessons', but the implication is hard to avoid."
     ]
+  },
+  "now_here": {
+    "name": "Ras Shamra",
+    "location": "Near Latakia, Syria",
+    "text": "At Ras Shamra lie the ruins of Ugarit, one of the palace cities that vanished in the Bronze Age collapse, its archives preserved in the same fire that ended its world. It is a place where administration survives more clearly than survival itself: tablets, inventories, diplomatic letters, traces of a system still assuming tomorrow would resemble today. The quiet there has the density of interrupted continuity."
   },
   "questions": [
     {
@@ -81,5 +96,11 @@
       "answer": "true_cognate",
       "explanation": "Both 'collapse' (English) and 'colapso' (Spanish/Portuguese) derive from the same Latin root: collabi (from com- and labi, to slip or fall). They are genuine cognates, both entering their respective languages from Latin through similar scholarly and medical channels. The semantic drift is minimal — both still mean the sudden structural failure of something that was holding."
     }
+  },
+  "movie": {
+    "title": "Koyaanisqatsi",
+    "director": "Godfrey Reggio",
+    "year": "1982",
+    "text": "A film about systems, velocity, and the strange beauty of a world organised past the point of intimacy. It stands beside the essay because it feels the tension between complexity and livability without reducing that tension to argument. The images accumulate like a diagnosis that never stops being visually seductive."
   }
 }

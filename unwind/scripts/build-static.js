@@ -370,7 +370,8 @@ const PAGE_STYLE = `
       }
 
       .person-name,
-      .game-title {
+      .game-title,
+      .section-heading {
         margin: 0 0 0.2rem;
         font-family: "Quattro Italic", serif;
         font-size: 1.45rem;
@@ -380,7 +381,8 @@ const PAGE_STYLE = `
 
       .word-origin,
       .person-dates,
-      .quote-source {
+      .quote-source,
+      .section-meta {
         color: var(--dim);
         font-size: 0.74rem;
         margin-bottom: 0.55rem;
@@ -591,6 +593,7 @@ const PAGE_STYLE = `
       .choice-grid {
         display: grid;
         gap: 0.75rem;
+        margin-top: 0.55rem;
       }
 
       .choice-grid.two-column {
@@ -970,6 +973,8 @@ function renderDigestContent(entry) {
     renderParagraphs(entry.essay.paragraphs, 10, entry.essay.blockquote),
     "        </section>",
     "",
+    renderTension(entry.tension),
+    "",
     "        <section class=\"card section-filled prose\">",
     "          <p class=\"section-label\">THE NUMBER</p>",
     "          <h2 class=\"number-value\">" + escapeHtml(entry.number.value) + "</h2>",
@@ -1001,6 +1006,8 @@ function renderDigestContent(entry) {
       : "",
     "        </section>",
     "",
+    renderOnThisDay(entry.on_this_day),
+    "",
     "        <section class=\"card section-rule prose\">",
     "          <p class=\"section-label\">THE NOT SO KNOWN</p>",
     "          <div class=\"person-block\">",
@@ -1010,6 +1017,8 @@ function renderDigestContent(entry) {
     "          </div>",
     "        </section>",
     "",
+    renderNowHere(entry.now_here),
+    "",
     "        <section class=\"card section-rule\">",
     "          <p class=\"section-label\">THREE QUESTIONS FOR YOU</p>",
     "          <ul class=\"question-list\">",
@@ -1018,13 +1027,8 @@ function renderDigestContent(entry) {
     "        </section>",
     "",
     "        <section class=\"card section-rule\">",
-    "          <p class=\"section-label\">GAMES TO UNWIND</p>",
-    "        </section>",
-    "",
-    "        <section class=\"card\">",
+    "          <p class=\"section-label\">TEST YOURSELF</p>",
     "          <div class=\"word-box interactive-plain\">",
-    "            <h2 class=\"game-title\">Trivia</h2>",
-    "            <p class=\"section-instruction\">" + getGameInstruction("trivia") + "</p>",
     "            <p class=\"game-prompt\">" + escapeHtml(entry.trivia.question) + "</p>",
     "            <div class=\"choice-grid\" data-trivia-options>",
     renderTriviaOptions(entry.trivia.options),
@@ -1033,13 +1037,16 @@ function renderDigestContent(entry) {
     "          </div>",
     "        </section>",
     "",
-    "        <section class=\"card\">",
+    "        <section class=\"card section-rule\">",
+    "          <p class=\"section-label\">" + escapeHtml(getGameDisplayName(entry.game.type)) + "</p>",
     "          <div class=\"word-box interactive-plain\">",
     "            <div id=\"unwind-game\" class=\"game-shell\">",
     renderGameMarkup(entry.game, entry.date),
     "            </div>",
     "          </div>",
     "        </section>",
+    "",
+    renderMovie(entry.movie),
     "",
     "        <section class=\"card section-rule\">",
     "          <p class=\"section-label\">THE ANSWERS</p>",
@@ -1056,19 +1063,88 @@ function renderDigestContent(entry) {
     .join("\n");
 }
 
-function getGameInstruction(type) {
-  const instructions = {
-    reveal: "Uncover the solution by requesting additional clues.",
-    two_truths_one_lie: "Distinguish the single false statement from the truths.",
-    missing_word: "Provide the missing term to complete the passage.",
-    concept_match: "Forge the correct links between words and their meanings.",
-    letter_by_letter: "Deduce the complete word through individual letter guesses.",
-    first_and_last: "Reconstruct the full word using its start and end points.",
-    false_cognate: "Spot the deceptive similarity between these terms.",
-    odd_one_out: "Select the element that does not fit the established pattern.",
-    trivia: "Identify the correct response from the options below."
+function renderTension(tension) {
+  if (!tension || !Array.isArray(tension.positions) || tension.positions.length < 2) {
+    return "";
+  }
+
+  return [
+    "        <section class=\"card section-rule prose\">",
+    "          <p class=\"section-label\">THE TENSION</p>",
+    tension.positions.map((item) => {
+      return [
+        "          <blockquote class=\"quote-block\">",
+        "            <p>" + escapeHtml(item) + "</p>",
+        "          </blockquote>"
+      ].join("\n");
+    }).join("\n"),
+    "        </section>"
+  ].join("\n");
+}
+
+function renderOnThisDay(onThisDay) {
+  if (!onThisDay || !onThisDay.year || !onThisDay.text) {
+    return "";
+  }
+
+  return [
+    "        <section class=\"card section-rule prose\">",
+    "          <p class=\"section-label\">ON THIS DAY</p>",
+    "          <h2 class=\"section-heading\">" + escapeHtml(onThisDay.year) + "</h2>",
+    "          <p>" + escapeHtml(onThisDay.text) + "</p>",
+    "        </section>"
+  ].join("\n");
+}
+
+function renderNowHere(nowHere) {
+  if (!nowHere || !nowHere.name || !nowHere.text) {
+    return "";
+  }
+
+  return [
+    "        <section class=\"card section-rule prose\">",
+    "          <p class=\"section-label\">NOW HERE</p>",
+    "          <h2 class=\"section-heading\">" + escapeHtml(nowHere.name) + "</h2>",
+    nowHere.location
+      ? "          <p class=\"section-meta\">" + escapeHtml(nowHere.location) + "</p>"
+      : "",
+    "          <p>" + escapeHtml(nowHere.text) + "</p>",
+    "        </section>"
+  ].filter(Boolean).join("\n");
+}
+
+function renderMovie(movie) {
+  if (!movie || !movie.title || !movie.text) {
+    return "";
+  }
+
+  const meta = [movie.director, movie.year].filter(Boolean).join(" · ");
+  const movieUrl = buildLetterboxdSearchUrl(movie.title, movie.year);
+
+  return [
+    "        <section class=\"card section-rule prose\">",
+    "          <p class=\"section-label\">MOVIE TIME</p>",
+    "          <h2 class=\"section-heading\"><a href=\"" + escapeAttribute(movieUrl) + "\" target=\"_blank\" rel=\"noreferrer noopener\">" + escapeHtml(movie.title) + "</a></h2>",
+    meta
+      ? "          <p class=\"section-meta\">" + escapeHtml(meta) + "</p>"
+      : "",
+    "          <p>" + escapeHtml(movie.text) + "</p>",
+    "        </section>"
+  ].filter(Boolean).join("\n");
+}
+
+function getGameDisplayName(type) {
+  const names = {
+    reveal: "Reveal",
+    two_truths_one_lie: "Two truths, one lie",
+    missing_word: "Missing word",
+    concept_match: "Concept match",
+    letter_by_letter: "Letter by letter",
+    first_and_last: "First and last",
+    false_cognate: "False cognate?",
+    odd_one_out: "Odd one out"
   };
-  return instructions[type] || "Complete the challenge below.";
+  return names[type] || "Tonight's game";
 }
 
 function renderParagraphs(paragraphs, indent, blockquoteText) {
@@ -1161,8 +1237,6 @@ function renderGameMarkup(game, dateString) {
 function renderRevealMarkup(data) {
   const clues = toStringArray(data && data.clues, 4, "Clue unavailable.");
   return [
-    "              <h2 class=\"game-title\">Reveal</h2>",
-    "              <p class=\"section-instruction\">" + getGameInstruction("reveal") + "</p>",
     "              <div data-reveal-clues>",
     "                <p class=\"game-prompt\">1. " + escapeHtml(clues[0]) + "</p>",
     "              </div>",
@@ -1184,8 +1258,6 @@ function renderTwoTruthsMarkup(data) {
     : (Array.isArray(data && data.statements) ? data.statements.slice(0, 3) : []);
 
   return [
-    "              <h2 class=\"game-title\">Two truths, one lie</h2>",
-    "              <p class=\"section-instruction\">" + getGameInstruction("two_truths_one_lie") + "</p>",
     "              <div class=\"choice-grid\">",
     items.map((item, index) => {
       const title = safeText(item && item.word, "");
@@ -1209,8 +1281,6 @@ function renderMissingWordMarkup(data) {
   const answer = safeText(data && data.answer, "");
   const underscores = answer.split("").map(() => "_").join(" ");
   return [
-    "              <h2 class=\"game-title\">Missing word</h2>",
-    "              <p class=\"section-instruction\">" + getGameInstruction("missing_word") + "</p>",
     "              <p>" + escapeHtml(safeText(data && data.before, "")) + " <strong class=\"missing-word-display\">" + underscores + "</strong> " + escapeHtml(safeText(data && data.after, "")) + "</p>",
     "              <p class=\"game-prompt\" data-missing-hint hidden></p>",
     "              <form class=\"guess-form\" data-missing-form>",
@@ -1236,8 +1306,6 @@ function renderConceptMatchMarkup(data, dateString) {
   );
 
   return [
-    "              <h2 class=\"game-title\">Concept match</h2>",
-    "              <p class=\"section-instruction\">" + getGameInstruction("concept_match") + "</p>",
     "              <div class=\"match-words-grid\">",
     pairs.map((pair) => {
       return [
@@ -1263,8 +1331,6 @@ function renderConceptMatchMarkup(data, dateString) {
 function renderLetterByLetterMarkup(data) {
   const answer = safeText(data && data.answer, "");
   return [
-    "              <h2 class=\"game-title\">Letter by letter</h2>",
-    "              <p class=\"section-instruction\">" + getGameInstruction("letter_by_letter") + "</p>",
     "              <p>" + escapeHtml(safeText(data && data.definition, "Definition unavailable.")) + "</p>",
     "              <div class=\"mask\" data-letter-mask>" + renderMask(answer, []) + "</div>",
     "              <form class=\"guess-form\" data-letter-form>",
@@ -1281,8 +1347,6 @@ function renderFirstAndLastMarkup(data) {
   const answer = safeText(data && data.answer, "");
   const mask = renderFirstAndLastMask(answer, data && data.display_length);
   return [
-    "              <h2 class=\"game-title\">First and last</h2>",
-    "              <p class=\"section-instruction\">" + getGameInstruction("first_and_last") + "</p>",
     "              <p>" + escapeHtml(safeText(data && data.definition, "Definition unavailable.")) + "</p>",
     "              <div class=\"mask\">" + mask + "</div>",
     "              <form class=\"guess-form\" data-first-last-form>",
@@ -1296,8 +1360,6 @@ function renderFirstAndLastMarkup(data) {
 
 function renderFalseCognateMarkup(data) {
   return [
-    "              <h2 class=\"game-title\">False cognate?</h2>",
-    "              <p class=\"section-instruction\">" + getGameInstruction("false_cognate") + "</p>",
     "              <p class=\"false-cognate-terms\">" + escapeHtml(safeText(data && data.word_a && data.word_a.term, "Word A")) + " and " + escapeHtml(safeText(data && data.word_b && data.word_b.term, "Word B")) + "</p>",
     "              <p>" + escapeHtml(safeText(data && data.question, "Are they truly connected?")) + "</p>",
     "              <div class=\"inline-actions\">",
@@ -2287,6 +2349,7 @@ function normalizeEntry(entry, fallbackDate) {
   const essayParagraphs = toStringArray(entry && entry.essay && entry.essay.paragraphs, 1, "Tonight's essay is not available yet.", true);
   const personParagraphs = toStringArray(entry && entry.person && entry.person.paragraphs, 1, "This profile will appear once the person notes are available.");
   const triviaOptions = toStringArray(entry && entry.trivia && entry.trivia.options, 4, "Option unavailable.");
+  const tensionPositions = toOptionalStringArray(entry && entry.tension && entry.tension.positions, 2);
   let baseQuestions;
   const questions = [];
 
@@ -2322,6 +2385,9 @@ function normalizeEntry(entry, fallbackDate) {
       blockquote: safeText(entry && entry.essay && entry.essay.blockquote, "The note for tonight is still being prepared."),
       crosslink: safeText(entry && entry.essay && entry.essay.crosslink, "Crosslink unavailable.")
     },
+    tension: {
+      positions: tensionPositions
+    },
     number: {
       value: safeText(entry && entry.number && entry.number.value, "No number yet"),
       label: safeText(entry && entry.number && entry.number.label, "The contextual note for tonight's number is not available yet.")
@@ -2338,11 +2404,13 @@ function normalizeEntry(entry, fallbackDate) {
       author: safeText(entry && entry.quote && entry.quote.author, "Unknown author"),
       source: safeText(entry && entry.quote && entry.quote.source, "Unknown source")
     },
+    on_this_day: normalizeOptionalBlock(entry && entry.on_this_day, ["year", "text"]),
     person: {
       name: safeText(entry && entry.person && entry.person.name, "Unknown person"),
       dates: safeText(entry && entry.person && entry.person.dates, "Dates unavailable."),
       paragraphs: personParagraphs
     },
+    now_here: normalizeOptionalBlock(entry && entry.now_here, ["name", "location", "text"]),
     questions,
     trivia: {
       question: safeText(entry && entry.trivia && entry.trivia.question, "Trivia question unavailable."),
@@ -2350,7 +2418,8 @@ function normalizeEntry(entry, fallbackDate) {
       correct: Number.isInteger(entry && entry.trivia && entry.trivia.correct) ? entry.trivia.correct : 0,
       explanation: safeText(entry && entry.trivia && entry.trivia.explanation, "Explanation unavailable.")
     },
-    game: normalizeGame(entry && entry.game)
+    game: normalizeGame(entry && entry.game),
+    movie: normalizeOptionalBlock(entry && entry.movie, ["title", "director", "year", "text"])
   };
 }
 
@@ -2546,6 +2615,17 @@ function safeNullableText(value) {
   return typeof value === "string" && value.trim() ? value.trim() : "";
 }
 
+function toOptionalStringArray(value, maxItems) {
+  if (!Array.isArray(value) || !value.length) {
+    return [];
+  }
+
+  return value
+    .map((item) => safeNullableText(item))
+    .filter(Boolean)
+    .slice(0, maxItems);
+}
+
 function toStringArray(value, fallbackCount, fallbackText, allowObjects) {
   if (!Array.isArray(value) || !value.length) {
     return new Array(Math.max(fallbackCount, 1)).fill(fallbackText);
@@ -2574,6 +2654,29 @@ function escapeAttribute(value) {
 
 function repeatSpaces(count) {
   return " ".repeat(count);
+}
+
+function buildLetterboxdSearchUrl(title, year) {
+  const query = [title, year]
+    .map((part) => String(part || ""))
+    .join(" ")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^A-Za-z0-9\s]/g, " ")
+    .trim()
+    .replace(/\s+/g, "+");
+
+  return "https://letterboxd.com/search/films/" + query + "/";
+}
+
+function normalizeOptionalBlock(value, keys) {
+  const result = {};
+
+  keys.forEach((key) => {
+    result[key] = safeNullableText(value && value[key]);
+  });
+
+  return result;
 }
 
 function safeJson(value) {

@@ -12,6 +12,12 @@
     ],
     "blockquote": "The dream does not need to be understood to have done its work."
   },
+  "tension": {
+    "positions": [
+      "Dreams may be one of the few places where the mind can keep working without the distortions of deliberate self-explanation. Their force lies precisely in not becoming discourse, in changing the organism before the person has language for what changed.",
+      "What remains uninterpreted remains partly unusable, and not every nocturnal rearrangement deserves reverence simply because it arrived from below consciousness. A dream may do work, but waking life still bears the burden of deciding what to trust in what the night has made."
+    ]
+  },
   "number": {
     "value": "2 hours",
     "label": "Approximate total REM sleep in an average eight-hour night, distributed across four to six cycles — roughly a quarter of sleep spent in the state most associated with emotional memory processing and the construction of narrative from fragmented material."
@@ -28,6 +34,10 @@
     "author": "Cesare Pavese",
     "source": "Il mestiere di vivere, 24 August 1940"
   },
+  "on_this_day": {
+    "year": "330",
+    "text": "On 11 May 330, Constantine dedicated Byzantium as New Rome, imposing one city upon another by decree and ritual until the new name began to feel inevitable. History sometimes behaves like dreaming does: it does not erase what was there, but layers a second reality over it and lets both remain active at once."
+  },
   "person": {
     "name": "Géza Róheim",
     "dates": "1891 – 1953 — Budapest, Hungary / New York, USA",
@@ -35,6 +45,11 @@
       "Géza Róheim was a Hungarian psychoanalyst and anthropologist who conducted the first psychoanalytically-informed ethnographic fieldwork, living with Aboriginal communities in central Australia in the late 1920s and gathering dream material across cultures that had had no contact with European psychology. He argued that the Dreamtime of Aboriginal cosmology was not a myth in the literary sense but a structure of temporal experience — a different relationship between what is past, present, and ancestrally present — and that Freudian dream theory was not a European theory but a window onto a human universal.",
       "His position was uncomfortable for both sides: anthropologists found him too psychoanalytic, and psychoanalysts found him too ethnographic. His work on the relationship between cultural formations and early childhood experience was largely dismissed as reductive during his lifetime and has been revisited with more care since. He died in New York having spent decades arguing that what cultures dream in common tells us more about the species than what they disagree about in waking life."
     ]
+  },
+  "now_here": {
+    "name": "The Hypogeum of Hal Saflieni",
+    "location": "Paola, Malta",
+    "text": "An underground prehistoric sanctuary cut into soft limestone, the Hypogeum is all chambers, thresholds, and resonant hollows, as if architecture had been designed by memory rather than by plan. Sound behaves strangely there; so does orientation. It is one of those places that feels less entered than found oneself inside of."
   },
   "questions": [
     {
@@ -71,5 +86,11 @@
       "display_length": 10,
       "definition": "The transitional state of consciousness between wakefulness and sleep, characterised by vivid, involuntary imagery, sensations, and fragments of thought that have the character of dreams without yet being dreams."
     }
+  },
+  "movie": {
+    "title": "The Double Life of Veronique",
+    "director": "Krzysztof Kieslowski",
+    "year": "1991",
+    "text": "A film of correspondences, residues, and felt significance that never fully submits to explanation. It does not depict dreaming so much as waking life haunted by dream logic. What matters in it is the pressure of a pattern before anyone can name the pattern."
   }
 }

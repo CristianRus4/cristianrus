@@ -12,6 +12,12 @@
     ],
     "blockquote": "The photograph is evidence that someone chose to look — not at what was there, but at a particular way of it being there."
   },
+  "tension": {
+    "positions": [
+      "Looking can be a form of justice when it resists consumption and allows another reality to alter the one who is seeing. In that sense, attention is not extraction but exposure: the looker becomes answerable to what the image reveals.",
+      "Every act of looking carries the temptation to stabilise the other into something portable, legible, and ownable. The camera only makes explicit a violence that ordinary perception already rehearses whenever it prefers an image of a person to their irreducible life."
+    ]
+  },
   "number": {
     "value": "1.8 trillion",
     "label": "Approximate number of photographs taken globally in a single year by the mid-2020s — a quantity so large that the ratio of images to moments has collapsed: more photographs are taken of certain events than there are seconds in the event itself."
@@ -28,6 +34,10 @@
     "author": "Susan Sontag",
     "source": "On Photography, Chapter 1"
   },
+  "on_this_day": {
+    "year": "1926",
+    "text": "On 12 May 1926, Roald Amundsen, Lincoln Ellsworth, and Umberto Nobile completed the first undisputed flight over the North Pole, transforming an inaccessible expanse into something seen from above and therefore newly claimable by image. Vision changes power the moment altitude enters it."
+  },
   "person": {
     "name": "Vivian Maier",
     "dates": "1926 – 2009 — New York, USA / Chicago, USA",
@@ -35,6 +45,11 @@
       "Vivian Maier was a nanny who worked for wealthy Chicago families for decades while producing, in secret, one of the largest bodies of street photography in the twentieth century — over 150,000 negatives, the majority of which were never developed in her lifetime. She did not seek exhibitions, did not speak about her work, and left no indication that she considered herself an artist rather than a person who photographed. Her work was discovered only after her death, when storage lockers she had failed to pay for were auctioned and a buyer named John Maloof began developing her negatives.",
       "The posthumous fame raises a question she cannot answer: what was the work for? It was clearly not for an audience, since she had no audience. It was not for money, since she spent money on film and storage that she could not easily afford. The photographs exist as evidence of looking that refused to become display — a practice so complete in itself that it required no completion."
     ]
+  },
+  "now_here": {
+    "name": "The camera obscura chamber at the Royal Observatory",
+    "location": "Greenwich, London, England",
+    "text": "Inside the darkened chamber, the outside world appears inverted on a table: ships, roofs, clouds, people reduced to moving light yet somehow made more mysterious by the reduction. It is a place that teaches, with old optical patience, that every act of seeing is already an apparatus. The image arrives only because something else has been excluded."
   },
   "questions": [
     {
@@ -72,5 +87,11 @@
       "max_wrong": 6,
       "success_note": "What photography and attention have in common: both are a question of how wide you are willing to open."
     }
+  },
+  "movie": {
+    "title": "Cache",
+    "director": "Michael Haneke",
+    "year": "2005",
+    "text": "A film about surveillance, guilt, and the instability of the image as evidence. It keeps asking whether seeing clarifies anything or simply implicates the one who is watching. The discomfort is the point."
   }
 }

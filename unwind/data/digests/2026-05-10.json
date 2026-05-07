@@ -12,6 +12,12 @@
     ],
     "blockquote": "To ferment something is to begin a process you are not qualified to finish."
   },
+  "tension": {
+    "positions": [
+      "Some of the most intelligent acts are preparatory rather than controlling: you make the vessel, the salinity, the seal, and then let life proceed at its own scale. Trust here is not passivity but a disciplined respect for forms of agency that are not yours.",
+      "Surrender is admirable only when the conditions have been set well; otherwise it is just negligence romanticised after the fact. To step back too soon is not wisdom but abdication, and spoiled outcomes have their own theology."
+    ]
+  },
   "number": {
     "value": "10,000 years",
     "label": "Estimated age of fermented beverage production based on chemical analysis of pottery residues from Neolithic sites in China — making controlled fermentation one of the earliest documented technologies, older than the wheel."
@@ -28,6 +34,10 @@
     "author": "Seneca",
     "source": "Epistulae Morales, Letter I"
   },
+  "on_this_day": {
+    "year": "1994",
+    "text": "On 10 May 1994, Nelson Mandela was inaugurated as president of South Africa after a transition that depended less on triumph than on the patient setting of conditions under which a different future could emerge. Some changes cannot be forced into being directly; they have to be prepared, protected, and then allowed to happen."
+  },
   "person": {
     "name": "Élie Metchnikoff",
     "dates": "1845 – 1916 — Ivanovka, Ukraine / Paris, France",
@@ -35,6 +45,11 @@
       "Élie Metchnikoff was a Russian zoologist and immunologist who shared the 1908 Nobel Prize in Physiology or Medicine for his discovery of phagocytosis — the process by which immune cells engulf and digest pathogens. He spent the last third of his career at the Pasteur Institute in Paris, where he became convinced that the key to longevity was the microbial ecology of the human gut, particularly the suppression of putrefactive bacteria by lactic acid bacteria found in fermented milk.",
       "He recommended daily consumption of sour milk and yoghurt decades before the term 'probiotic' existed, and he was widely mocked by colleagues for what seemed a rural folk remedy dressed in scientific language. His theory was partly wrong in its mechanism but startlingly prescient in its direction — the relationship between gut microbiome and longevity is now one of the most active research areas in medicine. He died having eaten fermented dairy every day for years, at seventy-one, believing he had not eaten enough of it."
     ]
+  },
+  "now_here": {
+    "name": "A qvevri cellar in Kakheti",
+    "location": "Kakheti, Georgia",
+    "text": "In eastern Georgia, wine still ferments in qvevri: large clay vessels buried in the earth, sealed and left to do their slow invisible work below floor level. The place feels less like a workshop than like a pact with duration. What matters there is not intervention but the exactness with which intervention has already been withdrawn."
   },
   "questions": [
     {
@@ -81,5 +96,11 @@
         "Fourth clue — there"
       ]
     }
+  },
+  "movie": {
+    "title": "Le Quattro Volte",
+    "director": "Michelangelo Frammartino",
+    "year": "2010",
+    "text": "A film built from patience, cycles, and forms of life that continue without asking for human centrality. It is adjacent to the essay because it understands process as something you enter respectfully rather than dominate. Almost nothing is explained, and nothing needs to be."
   }
 }

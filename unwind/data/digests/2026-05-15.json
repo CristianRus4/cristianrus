@@ -12,6 +12,12 @@
     ],
     "blockquote": "The friend who knows you requires nothing of you except that you continue to become."
   },
+  "tension": {
+    "positions": [
+      "Deep friendship requires dependence of a kind modern adulthood is trained to conceal, because being known is inseparable from being able to matter to someone beyond convenience. To need a friend and allow that need to be visible is not regression but one of the mature forms of trust.",
+      "Need can deform friendship the moment it begins to demand stability from a person who is still changing, turning recognition into a claim and loyalty into pressure. The courage of friendship may therefore include refusing to make the other responsible for carrying parts of the self they did not choose."
+    ]
+  },
   "number": {
     "value": "3",
     "label": "The number of close friends the average adult reports having, according to survey data from multiple countries over the last two decades — a figure that has been declining steadily, particularly among men, since the 1980s."
@@ -28,6 +34,10 @@
     "author": "Seneca",
     "source": "Epistulae Morales, Letter IX"
   },
+  "on_this_day": {
+    "year": "1918",
+    "text": "On 15 May 1918, the first regular airmail route in the United States opened between Washington and New York, altering how distance entered a relationship. Friendship has always had to solve the problem of absence, and every technology that shortens delay changes not what loyalty is but how quickly care can arrive."
+  },
   "person": {
     "name": "Rae Langton",
     "dates": "1961 – present — Melbourne, Australia / Cambridge, England",
@@ -35,6 +45,11 @@
       "Rae Langton is a moral philosopher whose work on objectification, speech acts, and what she calls 'epistemic injustice' has been foundational for contemporary feminist philosophy. Drawing on J.L. Austin's speech act theory, she argued that certain kinds of speech — particularly pornography and hate speech — do not merely express attitudes but constitute silencing: they alter the social conditions under which certain people can speak and be heard, without those people being able to contest the alteration. The wrong is done not through the content but through the act of the utterance in its social context.",
       "Her work on objectification extended Kant's injunction against treating persons as means into a more precise account of the different ways a person can be reduced to an object: by treating them as instrumentally useful, as lacking autonomy, as interchangeable, as owned. The precision of the taxonomy has made her work useful far beyond its original context. She has described friendship, by contrast, as the practice that most consistently resists these reductions — the relationship in which the other person's subjectivity is not a problem to be managed but the entire point."
     ]
+  },
+  "now_here": {
+    "name": "The Lyceum",
+    "location": "Athens, Greece",
+    "text": "What remains of Aristotle's Lyceum is spare: foundations, open ground, the residue of a place where thought once moved on foot among other people. It suits friendship more than monumentality does. The site suggests that some of the most durable forms of philosophy were never written first but spoken while walking beside someone who could answer back."
   },
   "questions": [
     {
@@ -72,5 +87,11 @@
       "answer": "reality",
       "hint": "The essay uses this word to describe what the deepest kind of friend sees alongside you — not beliefs or preferences, but the actual texture of a life."
     }
+  },
+  "movie": {
+    "title": "My Dinner with Andre",
+    "director": "Louis Malle",
+    "year": "1981",
+    "text": "A film almost entirely made of conversation, but conversation used as a test of whether two people can still meet each other inside the lives they have separately become. It avoids sentimentality by letting friendship include incomprehension, admiration, irritation, and hunger at once. The intimacy comes from sustained presence rather than from confession."
   }
 }

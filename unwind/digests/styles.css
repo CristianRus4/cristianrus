@@ -360,7 +360,8 @@
       }
 
       .person-name,
-      .game-title {
+      .game-title,
+      .section-heading {
         margin: 0 0 0.2rem;
         font-family: "Quattro Italic", serif;
         font-size: 1.45rem;
@@ -370,7 +371,8 @@
 
       .word-origin,
       .person-dates,
-      .quote-source {
+      .quote-source,
+      .section-meta {
         color: var(--dim);
         font-size: 0.74rem;
         margin-bottom: 0.55rem;
@@ -581,6 +583,7 @@
       .choice-grid {
         display: grid;
         gap: 0.75rem;
+        margin-top: 0.55rem;
       }
 
       .choice-grid.two-column {

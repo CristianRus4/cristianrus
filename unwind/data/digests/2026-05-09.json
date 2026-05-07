@@ -12,6 +12,12 @@
     ],
     "blockquote": "The monument does not prove the civilization. It proves that someone wanted something to remain."
   },
+  "tension": {
+    "positions": [
+      "What outlasts us may be the nearest thing we have to meaning because permanence is form extended beyond the body's brief jurisdiction. To build for after oneself is to treat time as a material rather than as a deadline.",
+      "The wish to outlast oneself is also one of vanity's oldest disguises, and stone can preserve insecurity as efficiently as devotion. A monument may record not confidence in meaning but terror at disappearance."
+    ]
+  },
   "number": {
     "value": "11,500 years",
     "label": "Approximate age of Göbekli Tepe in present-day Turkey — the oldest known monumental architecture, built before agriculture, before pottery, and before any written language: people assembled to build temples before they assembled to plant crops."
@@ -28,6 +34,10 @@
     "author": "Plato",
     "source": "Hippias Major, 304e"
   },
+  "on_this_day": {
+    "year": "1950",
+    "text": "On 9 May 1950, Robert Schuman proposed pooling French and West German coal and steel under a common authority, the institutional seed of what became the European Union. It was a monument made of procedure rather than stone: an attempt to build something that would remain precisely by making certain old forms of destruction harder to resume."
+  },
   "person": {
     "name": "Marija Gimbutas",
     "dates": "1921 – 1994 — Vilnius, Lithuania / Los Angeles, USA",
@@ -35,6 +45,11 @@
       "Marija Gimbutas was a Lithuanian-American archaeologist who proposed, from the 1950s onward, that pre-Bronze Age European cultures were matrilineal, goddess-worshipping, and structured around symbols of regeneration rather than conquest. Her Kurgan hypothesis — which argued that Indo-European languages spread through successive waves of nomadic invasion from the Pontic steppes — has proved far more durable than her cultural reconstruction and is now largely accepted in modified form. The cultural thesis has remained controversial, accused of both methodological overreach and motivated interpretation.",
       "What is undeniable is that she transformed the reading of Neolithic and Chalcolithic objects: figurines, pottery, megalithic art, which had been treated as decorative background to 'real' archaeology became primary evidence for her. Whether her interpretation was correct, she changed the questions archaeologists were required to ask, and changed what counts as data. She was working at a time when prehistoric Europe was assumed to be essentially pre-social, and she insisted it was anything but."
     ]
+  },
+  "now_here": {
+    "name": "Newgrange",
+    "location": "County Meath, Ireland",
+    "text": "A passage tomb older than Stonehenge and the pyramids, built so that winter-solstice light enters a narrow roof box and reaches the inner chamber for a few minutes each year. Most of the year it keeps its secret in stone and darkness. Then, briefly, the structure reveals that its builders were not only moving mass through space but also aligning time itself."
   },
   "questions": [
     {
@@ -72,5 +87,11 @@
       "answer": "meaning",
       "hint": "The essay names this as the thing that occupies the gap between what a thing needs to do and what was actually done to make it."
     }
+  },
+  "movie": {
+    "title": "Stalker",
+    "director": "Andrei Tarkovsky",
+    "year": "1979",
+    "text": "Not because it is about ruins, though it is, but because it treats landscape as something charged by human longing long after the builders disappear. The film keeps asking whether a place can hold intention after the people who brought it into being have become irrelevant. Its slowness is part of the argument."
   }
 }

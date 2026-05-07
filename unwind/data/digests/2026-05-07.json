@@ -12,6 +12,12 @@
     ],
     "blockquote": "The body in motion eventually outruns the self that set it moving."
   },
+  "tension": {
+    "positions": [
+      "Absorbed action is sometimes closer to truth than reflection because the body learns by exposure long before thought can explain what it knows. In those moments, the self is useful mainly for having the discipline to get out of the way.",
+      "The body's automatic intelligence is only trustworthy because earlier reflection trained it, corrected it, and gave it form. Surrender without judgment is not wisdom but habit, and habit can be wrong with astonishing confidence."
+    ]
+  },
   "number": {
     "value": "45 minutes",
     "label": "Approximate threshold at which sustained aerobic exercise measurably increases BDNF — brain-derived neurotrophic factor — the protein associated with neurogenesis and, by implication, with the clarity runners describe that has nothing to do with the running."
@@ -28,6 +34,10 @@
     "author": "María Negroni",
     "source": "Pequeño mundo ilustrado"
   },
+  "on_this_day": {
+    "year": "1945",
+    "text": "On 7 May 1945, German officers signed the surrender documents at Reims, ending the war in Europe on paper before the public celebrations came a day later. History often turns at a quieter threshold than the one memory keeps: not the shout, but the point at which continuation becomes impossible."
+  },
   "person": {
     "name": "Roger Bannister",
     "dates": "1929 – 2018 — Harrow, England",
@@ -35,6 +45,11 @@
       "Roger Bannister was a neurologist and athlete who in 1954 became the first person to run a mile in under four minutes — an achievement that had been considered physiologically impossible by some and merely improbable by others. What is less often discussed is that he trained for the attempt in the gaps between medical school shifts, running at lunchtime, and that he was more interested in the neuroscience of physical performance than in the competitive record itself. After retiring from competitive running he worked for decades on multiple sclerosis and the autonomic nervous system.",
       "He described his approach to the four-minute barrier not as a feat of will but as a problem of perception: the barrier existed partly because runners believed in it, and breaking it required revising not physical capacity but the model the mind held of what the body could do. Weeks after his record, two other runners broke the barrier in the same race, suggesting the revision was contagious."
     ]
+  },
+  "now_here": {
+    "name": "The stadion at Olympia",
+    "location": "Olympia, Greece",
+    "text": "The ancient running track at Olympia is still there: a long earthen lane cut between embankments, measured not by abstraction but by the body that had to cross it. It is one of those places where effort survives after explanation has thinned out. The dust, the distance, the slight narrowing of the eye toward the far marker remain legible even after the original reasons for running have dissolved."
   },
   "questions": [
     {
@@ -92,5 +107,11 @@
       ],
       "explanation": "Sustained aerobic exercise increases BDNF, promotes hippocampal neurogenesis, reduces amygdala reactivity, and improves prefrontal executive function — all documented. It does not suppress the default mode network during rest; if anything, exercise may enhance default mode activity during recovery periods, supporting creativity and memory consolidation."
     }
+  },
+  "movie": {
+    "title": "Beau Travail",
+    "director": "Claire Denis",
+    "year": "1999",
+    "text": "Not a sports film but a film of bodies under discipline, repetition, heat, and gesture. What it understands about movement is that action can become thought's replacement rather than its expression. Watch it for the way exertion turns interior life into rhythm."
   }
 }

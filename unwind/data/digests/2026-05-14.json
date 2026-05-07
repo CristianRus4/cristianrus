@@ -12,6 +12,12 @@
     ],
     "blockquote": "The deepest form of attention does not feel like paying attention. It feels like being paid."
   },
+  "tension": {
+    "positions": [
+      "Absorbed attention is possible only because effort came first and stayed long enough to alter the nervous system from within. Ease is not the opposite of discipline here but its most refined afterlife.",
+      "The attempt to engineer absorption can destroy it, because the self-monitoring that seeks the state is exactly what the state suspends. Some of the best forms of attention arrive only when the will stops trying to witness its own success."
+    ]
+  },
   "number": {
     "value": "10,000 hours",
     "label": "The figure popularised by Malcolm Gladwell — based on research by Anders Ericsson — as the threshold at which deliberate practice produces expert-level performance; what is less often cited is Ericsson's insistence that the quality of practice, not its quantity alone, is what produces the second kind of attention."
@@ -28,6 +34,10 @@
     "author": "Simone Weil",
     "source": "Letter to Joë Bousquet, 13 April 1942"
   },
+  "on_this_day": {
+    "year": "1804",
+    "text": "On 14 May 1804, Meriwether Lewis and William Clark set out from the American Midwest toward the Pacific, beginning an expedition that would convert an unknown territory into accumulated familiarity one observation at a time. Attention of that kind is not dramatic in the moment; it becomes visible only in what patient looking eventually makes navigable."
+  },
   "person": {
     "name": "Anders Ericsson",
     "dates": "1947 – 2020 — Gothenburg, Sweden / Tallahassee, USA",
@@ -35,6 +45,11 @@
       "Anders Ericsson was a cognitive psychologist who spent his career studying expert performance and developing what he called 'deliberate practice' — a specific form of effortful, feedback-rich training that differs from mere repetition. His research with violinists, chess players, and medical professionals showed that expertise is not primarily a matter of innate talent but of the structure and quality of practice: work that pushes against the current edge of competence, receives immediate feedback, and focuses on weaknesses rather than strengths.",
       "He spent years of his later career correcting the popular misunderstanding of his own findings, particularly the 10,000-hour rule, which Gladwell had simplified into a quantity claim. Ericsson insisted that hours without the right structure were not deliberate practice but mere repetition, and that mere repetition could reinforce mediocrity as readily as it could produce excellence. He died in 2020, having left the field substantially richer and the popular understanding of it substantially poorer."
     ]
+  },
+  "now_here": {
+    "name": "Biblioteca Malatestiana",
+    "location": "Cesena, Italy",
+    "text": "The fifteenth-century reading room in Cesena holds its desks in disciplined rows, the old codices still chained in place as if attention once needed architecture to keep it honest. Light falls evenly through the high windows; nothing in the room competes. It is a space built on the assumption that concentration deepens when the world stops offering alternatives."
   },
   "questions": [
     {
@@ -90,5 +105,11 @@
         }
       ]
     }
+  },
+  "movie": {
+    "title": "Paterson",
+    "director": "Jim Jarmusch",
+    "year": "2016",
+    "text": "A quiet film about repetition, notice, and the kind of familiarity that slowly becomes a form of perception. It is adjacent here because it understands attention not as strain but as a settled relation to ordinary things. Nothing major happens, which is part of how it shows what depth feels like."
   }
 }

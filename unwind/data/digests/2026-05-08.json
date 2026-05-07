@@ -12,6 +12,12 @@
     ],
     "blockquote": "A room with nothing unnecessary in it does not feel empty. It feels like something is paying attention."
   },
+  "tension": {
+    "positions": [
+      "Subtraction is one of the few reliable ways to restore attention because excess fragments perception before thought even begins. A coherent life often has to be made by removal before it can be made by addition.",
+      "Subtraction becomes suspect the moment it is admired too much, because then emptiness hardens into style and style starts accumulating its own objects. Minimalism can become clutter in ceremonial form, with absence itself treated as a collectible."
+    ]
+  },
   "number": {
     "value": "93",
     "label": "The number of items John Pawson — architect of one of the most studied minimalist interior traditions — reported keeping in his entire London home at the time of a 2011 interview, including furniture."
@@ -28,6 +34,10 @@
     "author": "Paul Rand",
     "source": "A Designer's Art, Chapter 2"
   },
+  "on_this_day": {
+    "year": "1945",
+    "text": "On 8 May 1945, cities across Europe erupted in bells, crowds, sirens, singing, and relief as Victory in Europe Day was announced. Public noise can be a form of moral clarity: not clutter but release, the sound made when history finally loosens its grip."
+  },
   "person": {
     "name": "Donald Judd",
     "dates": "1928 – 1994 — Excelsior Springs, USA / Marfa, Texas",
@@ -35,6 +45,11 @@
       "Donald Judd rejected the label 'minimalist' for his own work, insisting on the term 'specific objects' — things that were neither painting nor sculpture but occupied three-dimensional space on their own terms, without reference to anything beyond their own dimensions, material, and placement. His boxes of anodised aluminium and Plexiglas were not statements about reduction but about the integrity of an object that owed nothing to the tradition it declined to continue.",
       "He eventually acquired an abandoned army fort in Marfa, Texas, where he spent decades permanently installing his own work and the work of others in converted artillery sheds — arguing that permanent installation was the only honest relationship between an object and a space. The work could not be moved without being destroyed. He died having made one of the most coherent bodies of work of the twentieth century, at a scale large enough to contain a landscape."
     ]
+  },
+  "now_here": {
+    "name": "Ryōan-ji",
+    "location": "Kyoto, Japan",
+    "text": "Fifteen stones in raked gravel, and from no single vantage can all fifteen be seen at once. The garden refuses completion without seeming to refuse anything at all. It demonstrates a severe kind of generosity: space arranged so that what is absent keeps doing part of the work."
   },
   "questions": [
     {
@@ -84,5 +99,11 @@
       ],
       "explanation": "The Cage claim is false. 4'33\" was conceived as a piece for any instrument or instruments — Cage described its content as whatever sounds occurred in the environment during the three movements. It was first performed by David Tudor at a piano, but the piano was incidental. There is no version in which a conductor conducts silence over a full orchestra in the way described."
     }
+  },
+  "movie": {
+    "title": "Columbus",
+    "director": "Kogonada",
+    "year": "2017",
+    "text": "A film about architecture, hesitation, and the strange pressure of well-composed spaces. It treats rooms and facades as moral weather rather than background. The connection here is not minimalism as style but attention as arrangement."
   }
 }
