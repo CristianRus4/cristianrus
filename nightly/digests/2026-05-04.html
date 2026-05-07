@@ -165,8 +165,10 @@
               <form class="guess-form" data-reveal-form>
                 <label class="visually-hidden" for="reveal-guess">Your guess</label>
                 <input class="text-input" id="reveal-guess" type="text" autocomplete="off" placeholder="Type your guess">
-                <button class="secondary-button" type="button" data-reveal-more>Clue</button>
-                <button class="primary-button" type="submit" data-default-label="Submit">Submit</button>
+                <div class="inline-actions">
+                  <button class="secondary-button" type="button" data-reveal-more>Clue</button>
+                  <button class="primary-button" type="submit" data-default-label="Submit">Submit</button>
+                </div>
               </form>
               <p class="game-status" data-reveal-status aria-live="polite"></p>
             </div>

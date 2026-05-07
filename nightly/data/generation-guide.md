@@ -57,6 +57,8 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 - Do not repeat a game type that has appeared recently. Check the last 10 digests and avoid types used there.
 - Game content must relate to the essay topic of that day. Do not reuse essay words verbatim in game options.
 - For `reveal`: the hidden word should be a concept from the essay, not the exact title word.
+- For `missing_word`: use the `_` character with spaces between them (e.g., `_ _ _ _ _`) to represent the missing word, matching its exact character count.
+
 
 ## Questions rules
 - Exactly 3 questions per digest.

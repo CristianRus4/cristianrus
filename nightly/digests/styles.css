@@ -426,13 +426,20 @@
         background: transparent;
       }
 
-      .question-actions,
-      .inline-actions {
+      .question-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 0.65rem;
         margin-top: 0;
         margin-left: 1.9rem;
+      }
+
+      .inline-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-top: 0;
+        margin-left: 0;
       }
 
       .question-actions > * + *,
@@ -664,11 +671,17 @@
         color: var(--text);
       }
 
+      .text-input.is-correct {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: var(--bg);
+      }
+
       .guess-form {
         display: flex;
-        gap: 0.85rem;
-        align-items: center;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 1.2rem;
       }
 
       .quote-translation {
@@ -742,9 +755,11 @@
           bottom: 1rem;
         }
 
-        .question-actions,
-        .inline-actions {
+        .question-actions {
           margin-left: 1.9rem;
+        }
+        .inline-actions {
+          margin-left: 0;
         }
       }
 

@@ -330,7 +330,18 @@ function setupMissingWordGame(container, data) {
   var input = container.querySelector("#missing-word-guess");
   var status = container.querySelector("[data-missing-status]");
   var hintLine = container.querySelector("[data-missing-hint]");
-  var submitButton = form.querySelector("button");
+  var clueButton = container.querySelector("[data-missing-clue]");
+  var submitButton = form.querySelector("button[type='submit']");
+
+  if (clueButton) {
+    clueButton.onclick = function () {
+      if (hint) {
+        hintLine.textContent = hint;
+        hintLine.hidden = false;
+        clueButton.disabled = true;
+      }
+    };
+  }
 
   form.onsubmit = function (event) {
     var guess;
@@ -338,22 +349,21 @@ function setupMissingWordGame(container, data) {
     guess = normalizeAnswer(input.value);
 
     if (!guess) {
-      setStatus(status, "Enter a guess first.", false);
       return;
     }
 
     if (guess === normalizeAnswer(answer)) {
       setStatus(status, "", true);
       setActionButtonState(submitButton, "success");
+      input.classList.add("is-correct");
       input.disabled = true;
       submitButton.disabled = true;
+      if (clueButton) {
+        clueButton.disabled = true;
+      }
     } else {
       setStatus(status, "", false);
       setActionButtonState(submitButton, "error");
-      if (hint) {
-        hintLine.textContent = "Hint: " + hint;
-        hintLine.hidden = false;
-      }
     }
   };
 

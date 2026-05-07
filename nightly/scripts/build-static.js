@@ -436,13 +436,20 @@ const PAGE_STYLE = `
         background: transparent;
       }
 
-      .question-actions,
-      .inline-actions {
+      .question-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 0.65rem;
         margin-top: 0;
         margin-left: 1.9rem;
+      }
+
+      .inline-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-top: 0;
+        margin-left: 0;
       }
 
       .question-actions > * + *,
@@ -674,11 +681,17 @@ const PAGE_STYLE = `
         color: var(--text);
       }
 
+      .text-input.is-correct {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: var(--bg);
+      }
+
       .guess-form {
         display: flex;
-        gap: 0.85rem;
-        align-items: center;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 1.2rem;
       }
 
       .quote-translation {
@@ -752,9 +765,11 @@ const PAGE_STYLE = `
           bottom: 1rem;
         }
 
-        .question-actions,
-        .inline-actions {
+        .question-actions {
           margin-left: 1.9rem;
+        }
+        .inline-actions {
+          margin-left: 0;
         }
       }
 `;
@@ -1117,8 +1132,10 @@ function renderRevealMarkup(data) {
     "              <form class=\"guess-form\" data-reveal-form>",
     "                <label class=\"visually-hidden\" for=\"reveal-guess\">Your guess</label>",
     "                <input class=\"text-input\" id=\"reveal-guess\" type=\"text\" autocomplete=\"off\" placeholder=\"Type your guess\">",
-    "                <button class=\"secondary-button\" type=\"button\" data-reveal-more>Clue</button>",
-    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Submit\">Submit</button>",
+    "                <div class=\"inline-actions\">",
+    "                  <button class=\"secondary-button\" type=\"button\" data-reveal-more>Clue</button>",
+    "                  <button class=\"primary-button\" type=\"submit\" data-default-label=\"Submit\">Submit</button>",
+    "                </div>",
     "              </form>",
     "              <p class=\"game-status\" data-reveal-status aria-live=\"polite\"></p>"
   ].join("\n");
@@ -1152,18 +1169,22 @@ function renderTwoTruthsMarkup(data) {
 }
 
 function renderMissingWordMarkup(data) {
+  const answer = safeText(data && data.answer, "");
+  const underscores = answer.split("").map(() => "_").join(" ");
   return [
-    "              <h2 class=\"game-title\">Missing Word</h2>",
+    "              <h2 class=\"game-title\">Missing word</h2>",
     "              <p class=\"section-instruction\">" + getGameInstruction("missing_word") + "</p>",
-    "              <p class=\"game-prompt\">Find the word that has been removed from this passage.</p>",
-    "              <p>" + escapeHtml(safeText(data && data.before, "")) + " <strong>_____</strong> " + escapeHtml(safeText(data && data.after, "")) + "</p>",
+    "              <p>" + escapeHtml(safeText(data && data.before, "")) + " <strong class=\"missing-word-display\">" + underscores + "</strong> " + escapeHtml(safeText(data && data.after, "")) + "</p>",
+    "              <p class=\"game-prompt\" data-missing-hint hidden></p>",
     "              <form class=\"guess-form\" data-missing-form>",
     "                <label class=\"visually-hidden\" for=\"missing-word-guess\">Missing word</label>",
     "                <input class=\"text-input\" id=\"missing-word-guess\" type=\"text\" autocomplete=\"off\" placeholder=\"Type the missing word\">",
-    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Check\">Check</button>",
+    "                <div class=\"inline-actions\">",
+    "                  <button class=\"secondary-button\" type=\"button\" data-missing-clue>Clue</button>",
+    "                  <button class=\"primary-button\" type=\"submit\" data-default-label=\"Check\">Check</button>",
+    "                </div>",
     "              </form>",
-    "              <p class=\"game-status\" data-missing-status aria-live=\"polite\"></p>",
-    "              <p class=\"hint-line\" data-missing-hint hidden></p>"
+    "              <p class=\"game-status\" data-missing-status aria-live=\"polite\"></p>"
   ].join("\n");
 }
 
@@ -1730,7 +1751,18 @@ function setupMissingWordGame(container, data) {
   var input = container.querySelector("#missing-word-guess");
   var status = container.querySelector("[data-missing-status]");
   var hintLine = container.querySelector("[data-missing-hint]");
-  var submitButton = form.querySelector("button");
+  var clueButton = container.querySelector("[data-missing-clue]");
+  var submitButton = form.querySelector("button[type='submit']");
+
+  if (clueButton) {
+    clueButton.onclick = function () {
+      if (hint) {
+        hintLine.textContent = hint;
+        hintLine.hidden = false;
+        clueButton.disabled = true;
+      }
+    };
+  }
 
   form.onsubmit = function (event) {
     var guess;
@@ -1738,22 +1770,21 @@ function setupMissingWordGame(container, data) {
     guess = normalizeAnswer(input.value);
 
     if (!guess) {
-      setStatus(status, "Enter a guess first.", false);
       return;
     }
 
     if (guess === normalizeAnswer(answer)) {
       setStatus(status, "", true);
       setActionButtonState(submitButton, "success");
+      input.classList.add("is-correct");
       input.disabled = true;
       submitButton.disabled = true;
+      if (clueButton) {
+        clueButton.disabled = true;
+      }
     } else {
       setStatus(status, "", false);
       setActionButtonState(submitButton, "error");
-      if (hint) {
-        hintLine.textContent = "Hint: " + hint;
-        hintLine.hidden = false;
-      }
     }
   };
 

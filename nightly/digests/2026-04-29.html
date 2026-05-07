@@ -157,17 +157,19 @@
         <section class="card">
           <div class="word-box interactive-plain">
             <div id="nightly-game" class="game-shell">
-              <h2 class="game-title">Missing Word</h2>
+              <h2 class="game-title">Missing word</h2>
               <p class="section-instruction">Provide the missing term to complete the passage.</p>
-              <p class="game-prompt">Find the word that has been removed from this passage.</p>
-              <p>Translation is not the movement of a meaning from one house to another — it is the construction of a new house from materials that belonged to a different <strong>_____</strong> .</p>
+              <p>Translation is not the movement of a meaning from one house to another — it is the construction of a new house from materials that belonged to a different <strong class="missing-word-display">_ _ _ _ _ _ _</strong> .</p>
+              <p class="game-prompt" data-missing-hint hidden></p>
               <form class="guess-form" data-missing-form>
                 <label class="visually-hidden" for="missing-word-guess">Missing word</label>
                 <input class="text-input" id="missing-word-guess" type="text" autocomplete="off" placeholder="Type the missing word">
-                <button class="primary-button" type="submit" data-default-label="Check">Check</button>
+                <div class="inline-actions">
+                  <button class="secondary-button" type="button" data-missing-clue>Clue</button>
+                  <button class="primary-button" type="submit" data-default-label="Check">Check</button>
+                </div>
               </form>
               <p class="game-status" data-missing-status aria-live="polite"></p>
-              <p class="hint-line" data-missing-hint hidden></p>
             </div>
           </div>
         </section>
