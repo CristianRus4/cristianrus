@@ -1,0 +1,94 @@
+{
+  "date": "2026-05-06",
+  "title": "What the Mushroom Knows That the Tree Does Not",
+  "essay": {
+    "paragraphs": [
+      "The mycelial network does not have a centre. This is not a design flaw — it is the design. When part of the network is severed, the rest does not wait for instructions from a headquarters that was never there. It reroutes, thickens in other directions, continues.",
+      "There is something unsettling about intelligence that requires no self-awareness to operate. We expect cognition to be located somewhere, seated in an identifiable processor. The fungal network processes information — adjusts to moisture, toxin, available carbon — without anything that resembles a point of decision.",
+      "The mycorrhizal relationship between tree roots and fungal filaments is neither the tree using the fungus nor the fungus exploiting the tree. Both descriptions import a story about agency that the relationship does not contain. What exists is an arrangement so old it preceded the capacity to name relationships.",
+      "The forest floor, seen from below, is dense with negotiation. Not metaphorical negotiation — actual chemical exchange, resource transfer, signal propagation across species boundaries. Trees that are felled continue to receive carbon through the network for years. The network does not know they are gone. Or perhaps it knows in a way that does not require representation.",
+      "A distributed system that survives amputation is not resilient in the way a person is resilient. It does not overcome something. It simply has no architecture capable of experiencing loss as such. The redundancy is built into the form.",
+      "What this reveals about centrality is not comfortable. The feeling that a self is required to manage a life, that experience needs a seat — that too may be an architecture, not a fact."
+    ],
+    "blockquote": "Intelligence distributed across a network does not know it is intelligent. This may be the condition of its survival."
+  },
+  "number": {
+    "value": "8 km²",
+    "label": "The documented extent of a single Armillaria ostoyae fungal organism in Oregon — possibly the largest living thing on Earth by area, with no centre, no edge, and no organ of self-recognition."
+  },
+  "fragment": "She had been trying to find who was in charge. The structure had been operating for eleven years with nobody responsible for the parts that kept working. When she mapped the connections they formed no hierarchy — only adjacencies, overlaps, dependencies without direction. She thought: this is not a failure of organisation. She thought: this is a different kind of organisation, one that cannot be entered from any particular door.",
+  "word": {
+    "term": "apophenia",
+    "origin": "Greek — from apo (away) and phaenein (to show); coined by psychiatrist Klaus Conrad in 1958 to describe the spontaneous perception of connections and meaningfulness between unrelated things.",
+    "definition": "The experience of perceiving meaningful patterns in unrelated or random stimuli; the mind's tendency to find structure in noise."
+  },
+  "quote": {
+    "text": "Il cherchait à comprendre en dehors de lui-même ce qui ne pouvait être compris qu'en dedans.",
+    "translation": "He was trying to understand outside himself what could only be understood from within.",
+    "author": "Simone Weil",
+    "source": "La pesanteur et la grâce, Part II"
+  },
+  "person": {
+    "name": "Anna Tsing",
+    "dates": "1952 – present — Los Angeles, USA / Aarhus, Denmark",
+    "paragraphs": [
+      "Anna Tsing is an anthropologist whose work has centred on what she calls 'assemblages' — the precarious, contingent collaborations between species, economies, and ecosystems that produce the world we actually inhabit, rather than the world systems theory assumes. Her book on the matsutake mushroom became a decade-long inquiry into what grows in the ruins of capitalism: the wild patches, the opportunistic networks, the entanglements that survive precisely because they never required stability.",
+      "Her method refuses the distinction between the anthropological and the biological. She conducts fieldwork in forests with the same rigour she applies to factories, attending to the multi-species politics of a place without assigning the human actor any privileged role in what she finds. The result is scholarship that reads like ecological phenomenology — patient, lateral, reluctant to conclude."
+    ]
+  },
+  "questions": [
+    {
+      "text": "What in your life operates well without a centre — without anyone responsible for its continuity?",
+      "deeper": "Does the absence of a centre make it more or less trustworthy?",
+      "experiment": "Trace one routine in your life and identify which parts of it sustain themselves without your intention."
+    },
+    {
+      "text": "How much of what you call 'thinking' is actually pattern-recognition that precedes the sense of having thought?",
+      "deeper": "Can you identify a recent decision that arrived as conclusion rather than process?",
+      "experiment": "Before making any small decision today, notice whether the decision is already present before you begin deliberating."
+    },
+    {
+      "text": "What would it mean to be part of a network rather than the node at its centre?",
+      "deeper": "Which relationships in your life function more like mycorrhizal exchange than like contracts?",
+      "experiment": "Describe one relationship in your life using only verbs — no roles, no labels, only what moves between."
+    }
+  ],
+  "trivia": {
+    "question": "What term did biologist Lynn Margulis use for the process by which separate organisms merge to form new composite entities over evolutionary time?",
+    "options": [
+      "Symbiogenesis",
+      "Horizontal gene transfer",
+      "Mutualist convergence",
+      "Endosymbiotic drift"
+    ],
+    "correct": 0,
+    "explanation": "Lynn Margulis coined 'symbiogenesis' to describe how new species can emerge not through competition and mutation alone but through the permanent merger of distinct organisms — the mitochondria in every eukaryotic cell being the canonical example of a formerly independent bacterium that became a permanent resident."
+  },
+  "game": {
+    "type": "concept_match",
+    "data": {
+      "pairs": [
+        {
+          "id": "a",
+          "word": "Mycorrhiza",
+          "definition": "Symbiotic association between fungal filaments and plant roots, enabling nutrient exchange."
+        },
+        {
+          "id": "b",
+          "word": "Apophenia",
+          "definition": "Spontaneous perception of meaningful patterns in unrelated stimuli."
+        },
+        {
+          "id": "c",
+          "word": "Symbiogenesis",
+          "definition": "The evolutionary emergence of new organisms through permanent merger of distinct species."
+        },
+        {
+          "id": "d",
+          "word": "Distributed cognition",
+          "definition": "Intelligence that is spread across a system rather than located in a single processing unit."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "date": "2026-05-07",
+  "title": "The Animal That Decides to Run",
+  "essay": {
+    "paragraphs": [
+      "A human body running long distances undergoes changes that were not designed for distance. The knee is not a precision instrument — it is a compromise between speed and load-bearing, produced by selection pressures that did not anticipate pavement or intention. And yet the body adapts: the stride shortens, the foot placement shifts, the breath finds a rhythm the conscious mind did not calculate.",
+      "This is the strange grammar of motion: the body organises itself without asking. The runner does not compose each footfall. The runner is, for long stretches, simply the forward direction of a process that continues on its own terms.",
+      "Phenomenologists describe a particular quality of absorbed action — the moment when the tool disappears into the task. The hammer that a skilled carpenter uses ceases to be an object. It becomes a transparent extension of intention. The same thing happens with a body that has been moved through enough miles — it stops being the thing you carry and becomes the way you move through what is there.",
+      "This is not transcendence. It is a very specific form of attention: one that has relinquished deliberation without abandoning presence. The runner who is thinking about running is not running in this sense. The runner who is thinking about something else entirely — watching the light on a wall, turning over a problem from three days ago — is closer.",
+      "What physical practice does that intellectual practice cannot is produce this quality of absorbed being without demanding it. You do not decide to arrive at absorption. You simply run long enough and it finds you.",
+      "The animal that decides to run is not the animal that runs. Somewhere in the first few kilometres, the decision stops mattering, and something older takes over."
+    ],
+    "blockquote": "The body in motion eventually outruns the self that set it moving."
+  },
+  "number": {
+    "value": "45 minutes",
+    "label": "Approximate threshold at which sustained aerobic exercise measurably increases BDNF — brain-derived neurotrophic factor — the protein associated with neurogenesis and, by implication, with the clarity runners describe that has nothing to do with the running."
+  },
+  "fragment": "He had been running for thirty minutes before he realised he was not thinking about the thing he had been thinking about when he left the house. The thing had dissolved somewhere on the descent without his permission. He did not retrieve it. He ran for another twenty minutes in the space where it had been, and when he stopped and the breathing slowed, the thing was back, smaller. Lighter. He did not know if he had solved it or merely outpaced it temporarily. Both seemed fine.",
+  "word": {
+    "term": "kenosis",
+    "origin": "Greek — from kenoun, to empty; in early Christian theology, the act of self-emptying, specifically applied to the divine becoming human; in broader use, the voluntary relinquishment of control or identity as a precondition for a different kind of presence.",
+    "definition": "The deliberate emptying of the self — of control, preference, or fixed identity — as the condition under which something else can enter or become possible."
+  },
+  "quote": {
+    "text": "El cuerpo sabe lo que la mente tardará meses en conceder.",
+    "translation": "The body knows what the mind will take months to admit.",
+    "author": "María Negroni",
+    "source": "Pequeño mundo ilustrado"
+  },
+  "person": {
+    "name": "Roger Bannister",
+    "dates": "1929 – 2018 — Harrow, England",
+    "paragraphs": [
+      "Roger Bannister was a neurologist and athlete who in 1954 became the first person to run a mile in under four minutes — an achievement that had been considered physiologically impossible by some and merely improbable by others. What is less often discussed is that he trained for the attempt in the gaps between medical school shifts, running at lunchtime, and that he was more interested in the neuroscience of physical performance than in the competitive record itself. After retiring from competitive running he worked for decades on multiple sclerosis and the autonomic nervous system.",
+      "He described his approach to the four-minute barrier not as a feat of will but as a problem of perception: the barrier existed partly because runners believed in it, and breaking it required revising not physical capacity but the model the mind held of what the body could do. Weeks after his record, two other runners broke the barrier in the same race, suggesting the revision was contagious."
+    ]
+  },
+  "questions": [
+    {
+      "text": "What does your body do well that your deliberate mind would only interfere with?",
+      "deeper": "When did you learn to get out of the way of it?",
+      "experiment": "Perform one physical activity today — even a short walk — without setting a goal or measuring anything. Notice what the body does on its own."
+    },
+    {
+      "text": "What is the difference between persistence and absorption, and which of the two do you have easier access to?",
+      "deeper": "Are there conditions you could create that would make absorption more available?",
+      "experiment": "Begin a physical activity and continue past the point where you would normally stop. Describe what happens to the quality of attention after that threshold."
+    },
+    {
+      "text": "What barriers in your own life exist partly because you have agreed to believe in them?",
+      "deeper": "What would a revision of the internal model look like, before any external change?",
+      "experiment": "Name one limit you hold about yourself and ask: is this a fact or a consensus I have never contested?"
+    }
+  ],
+  "trivia": {
+    "question": "What is the term in motor learning for the stage at which a skill no longer requires conscious attention and executes automatically?",
+    "options": [
+      "Procedural consolidation",
+      "Autonomous stage",
+      "Embodied encoding",
+      "Motor chunking"
+    ],
+    "correct": 1,
+    "explanation": "Fitts and Posner's three-stage model of motor learning describes the autonomous stage as the final phase, in which a skill can be performed without deliberate attention, freeing cognitive resources for other tasks. This is what allows a practiced runner to think about something else entirely while the stride executes itself."
+  },
+  "game": {
+    "type": "odd_one_out",
+    "data": {
+      "prompt": "Four of these are documented effects of sustained aerobic exercise on brain function. One is not supported by neuroscience research. Find the outlier.",
+      "options": [
+        {
+          "word": "Increased BDNF production",
+          "is_odd": false
+        },
+        {
+          "word": "Hippocampal neurogenesis",
+          "is_odd": false
+        },
+        {
+          "word": "Suppression of default mode network during rest",
+          "is_odd": true
+        },
+        {
+          "word": "Reduced amygdala reactivity over time",
+          "is_odd": false
+        },
+        {
+          "word": "Improved executive function in prefrontal cortex",
+          "is_odd": false
+        }
+      ],
+      "explanation": "Sustained aerobic exercise increases BDNF, promotes hippocampal neurogenesis, reduces amygdala reactivity, and improves prefrontal executive function — all documented. It does not suppress the default mode network during rest; if anything, exercise may enhance default mode activity during recovery periods, supporting creativity and memory consolidation."
+    }
+  }
+}

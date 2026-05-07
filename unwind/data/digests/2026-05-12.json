@@ -1,0 +1,76 @@
+{
+  "date": "2026-05-12",
+  "title": "On the Ethics of Looking at Someone",
+  "essay": {
+    "paragraphs": [
+      "A photograph takes something. This is not a metaphor. The shutter opens during a specific unrepeatable interval of light and time, and what was in front of it — the person, the street, the particular quality of that afternoon — is arrested. The world continues. The photograph does not.",
+      "Susan Sontag argued that photography is inherently predatory — that to photograph someone is to exercise a form of power over them, to reduce them to an image that can be owned, reproduced, and circulated beyond their consent or knowledge. This argument has become more obviously true in the forty years since she made it.",
+      "But there is another kind of looking that the photograph represents: the kind that is not acquisitive but attentive. The photographer who spends three hours in a single street waiting for the light is not taking something. They are giving something — time, presence, the sustained willingness to be in a place without knowing what will arrive.",
+      "The ethical weight of looking depends almost entirely on what the looking is for. Looking that produces a stable image of another person — an image the looker owns and the other does not — is a different act from looking that changes the looker. Only one of these is commonly described as observation. The other has no technical name.",
+      "Portraiture, at its best, does something paradoxical: it arrests time and, by arresting it, makes visible what duration itself conceals. A portrait of a face over decades reveals not the face at any particular moment but the relationship between all the moments — the way a life has moved through a body.",
+      "To look at someone with full attention is to make a claim about their reality. That reality may exceed what you can hold. The ethics of looking may reside precisely there: in the question of whether you are willing to be changed by what you see."
+    ],
+    "blockquote": "The photograph is evidence that someone chose to look — not at what was there, but at a particular way of it being there."
+  },
+  "number": {
+    "value": "1.8 trillion",
+    "label": "Approximate number of photographs taken globally in a single year by the mid-2020s — a quantity so large that the ratio of images to moments has collapsed: more photographs are taken of certain events than there are seconds in the event itself."
+  },
+  "fragment": "She took no photographs on the last day. She had the camera. She had the light. She walked for three hours through the city that she had been photographing for a week, and she put nothing in the frame. At the end of the walk she sat in a square and watched a man eat his lunch slowly, looking at his hands. She did not point the camera at him. She thought: I am keeping this. And then she thought: I am not keeping anything. It is happening. It is already going.",
+  "word": {
+    "term": "clinamen",
+    "origin": "Latin — coined by Lucretius in De Rerum Natura to describe the unpredictable swerve of atoms from their otherwise straight trajectories; the tiny deviation that introduces contingency and freedom into a deterministic universe.",
+    "definition": "The infinitesimal unpredictable deviation from an expected path; by extension, the small oblique movement that makes possibility out of necessity."
+  },
+  "quote": {
+    "text": "To photograph is to appropriate the thing photographed.",
+    "translation": null,
+    "author": "Susan Sontag",
+    "source": "On Photography, Chapter 1"
+  },
+  "person": {
+    "name": "Vivian Maier",
+    "dates": "1926 – 2009 — New York, USA / Chicago, USA",
+    "paragraphs": [
+      "Vivian Maier was a nanny who worked for wealthy Chicago families for decades while producing, in secret, one of the largest bodies of street photography in the twentieth century — over 150,000 negatives, the majority of which were never developed in her lifetime. She did not seek exhibitions, did not speak about her work, and left no indication that she considered herself an artist rather than a person who photographed. Her work was discovered only after her death, when storage lockers she had failed to pay for were auctioned and a buyer named John Maloof began developing her negatives.",
+      "The posthumous fame raises a question she cannot answer: what was the work for? It was clearly not for an audience, since she had no audience. It was not for money, since she spent money on film and storage that she could not easily afford. The photographs exist as evidence of looking that refused to become display — a practice so complete in itself that it required no completion."
+    ]
+  },
+  "questions": [
+    {
+      "text": "When do you look at someone in a way that changes you rather than producing a stable picture of them?",
+      "deeper": "What conditions make that kind of looking possible?",
+      "experiment": "Look at one person today — someone you see regularly — for thirty uninterrupted seconds, as if for the first time. Notice what the sustained attention reveals that the habitual glance does not."
+    },
+    {
+      "text": "What is the difference between observing and witnessing, and which of the two do you practice?",
+      "deeper": "Can witnessing be done without the other person's knowledge, or does it require some form of presence that observation does not?",
+      "experiment": "Sit in a public place for fifteen minutes and watch without producing any internal commentary about what you see. Notice what happens when narration is suspended."
+    },
+    {
+      "text": "What would it mean to do something you care about without any expectation or possibility of audience?",
+      "deeper": "Does the absence of an audience change what you make, or does it change what the making is for?",
+      "experiment": "Do one thing today that you would normally document or share, without documenting or sharing it. Notice what changes."
+    }
+  ],
+  "trivia": {
+    "question": "What is the term in photography for the decisive moment — the precise instant at which the elements of a scene align into a meaningful composition?",
+    "options": [
+      "The exact term coined by Cartier-Bresson: 'l'instant décisif'",
+      "Peak action",
+      "The golden exposure",
+      "Moment of resolution"
+    ],
+    "correct": 0,
+    "explanation": "Henri Cartier-Bresson described 'l'instant décisif' — the decisive moment — as the simultaneous recognition of the significance of an event and the precise organisation of forms which gives that event its proper expression. The concept has shaped street photography as a discipline and remains one of the central ideas in the theory of the photographic image."
+  },
+  "game": {
+    "type": "letter_by_letter",
+    "data": {
+      "answer": "aperture",
+      "definition": "The opening in a lens that controls how much light enters the camera — and, by extension, how much of the world is in focus at any given depth.",
+      "max_wrong": 6,
+      "success_note": "What photography and attention have in common: both are a question of how wide you are willing to open."
+    }
+  }
+}

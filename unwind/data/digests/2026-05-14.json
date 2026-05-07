@@ -1,0 +1,94 @@
+{
+  "date": "2026-05-14",
+  "title": "The Second Life of Attention",
+  "essay": {
+    "paragraphs": [
+      "There is a quality of attention that is not effort. You can see it in someone who is very good at something: the chess player mid-game, the musician who has played the piece ten thousand times, the surgeon who has stopped thinking about the procedure. Their attention is total, but it does not look like concentration. It looks like ease.",
+      "This is not absence. The attention is more present than it would be in effort. It has simply changed register. The attention of effort scans for error, monitors its own performance, prepares corrections in advance. The attention of absorption is not monitoring — it is inhabiting. The distinction is between a guest who keeps checking whether the door is locked and one who has forgotten there is a door.",
+      "Simone Weil wrote about attention as a form of love — a willingness to receive another being without interpretation, without immediately converting what is there into what is useful or manageable. This is not mystical. It is phenomenological: to attend to something on its own terms rather than yours requires the suspension of the self's organising agenda.",
+      "What produces this quality of attention is not effort but accumulation. Hours of practice, years of familiarity, the slow building of a relationship with a material or a person that has deposited a kind of knowing you no longer need to retrieve deliberately. The attention becomes available because the preparation is behind it.",
+      "The problem with attention as a cultural topic is that it is always discussed as a resource that can be managed. You can protect it, restore it, allocate it more efficiently. What this misses is the second kind of attention — the kind that cannot be managed because it arrives only after management has been released.",
+      "To develop the capacity for absorbed attention requires not a discipline of focus but a discipline of familiarity. You have to stay with things long enough for the relationship to deepen past the point where effort is required. Most people leave before that point."
+    ],
+    "blockquote": "The deepest form of attention does not feel like paying attention. It feels like being paid."
+  },
+  "number": {
+    "value": "10,000 hours",
+    "label": "The figure popularised by Malcolm Gladwell — based on research by Anders Ericsson — as the threshold at which deliberate practice produces expert-level performance; what is less often cited is Ericsson's insistence that the quality of practice, not its quantity alone, is what produces the second kind of attention."
+  },
+  "fragment": "She had been doing it for long enough that she no longer knew she was doing it. Not boredom — nothing like boredom. She was in it, and the it was happening, and the gap between her and the task had closed at some point she had not noticed. When she stopped she looked at what she had done and could not account for the time. She thought: this is the closest I get to being somewhere completely. And then: how do I make it happen again. And then she knew that the question was wrong.",
+  "word": {
+    "term": "prosoché",
+    "origin": "Greek — attention, heedfulness; central to Stoic practice as understood by Marcus Aurelius and Epictetus; not the attention of concentration but of vigilant self-awareness — the ongoing practice of noticing what is actually happening in the present moment rather than what habit or expectation has already decided.",
+    "definition": "Vigilant, sustained attention to what is actually present — the Stoic practice of wakefulness to the moment as it is, before it has been narrated."
+  },
+  "quote": {
+    "text": "Attention is the rarest and purest form of generosity.",
+    "translation": null,
+    "author": "Simone Weil",
+    "source": "Letter to Joë Bousquet, 13 April 1942"
+  },
+  "person": {
+    "name": "Anders Ericsson",
+    "dates": "1947 – 2020 — Gothenburg, Sweden / Tallahassee, USA",
+    "paragraphs": [
+      "Anders Ericsson was a cognitive psychologist who spent his career studying expert performance and developing what he called 'deliberate practice' — a specific form of effortful, feedback-rich training that differs from mere repetition. His research with violinists, chess players, and medical professionals showed that expertise is not primarily a matter of innate talent but of the structure and quality of practice: work that pushes against the current edge of competence, receives immediate feedback, and focuses on weaknesses rather than strengths.",
+      "He spent years of his later career correcting the popular misunderstanding of his own findings, particularly the 10,000-hour rule, which Gladwell had simplified into a quantity claim. Ericsson insisted that hours without the right structure were not deliberate practice but mere repetition, and that mere repetition could reinforce mediocrity as readily as it could produce excellence. He died in 2020, having left the field substantially richer and the popular understanding of it substantially poorer."
+    ]
+  },
+  "questions": [
+    {
+      "text": "What is the longest you have ever stayed with something difficult, and what happened to your attention as it deepened?",
+      "deeper": "Was there a point at which the difficulty changed character, and can you describe what changed?",
+      "experiment": "Spend forty-five uninterrupted minutes on one thing today — one task, one piece of music, one conversation — and notice whether the quality of attention shifts after the first discomfort passes."
+    },
+    {
+      "text": "What are you practicing in your life, and is the practice structured for growth or for maintenance?",
+      "deeper": "Are there areas where you have been repeating at a comfortable level rather than working at your current edge?",
+      "experiment": "Identify one skill you have and do one session of it today at a level of difficulty that produces discomfort rather than flow."
+    },
+    {
+      "text": "What do you give your full attention to, and what receives only the attention you can spare?",
+      "deeper": "Does the distribution reflect your actual values, or the path of least resistance?",
+      "experiment": "Track your attention for one hour tonight in fifteen-minute intervals. At the end, describe what you discovered about what you were actually attending to."
+    }
+  ],
+  "trivia": {
+    "question": "In psychology, what is the term for the experience of complete absorption in an activity, characterised by a sense of effortless control and loss of self-consciousness?",
+    "options": [
+      "Eudaimonia",
+      "Apophenia",
+      "Flow",
+      "Positive disintegration"
+    ],
+    "correct": 2,
+    "explanation": "Mihaly Csikszentmihalyi coined the term 'flow' in the 1970s to describe the state of optimal experience — total absorption in an activity pitched at the edge of competence, where attention is complete and the sense of effort dissolves. The state requires a match between challenge and skill; too easy produces boredom, too hard produces anxiety."
+  },
+  "game": {
+    "type": "concept_match",
+    "data": {
+      "pairs": [
+        {
+          "id": "a",
+          "word": "Deliberate practice",
+          "definition": "Effortful training at the edge of current competence, with immediate feedback, aimed at specific weaknesses."
+        },
+        {
+          "id": "b",
+          "word": "Flow",
+          "definition": "A state of total absorption in an activity where challenge and skill are matched and self-consciousness dissolves."
+        },
+        {
+          "id": "c",
+          "word": "Prosoché",
+          "definition": "The Stoic practice of sustained, vigilant attention to the present moment before it has been narrated."
+        },
+        {
+          "id": "d",
+          "word": "Automaticity",
+          "definition": "The stage of skill execution at which a task can be performed without deliberate attention, freeing cognitive resources."
+        }
+      ]
+    }
+  }
+}

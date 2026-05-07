@@ -1,0 +1,75 @@
+{
+  "date": "2026-05-11",
+  "title": "What Dreams Do With What Waking Life Cannot Process",
+  "essay": {
+    "paragraphs": [
+      "A dream does not wait for things to be ready. It takes what is unresolved — the conversation that ended badly, the task that was not completed, the fear that was managed rather than met — and reassembles it without asking whether you are prepared for the assembly.",
+      "The surrealist movement misunderstood this. Its practitioners believed that the unconscious, if given free rein, would produce art. What it actually produces is something that feels like art — associative, imagistic, saturated with obscure urgency — but operates on its own schedule, in the service of its own purposes, and does not particularly care whether the waking mind finds it beautiful.",
+      "The dream does not symbolise. This is the error of most dream interpretation. The dream presents: it puts things next to each other and lets the juxtaposition speak without translation. The meaning, if there is meaning, is in the placement, not in a hidden code behind the placement.",
+      "Neuroscience has moved toward a view in which REM sleep functions partly as emotional processing — a rehearsal space in which the emotional charge of waking events is worked over without the stress hormones that would accompany waking re-experience. The brain returns to difficult material when the difficulty has been biochemically lowered.",
+      "This is perhaps why certain dreams feel significant without being interpretable. The processing is real. The content is the processing, not a communication about something else. What the dream is doing is the dream.",
+      "What remains when the dream ends is not a message but a residue — a quality of feeling that attaches to the waking day, unexplained, from a direction you cannot identify. The day is changed by what happened in the night without your ever learning how."
+    ],
+    "blockquote": "The dream does not need to be understood to have done its work."
+  },
+  "number": {
+    "value": "2 hours",
+    "label": "Approximate total REM sleep in an average eight-hour night, distributed across four to six cycles — roughly a quarter of sleep spent in the state most associated with emotional memory processing and the construction of narrative from fragmented material."
+  },
+  "fragment": "In the dream the house had a room she had not known about. Not hidden — simply overlooked, behind a door she had passed without opening. When she opened it the room was unfurnished, but it had been used. She could tell by the arrangement of light on the floor, which was the light of habitation rather than vacancy. She stood in the doorway and knew without knowing how that the room had been there throughout her entire occupation of the house. She woke before she entered it.",
+  "word": {
+    "term": "oneiric",
+    "origin": "Greek — from oneiros (dream); the adjective form denoting qualities of or resembling dreams: associative rather than causal, imagistic rather than propositional, resistant to the logic of waking sequence.",
+    "definition": "Of or relating to the dream state; having the quality of dream-logic: vivid, associative, charged with significance that resists articulation."
+  },
+  "quote": {
+    "text": "Noi non sogniamo mai: veniamo sognati.",
+    "translation": "We do not dream: we are dreamed.",
+    "author": "Cesare Pavese",
+    "source": "Il mestiere di vivere, 24 August 1940"
+  },
+  "person": {
+    "name": "Géza Róheim",
+    "dates": "1891 – 1953 — Budapest, Hungary / New York, USA",
+    "paragraphs": [
+      "Géza Róheim was a Hungarian psychoanalyst and anthropologist who conducted the first psychoanalytically-informed ethnographic fieldwork, living with Aboriginal communities in central Australia in the late 1920s and gathering dream material across cultures that had had no contact with European psychology. He argued that the Dreamtime of Aboriginal cosmology was not a myth in the literary sense but a structure of temporal experience — a different relationship between what is past, present, and ancestrally present — and that Freudian dream theory was not a European theory but a window onto a human universal.",
+      "His position was uncomfortable for both sides: anthropologists found him too psychoanalytic, and psychoanalysts found him too ethnographic. His work on the relationship between cultural formations and early childhood experience was largely dismissed as reductive during his lifetime and has been revisited with more care since. He died in New York having spent decades arguing that what cultures dream in common tells us more about the species than what they disagree about in waking life."
+    ]
+  },
+  "questions": [
+    {
+      "text": "What has a dream ever done to a waking day — changed its texture, planted an unlocatable feeling — without offering an explanation?",
+      "deeper": "Do you trust that something happened, even without knowing what?",
+      "experiment": "Tonight, before sleeping, write one sentence about something you have not resolved. In the morning, write one sentence about the quality of feeling you wake into."
+    },
+    {
+      "text": "What is the difference between a dream that feels significant and one that is significant?",
+      "deeper": "Is that difference accessible to waking consciousness at all?",
+      "experiment": "Describe the last dream you remember in terms of what it placed next to what, without attempting to explain the placement."
+    },
+    {
+      "text": "If the dream processes what waking life cannot hold directly, what are the things you are not holding directly right now?",
+      "deeper": "What would it mean to approach them while awake, before the night takes over?",
+      "experiment": "Name three things you have been managing rather than feeling. Write one sentence about each."
+    }
+  ],
+  "trivia": {
+    "question": "What did the neuroscientist Matthew Walker argue is the primary emotional function of REM sleep, based on research published in 2011?",
+    "options": [
+      "Consolidation of procedural memory for physical skills",
+      "Overnight therapy — re-processing emotional memories without stress neurochemistry",
+      "Restoration of the prefrontal cortex's executive capacity",
+      "Regulation of the circadian rhythm through melatonin recycling"
+    ],
+    "correct": 1,
+    "explanation": "Matthew Walker and colleagues proposed that REM sleep functions as overnight emotional therapy: the brain replays emotionally charged experiences in the presence of low levels of noradrenaline (the neurochemical associated with stress), allowing memory consolidation without the emotional intensity of the original experience. This is the neurological basis for the folk observation that things look better in the morning."
+  },
+  "game": {
+    "type": "first_and_last",
+    "data": {
+      "answer": "hypnagogia",
+      "display_length": 10,
+      "definition": "The transitional state of consciousness between wakefulness and sleep, characterised by vivid, involuntary imagery, sensations, and fragments of thought that have the character of dreams without yet being dreams."
+    }
+  }
+}

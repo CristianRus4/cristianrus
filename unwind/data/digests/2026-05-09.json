@@ -1,0 +1,76 @@
+{
+  "date": "2026-05-09",
+  "title": "Why Ancient People Built Things That Would Outlast Them",
+  "essay": {
+    "paragraphs": [
+      "A megalith takes months to move and years to arrange. The people who built them at Göbekli Tepe, at Stonehenge, at Carnac were not solving an immediate problem. They were doing something else entirely: they were making permanent marks on a landscape that existed before them and would exist after, and they were doing it with no machinery, no record-keeping systems capable of spanning generations, and no certainty that the next generation would continue.",
+      "We tend to explain monumental architecture in terms of function — astronomical alignment, seasonal calendar, communal gathering place. These explanations are probably partially correct and almost certainly incomplete. What they cannot account for is the sheer expenditure of effort relative to any functional return. The builders invested far more than the function required.",
+      "The surplus of effort over function is usually where meaning lives. A clay pot needs only to hold water. A decorated clay pot holds water and also holds something else — a relationship between the maker and the material that has no instrumental value. The megalith holds nothing. And yet it was built by people who cannot have been indifferent to the distinction between building and not building.",
+      "What we know about Neolithic communities suggests that the gathering required to move large stones was itself part of what the stones were for. The monument was partly the monument and partly the act of making it together. The stone records both the weight and the number of hands.",
+      "There is a strange comfort in this. The people who stacked those stones could not have known that the arrangement would still be visible thousands of years later. They were not building for us. And yet here we are, standing inside something they made when they did not know we existed.",
+      "The distance between them and us is real and nearly total. But the impulse to mark something that would outlast them — that impulse is a room we still live in."
+    ],
+    "blockquote": "The monument does not prove the civilization. It proves that someone wanted something to remain."
+  },
+  "number": {
+    "value": "11,500 years",
+    "label": "Approximate age of Göbekli Tepe in present-day Turkey — the oldest known monumental architecture, built before agriculture, before pottery, and before any written language: people assembled to build temples before they assembled to plant crops."
+  },
+  "fragment": "They had been moving the stone for six days. The stone did not know it was being moved. On the seventh day it was in position, and one of the men stood beside it and placed his hand on its surface for a long time. Not to feel the stone. The stone was cold and indifferent. He placed his hand there because something had been done and no one had spoken about it yet, and the hand seemed like the right way to mark the gap between what had been and what now was.",
+  "word": {
+    "term": "chronotope",
+    "origin": "Greek roots, via Mikhail Bakhtin — from chronos (time) and topos (place); Bakhtin's literary concept for the way space and time fuse in narrative, each shaping the other; a place that is also a configuration of time, and a time that is also inhabited as a space.",
+    "definition": "The intrinsic connectedness of temporal and spatial relationships — a place understood as a concentration of time, and a moment understood as a location."
+  },
+  "quote": {
+    "text": "Χαλεπὰ τὰ καλά.",
+    "translation": "Beautiful things are difficult.",
+    "author": "Plato",
+    "source": "Hippias Major, 304e"
+  },
+  "person": {
+    "name": "Marija Gimbutas",
+    "dates": "1921 – 1994 — Vilnius, Lithuania / Los Angeles, USA",
+    "paragraphs": [
+      "Marija Gimbutas was a Lithuanian-American archaeologist who proposed, from the 1950s onward, that pre-Bronze Age European cultures were matrilineal, goddess-worshipping, and structured around symbols of regeneration rather than conquest. Her Kurgan hypothesis — which argued that Indo-European languages spread through successive waves of nomadic invasion from the Pontic steppes — has proved far more durable than her cultural reconstruction and is now largely accepted in modified form. The cultural thesis has remained controversial, accused of both methodological overreach and motivated interpretation.",
+      "What is undeniable is that she transformed the reading of Neolithic and Chalcolithic objects: figurines, pottery, megalithic art, which had been treated as decorative background to 'real' archaeology became primary evidence for her. Whether her interpretation was correct, she changed the questions archaeologists were required to ask, and changed what counts as data. She was working at a time when prehistoric Europe was assumed to be essentially pre-social, and she insisted it was anything but."
+    ]
+  },
+  "questions": [
+    {
+      "text": "What are you building that is designed to outlast your direct involvement in it?",
+      "deeper": "Does the answer change if you consider relationships, habits, or institutions rather than objects?",
+      "experiment": "Name one thing you are currently making that will remain after the effort stops. Describe what you want it to hold."
+    },
+    {
+      "text": "What is the difference between a monument and a monument to yourself — and are you certain which of the two you are building?",
+      "deeper": "Is there a version of permanence that is genuinely for others rather than for your own continuity?",
+      "experiment": "Describe the longest-lasting mark you have made on someone else's life, without reference to your own intentions."
+    },
+    {
+      "text": "What does the surplus of effort over function — the decoration, the ceremony, the overbuilding — reveal about what a life is actually for?",
+      "deeper": "Which parts of your own life represent that surplus?",
+      "experiment": "Identify one thing you do that has no practical return and articulate, in precise terms, what it is actually for."
+    }
+  ],
+  "trivia": {
+    "question": "What was unusual about the construction sequence at Göbekli Tepe that challenged assumptions about the relationship between agriculture and civilisation?",
+    "options": [
+      "It was built using iron tools before iron smelting was documented in the region",
+      "It was constructed by hunter-gatherers before the advent of agriculture in the area",
+      "Its builders had no evidence of any burial practice, suggesting an absence of death ritual",
+      "It was built entirely underground, with no above-ground structures remaining"
+    ],
+    "correct": 1,
+    "explanation": "Göbekli Tepe's dating — approximately 9600 BCE — places its construction before agriculture was established in the region, reversing the long-held assumption that monumental architecture required a sedentary agricultural base. The implication is that the social and symbolic organisation required for complex construction may have preceded, rather than followed, the agricultural revolution."
+  },
+  "game": {
+    "type": "missing_word",
+    "data": {
+      "before": "The surplus of effort over function is usually where",
+      "after": "lives.",
+      "answer": "meaning",
+      "hint": "The essay names this as the thing that occupies the gap between what a thing needs to do and what was actually done to make it."
+    }
+  }
+}

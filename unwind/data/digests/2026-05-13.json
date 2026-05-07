@@ -1,0 +1,85 @@
+{
+  "date": "2026-05-13",
+  "title": "The Bronze Age Collapse and What It Means to End",
+  "essay": {
+    "paragraphs": [
+      "Around 1200 BCE, within the space of a few decades, nearly every major palace civilisation in the eastern Mediterranean disintegrated. The Mycenaean Greeks, the Hittites, the Ugaritic city-state, the Cypriot Bronze Age centres — they all collapsed, apparently simultaneously, in what archaeologists call the Bronze Age collapse. No single civilisation was left to record what had happened.",
+      "What is strange about this event is not that it happened — civilisations end — but that it happened so thoroughly and so quickly that the Bronze Age world never recovered. What followed was a centuries-long period that archaeologists sometimes call a Dark Age: depopulation, loss of literacy, abandonment of urban centres, the disappearance of trade networks that had spanned three continents. The complex, interconnected world of 1200 BCE was replaced by something simpler, more local, less legible to us.",
+      "The proposed causes include climate change, drought, migration, internal revolt, and the mysterious Sea Peoples — a confederation of migrants or raiders whose origin remains genuinely unknown. The most likely answer is that all of these operated simultaneously, amplifying each other in a cascade that no single intervention could have halted. A world with high interdependence is a world with high fragility.",
+      "This matters for reasons beyond the historical. Complex interconnected systems that function smoothly are often invisible to themselves. The trade routes, the diplomatic marriages, the palace redistribution economies of the Late Bronze Age worked because they had always worked. The people inside them could not easily imagine their absence, because the system's very success had removed the alternatives.",
+      "What survives a collapse is not the most sophisticated but the most independent. The villages that traded least with the palace centres were the ones that continued. Resilience, in this case, looked like backwardness until it looked like survival.",
+      "The world the Bronze Age ended was, in certain measurable ways, more advanced than what immediately followed. The Greek Dark Age had fewer objects, shorter lives, smaller horizons. And out of it came Homer. What exactly we should make of this is a question that stays open."
+    ],
+    "blockquote": "A civilisation's complexity is also a map of its failure modes."
+  },
+  "number": {
+    "value": "50 years",
+    "label": "The approximate span within which multiple palace civilisations across the eastern Mediterranean collapsed between roughly 1200–1150 BCE — a compression of catastrophe that remains one of history's most dramatic discontinuities."
+  },
+  "fragment": "In the room where the tablets had been stored there was ash, and under the ash there were tablets, and on the tablets there were inventories. Wool. Oil. Grain. The final entries recorded deliveries that were never collected. Someone had continued the accounting until the moment accounting was no longer possible, and then they had either fled or remained. The records did not say which. The records were the last thing the records could say.",
+  "word": {
+    "term": "hecatomb",
+    "origin": "Greek — from hekaton (hundred) and bous (ox); originally a sacrifice of a hundred oxen, associated with major religious ceremonies or acts of thanksgiving; in later use, any large-scale destruction or catastrophic loss of life.",
+    "definition": "A large-scale sacrifice or destruction; originally ritual, now used for any catastrophic loss that exceeds ordinary categories of disaster."
+  },
+  "quote": {
+    "text": "Ita fac, mi Lucili: vindica te tibi.",
+    "translation": "Do this, my Lucilius: claim yourself for yourself.",
+    "author": "Seneca",
+    "source": "Epistulae Morales, Letter I"
+  },
+  "person": {
+    "name": "Eric Cline",
+    "dates": "1960 – present — Washington, D.C., USA",
+    "paragraphs": [
+      "Eric Cline is an American archaeologist and classicist whose work on the Late Bronze Age collapse argues that no single cause can account for what happened after 1200 BCE — that what we are looking at is a systems collapse, in which drought, migration, internal revolt, disrupted trade, and political instability fed back into each other until the whole exceeded the sum of its parts. His book 1177 B.C.: The Year Civilisation Collapsed reached a broad audience by treating the ancient Mediterranean as a genuinely interconnected world whose end was tragic in ways we are still unpacking.",
+      "His more recent work has focused on the implications of Bronze Age collapse for understanding contemporary fragility — the ways in which globalisation, interdependence, and optimised supply chains produce precisely the vulnerabilities that made the Late Bronze Age world susceptible. He tends to resist the word 'lessons', but the implication is hard to avoid."
+    ]
+  },
+  "questions": [
+    {
+      "text": "What in your life is so interconnected and mutually dependent that a failure in one part could cascade through the whole?",
+      "deeper": "Are those dependencies visible to you, or only legible in retrospect?",
+      "experiment": "Map one domain of your life — work, health, finances, relationships — and identify the three dependencies without which the system fails. Then ask: what would happen if two of them failed simultaneously?"
+    },
+    {
+      "text": "What do you keep because it works, without ever testing what happens if it does not?",
+      "deeper": "Is the absence of alternatives a condition of the system or a choice you have made?",
+      "experiment": "Identify one thing you rely on daily and deliberately go without it for one day. Notice what alternatives you discover."
+    },
+    {
+      "text": "What is the relationship between complexity and fragility in your own life — and does simplifying feel like loss or like a different kind of intelligence?",
+      "deeper": "Are there things you have called backward that were actually resilient?",
+      "experiment": "Describe one part of your life that is simpler than it used to be, and articulate what that simplicity has made possible."
+    }
+  ],
+  "trivia": {
+    "question": "Who are the 'Sea Peoples' — the groups associated with the Bronze Age collapse — and what remains uncertain about them?",
+    "options": [
+      "A documented Greek mercenary force whose leaders are named in Linear B tablets found at Mycenae",
+      "A coalition of naval raiders mentioned in Egyptian records whose precise origin and identity remain disputed",
+      "A term coined by modern archaeologists for the peoples who settled the Aegean after 1100 BCE",
+      "The Phoenicians, who are now understood to have triggered the collapse by dominating Mediterranean trade"
+    ],
+    "correct": 1,
+    "explanation": "The 'Sea Peoples' is a modern scholarly term for the groups described in Egyptian records of Ramesses III as having attacked the Delta around 1177 BCE. They are depicted in relief carvings and mentioned in texts, but their origin, language, and political organisation remain genuinely disputed. They may have been refugees from collapsing civilisations rather than external invaders — in which case the collapse was both cause and consequence of their movement."
+  },
+  "game": {
+    "type": "false_cognate",
+    "data": {
+      "word_a": {
+        "term": "collapse",
+        "language": "English",
+        "meaning": "A sudden fall into disorder or ruin; from Latin collabi, to fall together."
+      },
+      "word_b": {
+        "term": "colapso",
+        "language": "Spanish/Portuguese",
+        "meaning": "A sudden failure of a system or organism; medical and general usage identical to English."
+      },
+      "question": "Do these two words share the same etymological origin?",
+      "answer": "true_cognate",
+      "explanation": "Both 'collapse' (English) and 'colapso' (Spanish/Portuguese) derive from the same Latin root: collabi (from com- and labi, to slip or fall). They are genuine cognates, both entering their respective languages from Latin through similar scholarly and medical channels. The semantic drift is minimal — both still mean the sudden structural failure of something that was holding."
+    }
+  }
+}

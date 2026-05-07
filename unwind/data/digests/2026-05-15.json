@@ -1,0 +1,76 @@
+{
+  "date": "2026-05-15",
+  "title": "What Friendship Actually Requires",
+  "essay": {
+    "paragraphs": [
+      "Aristotle described three kinds of friendship: the friendship of utility, in which two people are useful to each other; the friendship of pleasure, in which two people enjoy each other's company; and the friendship of virtue, in which two people are genuinely committed to each other's good. He thought the first two were common and fragile, the third rare and nearly permanent.",
+      "The friendship of virtue is not the friendship of shared values, though that may be part of it. It is closer to the friendship of shared reality — the friend who sees you as you are rather than as the version you present, and who finds that version worth their sustained attention. This is rare not because people are incapable of it but because it requires a level of mutual disclosure that most people never reach.",
+      "Disclosure is not the same as intimacy. You can tell someone a great deal about yourself and maintain a careful distance from the parts that would most require their response. True disclosure is not the narration of difficult experience. It is the exposure of the self in real time — the willingness to be seen in the act of uncertainty, before you have converted it into a story.",
+      "What makes this so difficult is that it requires the suspension of the management of the other person's perception of you. Most of what people call conversation is actually a form of image-management conducted jointly. Two people projecting and adjusting, producing a social surface that satisfies both. Friendship in Aristotle's third sense interrupts that process.",
+      "The maintenance of a deep friendship across years requires something additional: the willingness to remain current with someone whose life is changing in directions you did not predict. The person you became friends with at twenty is not the person they are at thirty-five. If you remain loyal to the earlier version, you are not in a friendship — you are in a memory.",
+      "What the deep friendship actually requires, beneath all of this, is something close to courage: the courage to need someone, to allow that need to be visible, and to be changed by being known."
+    ],
+    "blockquote": "The friend who knows you requires nothing of you except that you continue to become."
+  },
+  "number": {
+    "value": "3",
+    "label": "The number of close friends the average adult reports having, according to survey data from multiple countries over the last two decades — a figure that has been declining steadily, particularly among men, since the 1980s."
+  },
+  "fragment": "They had been friends for eleven years. She had been present for all of his major changes and he for hers, and somewhere in the ninth year she noticed that she no longer adjusted what she said before saying it. Not recklessness. The opposite. She had simply run out of things she needed to protect. He knew all of it already. She thought: this is what I was looking for when I was twenty and did not know what to call it. She did not say this to him. She did not need to. He already knew that too.",
+  "word": {
+    "term": "philia",
+    "origin": "Greek — affectionate regard, goodwill, or friendship; distinct from eros (erotic love) and storge (familial affection); the Greeks used it for the love that involves genuine concern for another's wellbeing, including friendship between citizens, attachment to place, and intellectual love. Aristotle used it as the basis for his theory of ethical community.",
+    "definition": "Affectionate goodwill that extends beyond utility or pleasure into genuine concern for another's character and good — the love that does not require return to remain itself."
+  },
+  "quote": {
+    "text": "Si vis amari, ama.",
+    "translation": "If you want to be loved, love.",
+    "author": "Seneca",
+    "source": "Epistulae Morales, Letter IX"
+  },
+  "person": {
+    "name": "Rae Langton",
+    "dates": "1961 – present — Melbourne, Australia / Cambridge, England",
+    "paragraphs": [
+      "Rae Langton is a moral philosopher whose work on objectification, speech acts, and what she calls 'epistemic injustice' has been foundational for contemporary feminist philosophy. Drawing on J.L. Austin's speech act theory, she argued that certain kinds of speech — particularly pornography and hate speech — do not merely express attitudes but constitute silencing: they alter the social conditions under which certain people can speak and be heard, without those people being able to contest the alteration. The wrong is done not through the content but through the act of the utterance in its social context.",
+      "Her work on objectification extended Kant's injunction against treating persons as means into a more precise account of the different ways a person can be reduced to an object: by treating them as instrumentally useful, as lacking autonomy, as interchangeable, as owned. The precision of the taxonomy has made her work useful far beyond its original context. She has described friendship, by contrast, as the practice that most consistently resists these reductions — the relationship in which the other person's subjectivity is not a problem to be managed but the entire point."
+    ]
+  },
+  "questions": [
+    {
+      "text": "Which of your friendships have survived significant changes in who both of you are — and what allowed them to survive?",
+      "deeper": "Did the friendship survive because of what you had in common, or in spite of what you no longer did?",
+      "experiment": "Contact someone you have not spoken to in months and say something true that you have not said to them before."
+    },
+    {
+      "text": "In which relationships do you still manage how you are perceived, and what does the management cost?",
+      "deeper": "What would have to be true for you to feel safe enough to stop managing it?",
+      "experiment": "In your next conversation with a close friend, say one thing you would normally have held back. Not a confession — something you were simply going to edit out."
+    },
+    {
+      "text": "What would it mean to let someone need you fully — to be available for that need without converting it into a problem you can solve?",
+      "deeper": "Is there a difference between being needed and being relied upon, and which one do you find more difficult?",
+      "experiment": "The next time someone tells you something difficult, wait ten seconds before responding. Notice what you were about to say — and whether it was for them or for you."
+    }
+  ],
+  "trivia": {
+    "question": "In Aristotle's Nicomachean Ethics, which of the three types of friendship does he consider both the most valuable and the rarest?",
+    "options": [
+      "Friendship of utility — based on mutual advantage",
+      "Friendship of pleasure — based on enjoyment of each other's company",
+      "Friendship of virtue — based on admiration of each other's character",
+      "Friendship of familiarity — based on long shared history"
+    ],
+    "correct": 2,
+    "explanation": "Aristotle argues in Books VIII and IX of the Nicomachean Ethics that the friendship of virtue (arete) — in which each person values the other for their character, not for what they provide — is the highest and rarest form. It requires both parties to be of good character and to actively wish good for the other, and it tends to be permanent where the other two types dissolve when the utility or pleasure ends."
+  },
+  "game": {
+    "type": "missing_word",
+    "data": {
+      "before": "The friendship of virtue is not the friendship of shared values — it is closer to the friendship of shared",
+      "after": ".",
+      "answer": "reality",
+      "hint": "The essay uses this word to describe what the deepest kind of friend sees alongside you — not beliefs or preferences, but the actual texture of a life."
+    }
+  }
+}
