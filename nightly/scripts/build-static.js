@@ -87,6 +87,10 @@ const PAGE_STYLE = `
         text-decoration: none;
       }
 
+      [hidden] {
+        display: none !important;
+      }
+
       .page {
         width: auto;
         margin: 0;
@@ -294,7 +298,7 @@ const PAGE_STYLE = `
       }
 
       .number-value {
-        margin: 0 0 0.45rem;
+        margin: 0 0 0.55rem;
         font-family: "Quattro Italic", serif;
         font-size: 3.1rem;
         line-height: 1;
@@ -302,7 +306,7 @@ const PAGE_STYLE = `
       }
 
       .word-term {
-        margin: 0 0 0.2rem;
+        margin: 0 0 0.55rem;
         font-family: "Quattro Italic", serif;
         font-size: 3.1rem;
         line-height: 1;
@@ -325,7 +329,7 @@ const PAGE_STYLE = `
         color: var(--dim);
         font-size: 0.74rem;
         letter-spacing: 0.06em;
-        margin-bottom: 0.7rem;
+        margin-bottom: 0.55rem;
       }
 
       .question-list,
@@ -347,13 +351,14 @@ const PAGE_STYLE = `
         border: 0;
         background: transparent;
         padding-left: var(--leading-inset);
+        padding-bottom: 0.85rem;
       }
 
       .question-prompt {
         display: flex;
         gap: 0.9rem;
         align-items: flex-start;
-        margin-bottom: 0.7rem;
+        margin-bottom: 0.35rem;
       }
 
       .question-prompt::before {
@@ -381,14 +386,14 @@ const PAGE_STYLE = `
       .inline-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.9rem;
+        gap: 0.65rem;
         margin-top: 0;
         margin-left: 1.9rem;
       }
 
       .question-actions > * + *,
       .inline-actions > * + * {
-        margin-left: 0.9rem;
+        margin-left: 0.65rem;
       }
 
       .pill-button,
@@ -545,8 +550,12 @@ const PAGE_STYLE = `
       .game-status,
       .feedback {
         margin: 0;
-        min-height: 1.4rem;
         color: var(--dim);
+      }
+
+      .game-status:empty,
+      .feedback:empty {
+        display: none;
       }
 
       .feedback.is-success,
@@ -620,7 +629,7 @@ const PAGE_STYLE = `
       .answers-toggle-wrap {
         display: flex;
         justify-content: center;
-        padding: 0.8rem 0 0.2rem;
+        padding: 0.9rem 0 0;
       }
 
       .answers-toggle-button {
@@ -862,10 +871,10 @@ function renderDigestContent(entry) {
     "        </section>",
     "",
     "        <section class=\"card section-rule\">",
+    "          <p class=\"section-label\">Answers</p>",
     "          <div class=\"answers-toggle-wrap\" data-answers-toggle-wrap>",
     "            <button class=\"secondary-button answers-toggle-button\" type=\"button\" data-answers-toggle>Reveal answers</button>",
     "          </div>",
-    "          <p class=\"section-label\" data-answers-label hidden>Answers</p>",
     "          <div class=\"answer-list answers-box interactive-plain\" data-answers-content hidden>",
     renderTriviaAnswer(entry.trivia),
     renderGameAnswer(entry.game),
@@ -1251,15 +1260,13 @@ function setupQuestionToggles() {
 function setupAnswersReveal() {
   var button = app.querySelector("[data-answers-toggle]");
   var wrap = app.querySelector("[data-answers-toggle-wrap]");
-  var label = app.querySelector("[data-answers-label]");
   var content = app.querySelector("[data-answers-content]");
-  if (!button || !label || !content || !wrap) {
+  if (!button || !content || !wrap) {
     return;
   }
 
   button.onclick = function () {
     wrap.hidden = true;
-    label.hidden = false;
     content.hidden = false;
   };
 }
@@ -1491,13 +1498,13 @@ function setupRevealGame(container, data) {
 
     if (guess === expected) {
       scoreIndex = Math.max(0, Math.min(clueCount - 1, scoreLabels.length - 1));
-      setStatus(status, "Correct. " + scoreLabels[scoreIndex] + ".", true);
+      setStatus(status, "", true);
       setActionButtonState(submitButton, "success");
       submitButton.disabled = true;
       input.disabled = true;
       button.disabled = true;
     } else {
-      setStatus(status, "Not quite. Try again or reveal another clue.", false);
+      setStatus(status, "", false);
       setActionButtonState(submitButton, "error");
     }
   };
@@ -1541,10 +1548,10 @@ function attachLieButton(button, buttons, options, container, status) {
 
     if (isLie) {
       button.classList.add("is-correct");
-      setStatus(status, "Correct.", true);
+      setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
-      setStatus(status, "Not quite.", false);
+      setStatus(status, "", false);
       correctIndex = -1;
       for (index = 0; index < options.length; index += 1) {
         if (options[index] && options[index].is_lie) {
@@ -1580,12 +1587,12 @@ function setupMissingWordGame(container, data) {
     }
 
     if (guess === normalizeAnswer(answer)) {
-      setStatus(status, "Correct.", true);
+      setStatus(status, "", true);
       setActionButtonState(submitButton, "success");
       input.disabled = true;
       submitButton.disabled = true;
     } else {
-      setStatus(status, "Not quite.", false);
+      setStatus(status, "", false);
       setActionButtonState(submitButton, "error");
       if (hint) {
         hintLine.textContent = "Hint: " + hint;
@@ -1794,12 +1801,12 @@ function setupFirstAndLastGame(container, data) {
 
     guess = answer.charAt(0) + middle + answer.charAt(answer.length - 1);
     if (normalizeAnswer(guess) === normalizeAnswer(answer)) {
-      setStatus(status, "Correct.", true);
+      setStatus(status, "", true);
       setActionButtonState(submitButton, "success");
       input.disabled = true;
       submitButton.disabled = true;
     } else {
-      setStatus(status, "Not quite.", false);
+      setStatus(status, "", false);
       setActionButtonState(submitButton, "error");
     }
   };
@@ -1839,10 +1846,10 @@ function attachCognateButton(button, buttons, container, status, answer) {
 
     if (choice === answer) {
       button.classList.add("is-correct");
-      setStatus(status, "Correct.", true);
+      setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
-      setStatus(status, "Not quite.", false);
+      setStatus(status, "", false);
       correctButton = container.querySelector('[data-cognate-choice="' + answer + '"]');
       if (correctButton) {
         correctButton.classList.add("is-correct");
@@ -1883,10 +1890,10 @@ function attachOddButton(button, buttons, options, container, status) {
 
     if (isOdd) {
       button.classList.add("is-correct");
-      setStatus(status, "Correct.", true);
+      setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
-      setStatus(status, "Not quite.", false);
+      setStatus(status, "", false);
       correctIndex = -1;
       for (index = 0; index < options.length; index += 1) {
         if (options[index] && options[index].is_odd) {
