@@ -254,6 +254,10 @@
         text-align: left;
       }
 
+      .stack > .back-to-nightly {
+        margin-top: 2.5rem;
+      }
+
       .entry-title {
         margin: 0 0 1rem;
         font-family: "Quattro Italic", serif;
@@ -323,17 +327,23 @@
       .number-value {
         margin: 0 0 0.65rem;
         font-family: "Quattro Italic", serif;
-        font-size: 3.1rem;
-        line-height: 1;
+        font-size: 2.1rem;
+        font-weight: 400;
+        line-height: 1.2;
         color: var(--accent);
+        overflow-wrap: break-word;
+        hyphens: auto;
       }
 
       .word-term {
         margin: 0 0 0.65rem;
         font-family: "Quattro Italic", serif;
-        font-size: 3.1rem;
-        line-height: 1;
+        font-size: 2.1rem;
+        font-weight: 400;
+        line-height: 1.2;
         color: var(--accent);
+        overflow-wrap: break-word;
+        hyphens: auto;
       }
 
       .person-name,
@@ -506,6 +516,10 @@
         display: inline-block;
         min-width: 0.65rem;
         color: var(--text);
+      }
+
+      .pill-button.is-active .button-marker {
+        color: inherit;
       }
 
       .choice-grid {

@@ -221,14 +221,48 @@ const PAGE_STYLE = `
       }
 
       .date-line {
-        margin: 0 0 2.5rem;
-        display: block;
-        width: 100%;
+        margin: 0;
+        float: right;
+        text-align: right;
         color: var(--accent-dim);
         font-size: 0.72rem;
         letter-spacing: 0.2em;
-        text-align: right;
         text-transform: uppercase;
+      }
+
+      .back-to-nightly {
+        display: inline-block;
+        color: var(--accent-dim);
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .meta-row {
+        display: block;
+        margin-bottom: 2.5rem;
+        width: 100%;
+      }
+
+      .meta-row::after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      .meta-row .date-line,
+      .meta-row .back-to-nightly {
+        margin: 0;
+        width: auto;
+      }
+
+      .back-to-nightly {
+        float: left;
+        text-align: left;
+      }
+
+      .stack > .back-to-nightly {
+        margin-top: 2.5rem;
       }
 
       .entry-title {
@@ -300,17 +334,23 @@ const PAGE_STYLE = `
       .number-value {
         margin: 0 0 0.55rem;
         font-family: "Quattro Italic", serif;
-        font-size: 3.1rem;
-        line-height: 1;
+        font-size: 2.1rem;
+        font-weight: 400;
+        line-height: 1.2;
         color: var(--accent);
+        overflow-wrap: break-word;
+        hyphens: auto;
       }
 
       .word-term {
         margin: 0 0 0.55rem;
         font-family: "Quattro Italic", serif;
-        font-size: 3.1rem;
-        line-height: 1;
+        font-size: 2.1rem;
+        font-weight: 400;
+        line-height: 1.2;
         color: var(--accent);
+        overflow-wrap: break-word;
+        hyphens: auto;
       }
 
       .person-name,
@@ -477,6 +517,10 @@ const PAGE_STYLE = `
         display: inline-block;
         min-width: 0.65rem;
         color: var(--text);
+      }
+
+      .pill-button.is-active .button-marker {
+        color: inherit;
       }
 
       .choice-grid {
@@ -725,6 +769,7 @@ function renderDigestPage(entry) {
     "      </header>",
     "      <div id=\"app\" class=\"stack\">",
     renderDigestContent(entry),
+    "        <p class=\"back-to-nightly\"><a href=\"../index.html\">THE NIGHTLY</a></p>",
     "      </div>",
     "    </main>",
     "    <script id=\"nightly-page-data\" type=\"application/json\">" + safeJson(entry) + "</script>",
@@ -776,11 +821,12 @@ function renderArchivePage(digests) {
     "    <main class=\"page\">",
     "      <div class=\"stack\">",
     "        <section class=\"card\">",
-    "          <p class=\"date-line\">Nightly Archive</p>",
+    "          <div class=\"meta-row\"><a class=\"back-to-nightly\" href=\"../index.html\">THE NIGHTLY</a><p class=\"date-line\">Nightly Archive</p></div>",
     "          <h1 class=\"entry-title\">Every available digest</h1>",
     "          <p class=\"entry-subtitle\"><a href=\"../index.html\">Back to today launcher</a></p>",
     "        </section>",
     sections,
+    "        <p class=\"back-to-nightly\"><a href=\"../index.html\">THE NIGHTLY</a></p>",
     "      </div>",
     "    </main>",
     "  </body>",
@@ -792,7 +838,7 @@ function renderArchivePage(digests) {
 function renderDigestContent(entry) {
   return [
     "        <section class=\"card\">",
-    "          <p class=\"date-line\">" + escapeHtml(formatLongDate(entry.date)) + "</p>",
+    "          <div class=\"meta-row\"><a class=\"back-to-nightly\" href=\"../index.html\">THE NIGHTLY</a><p class=\"date-line\">" + escapeHtml(formatLongDate(entry.date)) + "</p></div>",
     "          <h1 class=\"entry-title\">" + escapeHtml(entry.title) + "</h1>",
     renderParagraphs(entry.essay.paragraphs, 10),
     "          <blockquote class=\"essay-blockquote\">",
@@ -984,9 +1030,9 @@ function renderTwoTruthsMarkup(data) {
     "              <div class=\"choice-grid\">",
     options.map((option, index) => {
       return [
-        "                <button class=\"option-button\" type=\"button\" data-lie-option=\"" + index + "\">",
-        "                  <span class=\"option-title\">" + escapeHtml(safeText(option && option.word, "Word unavailable")) + "</span>",
-        "                  <span>" + escapeHtml(safeText(option && option.definition, "Definition unavailable.")) + "</span>",
+        "                <button class=\"option-button\" style=\"flex-direction: column; align-items: flex-start; padding: 0.8rem 1rem; gap: 0.35rem;\" type=\"button\" data-lie-option=\"" + index + "\">",
+        "                  <span class=\"option-title\" style=\"text-transform: uppercase; margin: 0;\">" + escapeHtml(safeText(option && option.word, "Word unavailable")) + "</span>",
+        "                  <span class=\"trivia-option-content\"><span class=\"trivia-option-marker\" aria-hidden=\"true\"></span><span>" + escapeHtml(safeText(option && option.definition, "Definition unavailable.")) + "</span></span>",
         "                </button>"
       ].join("\n");
     }).join("\n"),
@@ -1111,7 +1157,7 @@ function renderTriviaAnswer(trivia) {
   const answerText = trivia.options[trivia.correct] || "Answer unavailable.";
   return [
     "            <article class=\"answer-card\">",
-    "              <p class=\"section-label\">Trivia Answer</p>",
+    "              <p class=\"section-label\">Trivia answer</p>",
     "              <p><strong>" + escapeHtml(stripTrailingPeriod(answerText)) + "</strong></p>",
     "              <p>" + escapeHtml(trivia.explanation) + "</p>",
     "            </article>"
@@ -1123,7 +1169,7 @@ function renderGameAnswer(game) {
     case "reveal":
       return [
         "            <article class=\"answer-card\">",
-        "              <p class=\"section-label\">Game Answer</p>",
+        "              <p class=\"section-label\">Game answer</p>",
         "              <p><strong>" + escapeHtml(stripTrailingPeriod(safeText(game.data && game.data.answer, "Answer unavailable"))) + "</strong></p>",
         "              <p>" + escapeHtml(toStringArray(game.data && game.data.clues, 4, "").join(" ")) + "</p>",
         "            </article>"
@@ -1132,7 +1178,7 @@ function renderGameAnswer(game) {
       const lie = (Array.isArray(game.data && game.data.options) ? game.data.options : []).find((item) => item && item.is_lie);
       return [
         "            <article class=\"answer-card\">",
-        "              <p class=\"section-label\">Game Answer</p>",
+        "              <p class=\"section-label\">Game answer</p>",
         "              <p><strong>" + escapeHtml(stripTrailingPeriod(safeText(lie && lie.word, "Lie unavailable"))) + "</strong></p>",
         "              <p>" + escapeHtml(safeText(game.data && game.data.lie_explanation, "Explanation unavailable.")) + "</p>",
         "            </article>"
@@ -1141,7 +1187,7 @@ function renderGameAnswer(game) {
     case "missing_word":
       return [
         "            <article class=\"answer-card\">",
-        "              <p class=\"section-label\">Game Answer</p>",
+        "              <p class=\"section-label\">Game answer</p>",
         "              <p><strong>" + escapeHtml(stripTrailingPeriod(safeText(game.data && game.data.answer, "Answer unavailable"))) + "</strong></p>",
         "              <p>" + escapeHtml(safeText(game.data && game.data.hint, "No hint stored.")) + "</p>",
         "            </article>"
@@ -1149,14 +1195,14 @@ function renderGameAnswer(game) {
     case "concept_match":
       return [
         "            <article class=\"answer-card\">",
-        "              <p class=\"section-label\">Game Answer</p>",
+        "              <p class=\"section-label\">Game answer</p>",
         renderConceptMatchAnswer(game.data),
         "            </article>"
       ].join("\n");
     case "letter_by_letter":
       return [
         "            <article class=\"answer-card\">",
-        "              <p class=\"section-label\">Game Answer</p>",
+        "              <p class=\"section-label\">Game answer</p>",
         "              <p><strong>" + escapeHtml(stripTrailingPeriod(safeText(game.data && game.data.answer, "Answer unavailable"))) + "</strong></p>",
         "              <p>" + escapeHtml(safeText(game.data && game.data.success_note, "No success note stored.")) + "</p>",
         "            </article>"
@@ -1164,7 +1210,7 @@ function renderGameAnswer(game) {
     case "first_and_last":
       return [
         "            <article class=\"answer-card\">",
-        "              <p class=\"section-label\">Game Answer</p>",
+        "              <p class=\"section-label\">Game answer</p>",
         "              <p><strong>" + escapeHtml(stripTrailingPeriod(safeText(game.data && game.data.answer, "Answer unavailable"))) + "</strong></p>",
         "              <p>" + escapeHtml(safeText(game.data && game.data.definition, "Definition unavailable.")) + "</p>",
         "            </article>"
@@ -1172,7 +1218,7 @@ function renderGameAnswer(game) {
     case "false_cognate":
       return [
         "            <article class=\"answer-card\">",
-        "              <p class=\"section-label\">Game Answer</p>",
+        "              <p class=\"section-label\">Game answer</p>",
         "              <p><strong>" + escapeHtml(stripTrailingPeriod(safeText(game.data && game.data.answer, "Answer unavailable"))) + "</strong></p>",
         "              <p>" + escapeHtml(safeText(game.data && game.data.explanation, "Explanation unavailable.")) + "</p>",
         "            </article>"
@@ -1181,7 +1227,7 @@ function renderGameAnswer(game) {
       const odd = (Array.isArray(game.data && game.data.options) ? game.data.options : []).find((item) => item && item.is_odd);
       return [
         "            <article class=\"answer-card\">",
-        "              <p class=\"section-label\">Game Answer</p>",
+        "              <p class=\"section-label\">Game answer</p>",
         "              <p><strong>" + escapeHtml(stripTrailingPeriod(safeText(odd && odd.word, "Odd word unavailable"))) + "</strong></p>",
         "              <p>" + escapeHtml(safeText(game.data && game.data.explanation, "Explanation unavailable.")) + "</p>",
         "            </article>"
@@ -1190,7 +1236,7 @@ function renderGameAnswer(game) {
     default:
       return [
         "            <article class=\"answer-card\">",
-        "              <p class=\"section-label\">Game Answer</p>",
+        "              <p class=\"section-label\">Game answer</p>",
         "              <p>No answer data is available for tonight's game.</p>",
         "            </article>"
       ].join("\n");
