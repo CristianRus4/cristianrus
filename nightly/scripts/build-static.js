@@ -24,7 +24,7 @@ const PAGE_STYLE = `
         --black-rgb: 17, 17, 17;
         --gold-rgb: 112, 84, 28;
         --bg: #ffffff;
-        --surface: rgb(var(--black-rgb));
+        --surface: #f5f5f5;
         --border: rgba(var(--black-rgb), 0.16);
         --text: rgb(var(--black-rgb));
         --dim: rgba(var(--black-rgb), 0.7);

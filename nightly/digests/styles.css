@@ -9,7 +9,7 @@
       }
 
       :root {
-        color-scheme: dark;
+        color-scheme: light dark;
         font-size: 18px;
         --black-rgb: 248, 245, 239;
         --gold-rgb: 196, 169, 110;
@@ -27,13 +27,12 @@
         --radius: 18px;
       }
 
-      /* Future-proofing: Light mode kept here for reference or future toggling */
-      @media (prefers-color-scheme: light_disabled) {
+      @media (prefers-color-scheme: light) {
         :root {
           --black-rgb: 17, 17, 17;
           --gold-rgb: 112, 84, 28;
           --bg: #ffffff;
-          --surface: rgb(var(--black-rgb));
+          --surface: #f5f5f5;
           --border: rgba(var(--black-rgb), 0.16);
           --text: rgb(var(--black-rgb));
           --dim: rgba(var(--black-rgb), 0.7);
@@ -56,9 +55,7 @@
         max-width: 680px;
         margin: 0 auto;
         padding: 2.5rem 1.5rem 6rem;
-        background: #0e0d0b; /* Fallback for Kindle */
         background: var(--bg);
-        color: #f8f5ef; /* Fallback for Kindle */
         color: var(--text);
         font-family: "Quattro", serif;
         font-size: 18px;
@@ -129,9 +126,7 @@
         padding: 0;
         border: 0;
         border-radius: 0;
-        background: #c4a96e; /* Fallback for Kindle */
         background: rgba(var(--gold-rgb), 0.8);
-        color: #0e0d0b; /* Fallback for Kindle */
         color: var(--bg);
         font-size: 1.45rem;
         line-height: 1;
@@ -177,10 +172,8 @@
       }
 
       .section-filled {
-        background: #c4a96e; /* Fallback for Kindle */
         background: rgba(var(--gold-rgb), 0.8);
         border: 0;
-        color: #0e0d0b; /* Fallback for Kindle */
         color: var(--bg);
         padding: 0.45rem 1.1rem 1rem;
       }
