@@ -85,5 +85,6 @@ Each digest entry must contain:
 1. Generate one 7-day batch, usually on Sunday.
 2. Review quote attribution, game correctness, and visible topic repetition before merging.
 3. Save each digest as its own file in `data/digests/` using `YYYY-MM-DD.json`.
-4. Keep at least 14 future dated files in `data/digests/` at all times.
-5. Commit and push. GitHub Pages will serve the updated files immediately.
+4. Run `node nightly/scripts/build-static.js` to generate static pages in `nightly/digests/`.
+5. Keep at least 14 future dated files in `data/digests/` at all times.
+6. Commit and push both the JSON source files and the generated `nightly/digests/*.html` pages. GitHub Pages will serve the updated files immediately.

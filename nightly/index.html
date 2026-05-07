@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta
       name="description"
-      content="Nightly Digest — reveal today's digest."
+      content="Nightly Digest — open today's digest."
     >
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.cristianrus.me/nightly">
     <meta property="og:title" content="Nightly Digest">
     <meta
       property="og:description"
-      content="Reveal today's digest."
+      content="Open today's digest."
     >
     <meta property="og:image" content="https://www.cristianrus.me/images/avatar.jpg">
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
@@ -127,6 +127,12 @@
         transform: translateY(-1px);
         outline: none;
       }
+
+      .status {
+        min-height: 1.2rem;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+      }
     </style>
   </head>
   <body>
@@ -134,17 +140,96 @@
       <p class="eyebrow">Nightly Digest</p>
       <h1>Tonight waits behind one button.</h1>
       <p>Open the digest for the current day.</p>
-      <button type="button" onclick="revealTodayDigest()">Reveal today's digest</button>
+      <button type="button" id="openDigestButton">Open today's digest</button>
+      <p class="status" id="status"></p>
     </main>
 
     <script>
-      function revealTodayDigest() {
-        var now = new Date();
-        var year = now.getFullYear();
-        var month = String(now.getMonth() + 1).padStart(2, "0");
-        var day = String(now.getDate()).padStart(2, "0");
-        window.location = "digest.html?date=" + year + "-" + month + "-" + day;
-      }
+      (function () {
+        var button = document.getElementById("openDigestButton");
+        var status = document.getElementById("status");
+
+        button.onclick = function () {
+          button.disabled = true;
+          status.innerHTML = "Finding today's digest...";
+          resolveDigest(getCandidateDates(), 0);
+        };
+
+        function resolveDigest(candidates, index) {
+          if (index >= candidates.length) {
+            status.innerHTML = "No digest found for the nearby dates.";
+            window.location.href = "./digests/index.html";
+            return;
+          }
+
+          var date = candidates[index];
+          var path = "./digests/" + date + ".html";
+          var request = new XMLHttpRequest();
+
+          request.open("HEAD", path, true);
+          request.onreadystatechange = function () {
+            if (request.readyState !== 4) {
+              return;
+            }
+
+            if (request.status >= 200 && request.status < 400) {
+              window.location.href = path;
+              return;
+            }
+
+            resolveDigest(candidates, index + 1);
+          };
+          request.onerror = function () {
+            resolveDigest(candidates, index + 1);
+          };
+          request.send(null);
+        }
+
+        function getCandidateDates() {
+          var now = new Date();
+          var localToday = formatLocalDate(now);
+          var utcToday = formatUtcDate(now);
+          var localYesterday = formatLocalDate(shiftLocalDate(now, -1));
+          var localTomorrow = formatLocalDate(shiftLocalDate(now, 1));
+          var dates = [localToday, utcToday, localYesterday, localTomorrow];
+          var unique = [];
+          var seen = {};
+          var index;
+
+          for (index = 0; index < dates.length; index += 1) {
+            if (!seen[dates[index]]) {
+              seen[dates[index]] = true;
+              unique.push(dates[index]);
+            }
+          }
+
+          return unique;
+        }
+
+        function shiftLocalDate(date, amount) {
+          return new Date(date.getFullYear(), date.getMonth(), date.getDate() + amount);
+        }
+
+        function formatLocalDate(date) {
+          return [
+            String(date.getFullYear()),
+            pad(date.getMonth() + 1),
+            pad(date.getDate())
+          ].join("-");
+        }
+
+        function formatUtcDate(date) {
+          return [
+            String(date.getUTCFullYear()),
+            pad(date.getUTCMonth() + 1),
+            pad(date.getUTCDate())
+          ].join("-");
+        }
+
+        function pad(value) {
+          return value < 10 ? "0" + value : String(value);
+        }
+      })();
     </script>
   </body>
 </html>
