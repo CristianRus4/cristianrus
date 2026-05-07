@@ -21,34 +21,36 @@ const PAGE_STYLE = `
       :root {
         color-scheme: light dark;
         font-size: 18px;
-        --bg: #f6f4ef;
-        --surface: #ece9e2;
-        --border: #d6d1c5;
-        --text: #2b2720;
-        --dim: #726a5f;
-        --accent: #8b6b2f;
-        --accent-dim: #9a8560;
+        --black-rgb: 17, 17, 17;
+        --gold-rgb: 112, 84, 28;
+        --bg: #ffffff;
+        --surface: rgb(var(--black-rgb));
+        --border: rgba(var(--black-rgb), 0.16);
+        --text: rgb(var(--black-rgb));
+        --dim: rgba(var(--black-rgb), 0.7);
+        --accent: rgb(var(--gold-rgb));
+        --accent-dim: rgba(var(--gold-rgb), 0.58);
         --green: #2b7a55;
         --red: #b24a3b;
-        --quote-text: #3a342a;
+        --quote-text: rgba(var(--black-rgb), 0.88);
         --leading-inset: 0.45rem;
         --radius: 18px;
-        --shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
       }
 
       @media (prefers-color-scheme: dark) {
         :root {
+          --black-rgb: 248, 245, 239;
+          --gold-rgb: 196, 169, 110;
           --bg: #0e0d0b;
           --surface: #161510;
-          --border: #2a2820;
-          --text: #c8c2b4;
-          --dim: #6b6560;
-          --accent: #c4a96e;
-          --accent-dim: #7a6840;
+          --border: rgba(var(--black-rgb), 0.18);
+          --text: rgb(var(--black-rgb));
+          --dim: rgba(var(--black-rgb), 0.7);
+          --accent: rgb(var(--gold-rgb));
+          --accent-dim: rgba(var(--gold-rgb), 0.62);
           --green: #7ab090;
           --red: #c07060;
-          --quote-text: #ddd5c7;
-          --shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+          --quote-text: rgba(var(--black-rgb), 0.88);
         }
       }
 
@@ -110,6 +112,37 @@ const PAGE_STYLE = `
         text-transform: uppercase;
       }
 
+      .section-jump-button {
+        position: fixed;
+        right: 1.5rem;
+        bottom: 1.5rem;
+        z-index: 20;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 3.15rem;
+        height: 3.15rem;
+        padding: 0;
+        border: 1px solid var(--text);
+        border-radius: 0;
+        background: var(--text);
+        color: var(--bg);
+        font-size: 1.45rem;
+        line-height: 1;
+      }
+
+      .section-jump-button[disabled] {
+        opacity: 0.45;
+      }
+
+      .section-jump-button span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+
       .stack {
         display: block;
       }
@@ -127,7 +160,7 @@ const PAGE_STYLE = `
       }
 
       .section-rule {
-        border-top: 1px solid var(--border);
+        border-top: 1px solid var(--accent-dim);
         padding-top: 0.45rem;
       }
 
@@ -184,7 +217,7 @@ const PAGE_STYLE = `
         margin: 0 0 2.5rem;
         display: block;
         width: 100%;
-        color: var(--dim);
+        color: var(--accent-dim);
         font-size: 0.72rem;
         letter-spacing: 0.2em;
         text-align: right;
@@ -238,26 +271,21 @@ const PAGE_STYLE = `
         background: transparent;
       }
 
-      .fragment-rail {
+      .fragment-quote {
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
-        border-left: 2px solid var(--accent-dim);
+        border-left: 4px solid var(--accent-dim);
         color: var(--dim);
         background: transparent;
       }
 
-      .fragment-rail {
-        border-right: 0;
-        border-top: 0;
-        border-bottom: 0;
-      }
-
-      .fragment-rail p {
+      .fragment-quote p {
         font-family: "Quattro Italic", serif;
       }
 
       .essay-blockquote p,
-      .quote-block p {
+      .quote-block p,
+      .fragment-quote p {
         margin: 0;
         font-family: "Quattro Italic", serif;
       }
@@ -265,7 +293,7 @@ const PAGE_STYLE = `
       .crosslink {
         margin-top: 1rem;
         padding-top: 0.9rem;
-        border-top: 1px solid rgba(196, 169, 110, 0.15);
+        border-top: 1px solid var(--accent-dim);
         color: var(--dim);
       }
 
@@ -365,6 +393,11 @@ const PAGE_STYLE = `
         margin-left: 1.9rem;
       }
 
+      .question-actions > * + *,
+      .inline-actions > * + * {
+        margin-left: 0.9rem;
+      }
+
       .pill-button,
       .option-button,
       .secondary-button,
@@ -411,9 +444,9 @@ const PAGE_STYLE = `
       }
 
       .option-button.is-matched {
-        border-color: var(--accent);
-        background: rgba(196, 169, 110, 0.08);
-        color: var(--accent);
+        border-color: var(--text);
+        background: var(--text);
+        color: var(--bg);
       }
 
       .pill-button:disabled,
@@ -461,6 +494,29 @@ const PAGE_STYLE = `
         width: 100%;
         border-radius: 0;
         text-align: left;
+      }
+
+      .trivia-option-content {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+      }
+
+      .trivia-option-marker {
+        display: inline-block;
+        min-width: 0.8rem;
+        color: var(--accent-dim);
+      }
+
+      .option-button.is-incorrect .trivia-option-marker,
+      .option-button.is-correct .trivia-option-marker {
+        color: inherit;
+      }
+
+      .match-words-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
       }
 
       .option-title {
@@ -572,8 +628,9 @@ const PAGE_STYLE = `
       }
 
       @media (max-width: 640px) {
-        .choice-grid.two-column {
-          grid-template-columns: 1fr;
+        .section-jump-button {
+          right: 1rem;
+          bottom: 1rem;
         }
 
         .question-actions,
@@ -645,7 +702,7 @@ function renderDigestPage(entry) {
     renderDigestContent(entry),
     "      </div>",
     "    </main>",
-    "    <script id=\"nightly-page-data\" type=\"application/json\">" + escapeHtml(safeJson(entry)) + "</script>",
+    "    <script id=\"nightly-page-data\" type=\"application/json\">" + safeJson(entry) + "</script>",
     "    <script src=\"./" + SHARED_SCRIPT_NAME + "\"></script>",
     "  </body>",
     "</html>",
@@ -722,9 +779,9 @@ function renderDigestContent(entry) {
     "",
     "        <section class=\"card section-rule prose\">",
     "          <p class=\"section-label\">Fragment</p>",
-    "          <div class=\"fragment-rail\">",
+    "          <blockquote class=\"fragment-quote\">",
     "            <p>" + escapeHtml(entry.fragment) + "</p>",
-    "          </div>",
+    "          </blockquote>",
     "        </section>",
     "",
     "        <section class=\"card section-filled prose\">",
@@ -835,7 +892,7 @@ function renderTriviaOptions(options) {
     .map((option, index) => {
       return [
         "              <button class=\"option-button\" type=\"button\" data-trivia-option=\"" + index + "\">",
-        "                " + escapeHtml(option),
+        "                <span class=\"trivia-option-content\"><span class=\"trivia-option-marker\" aria-hidden=\"true\"></span><span>" + escapeHtml(option) + "</span></span>",
         "              </button>"
       ].join("\n");
     })
@@ -934,28 +991,25 @@ function renderConceptMatchMarkup(data, dateString) {
   return [
     "              <h2 class=\"game-title\">Concept Match</h2>",
     "              <p class=\"game-prompt\">Tap one word and one definition to pair them.</p>",
-    "              <div class=\"choice-grid two-column\">",
-    "                <div class=\"choice-grid\">",
+    "              <div class=\"match-words-grid\">",
     pairs.map((pair) => {
       return [
-        "                  <button class=\"option-button\" type=\"button\" data-match-word=\"" + escapeAttribute(safeText(pair && pair.id, "")) + "\">",
-        "                    <span class=\"option-title\">" + escapeHtml(safeText(pair && pair.word, "Word unavailable")) + "</span>",
-        "                  </button>"
+        "                <button class=\"option-button\" type=\"button\" data-match-word=\"" + escapeAttribute(safeText(pair && pair.id, "")) + "\">",
+        "                  <span class=\"option-title\">" + escapeHtml(safeText(pair && pair.word, "Word unavailable")) + "</span>",
+        "                </button>"
       ].join("\n");
     }).join("\n"),
-    "                </div>",
-    "                <div class=\"choice-grid\">",
+    "              </div>",
+    "              <div class=\"choice-grid\">",
     shuffledDefinitions.map((pair) => {
       return [
-        "                  <button class=\"option-button\" type=\"button\" data-match-definition=\"" + escapeAttribute(pair.id) + "\">",
-        "                    " + escapeHtml(pair.definition),
-        "                  </button>"
+        "                <button class=\"option-button\" type=\"button\" data-match-definition=\"" + escapeAttribute(pair.id) + "\">",
+        "                  " + escapeHtml(pair.definition),
+        "                </button>"
       ].join("\n");
     }).join("\n"),
-    "                </div>",
     "              </div>",
-    "              <p class=\"game-status\" data-match-status aria-live=\"polite\"></p>",
-    "              <p class=\"match-line\" data-match-progress>Matches made: 0</p>"
+    "              <p class=\"game-status\" data-match-status aria-live=\"polite\"></p>"
   ].join("\n");
 }
 
@@ -1152,6 +1206,7 @@ function buildSharedScript() {
     "    return;",
     "  }",
     "  NIGHTLY_PAGE_DATA = JSON.parse(dataElement.textContent || \"{}\");",
+    "  setupSectionJumpButton();",
     "  setupQuestionToggles();",
     "  setupTrivia(NIGHTLY_PAGE_DATA.trivia);",
     "  setupGame(NIGHTLY_PAGE_DATA.game, NIGHTLY_PAGE_DATA.date);",
@@ -1169,6 +1224,68 @@ function setupQuestionToggles() {
   for (index = 0; index < cards.length; index += 1) {
     setupQuestionCard(cards[index]);
   }
+}
+
+function setupSectionJumpButton() {
+  var button = document.createElement("button");
+  button.type = "button";
+  button.className = "section-jump-button";
+  button.setAttribute("aria-label", "Jump to next section");
+  button.innerHTML = "<span aria-hidden=\\"true\\">⌄</span>";
+
+  button.onclick = function () {
+    jumpToNextSection();
+  };
+
+  document.body.appendChild(button);
+  updateSectionJumpButton(button);
+  window.addEventListener("scroll", function () {
+    updateSectionJumpButton(button);
+  }, { passive: true });
+  window.addEventListener("resize", function () {
+    updateSectionJumpButton(button);
+  });
+}
+
+function getNextSection() {
+  var sections = app ? app.children : [];
+  var tolerance = 96;
+  var index;
+  var section;
+  var top;
+
+  for (index = 0; index < sections.length; index += 1) {
+    section = sections[index];
+    if (!section.classList || !section.classList.contains("card")) {
+      continue;
+    }
+
+    top = section.getBoundingClientRect().top;
+    if (top > tolerance) {
+      return section;
+    }
+  }
+
+  return null;
+}
+
+function updateSectionJumpButton(button) {
+  var nextSection = getNextSection();
+  button.disabled = !nextSection;
+  button.hidden = !nextSection;
+}
+
+function jumpToNextSection() {
+  var nextSection = getNextSection();
+  var offset = 18;
+  if (!nextSection) {
+    return;
+  }
+
+  window.scrollTo({
+    top: window.scrollY + nextSection.getBoundingClientRect().top - offset,
+    behavior: "smooth"
+  });
 }
 
 function setupQuestionCard(card) {
@@ -1214,51 +1331,55 @@ function setupQuestionCard(card) {
 
 function setupTrivia(trivia) {
   var buttons = app.querySelectorAll("[data-trivia-option]");
-  var feedback = app.querySelector("[data-trivia-feedback]");
   var explanation = app.querySelector("[data-trivia-explanation]");
   var index;
 
   for (index = 0; index < buttons.length; index += 1) {
-    attachTriviaButton(buttons[index], buttons, feedback, explanation, trivia);
+    attachTriviaButton(buttons[index], buttons, explanation, trivia);
   }
 }
 
-function attachTriviaButton(button, buttons, feedback, explanation, trivia) {
+function attachTriviaButton(button, buttons, explanation, trivia) {
   button.onclick = function () {
     var selected;
     var isCorrect;
     var index;
-    var correctButton;
-
-    if (button.disabled) {
-      return;
-    }
+    var marker;
+    var loopMarker;
 
     selected = Number(button.getAttribute("data-trivia-option"));
     isCorrect = selected === trivia.correct;
+    marker = button.querySelector(".trivia-option-marker");
 
     for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].disabled = true;
       buttons[index].classList.remove("is-selected");
-    }
-
-    button.classList.add("is-selected");
-
-    if (isCorrect) {
-      button.classList.add("is-correct");
-      feedback.textContent = "Correct.";
-      feedback.className = "feedback is-success";
-    } else {
-      button.classList.add("is-incorrect");
-      feedback.textContent = "Not quite.";
-      feedback.className = "feedback is-error";
-      correctButton = app.querySelector('[data-trivia-option="' + trivia.correct + '"]');
-      if (correctButton) {
-        correctButton.classList.add("is-correct");
+      buttons[index].classList.remove("is-correct");
+      loopMarker = buttons[index].querySelector(".trivia-option-marker");
+      if (buttons[index] !== button && buttons[index].classList.contains("is-incorrect") && loopMarker) {
+        loopMarker.textContent = "×";
       }
     }
 
-    explanation.hidden = false;
+    button.classList.add("is-selected");
+    button.classList.remove("is-incorrect");
+
+    if (isCorrect) {
+      button.classList.add("is-correct");
+      if (marker) {
+        marker.textContent = "✓";
+      }
+      if (explanation) {
+        explanation.hidden = false;
+      }
+    } else {
+      button.classList.add("is-incorrect");
+      if (marker) {
+        marker.textContent = "×";
+      }
+      if (explanation) {
+        explanation.hidden = true;
+      }
+    }
   };
 }
 
@@ -1447,7 +1568,6 @@ function setupConceptMatchGame(container, data) {
   var wordButtons = container.querySelectorAll("[data-match-word]");
   var definitionButtons = container.querySelectorAll("[data-match-definition]");
   var status = container.querySelector("[data-match-status]");
-  var progress = container.querySelector("[data-match-progress]");
   var selectedWordId = null;
   var selectedDefinitionId = null;
   var matches = 0;
@@ -1510,7 +1630,6 @@ function setupConceptMatchGame(container, data) {
       wordButton.className = "option-button is-matched";
       definitionButton.className = "option-button is-matched";
       setStatus(status, "Match made.", true);
-      progress.textContent = "Matches made: " + matches;
 
       if (matches === pairs.length) {
         setStatus(status, "All pairs matched.", true);

@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
   NIGHTLY_PAGE_DATA = JSON.parse(dataElement.textContent || "{}");
+  setupSectionJumpButton();
   setupQuestionToggles();
   setupTrivia(NIGHTLY_PAGE_DATA.trivia);
   setupGame(NIGHTLY_PAGE_DATA.game, NIGHTLY_PAGE_DATA.date);
@@ -17,6 +18,68 @@ function setupQuestionToggles() {
   for (index = 0; index < cards.length; index += 1) {
     setupQuestionCard(cards[index]);
   }
+}
+
+function setupSectionJumpButton() {
+  var button = document.createElement("button");
+  button.type = "button";
+  button.className = "section-jump-button";
+  button.setAttribute("aria-label", "Jump to next section");
+  button.innerHTML = "<span aria-hidden=\"true\">⌄</span>";
+
+  button.onclick = function () {
+    jumpToNextSection();
+  };
+
+  document.body.appendChild(button);
+  updateSectionJumpButton(button);
+  window.addEventListener("scroll", function () {
+    updateSectionJumpButton(button);
+  }, { passive: true });
+  window.addEventListener("resize", function () {
+    updateSectionJumpButton(button);
+  });
+}
+
+function getNextSection() {
+  var sections = app ? app.children : [];
+  var tolerance = 96;
+  var index;
+  var section;
+  var top;
+
+  for (index = 0; index < sections.length; index += 1) {
+    section = sections[index];
+    if (!section.classList || !section.classList.contains("card")) {
+      continue;
+    }
+
+    top = section.getBoundingClientRect().top;
+    if (top > tolerance) {
+      return section;
+    }
+  }
+
+  return null;
+}
+
+function updateSectionJumpButton(button) {
+  var nextSection = getNextSection();
+  button.disabled = !nextSection;
+  button.hidden = !nextSection;
+}
+
+function jumpToNextSection() {
+  var nextSection = getNextSection();
+  var offset = 18;
+  if (!nextSection) {
+    return;
+  }
+
+  window.scrollTo({
+    top: window.scrollY + nextSection.getBoundingClientRect().top - offset,
+    behavior: "smooth"
+  });
 }
 
 function setupQuestionCard(card) {
@@ -62,51 +125,55 @@ function setupQuestionCard(card) {
 
 function setupTrivia(trivia) {
   var buttons = app.querySelectorAll("[data-trivia-option]");
-  var feedback = app.querySelector("[data-trivia-feedback]");
   var explanation = app.querySelector("[data-trivia-explanation]");
   var index;
 
   for (index = 0; index < buttons.length; index += 1) {
-    attachTriviaButton(buttons[index], buttons, feedback, explanation, trivia);
+    attachTriviaButton(buttons[index], buttons, explanation, trivia);
   }
 }
 
-function attachTriviaButton(button, buttons, feedback, explanation, trivia) {
+function attachTriviaButton(button, buttons, explanation, trivia) {
   button.onclick = function () {
     var selected;
     var isCorrect;
     var index;
-    var correctButton;
-
-    if (button.disabled) {
-      return;
-    }
+    var marker;
+    var loopMarker;
 
     selected = Number(button.getAttribute("data-trivia-option"));
     isCorrect = selected === trivia.correct;
+    marker = button.querySelector(".trivia-option-marker");
 
     for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].disabled = true;
       buttons[index].classList.remove("is-selected");
-    }
-
-    button.classList.add("is-selected");
-
-    if (isCorrect) {
-      button.classList.add("is-correct");
-      feedback.textContent = "Correct.";
-      feedback.className = "feedback is-success";
-    } else {
-      button.classList.add("is-incorrect");
-      feedback.textContent = "Not quite.";
-      feedback.className = "feedback is-error";
-      correctButton = app.querySelector('[data-trivia-option="' + trivia.correct + '"]');
-      if (correctButton) {
-        correctButton.classList.add("is-correct");
+      buttons[index].classList.remove("is-correct");
+      loopMarker = buttons[index].querySelector(".trivia-option-marker");
+      if (buttons[index] !== button && buttons[index].classList.contains("is-incorrect") && loopMarker) {
+        loopMarker.textContent = "×";
       }
     }
 
-    explanation.hidden = false;
+    button.classList.add("is-selected");
+    button.classList.remove("is-incorrect");
+
+    if (isCorrect) {
+      button.classList.add("is-correct");
+      if (marker) {
+        marker.textContent = "✓";
+      }
+      if (explanation) {
+        explanation.hidden = false;
+      }
+    } else {
+      button.classList.add("is-incorrect");
+      if (marker) {
+        marker.textContent = "×";
+      }
+      if (explanation) {
+        explanation.hidden = true;
+      }
+    }
   };
 }
 
@@ -295,7 +362,6 @@ function setupConceptMatchGame(container, data) {
   var wordButtons = container.querySelectorAll("[data-match-word]");
   var definitionButtons = container.querySelectorAll("[data-match-definition]");
   var status = container.querySelector("[data-match-status]");
-  var progress = container.querySelector("[data-match-progress]");
   var selectedWordId = null;
   var selectedDefinitionId = null;
   var matches = 0;
@@ -358,7 +424,6 @@ function setupConceptMatchGame(container, data) {
       wordButton.className = "option-button is-matched";
       definitionButton.className = "option-button is-matched";
       setStatus(status, "Match made.", true);
-      progress.textContent = "Matches made: " + matches;
 
       if (matches === pairs.length) {
         setStatus(status, "All pairs matched.", true);
