@@ -31,26 +31,29 @@
 
       :root {
         color-scheme: light dark;
-        --bg: #f6f4ef;
-        --text: #2b2720;
-        --dim: #726a5f;
-        --accent: #8b6b2f;
-        --border: rgba(139, 107, 47, 0.22);
-        --button-bg: rgba(139, 107, 47, 0.08);
-        --button-bg-hover: rgba(139, 107, 47, 0.14);
-        --shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+        font-size: 18px;
+        --black-rgb: 17, 17, 17;
+        --gold-rgb: 112, 84, 28;
+        --bg: #ffffff;
+        --surface: rgb(var(--black-rgb));
+        --border: rgba(var(--black-rgb), 0.16);
+        --text: rgb(var(--black-rgb));
+        --dim: rgba(var(--black-rgb), 0.7);
+        --accent: rgb(var(--gold-rgb));
+        --accent-dim: rgba(var(--gold-rgb), 0.6);
       }
 
       @media (prefers-color-scheme: dark) {
         :root {
+          --black-rgb: 248, 245, 239;
+          --gold-rgb: 196, 169, 110;
           --bg: #0e0d0b;
-          --text: #c8c2b4;
-          --dim: #6b6560;
-          --accent: #c4a96e;
-          --border: rgba(196, 169, 110, 0.28);
-          --button-bg: rgba(196, 169, 110, 0.08);
-          --button-bg-hover: rgba(196, 169, 110, 0.15);
-          --shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+          --surface: #161510;
+          --border: rgba(var(--black-rgb), 0.18);
+          --text: rgb(var(--black-rgb));
+          --dim: rgba(var(--black-rgb), 0.7);
+          --accent: rgb(var(--gold-rgb));
+          --accent-dim: rgba(var(--gold-rgb), 0.6);
         }
       }
 
@@ -62,103 +65,300 @@
       body {
         min-height: 100%;
         margin: 0;
-        background:
-          radial-gradient(circle at top, rgba(139, 107, 47, 0.08), transparent 42%),
-          linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 40%),
-          var(--bg);
+        background: var(--bg);
       }
 
       body {
-        display: grid;
-        place-items: center;
-        padding: 1.5rem;
+        min-height: 100vh;
         color: var(--text);
         font-family: "Quattro", serif;
       }
 
-      main {
-        width: min(100%, 34rem);
-        text-align: center;
-      }
-
-      .eyebrow {
-        margin: 0 0 1.1rem;
-        color: var(--dim);
-        font-size: 0.8rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-      }
-
-      h1 {
-        margin: 0 0 1rem;
-        font-family: "Quattro Italic", serif;
-        font-size: clamp(2.4rem, 7vw, 4.4rem);
-        font-weight: 400;
-        line-height: 1.02;
-        color: var(--accent);
-      }
-
-      p {
-        margin: 0 0 2rem;
-        color: var(--dim);
-        font-size: 1rem;
-        line-height: 1.65;
+      a,
+      button {
+        color: inherit;
+        font: inherit;
       }
 
       button {
-        width: min(100%, 24rem);
-        min-height: 5.5rem;
-        padding: 1.2rem 1.6rem;
-        border: 1px solid var(--border);
-        background: var(--button-bg);
-        color: var(--text);
-        font-family: "Quattro Italic", serif;
-        font-size: clamp(1.35rem, 4vw, 1.9rem);
-        line-height: 1.2;
-        cursor: pointer;
-        box-shadow: var(--shadow);
-        transition: background-color 180ms ease, transform 180ms ease, border-color 180ms ease;
+        border: 0;
       }
 
-      button:hover,
-      button:focus-visible {
-        background: var(--button-bg-hover);
+      .launcher {
+        position: relative;
+        min-height: 100vh;
+        padding: 2rem 1.25rem 5.5rem;
+      }
+
+      .launcher-main {
+        min-height: calc(100vh - 7.5rem);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .launcher-stack {
+        display: grid;
+        justify-items: center;
+        gap: 1rem;
+        width: 100%;
+        text-align: center;
+      }
+
+      .launcher-title,
+      .archive-toggle {
+        margin: 0;
+        font-family: "Quattro Italic", serif;
+        color: var(--accent);
+      }
+
+      .launcher-title {
+        font-size: clamp(2.2rem, 7vw, 4.1rem);
+        font-weight: 400;
+        line-height: 1;
+      }
+
+      .archive-toggle {
+        position: absolute;
+        left: 50%;
+        bottom: 1.75rem;
+        transform: translateX(-50%);
+        padding: 0;
+        background: transparent;
+        font-size: 0.95rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .archive-toggle:focus-visible,
+      .open-digest-button:focus-visible,
+      .archive-link:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .open-digest-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.6rem;
+        min-width: 9.8rem;
+        padding: 0.5rem 0.7rem;
+        border-radius: 0;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+        cursor: pointer;
+      }
+
+      .open-digest-button:hover,
+      .open-digest-button:focus-visible,
+      .archive-link:hover,
+      .archive-link:focus-visible,
+      .archive-toggle:hover,
+      .archive-toggle:focus-visible {
         border-color: var(--accent);
-        transform: translateY(-1px);
-        outline: none;
+        color: var(--accent);
       }
 
       .status {
-        min-height: 1.2rem;
-        margin-top: 1rem;
-        font-size: 0.9rem;
+        min-height: 1rem;
+        margin: 0;
+        color: var(--dim);
+        font-size: 0.74rem;
+        letter-spacing: 0.06em;
+      }
+
+      .archive-panel {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 20;
+        max-height: 75vh;
+        padding: 1rem 1.25rem 1.5rem;
+        border-top: 1px solid var(--border);
+        background: var(--bg);
+        overflow: auto;
+        transform: translateY(calc(100% - 4rem));
+        transition: transform 220ms ease;
+      }
+
+      .archive-panel.is-open {
+        transform: translateY(0);
+      }
+
+      .archive-panel-header {
+        position: sticky;
+        top: -1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 0 0 1rem;
+        padding: 0.2rem 0 0.7rem;
+        background: var(--bg);
+      }
+
+      .archive-heading {
+        margin: 0;
+        font-family: "Quattro Italic", serif;
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: var(--accent);
+      }
+
+      .archive-close {
+        padding: 0;
+        background: transparent;
+        color: var(--dim);
+        cursor: pointer;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.72rem;
+      }
+
+      .archive-groups {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .archive-group-title {
+        margin: 0 0 0.55rem;
+        font-family: "Quattro Italic", serif;
+        font-size: 0.82rem;
+        font-weight: 400;
+        color: var(--accent-dim);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .archive-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .archive-item + .archive-item {
+        margin-top: 0.45rem;
+      }
+
+      .archive-link {
+        display: inline-flex;
+        width: 100%;
+        padding: 0.45rem 0;
+        border-bottom: 1px solid transparent;
+        text-decoration: none;
+        transition: border-color 180ms ease, color 180ms ease;
+      }
+
+      .archive-meta {
+        color: var(--text);
+      }
+
+      @media (max-width: 640px) {
+        .archive-panel {
+          max-height: 80vh;
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+
+        .launcher {
+          padding-bottom: 5rem;
+        }
       }
     </style>
   </head>
   <body>
-    <main>
-      <p class="eyebrow">Nightly Digest</p>
-      <h1>Tonight waits behind one button.</h1>
-      <p>Open the digest for the current day.</p>
-      <button type="button" id="openDigestButton">Open today's digest</button>
-      <p class="status" id="status"></p>
+    <main class="launcher">
+      <section class="launcher-main">
+        <div class="launcher-stack">
+          <h1 class="launcher-title">NIGHTLY DIGEST</h1>
+          <button type="button" class="open-digest-button" id="openDigestButton">Open today's digest</button>
+          <p class="status" id="status"></p>
+        </div>
+      </section>
+
+      <button
+        type="button"
+        class="archive-toggle"
+        id="archiveToggle"
+        aria-expanded="false"
+        aria-controls="archivePanel"
+      >
+        Show Archive
+      </button>
     </main>
+
+    <aside class="archive-panel" id="archivePanel" hidden>
+      <div class="archive-panel-header">
+        <h2 class="archive-heading">Archive</h2>
+        <button type="button" class="archive-close" id="archiveClose">Close</button>
+      </div>
+      <div class="archive-groups" id="archiveGroups"></div>
+    </aside>
 
     <script>
       (function () {
+        var archiveEntries = [
+          { date: "2026-05-14", title: "Private Ceremonies for Changed Beliefs" },
+          { date: "2026-05-13", title: "What Boredom Uncovers" },
+          { date: "2026-05-12", title: "The Long Take as an Argument" },
+          { date: "2026-05-11", title: "The Body Keeps Its Own Archive" },
+          { date: "2026-05-10", title: "Spaces That Hold You Without Meaning To" },
+          { date: "2026-05-09", title: "The Damage a Word Does When It Lands" },
+          { date: "2026-05-08", title: "How Rooms Grow After You Leave Them" },
+          { date: "2026-05-07", title: "The Slow Intelligence of Rot" },
+          { date: "2026-05-06", title: "The Weight of What Has Not Yet Happened" }
+        ];
         var button = document.getElementById("openDigestButton");
         var status = document.getElementById("status");
+        var archivePanel = document.getElementById("archivePanel");
+        var archiveToggle = document.getElementById("archiveToggle");
+        var archiveClose = document.getElementById("archiveClose");
+        var archiveGroups = document.getElementById("archiveGroups");
+
+        renderArchive(archiveEntries);
 
         button.onclick = function () {
           button.disabled = true;
-          status.innerHTML = "Finding today's digest...";
+          status.textContent = "Finding today's digest...";
           resolveDigest(getCandidateDates(), 0);
         };
 
+        archiveToggle.onclick = function () {
+          setArchiveOpen(!archivePanel.classList.contains("is-open"));
+        };
+
+        archiveClose.onclick = function () {
+          setArchiveOpen(false);
+        };
+
+        function setArchiveOpen(isOpen) {
+          archivePanel.hidden = false;
+          archivePanel.classList.toggle("is-open", isOpen);
+          archiveToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+          archiveToggle.textContent = isOpen ? "Hide Archive" : "Show Archive";
+          if (!isOpen) {
+            window.setTimeout(function () {
+              if (!archivePanel.classList.contains("is-open")) {
+                archivePanel.hidden = true;
+              }
+            }, 220);
+          }
+        }
+
         function resolveDigest(candidates, index) {
           if (index >= candidates.length) {
-            status.innerHTML = "No digest found for the nearby dates.";
-            window.location.href = "./digests/index.html";
+            status.textContent = "Opening the latest available digest...";
+            if (archiveEntries.length) {
+              window.location.href = "./digests/" + archiveEntries[0].date + ".html";
+              return;
+            }
+            button.disabled = false;
+            status.textContent = "No digest found.";
             return;
           }
 
@@ -183,6 +383,61 @@
             resolveDigest(candidates, index + 1);
           };
           request.send(null);
+        }
+
+        function renderArchive(entries) {
+          var groups;
+          var html;
+          var index;
+          var group;
+
+          groups = groupByMonth(entries.slice().sort(function (left, right) {
+            return right.date.localeCompare(left.date);
+          }));
+          html = "";
+
+          for (index = 0; index < groups.length; index += 1) {
+            group = groups[index];
+            html += "<section>";
+            html += "<h3 class=\"archive-group-title\">" + escapeHtml(group.label) + "</h3>";
+            html += "<ul class=\"archive-list\">";
+            html += group.items.map(function (entry) {
+              return "<li class=\"archive-item\"><a class=\"archive-link\" href=\"./digests/" +
+                escapeHtml(entry.date) +
+                ".html\"><span class=\"archive-meta\">" +
+                escapeHtml(formatArchiveDate(entry.date) + " \u2013 " + entry.title) +
+                "</span></a></li>";
+            }).join("");
+            html += "</ul>";
+            html += "</section>";
+          }
+
+          archiveGroups.innerHTML = html;
+        }
+
+        function groupByMonth(entries) {
+          var groups = [];
+          var lookup = {};
+          var index;
+          var entry;
+          var monthKey;
+
+          for (index = 0; index < entries.length; index += 1) {
+            entry = entries[index];
+            monthKey = entry.date.slice(0, 7);
+
+            if (!lookup[monthKey]) {
+              lookup[monthKey] = {
+                label: formatMonthYear(entry.date),
+                items: []
+              };
+              groups.push(lookup[monthKey]);
+            }
+
+            lookup[monthKey].items.push(entry);
+          }
+
+          return groups;
         }
 
         function getCandidateDates() {
@@ -226,8 +481,79 @@
           ].join("-");
         }
 
+        function formatArchiveDate(dateString) {
+          var parts = String(dateString).split("-");
+          var year = Number(parts[0]);
+          var month = Number(parts[1]);
+          var day = Number(parts[2]);
+          var months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+          ];
+
+          return ordinal(day) + " " + months[month - 1] + " " + year;
+        }
+
+        function formatMonthYear(dateString) {
+          var parts = String(dateString).split("-");
+          var year = Number(parts[0]);
+          var month = Number(parts[1]);
+          var months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+          ];
+
+          return months[month - 1] + " " + year;
+        }
+
+        function ordinal(value) {
+          var remainder = value % 100;
+          if (remainder >= 11 && remainder <= 13) {
+            return value + "th";
+          }
+          switch (value % 10) {
+            case 1:
+              return value + "st";
+            case 2:
+              return value + "nd";
+            case 3:
+              return value + "rd";
+            default:
+              return value + "th";
+          }
+        }
+
         function pad(value) {
           return value < 10 ? "0" + value : String(value);
+        }
+
+        function escapeHtml(value) {
+          return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/'/g, "&#39;");
         }
       })();
     </script>

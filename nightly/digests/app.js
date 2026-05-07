@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
   NIGHTLY_PAGE_DATA = JSON.parse(dataElement.textContent || "{}");
   setupSectionJumpButton();
   setupQuestionToggles();
+  setupAnswersReveal();
   setupTrivia(NIGHTLY_PAGE_DATA.trivia);
   setupGame(NIGHTLY_PAGE_DATA.game, NIGHTLY_PAGE_DATA.date);
 });
@@ -18,6 +19,22 @@ function setupQuestionToggles() {
   for (index = 0; index < cards.length; index += 1) {
     setupQuestionCard(cards[index]);
   }
+}
+
+function setupAnswersReveal() {
+  var button = app.querySelector("[data-answers-toggle]");
+  var wrap = app.querySelector("[data-answers-toggle-wrap]");
+  var label = app.querySelector("[data-answers-label]");
+  var content = app.querySelector("[data-answers-content]");
+  if (!button || !label || !content || !wrap) {
+    return;
+  }
+
+  button.onclick = function () {
+    wrap.hidden = true;
+    label.hidden = false;
+    content.hidden = false;
+  };
 }
 
 function setupSectionJumpButton() {
@@ -410,26 +427,50 @@ function setupConceptMatchGame(container, data) {
   function attemptMatch() {
     var wordButton;
     var definitionButton;
+    var wordMarker;
+    var definitionMarker;
     if (!selectedWordId || !selectedDefinitionId) {
       return;
     }
 
     wordButton = container.querySelector('[data-match-word="' + selectedWordId + '"]');
     definitionButton = container.querySelector('[data-match-definition="' + selectedDefinitionId + '"]');
+    wordMarker = wordButton ? wordButton.querySelector(".match-option-marker") : null;
+    definitionMarker = definitionButton ? definitionButton.querySelector(".match-option-marker") : null;
 
     if (selectedWordId === selectedDefinitionId) {
       matches += 1;
       wordButton.disabled = true;
       definitionButton.disabled = true;
+      wordButton.classList.remove("is-incorrect", "is-selected");
+      definitionButton.classList.remove("is-incorrect", "is-selected");
       wordButton.className = "option-button is-matched";
       definitionButton.className = "option-button is-matched";
-      setStatus(status, "Match made.", true);
+      if (wordMarker) {
+        wordMarker.textContent = "";
+      }
+      if (definitionMarker) {
+        definitionMarker.textContent = "";
+      }
+      setStatus(status, "", true);
 
       if (matches === pairs.length) {
         setStatus(status, "All pairs matched.", true);
       }
     } else {
-      setStatus(status, "Not a match.", false);
+      if (wordButton) {
+        wordButton.classList.add("is-incorrect");
+      }
+      if (definitionButton) {
+        definitionButton.classList.add("is-incorrect");
+      }
+      if (wordMarker) {
+        wordMarker.textContent = "×";
+      }
+      if (definitionMarker) {
+        definitionMarker.textContent = "×";
+      }
+      setStatus(status, "", false);
       if (wordButton) {
         wordButton.classList.remove("is-selected");
       }
@@ -684,6 +725,9 @@ function stripMarks(value) {
 }
 
 function setStatus(element, text, isSuccess) {
+  if (!element) {
+    return;
+  }
   element.textContent = text;
   element.className = isSuccess ? "game-status is-success" : "game-status is-error";
 }

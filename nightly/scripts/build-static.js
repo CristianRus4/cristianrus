@@ -141,6 +141,8 @@ const PAGE_STYLE = `
         justify-content: center;
         width: 100%;
         height: 100%;
+        font-family: system-ui, sans-serif;
+        transform: translateY(-0.08em);
       }
 
       .stack {
@@ -205,12 +207,13 @@ const PAGE_STYLE = `
       }
 
       .answer-card .section-label {
-        font-size: 0.72rem;
+        font-size: 1rem;
         letter-spacing: 0.04em;
         text-transform: none;
         text-align: left;
         padding-right: 0;
         margin-bottom: 0.35rem;
+        opacity: 1;
       }
 
       .date-line {
@@ -290,18 +293,6 @@ const PAGE_STYLE = `
         font-family: "Quattro Italic", serif;
       }
 
-      .crosslink {
-        margin-top: 1rem;
-        padding-top: 0.9rem;
-        border-top: 1px solid var(--accent-dim);
-        color: var(--dim);
-      }
-
-      .crosslink strong {
-        color: var(--accent);
-        font-weight: 600;
-      }
-
       .number-value {
         margin: 0 0 0.45rem;
         font-family: "Quattro Italic", serif;
@@ -361,7 +352,7 @@ const PAGE_STYLE = `
       .question-prompt {
         display: flex;
         gap: 0.9rem;
-        align-items: baseline;
+        align-items: flex-start;
         margin-bottom: 0.7rem;
       }
 
@@ -372,7 +363,8 @@ const PAGE_STYLE = `
         font-size: 2.55rem;
         min-width: 2.2rem;
         line-height: 1;
-        transform: translateY(0.08rem);
+        align-self: flex-start;
+        transform: translateY(-0.08rem);
       }
 
       .question-text {
@@ -521,6 +513,18 @@ const PAGE_STYLE = `
         margin-bottom: 1rem;
       }
 
+      .match-option-content {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+      }
+
+      .match-option-marker {
+        display: inline-block;
+        min-width: 0.8rem;
+        color: var(--red);
+      }
+
       .option-title {
         display: block;
         margin-bottom: 0.2rem;
@@ -611,6 +615,16 @@ const PAGE_STYLE = `
         text-align: center;
         color: var(--dim);
         font-size: 0.95rem;
+      }
+
+      .answers-toggle-wrap {
+        display: flex;
+        justify-content: center;
+        padding: 0.8rem 0 0.2rem;
+      }
+
+      .answers-toggle-button {
+        min-width: 12rem;
       }
 
       .spacer {
@@ -713,17 +727,26 @@ function renderDigestPage(entry) {
 }
 
 function renderArchivePage(digests) {
-  const items = digests
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date))
-    .map((entry) => {
+  const grouped = groupDigestsByMonth(
+    digests
+      .slice()
+      .sort((a, b) => b.date.localeCompare(a.date))
+  );
+  const sections = grouped
+    .map((group) => {
       return [
-        "        <li class=\"question-card\">",
-        "          <div class=\"question-prompt\">",
-        "            <p class=\"question-text\"><a href=\"./" + escapeAttribute(entry.date) + ".html\">" + escapeHtml(entry.title) + "</a></p>",
-        "          </div>",
-        "          <p class=\"person-dates\" style=\"margin-left:1.9rem;\">" + escapeHtml(formatLongDate(entry.date)) + "</p>",
-        "        </li>"
+        "          <section class=\"card section-rule\">",
+        "            <p class=\"section-label\" style=\"text-align:left;padding-right:0;opacity:1;\">" + escapeHtml(group.label) + "</p>",
+        "            <ul class=\"question-list\" style=\"margin-top:0.85rem;\">",
+        group.items.map((entry) => {
+          return [
+            "              <li class=\"answer-card\">",
+            "                <p><a href=\"./" + escapeAttribute(entry.date) + ".html\">" + escapeHtml(formatArchiveDate(entry.date) + " – " + entry.title) + "</a></p>",
+            "              </li>"
+          ].join("\n");
+        }).join("\n"),
+        "            </ul>",
+        "          </section>"
       ].join("\n");
     })
     .join("\n");
@@ -748,11 +771,7 @@ function renderArchivePage(digests) {
     "          <h1 class=\"entry-title\">Every available digest</h1>",
     "          <p class=\"entry-subtitle\"><a href=\"../index.html\">Back to today launcher</a></p>",
     "        </section>",
-    "        <section class=\"card section-rule\">",
-    "          <ul class=\"question-list\">",
-    items,
-    "          </ul>",
-    "        </section>",
+    sections,
     "      </div>",
     "    </main>",
     "  </body>",
@@ -770,7 +789,6 @@ function renderDigestContent(entry) {
     "          <blockquote class=\"essay-blockquote\">",
     "            <p>" + escapeHtml(entry.essay.blockquote) + "</p>",
     "          </blockquote>",
-    "          <p class=\"crosslink\"><strong>Crosslink</strong> " + escapeHtml(entry.essay.crosslink) + "</p>",
     "        </section>",
     "",
     "        <section class=\"card section-filled\">",
@@ -831,7 +849,6 @@ function renderDigestContent(entry) {
     "            <div class=\"choice-grid\" data-trivia-options>",
     renderTriviaOptions(entry.trivia.options),
     "            </div>",
-    "            <p class=\"feedback\" data-trivia-feedback aria-live=\"polite\"></p>",
     "            <p class=\"hint-line\" data-trivia-explanation hidden>" + escapeHtml(entry.trivia.explanation) + "</p>",
     "          </div>",
     "        </section>",
@@ -845,8 +862,11 @@ function renderDigestContent(entry) {
     "        </section>",
     "",
     "        <section class=\"card section-rule\">",
-    "          <p class=\"section-label\">Answers</p>",
-    "          <div class=\"answer-list answers-box interactive-plain\">",
+    "          <div class=\"answers-toggle-wrap\" data-answers-toggle-wrap>",
+    "            <button class=\"secondary-button answers-toggle-button\" type=\"button\" data-answers-toggle>Reveal answers</button>",
+    "          </div>",
+    "          <p class=\"section-label\" data-answers-label hidden>Answers</p>",
+    "          <div class=\"answer-list answers-box interactive-plain\" data-answers-content hidden>",
     renderTriviaAnswer(entry.trivia),
     renderGameAnswer(entry.game),
     "          </div>",
@@ -997,7 +1017,7 @@ function renderConceptMatchMarkup(data, dateString) {
     pairs.map((pair) => {
       return [
         "                <button class=\"option-button\" type=\"button\" data-match-word=\"" + escapeAttribute(safeText(pair && pair.id, "")) + "\">",
-        "                  <span class=\"option-title\">" + escapeHtml(safeText(pair && pair.word, "Word unavailable")) + "</span>",
+        "                  <span class=\"match-option-content\"><span class=\"match-option-marker\" aria-hidden=\"true\"></span><span class=\"option-title\">" + escapeHtml(safeText(pair && pair.word, "Word unavailable")) + "</span></span>",
         "                </button>"
       ].join("\n");
     }).join("\n"),
@@ -1006,12 +1026,11 @@ function renderConceptMatchMarkup(data, dateString) {
     shuffledDefinitions.map((pair) => {
       return [
         "                <button class=\"option-button\" type=\"button\" data-match-definition=\"" + escapeAttribute(pair.id) + "\">",
-        "                  " + escapeHtml(pair.definition),
+        "                  <span class=\"match-option-content\"><span class=\"match-option-marker\" aria-hidden=\"true\"></span><span>" + escapeHtml(pair.definition) + "</span></span>",
         "                </button>"
       ].join("\n");
     }).join("\n"),
-    "              </div>",
-    "              <p class=\"game-status\" data-match-status aria-live=\"polite\"></p>"
+    "              </div>"
   ].join("\n");
 }
 
@@ -1210,6 +1229,7 @@ function buildSharedScript() {
     "  NIGHTLY_PAGE_DATA = JSON.parse(dataElement.textContent || \"{}\");",
     "  setupSectionJumpButton();",
     "  setupQuestionToggles();",
+    "  setupAnswersReveal();",
     "  setupTrivia(NIGHTLY_PAGE_DATA.trivia);",
     "  setupGame(NIGHTLY_PAGE_DATA.game, NIGHTLY_PAGE_DATA.date);",
     "});",
@@ -1226,6 +1246,22 @@ function setupQuestionToggles() {
   for (index = 0; index < cards.length; index += 1) {
     setupQuestionCard(cards[index]);
   }
+}
+
+function setupAnswersReveal() {
+  var button = app.querySelector("[data-answers-toggle]");
+  var wrap = app.querySelector("[data-answers-toggle-wrap]");
+  var label = app.querySelector("[data-answers-label]");
+  var content = app.querySelector("[data-answers-content]");
+  if (!button || !label || !content || !wrap) {
+    return;
+  }
+
+  button.onclick = function () {
+    wrap.hidden = true;
+    label.hidden = false;
+    content.hidden = false;
+  };
 }
 
 function setupSectionJumpButton() {
@@ -1618,26 +1654,50 @@ function setupConceptMatchGame(container, data) {
   function attemptMatch() {
     var wordButton;
     var definitionButton;
+    var wordMarker;
+    var definitionMarker;
     if (!selectedWordId || !selectedDefinitionId) {
       return;
     }
 
     wordButton = container.querySelector('[data-match-word="' + selectedWordId + '"]');
     definitionButton = container.querySelector('[data-match-definition="' + selectedDefinitionId + '"]');
+    wordMarker = wordButton ? wordButton.querySelector(".match-option-marker") : null;
+    definitionMarker = definitionButton ? definitionButton.querySelector(".match-option-marker") : null;
 
     if (selectedWordId === selectedDefinitionId) {
       matches += 1;
       wordButton.disabled = true;
       definitionButton.disabled = true;
+      wordButton.classList.remove("is-incorrect", "is-selected");
+      definitionButton.classList.remove("is-incorrect", "is-selected");
       wordButton.className = "option-button is-matched";
       definitionButton.className = "option-button is-matched";
-      setStatus(status, "Match made.", true);
+      if (wordMarker) {
+        wordMarker.textContent = "";
+      }
+      if (definitionMarker) {
+        definitionMarker.textContent = "";
+      }
+      setStatus(status, "", true);
 
       if (matches === pairs.length) {
         setStatus(status, "All pairs matched.", true);
       }
     } else {
-      setStatus(status, "Not a match.", false);
+      if (wordButton) {
+        wordButton.classList.add("is-incorrect");
+      }
+      if (definitionButton) {
+        definitionButton.classList.add("is-incorrect");
+      }
+      if (wordMarker) {
+        wordMarker.textContent = "×";
+      }
+      if (definitionMarker) {
+        definitionMarker.textContent = "×";
+      }
+      setStatus(status, "", false);
       if (wordButton) {
         wordButton.classList.remove("is-selected");
       }
@@ -1892,6 +1952,9 @@ function stripMarks(value) {
 }
 
 function setStatus(element, text, isSuccess) {
+  if (!element) {
+    return;
+  }
   element.textContent = text;
   element.className = isSuccess ? "game-status is-success" : "game-status is-error";
 }
@@ -2120,6 +2183,90 @@ function formatLongDate(dateString) {
     month: "long",
     day: "numeric"
   });
+}
+
+function formatArchiveDate(dateString) {
+  const parts = String(dateString).split("-").map((part) => Number(part));
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+  if (parts.length !== 3 || parts.some(Number.isNaN) || !monthNames[parts[1] - 1]) {
+    return dateString;
+  }
+
+  return ordinal(parts[2]) + " " + monthNames[parts[1] - 1] + " " + parts[0];
+}
+
+function formatMonthYear(dateString) {
+  const parts = String(dateString).split("-").map((part) => Number(part));
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+  if (parts.length !== 3 || parts.some(Number.isNaN) || !monthNames[parts[1] - 1]) {
+    return dateString;
+  }
+
+  return monthNames[parts[1] - 1] + " " + parts[0];
+}
+
+function ordinal(day) {
+  const remainder = day % 100;
+  if (remainder >= 11 && remainder <= 13) {
+    return day + "th";
+  }
+
+  switch (day % 10) {
+    case 1:
+      return day + "st";
+    case 2:
+      return day + "nd";
+    case 3:
+      return day + "rd";
+    default:
+      return day + "th";
+  }
+}
+
+function groupDigestsByMonth(digests) {
+  const groups = [];
+  let currentGroup = null;
+
+  digests.forEach((entry) => {
+    const label = formatMonthYear(entry.date);
+    if (!currentGroup || currentGroup.label !== label) {
+      currentGroup = {
+        label,
+        items: []
+      };
+      groups.push(currentGroup);
+    }
+
+    currentGroup.items.push(entry);
+  });
+
+  return groups;
 }
 
 function stripTrailingPeriod(value) {
