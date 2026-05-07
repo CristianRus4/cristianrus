@@ -1,11 +1,14 @@
 {
-  "date": "2026-05-13",
+  "date": "2026-05-03",
   "title": "What Boredom Uncovers",
   "essay": {
     "paragraphs": [
       "Boredom is not the absence of stimulation. It is the presence of a gap between the mind's appetite and what is currently being offered to it. The mind, given nothing to process, does not go quiet — it turns inward and becomes audible to itself.",
       "The contemporary response to this audibility is to fill it immediately. The gap is treated as a malfunction. What it actually is, in many cases, is the mind becoming available for something it cannot initiate through effort.",
       "There is a pattern perception that requires idleness to begin. The mind working under directed attention scans for what it has been instructed to find. The mind left alone begins to see lateral connections — the kind that arrive sideways, without announcement, as if they were obvious all along.",
+      {
+        "blockquote": true
+      },
       "Children who are bored tend to produce something. Adults who are bored tend to consume something. The difference is not about creativity but about tolerance for the interior state that precedes creation.",
       "Stimulation dependency is not a character flaw. It is a trained response to a culture that has systematically removed the pause. But the pause was never empty. It was the condition in which certain kinds of seeing became possible."
     ],

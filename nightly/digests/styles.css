@@ -304,7 +304,7 @@
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
         border-left: 4px solid var(--accent);
-        color: var(--dim);
+        color: var(--text);
         background: transparent;
       }
 
@@ -312,7 +312,7 @@
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
         border-left: 4px solid var(--accent);
-        color: var(--dim);
+        color: var(--text);
         background: transparent;
       }
 
@@ -403,9 +403,9 @@
         color: var(--accent);
         font-size: 1.5rem;
         min-width: 1.6rem;
-        line-height: 1.2;
+        line-height: 1;
         align-self: flex-start;
-        margin-top: 0.15rem;
+        margin-top: 0.72rem;
       }
 
       .question-text {
@@ -536,7 +536,9 @@
       }
 
       .trivia-option-content {
-        display: inline-flex;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
         align-items: center;
         gap: 0.55rem;
       }
@@ -561,7 +563,9 @@
       }
 
       .match-option-content {
-        display: inline-flex;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
         align-items: center;
         gap: 0.55rem;
       }

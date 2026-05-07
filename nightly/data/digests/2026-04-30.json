@@ -1,11 +1,14 @@
 {
-  "date": "2026-05-10",
+  "date": "2026-04-30",
   "title": "Spaces That Hold You Without Meaning To",
   "essay": {
     "paragraphs": [
       "A waiting room is not designed to be remembered. It is designed to be tolerated. And yet certain waiting rooms stay with people for years, not because of what happened there but because the space demanded attention without offering anything to attach it to.",
       "Liminal architecture is honest in a way that destination architecture is not. It makes no claims about what it is for. The escalator, the station concourse, the hotel corridor — these are spaces that belong to transition rather than arrival.",
       "In the corridor between two things, time loosens. The rules that govern both sides are suspended. A kind of private thinking becomes possible that is not available in rooms with clear purposes.",
+      {
+        "blockquote": true
+      },
       "Some people sleep better in hotels not because the beds are superior but because the room makes no demands. It is not a place that needs tending. It has no history you are responsible for.",
       "When a building is emptied, its personality becomes audible. The space was always there, underneath the furniture, underneath the habits. Emptiness does not subtract — it reveals the shape of what was being held."
     ],

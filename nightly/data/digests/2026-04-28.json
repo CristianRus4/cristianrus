@@ -1,11 +1,14 @@
 {
-  "date": "2026-05-08",
+  "date": "2026-04-28",
   "title": "How Rooms Grow After You Leave Them",
   "essay": {
     "paragraphs": [
       "The childhood bedroom is always larger in memory than in fact. Return to it as an adult and it will seem like someone has already begun the grief of shrinking it.",
       "Memory is not a recording. It is an act of reconstruction performed each time, and reconstruction favours drama. Rooms grow. Corridors stretch. The distance from the kitchen to the garden doubles.",
       "This is not nostalgia at work, or not only nostalgia. It is the architecture of significance. Important places absorb attention, and attention, in retrospect, converts to space.",
+      {
+        "blockquote": true
+      },
       "A room where something formative happened will carry that weight forward as physical scale. The proportions of feeling and the proportions of architecture become the same thing.",
       "What we grieve when a place is gone is not the room itself but the size it had become."
     ],

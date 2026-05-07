@@ -1,11 +1,14 @@
 {
-  "date": "2026-05-07",
+  "date": "2026-04-27",
   "title": "The Slow Intelligence of Rot",
   "essay": {
     "paragraphs": [
       "A fallen log is only dead from the point of view of furniture. In the forest it becomes a patient argument against the clean line we draw between ending and use.",
       "Rot has no taste for spectacle. It works through softness, moisture, and the long surrender of edges.",
       "In rooms built for replacement, gradual change feels suspicious because it refuses the drama of before and after.",
+      {
+        "blockquote": true
+      },
       "A life can keep functioning while its purpose quietly shifts under the same routines.",
       "Autumn feels less like a season than a method: it makes hidden transformation visible."
     ],

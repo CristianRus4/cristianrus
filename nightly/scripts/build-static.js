@@ -314,7 +314,7 @@ const PAGE_STYLE = `
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
         border-left: 4px solid var(--accent);
-        color: var(--dim);
+        color: var(--text);
         background: transparent;
       }
 
@@ -322,7 +322,7 @@ const PAGE_STYLE = `
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
         border-left: 4px solid var(--accent);
-        color: var(--dim);
+        color: var(--text);
         background: transparent;
       }
 
@@ -413,9 +413,9 @@ const PAGE_STYLE = `
         color: var(--accent);
         font-size: 1.5rem;
         min-width: 1.6rem;
-        line-height: 1.2;
+        line-height: 1;
         align-self: flex-start;
-        margin-top: 0.15rem;
+        margin-top: 0.72rem;
       }
 
       .question-text {
@@ -546,7 +546,9 @@ const PAGE_STYLE = `
       }
 
       .trivia-option-content {
-        display: inline-flex;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
         align-items: center;
         gap: 0.55rem;
       }
@@ -571,7 +573,9 @@ const PAGE_STYLE = `
       }
 
       .match-option-content {
-        display: inline-flex;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
         align-items: center;
         gap: 0.55rem;
       }
@@ -749,7 +753,33 @@ function main() {
     "utf8"
   );
 
+  updateHomepageArchive(digests);
+
   console.log("Generated " + digests.length + " digest page(s).");
+}
+
+function updateHomepageArchive(digests) {
+  const rootIndex = path.join(ROOT_DIR, "index.html");
+  if (!fs.existsSync(rootIndex)) {
+    return;
+  }
+
+  const content = fs.readFileSync(rootIndex, "utf8");
+  const archiveData = digests
+    .slice()
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .map((d) => ({ date: d.date, title: d.title }));
+
+  const jsonString = JSON.stringify(archiveData, null, 10)
+    .replace(/^\[/, "[\n         ")
+    .replace(/\]$/, "\n        ]");
+
+  const updatedContent = content.replace(
+    /var archiveEntries = \[[\s\S]*?\];/,
+    "var archiveEntries = " + JSON.stringify(archiveData, null, 2).replace(/\n/g, "\n        ") + ";"
+  );
+
+  fs.writeFileSync(rootIndex, updatedContent, "utf8");
 }
 
 function renderDigestPage(entry) {
@@ -849,34 +879,31 @@ function renderDigestContent(entry) {
     "        <section class=\"card\">",
     "          <div class=\"meta-row\"><a class=\"back-to-nightly\" href=\"../index.html\">THE NIGHTLY</a><p class=\"date-line\">" + escapeHtml(formatLongDate(entry.date)) + "</p></div>",
     "          <h1 class=\"entry-title\">" + escapeHtml(entry.title) + "</h1>",
-    renderParagraphs(entry.essay.paragraphs, 10),
-    "          <blockquote class=\"essay-blockquote\">",
-    "            <p>" + escapeHtml(entry.essay.blockquote) + "</p>",
-    "          </blockquote>",
+    renderParagraphs(entry.essay.paragraphs, 10, entry.essay.blockquote),
     "        </section>",
     "",
-    "        <section class=\"card section-filled\">",
-    "          <p class=\"section-label\">Today's Number</p>",
-    "          <p class=\"number-value\">" + escapeHtml(entry.number.value) + "</p>",
+    "        <section class=\"card section-filled prose\">",
+    "          <p class=\"section-label\">THE NUMBER</p>",
+    "          <h2 class=\"number-value\">" + escapeHtml(entry.number.value) + "</h2>",
     "          <p>" + escapeHtml(entry.number.label) + "</p>",
     "        </section>",
     "",
     "        <section class=\"card section-rule prose\">",
-    "          <p class=\"section-label\">Fragment</p>",
+    "          <p class=\"section-label\">A FRAGMENT</p>",
     "          <blockquote class=\"fragment-quote\">",
     "            <p>" + escapeHtml(entry.fragment) + "</p>",
     "          </blockquote>",
     "        </section>",
     "",
     "        <section class=\"card section-filled prose\">",
-    "          <p class=\"section-label\">Word Of The Night</p>",
+    "          <p class=\"section-label\">THE WORD TO KNOW</p>",
     "          <h2 class=\"word-term\">" + escapeHtml(entry.word.term) + "</h2>",
     "          <p class=\"word-origin\">" + escapeHtml(entry.word.origin) + "</p>",
     "          <p>" + escapeHtml(entry.word.definition) + "</p>",
     "        </section>",
     "",
     "        <section class=\"card section-rule prose\">",
-    "          <p class=\"section-label\">Tonight's Voice</p>",
+    "          <p class=\"section-label\">A QUOTE</p>",
     "          <blockquote class=\"quote-block\">",
     "            <p>" + escapeHtml(entry.quote.text) + "</p>",
     "          </blockquote>",
@@ -887,7 +914,7 @@ function renderDigestContent(entry) {
     "        </section>",
     "",
     "        <section class=\"card section-rule prose\">",
-    "          <p class=\"section-label\">Person You've Never Heard Of</p>",
+    "          <p class=\"section-label\">THE NOT SO KNOWN</p>",
     "          <div class=\"person-block\">",
     "            <h2 class=\"person-name\">" + escapeHtml(entry.person.name) + "</h2>",
     "            <p class=\"person-dates\">" + escapeHtml(entry.person.dates) + "</p>",
@@ -896,14 +923,14 @@ function renderDigestContent(entry) {
     "        </section>",
     "",
     "        <section class=\"card section-rule\">",
-    "          <p class=\"section-label\">Three Questions</p>",
+    "          <p class=\"section-label\">THREE QUESTIONS FOR YOU</p>",
     "          <ul class=\"question-list\">",
     renderQuestions(entry.questions),
     "          </ul>",
     "        </section>",
     "",
     "        <section class=\"card section-rule\">",
-    "          <p class=\"section-label\">Games</p>",
+    "          <p class=\"section-label\">GAMES TO UNWIND</p>",
     "        </section>",
     "",
     "        <section class=\"card\">",
@@ -926,7 +953,7 @@ function renderDigestContent(entry) {
     "        </section>",
     "",
     "        <section class=\"card section-rule\">",
-    "          <p class=\"section-label\">Answers</p>",
+    "          <p class=\"section-label\">THE ANSWERS</p>",
     "          <div class=\"answers-toggle-wrap\" data-answers-toggle-wrap>",
     "            <button class=\"secondary-button answers-toggle-button\" type=\"button\" data-answers-toggle>Reveal answers</button>",
     "          </div>",
@@ -940,9 +967,24 @@ function renderDigestContent(entry) {
     .join("\n");
 }
 
-function renderParagraphs(paragraphs, indent) {
+function renderParagraphs(paragraphs, indent, blockquoteText) {
   const spaces = repeatSpaces(indent);
-  return paragraphs.map((paragraph) => spaces + "<p>" + escapeHtml(paragraph) + "</p>").join("\n");
+  return paragraphs
+    .map((item) => {
+      if (typeof item === "string") {
+        return spaces + "<p>" + escapeHtml(item) + "</p>";
+      }
+      if (item && item.blockquote && blockquoteText) {
+        return [
+          spaces + "<blockquote class=\"essay-blockquote\">",
+          spaces + "  <p>" + escapeHtml(blockquoteText) + "</p>",
+          spaces + "</blockquote>"
+        ].join("\n");
+      }
+      return "";
+    })
+    .filter(Boolean)
+    .join("\n");
 }
 
 function renderQuestions(questions) {
@@ -955,10 +997,10 @@ function renderQuestions(questions) {
         "              </div>",
         "              <div class=\"question-actions\">",
         "                <button class=\"pill-button\" type=\"button\" data-question-toggle=\"deeper\" aria-expanded=\"false\">",
-        "                  <span class=\"button-marker\" aria-hidden=\"true\">+</span><span>Deeper</span>",
+        "                  <span>Deeper</span>",
         "                </button>",
         "                <button class=\"pill-button\" type=\"button\" data-question-toggle=\"experiment\" aria-expanded=\"false\">",
-        "                  <span class=\"button-marker\" aria-hidden=\"true\">+</span><span>Experiment</span>",
+        "                  <span>Experiment</span>",
         "                </button>",
         "              </div>",
         "              <div class=\"question-panel\" data-question-panel=\"deeper\" hidden>",
@@ -978,7 +1020,7 @@ function renderTriviaOptions(options) {
     .map((option, index) => {
       return [
         "              <button class=\"option-button\" type=\"button\" data-trivia-option=\"" + index + "\">",
-        "                <span class=\"trivia-option-content\"><span class=\"trivia-option-marker\" aria-hidden=\"true\"></span><span>" + escapeHtml(option) + "</span></span>",
+        "                <span class=\"trivia-option-content\"><span>" + escapeHtml(option) + "</span><span class=\"trivia-option-marker\" aria-hidden=\"true\"></span></span>",
         "              </button>"
       ].join("\n");
     })
@@ -1020,12 +1062,12 @@ function renderRevealMarkup(data) {
     "                <p>" + escapeHtml(clues[0]) + "</p>",
     "              </div>",
     "              <div class=\"inline-actions\">",
-    "                <button class=\"secondary-button\" type=\"button\" data-reveal-more>? Clue</button>",
+    "                <button class=\"secondary-button\" type=\"button\" data-reveal-more>Clue</button>",
     "              </div>",
     "              <form class=\"guess-form\" data-reveal-form>",
     "                <label class=\"visually-hidden\" for=\"reveal-guess\">Your guess</label>",
     "                <input class=\"text-input\" id=\"reveal-guess\" type=\"text\" autocomplete=\"off\" placeholder=\"Type your guess\">",
-    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Submit\">↑ Submit</button>",
+    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Submit\">Submit</button>",
     "              </form>",
     "              <p class=\"game-status\" data-reveal-status aria-live=\"polite\"></p>"
   ].join("\n");
@@ -1040,11 +1082,11 @@ function renderTwoTruthsMarkup(data) {
     options.map((option, index) => {
       return [
         "                <button class=\"option-button\" style=\"display: flex; flex-direction: row; align-items: flex-start; padding: 1rem; gap: 0.75rem; text-align: left;\" type=\"button\" data-lie-option=\"" + index + "\">",
-        "                  <span class=\"trivia-option-marker\" aria-hidden=\"true\" style=\"margin-top: 0.12rem;\"></span>",
-        "                  <div style=\"display: flex; flex-direction: column; gap: 0.35rem;\">",
+        "                  <div style=\"display: flex; flex-direction: column; gap: 0.35rem; flex: 1;\">",
         "                    <span class=\"option-title\" style=\"text-transform: uppercase; margin: 0;\">" + escapeHtml(safeText(option && option.word, "Word unavailable")) + "</span>",
         "                    <span>" + escapeHtml(safeText(option && option.definition, "Definition unavailable.")) + "</span>",
         "                  </div>",
+        "                  <span class=\"trivia-option-marker\" aria-hidden=\"true\" style=\"margin-top: 0.12rem;\"></span>",
         "                </button>"
       ].join("\n");
     }).join("\n"),
@@ -1060,7 +1102,7 @@ function renderMissingWordMarkup(data) {
     "              <form class=\"guess-form\" data-missing-form>",
     "                <label class=\"visually-hidden\" for=\"missing-word-guess\">Missing word</label>",
     "                <input class=\"text-input\" id=\"missing-word-guess\" type=\"text\" autocomplete=\"off\" placeholder=\"Type the missing word\">",
-    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Check\">↑ Check</button>",
+    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Check\">Check</button>",
     "              </form>",
     "              <p class=\"game-status\" data-missing-status aria-live=\"polite\"></p>",
     "              <p class=\"hint-line\" data-missing-hint hidden></p>"
@@ -1084,7 +1126,7 @@ function renderConceptMatchMarkup(data, dateString) {
     pairs.map((pair) => {
       return [
         "                <button class=\"option-button\" type=\"button\" data-match-word=\"" + escapeAttribute(safeText(pair && pair.id, "")) + "\">",
-        "                  <span class=\"match-option-content\"><span class=\"match-option-marker\" aria-hidden=\"true\"></span><span class=\"option-title\">" + escapeHtml(safeText(pair && pair.word, "Word unavailable")) + "</span></span>",
+        "                  <span class=\"match-option-content\"><span class=\"option-title\">" + escapeHtml(safeText(pair && pair.word, "Word unavailable")) + "</span><span class=\"match-option-marker\" aria-hidden=\"true\"></span></span>",
         "                </button>"
       ].join("\n");
     }).join("\n"),
@@ -1093,7 +1135,7 @@ function renderConceptMatchMarkup(data, dateString) {
     shuffledDefinitions.map((pair) => {
       return [
         "                <button class=\"option-button\" type=\"button\" data-match-definition=\"" + escapeAttribute(pair.id) + "\">",
-        "                  <span class=\"match-option-content\"><span class=\"match-option-marker\" aria-hidden=\"true\"></span><span>" + escapeHtml(pair.definition) + "</span></span>",
+        "                  <span class=\"match-option-content\"><span>" + escapeHtml(pair.definition) + "</span><span class=\"match-option-marker\" aria-hidden=\"true\"></span></span>",
         "                </button>"
       ].join("\n");
     }).join("\n"),
@@ -1110,7 +1152,7 @@ function renderLetterByLetterMarkup(data) {
     "              <form class=\"guess-form\" data-letter-form>",
     "                <label class=\"visually-hidden\" for=\"letter-guess\">Guess one letter</label>",
     "                <input class=\"text-input\" id=\"letter-guess\" type=\"text\" maxlength=\"1\" autocomplete=\"off\" placeholder=\"Type one letter\">",
-    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Submit\">↑ Submit</button>",
+    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Submit\">Submit</button>",
     "              </form>",
     "              <p class=\"used-letters\" data-letter-used>Used letters: none</p>",
     "              <p class=\"hint-line\" data-letter-wrong>Wrong guesses: 0</p>",
@@ -1128,7 +1170,7 @@ function renderFirstAndLastMarkup(data) {
     "              <form class=\"guess-form\" data-first-last-form>",
     "                <label class=\"visually-hidden\" for=\"first-last-guess\">Middle letters</label>",
     "                <input class=\"text-input\" id=\"first-last-guess\" type=\"text\" autocomplete=\"off\" placeholder=\"Type the middle letters\">",
-    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Check\">↑ Check</button>",
+    "                <button class=\"primary-button\" type=\"submit\" data-default-label=\"Check\">Check</button>",
     "              </form>",
     "              <p class=\"game-status\" data-first-last-status aria-live=\"polite\"></p>"
   ].join("\n");
@@ -1458,9 +1500,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
       buttons[index].classList.remove("is-selected");
       buttons[index].classList.remove("is-correct");
       loopMarker = buttons[index].querySelector(".trivia-option-marker");
-      if (buttons[index] !== button && buttons[index].classList.contains("is-incorrect") && loopMarker) {
-        loopMarker.textContent = "×";
-      }
+      loopMarker.textContent = "";
     }
 
     button.classList.add("is-selected");
@@ -1469,7 +1509,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
     if (isCorrect) {
       button.classList.add("is-correct");
       if (marker) {
-        marker.textContent = "✓";
+        marker.textContent = "";
       }
       if (explanation) {
         explanation.hidden = false;
@@ -1477,7 +1517,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
     } else {
       button.classList.add("is-incorrect");
       if (marker) {
-        marker.textContent = "×";
+        marker.textContent = "";
       }
       if (explanation) {
         explanation.hidden = true;
@@ -1757,10 +1797,10 @@ function setupConceptMatchGame(container, data) {
         definitionButton.classList.add("is-incorrect");
       }
       if (wordMarker) {
-        wordMarker.textContent = "×";
+        wordMarker.textContent = "";
       }
       if (definitionMarker) {
-        definitionMarker.textContent = "×";
+        definitionMarker.textContent = "";
       }
       setStatus(status, "", false);
       if (wordButton) {
@@ -2034,18 +2074,18 @@ function setActionButtonState(button, state) {
   button.classList.remove("is-success", "is-error");
 
   if (state === "success") {
-    button.textContent = "✓ Correct";
+    button.textContent = "Correct";
     button.classList.add("is-success");
     return;
   }
 
   if (state === "error") {
-    button.textContent = "✕ Try again";
+    button.textContent = "Try again";
     button.classList.add("is-error");
     return;
   }
 
-  button.textContent = "↑ " + defaultLabel;
+  button.textContent = defaultLabel;
 }
 
 function safeText(value, fallback) {
@@ -2056,7 +2096,7 @@ function safeNullableText(value) {
   return typeof value === "string" && value.trim() ? value.trim() : "";
 }
 
-function toStringArray(value, fallbackCount, fallbackText) {
+function toStringArray(value, fallbackCount, fallbackText, allowObjects) {
   var index;
   var result;
   if (!Array.isArray(value) || !value.length) {
@@ -2068,6 +2108,9 @@ function toStringArray(value, fallbackCount, fallbackText) {
   }
 
   return value.map(function (item) {
+    if (allowObjects && item && typeof item === "object") {
+      return item;
+    }
     return safeText(item, fallbackText);
   });
 }
@@ -2084,7 +2127,7 @@ function escapeHtml(value) {
 }
 
 function normalizeEntry(entry, fallbackDate) {
-  const essayParagraphs = toStringArray(entry && entry.essay && entry.essay.paragraphs, 1, "Tonight's essay is not available yet.");
+  const essayParagraphs = toStringArray(entry && entry.essay && entry.essay.paragraphs, 1, "Tonight's essay is not available yet.", true);
   const personParagraphs = toStringArray(entry && entry.person && entry.person.paragraphs, 1, "This profile will appear once the person notes are available.");
   const triviaOptions = toStringArray(entry && entry.trivia && entry.trivia.options, 4, "Option unavailable.");
   let baseQuestions;
@@ -2346,12 +2389,17 @@ function safeNullableText(value) {
   return typeof value === "string" && value.trim() ? value.trim() : "";
 }
 
-function toStringArray(value, fallbackCount, fallbackText) {
+function toStringArray(value, fallbackCount, fallbackText, allowObjects) {
   if (!Array.isArray(value) || !value.length) {
     return new Array(Math.max(fallbackCount, 1)).fill(fallbackText);
   }
 
-  return value.map((item) => safeText(item, fallbackText));
+  return value.map((item) => {
+    if (allowObjects && item && typeof item === "object") {
+      return item;
+    }
+    return safeText(item, fallbackText);
+  });
 }
 
 function escapeHtml(value) {

@@ -1,11 +1,14 @@
 {
-  "date": "2026-05-14",
+  "date": "2026-05-04",
   "title": "Private Ceremonies for Changed Beliefs",
   "essay": {
     "paragraphs": [
       "After a person stops believing, the rituals often remain. Not from inertia — or not only from inertia. Some rituals survive because they hold a structure that belief was only ever borrowing from.",
       "The act of lighting a candle before a meal, of pausing before beginning something, of returning to the same place at the same time of year — these can continue long after the doctrine they once expressed has been set aside. What continues is not the doctrine. It is the recognition that certain moments require marking.",
       "Sacred language does not lose its texture when it loses its referent. A prayer whose god has been doubted still moves differently through the mouth than ordinary speech. The mouth knows what it was trained for.",
+      {
+        "blockquote": true
+      },
       "Ritual is repetition that has been assigned meaning by its own accumulation. Perform an act once and it is a gesture. Perform it in the same way across years and it becomes a ceremony. The meaning is not prior to the act — it is deposited by the act over time.",
       "The pilgrimages that people make without believing in a destination are not confused or reduced versions of genuine pilgrimage. They may be the truer version: the walk undertaken for its own texture, without the bargain of arrival."
     ],

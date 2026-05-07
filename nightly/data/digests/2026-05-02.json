@@ -1,11 +1,14 @@
 {
-  "date": "2026-05-12",
+  "date": "2026-05-02",
   "title": "The Long Take as an Argument",
   "essay": {
     "paragraphs": [
       "An edit is a decision about what can be skipped. The long take refuses that decision. It insists that the interim — the crossing of a room, the pause before speech — is not preparatory footage waiting for something important to start.",
       "Slow cinema is sometimes described as patience, as if its tempo were a demand on the viewer rather than a claim about the world. But the long take does not ask you to wait. It asks you to revise what counts as an event.",
       "In Tarkovsky, time is not the container of meaning — it is the material. The image does not illustrate an argument; it is the argument made available to the eye. Nothing is summarised. Nothing is expedited.",
+      {
+        "blockquote": true
+      },
       "The close observation of a face over a long duration changes what that face is. Sustained attention is not neutral. It is an ethical act, and it alters both the observed and the observer.",
       "Cinema that cannot tolerate its own stillness teaches audiences to be impatient with experience. Cinema that holds the frame teaches audiences that duration is not waste — that something is always moving, even when nothing appears to move."
     ],

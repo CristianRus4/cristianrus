@@ -164,9 +164,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
       buttons[index].classList.remove("is-selected");
       buttons[index].classList.remove("is-correct");
       loopMarker = buttons[index].querySelector(".trivia-option-marker");
-      if (buttons[index] !== button && buttons[index].classList.contains("is-incorrect") && loopMarker) {
-        loopMarker.textContent = "×";
-      }
+      loopMarker.textContent = "";
     }
 
     button.classList.add("is-selected");
@@ -175,7 +173,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
     if (isCorrect) {
       button.classList.add("is-correct");
       if (marker) {
-        marker.textContent = "✓";
+        marker.textContent = "";
       }
       if (explanation) {
         explanation.hidden = false;
@@ -183,7 +181,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
     } else {
       button.classList.add("is-incorrect");
       if (marker) {
-        marker.textContent = "×";
+        marker.textContent = "";
       }
       if (explanation) {
         explanation.hidden = true;
@@ -463,10 +461,10 @@ function setupConceptMatchGame(container, data) {
         definitionButton.classList.add("is-incorrect");
       }
       if (wordMarker) {
-        wordMarker.textContent = "×";
+        wordMarker.textContent = "";
       }
       if (definitionMarker) {
-        definitionMarker.textContent = "×";
+        definitionMarker.textContent = "";
       }
       setStatus(status, "", false);
       if (wordButton) {
@@ -740,18 +738,18 @@ function setActionButtonState(button, state) {
   button.classList.remove("is-success", "is-error");
 
   if (state === "success") {
-    button.textContent = "✓ Correct";
+    button.textContent = "Correct";
     button.classList.add("is-success");
     return;
   }
 
   if (state === "error") {
-    button.textContent = "✕ Try again";
+    button.textContent = "Try again";
     button.classList.add("is-error");
     return;
   }
 
-  button.textContent = "↑ " + defaultLabel;
+  button.textContent = defaultLabel;
 }
 
 function safeText(value, fallback) {
@@ -762,7 +760,7 @@ function safeNullableText(value) {
   return typeof value === "string" && value.trim() ? value.trim() : "";
 }
 
-function toStringArray(value, fallbackCount, fallbackText) {
+function toStringArray(value, fallbackCount, fallbackText, allowObjects) {
   var index;
   var result;
   if (!Array.isArray(value) || !value.length) {
@@ -774,6 +772,9 @@ function toStringArray(value, fallbackCount, fallbackText) {
   }
 
   return value.map(function (item) {
+    if (allowObjects && item && typeof item === "object") {
+      return item;
+    }
     return safeText(item, fallbackText);
   });
 }

@@ -1,11 +1,14 @@
 {
-  "date": "2026-05-09",
+  "date": "2026-04-29",
   "title": "The Damage a Word Does When It Lands",
   "essay": {
     "paragraphs": [
       "Every word for an emotion was once coined in the absence of a better one. The coinage was not neutral. It selected from the full spectrum of what was felt and handed the rest over to silence.",
       "To name something is to make it manageable, but management is not the same as understanding. The named thing shrinks slightly to fit inside the word.",
       "Languages that lack a single word for a particular state are not deficient. They are forced to describe rather than label. The description is harder but more honest about complexity.",
+      {
+        "blockquote": true
+      },
       "Translation is not the movement of a meaning from one house into another. It is the construction of a new house from materials that belonged to a different climate.",
       "There is something mourned in every accurate translation and something quietly invented that was never in the original. The gap between the two is not an error. It is where languages touch without meeting."
     ],

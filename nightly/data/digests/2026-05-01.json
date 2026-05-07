@@ -1,11 +1,14 @@
 {
-  "date": "2026-05-11",
+  "date": "2026-05-01",
   "title": "The Body Keeps Its Own Archive",
   "essay": {
     "paragraphs": [
       "Before the mind has named an experience, the body has already filed it. The filing system does not use language. It uses tension, posture, the particular depth of a breath.",
       "Predictive processing theory suggests that what we experience as perception is largely a prediction being confirmed or corrected. The brain sends expectations downward and receives corrections from the senses. We do not see the world as it is; we see the world as we expect it to be, minus the errors we could not ignore.",
       "Fatigue is not simply the depletion of a resource. It is a model the body builds of what it can safely attempt. A fatigued person does not merely have less capacity — they have a different map of what is possible.",
+      {
+        "blockquote": true
+      },
       "The body holds postures that were useful once and keeps them past usefulness. A protective contraction can outlast the threat by years. The muscles remember an event the mind has classified as resolved.",
       "What the body knows and what the mind has agreed to are not always the same document. The gap between them is not a pathology. It is a kind of archive — partial, slow, resistant to revision."
     ],

@@ -1,11 +1,14 @@
 {
-  "date": "2026-05-06",
+  "date": "2026-04-26",
   "title": "The Weight of What Has Not Yet Happened",
   "essay": {
     "paragraphs": [
       "A clock measuring time is not the same as a mind living inside it. The mind tends to arrange time as a ledger: what was spent, what remains, what cannot be recovered.",
       "There is a particular dread that comes not from past failures but from the future rendered as a fixed quantity. The year begins and already something is being subtracted.",
       "Anticipation behaves like a parasite on the present. The expected event casts a shadow backwards, and the days before it become preambular, less than themselves.",
+      {
+        "blockquote": true
+      },
       "We speak of running out of time as though time were a resource that could be hoarded. But hoarded time is invisible, spent time is the only kind that leaves a mark.",
       "What the countdown reveals is not how much is left but how one has learned to see what counts."
     ],

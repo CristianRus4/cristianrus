@@ -161,7 +161,12 @@
       }
 
       .open-digest-button:hover,
-      .open-digest-button:focus-visible,
+      .open-digest-button:focus-visible {
+        border-color: var(--accent);
+        background-color: var(--accent);
+        color: var(--bg);
+      }
+
       .archive-link:hover,
       .archive-link:focus-visible,
       .archive-toggle:hover,
@@ -310,15 +315,46 @@
     <script>
       (function () {
         var archiveEntries = [
-          { date: "2026-05-14", title: "Private Ceremonies for Changed Beliefs" },
-          { date: "2026-05-13", title: "What Boredom Uncovers" },
-          { date: "2026-05-12", title: "The Long Take as an Argument" },
-          { date: "2026-05-11", title: "The Body Keeps Its Own Archive" },
-          { date: "2026-05-10", title: "Spaces That Hold You Without Meaning To" },
-          { date: "2026-05-09", title: "The Damage a Word Does When It Lands" },
-          { date: "2026-05-08", title: "How Rooms Grow After You Leave Them" },
-          { date: "2026-05-07", title: "The Slow Intelligence of Rot" },
-          { date: "2026-05-06", title: "The Weight of What Has Not Yet Happened" }
+          {
+            "date": "2026-05-05",
+            "title": "What the Exile Carries That the Citizen Does Not"
+          },
+          {
+            "date": "2026-05-04",
+            "title": "Private Ceremonies for Changed Beliefs"
+          },
+          {
+            "date": "2026-05-03",
+            "title": "What Boredom Uncovers"
+          },
+          {
+            "date": "2026-05-02",
+            "title": "The Long Take as an Argument"
+          },
+          {
+            "date": "2026-05-01",
+            "title": "The Body Keeps Its Own Archive"
+          },
+          {
+            "date": "2026-04-30",
+            "title": "Spaces That Hold You Without Meaning To"
+          },
+          {
+            "date": "2026-04-29",
+            "title": "The Damage a Word Does When It Lands"
+          },
+          {
+            "date": "2026-04-28",
+            "title": "How Rooms Grow After You Leave Them"
+          },
+          {
+            "date": "2026-04-27",
+            "title": "The Slow Intelligence of Rot"
+          },
+          {
+            "date": "2026-04-26",
+            "title": "The Weight of What Has Not Yet Happened"
+          }
         ];
         var button = document.getElementById("openDigestButton");
         var status = document.getElementById("status");

@@ -13,9 +13,10 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 - No topic from the last 10 digests may be repeated, but similarity of angle counts — a rephrase does not constitute a different topic.
 - Essays must not mention the author of the quote. The quote section is the only place authors appear.
 - Essays should end in tension, not resolution. No tidy moral, no call to action.
-- Aim for 4–6 paragraphs. Prefer concrete images over abstract statements. Let moods accumulate rather than arguing toward a conclusion.
-- The blockquote appears inside the essay, not at the end. It is a single sentence the essay has earned, stated plainly. After the blockquote, the essay continues — at least one paragraph follows it before the essay closes.
-- The `blockquote` field holds that sentence. It is not attributed to any author.
+- Aim for 5–7 paragraphs in `essay.paragraphs`. Prefer concrete images over abstract statements. Let moods accumulate rather than arguing toward a conclusion.
+- The `blockquote` renders after all paragraphs. Treat it as the sentence the essay has been building toward — not a summary, but a crystallisation. The paragraphs must earn it.
+- Write the essay so that the final 2–3 paragraphs drive toward the blockquote: the last paragraph before it should arrive at the tension or image the blockquote then states plainly.
+- The `blockquote` field holds a single sentence, stated without attribution.
 
 ## Word rules
 - Choose any word from any language that fits the essay's territory organically. The word should emerge from or sit directly beside the essay's thematic core — not appended arbitrarily.
