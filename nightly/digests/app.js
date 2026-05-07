@@ -295,20 +295,29 @@ function attachLieButton(button, buttons, options, container, status) {
     var isLie;
     var index;
     var marker;
-
-    if (button.disabled) {
-      return;
-    }
+    var loopMarker;
 
     selected = Number(button.getAttribute("data-lie-option"));
     isLie = Boolean(options[selected] && options[selected].is_lie);
     marker = button.querySelector(".trivia-option-marker");
 
+    for (index = 0; index < buttons.length; index += 1) {
+      buttons[index].classList.remove("is-selected");
+      buttons[index].classList.remove("is-correct");
+      buttons[index].classList.remove("is-incorrect");
+      loopMarker = buttons[index].querySelector(".trivia-option-marker");
+      if (loopMarker) {
+        loopMarker.textContent = "";
+      }
+    }
+
+    button.classList.add("is-selected");
+
     if (isLie) {
       for (index = 0; index < buttons.length; index += 1) {
         buttons[index].disabled = true;
       }
-      button.classList.add("is-matched");
+      button.classList.add("is-correct");
       if (marker) {
         marker.textContent = "✓";
       }
@@ -395,6 +404,7 @@ function setupConceptMatchGame(container, data) {
   function attachWordButton(button) {
     button.onclick = function () {
       var buttonIndex;
+      var marker;
       if (button.disabled) {
         return;
       }
@@ -404,6 +414,10 @@ function setupConceptMatchGame(container, data) {
       }
       button.classList.add("is-selected");
       button.classList.remove("is-incorrect");
+      marker = button.querySelector(".match-option-marker");
+      if (marker) {
+        marker.textContent = "";
+      }
       selectedWordId = button.getAttribute("data-match-word");
       attemptMatch();
     };
@@ -412,6 +426,7 @@ function setupConceptMatchGame(container, data) {
   function attachDefinitionButton(button) {
     button.onclick = function () {
       var buttonIndex;
+      var marker;
       if (button.disabled) {
         return;
       }
@@ -421,6 +436,10 @@ function setupConceptMatchGame(container, data) {
       }
       button.classList.add("is-selected");
       button.classList.remove("is-incorrect");
+      marker = button.querySelector(".match-option-marker");
+      if (marker) {
+        marker.textContent = "";
+      }
       selectedDefinitionId = button.getAttribute("data-match-definition");
       attemptMatch();
     };
@@ -449,10 +468,10 @@ function setupConceptMatchGame(container, data) {
       wordButton.className = "option-button is-matched";
       definitionButton.className = "option-button is-matched";
       if (wordMarker) {
-        wordMarker.textContent = "";
+        wordMarker.textContent = "✓";
       }
       if (definitionMarker) {
-        definitionMarker.textContent = "";
+        definitionMarker.textContent = "✓";
       }
       setStatus(status, "", true);
 
@@ -467,10 +486,10 @@ function setupConceptMatchGame(container, data) {
         definitionButton.classList.add("is-incorrect");
       }
       if (wordMarker) {
-        wordMarker.textContent = "";
+        wordMarker.textContent = "×";
       }
       if (definitionMarker) {
-        definitionMarker.textContent = "";
+        definitionMarker.textContent = "×";
       }
       setStatus(status, "", false);
       if (wordButton) {
@@ -559,7 +578,7 @@ function setupFirstAndLastGame(container, data) {
     event.preventDefault();
     middle = String(input.value || "").trim();
     if (!middle) {
-      setStatus(status, "Enter the missing middle letters.", false);
+      setStatus(status, "", false);
       return;
     }
 
@@ -567,6 +586,7 @@ function setupFirstAndLastGame(container, data) {
     if (normalizeAnswer(guess) === normalizeAnswer(answer)) {
       setStatus(status, "", true);
       setActionButtonState(submitButton, "success");
+      input.classList.add("is-correct");
       input.disabled = true;
       submitButton.disabled = true;
     } else {
@@ -579,6 +599,8 @@ function setupFirstAndLastGame(container, data) {
     if (!submitButton.disabled) {
       setActionButtonState(submitButton, "idle");
     }
+    input.classList.remove("is-correct");
+    setStatus(status, "", false);
   };
 }
 
@@ -597,27 +619,37 @@ function attachCognateButton(button, buttons, container, status, answer) {
   button.onclick = function () {
     var choice;
     var index;
-    var correctButton;
+    var marker;
+    var loopMarker;
 
-    if (button.disabled) {
-      return;
-    }
-
+    button.classList.remove("is-incorrect");
     choice = button.getAttribute("data-cognate-choice");
+    marker = button.querySelector(".trivia-option-marker");
+
     for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].disabled = true;
+      buttons[index].classList.remove("is-selected");
+      buttons[index].classList.remove("is-correct");
+      buttons[index].classList.remove("is-incorrect");
+      loopMarker = buttons[index].querySelector(".trivia-option-marker");
+      if (loopMarker) {
+        loopMarker.textContent = "";
+      }
     }
+
+    button.classList.add("is-selected");
 
     if (choice === answer) {
       button.classList.add("is-correct");
+      if (marker) {
+        marker.textContent = "✓";
+      }
       setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
-      setStatus(status, "", false);
-      correctButton = container.querySelector('[data-cognate-choice="' + answer + '"]');
-      if (correctButton) {
-        correctButton.classList.add("is-correct");
+      if (marker) {
+        marker.textContent = "×";
       }
+      setStatus(status, "", false);
     }
   };
 }
@@ -638,37 +670,37 @@ function attachOddButton(button, buttons, options, container, status) {
     var selected;
     var isOdd;
     var index;
-    var correctIndex;
-    var correctButton;
-
-    if (button.disabled) {
-      return;
-    }
+    var marker;
+    var loopMarker;
 
     selected = Number(button.getAttribute("data-odd-option"));
     isOdd = Boolean(options[selected] && options[selected].is_odd);
+    marker = button.querySelector(".trivia-option-marker");
 
     for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].disabled = true;
+      buttons[index].classList.remove("is-selected");
+      buttons[index].classList.remove("is-correct");
+      buttons[index].classList.remove("is-incorrect");
+      loopMarker = buttons[index].querySelector(".trivia-option-marker");
+      if (loopMarker) {
+        loopMarker.textContent = "";
+      }
     }
+
+    button.classList.add("is-selected");
 
     if (isOdd) {
       button.classList.add("is-correct");
+      if (marker) {
+        marker.textContent = "✓";
+      }
       setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
+      if (marker) {
+        marker.textContent = "×";
+      }
       setStatus(status, "", false);
-      correctIndex = -1;
-      for (index = 0; index < options.length; index += 1) {
-        if (options[index] && options[index].is_odd) {
-          correctIndex = index;
-          break;
-        }
-      }
-      correctButton = container.querySelector('[data-odd-option="' + correctIndex + '"]');
-      if (correctButton) {
-        correctButton.classList.add("is-correct");
-      }
     }
   };
 }

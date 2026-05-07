@@ -360,9 +360,14 @@
 
       .word-origin,
       .person-dates,
-      .section-instruction,
-      .meta-line,
       .quote-source {
+        color: var(--dim);
+        font-size: 0.74rem;
+        margin-bottom: 0.55rem;
+      }
+
+      .section-instruction,
+      .meta-line {
         color: var(--dim);
         font-size: 0.74rem;
         text-transform: uppercase;
@@ -442,8 +447,7 @@
         margin-left: 0;
       }
 
-      .question-actions > * + *,
-      .inline-actions > * + * {
+      .question-actions > * + * {
         margin-left: 0.65rem;
       }
 
@@ -500,8 +504,9 @@
       }
 
       .option-button.is-correct {
-        border-color: var(--green);
-        color: var(--green);
+        border-color: var(--accent);
+        background: var(--accent);
+        color: var(--bg);
       }
 
       .option-button.is-incorrect {
@@ -613,6 +618,12 @@
         display: inline-block;
         min-width: 0.8rem;
         color: var(--red);
+        flex-shrink: 0;
+      }
+
+      .option-button.is-incorrect .match-option-marker,
+      .option-button.is-matched .match-option-marker {
+        color: inherit;
       }
 
       .game-title {
@@ -638,6 +649,12 @@
 
       .game-prompt {
         margin: 0;
+      }
+
+      .false-cognate-terms {
+        font-family: "Quattro", serif;
+        font-size: 1.35rem;
+        line-height: 1.35;
       }
 
       .game-status,

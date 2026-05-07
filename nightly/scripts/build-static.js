@@ -370,9 +370,14 @@ const PAGE_STYLE = `
 
       .word-origin,
       .person-dates,
-      .section-instruction,
-      .meta-line,
       .quote-source {
+        color: var(--dim);
+        font-size: 0.74rem;
+        margin-bottom: 0.55rem;
+      }
+
+      .section-instruction,
+      .meta-line {
         color: var(--dim);
         font-size: 0.74rem;
         text-transform: uppercase;
@@ -452,8 +457,7 @@ const PAGE_STYLE = `
         margin-left: 0;
       }
 
-      .question-actions > * + *,
-      .inline-actions > * + * {
+      .question-actions > * + * {
         margin-left: 0.65rem;
       }
 
@@ -510,8 +514,9 @@ const PAGE_STYLE = `
       }
 
       .option-button.is-correct {
-        border-color: var(--green);
-        color: var(--green);
+        border-color: var(--accent);
+        background: var(--accent);
+        color: var(--bg);
       }
 
       .option-button.is-incorrect {
@@ -623,6 +628,12 @@ const PAGE_STYLE = `
         display: inline-block;
         min-width: 0.8rem;
         color: var(--red);
+        flex-shrink: 0;
+      }
+
+      .option-button.is-incorrect .match-option-marker,
+      .option-button.is-matched .match-option-marker {
+        color: inherit;
       }
 
       .game-title {
@@ -648,6 +659,12 @@ const PAGE_STYLE = `
 
       .game-prompt {
         margin: 0;
+      }
+
+      .false-cognate-terms {
+        font-family: "Quattro", serif;
+        font-size: 1.35rem;
+        line-height: 1.35;
       }
 
       .game-status,
@@ -974,7 +991,7 @@ function renderDigestContent(entry) {
     "          <p class=\"section-label\">THE NOT SO KNOWN</p>",
     "          <div class=\"person-block\">",
     "            <h2 class=\"person-name\">" + escapeHtml(entry.person.name) + "</h2>",
-    "            <p class=\"person-dates\">" + escapeHtml(entry.person.dates) + "</p>",
+    "            <p class=\"person-dates\">" + escapeHtml(entry.person.dates.replace(" — ", " · ")) + "</p>",
     renderParagraphs(entry.person.paragraphs, 12),
     "          </div>",
     "        </section>",
@@ -1223,7 +1240,8 @@ function renderConceptMatchMarkup(data, dateString) {
         "                </button>"
       ].join("\n");
     }).join("\n"),
-    "              </div>"
+    "              </div>",
+    "              <p class=\"game-status\" data-match-status aria-live=\"polite\"></p>"
   ].join("\n");
 }
 
@@ -1248,9 +1266,8 @@ function renderFirstAndLastMarkup(data) {
   const answer = safeText(data && data.answer, "");
   const mask = renderFirstAndLastMask(answer, data && data.display_length);
   return [
-    "              <h2 class=\"game-title\">First and Last</h2>",
+    "              <h2 class=\"game-title\">First and last</h2>",
     "              <p class=\"section-instruction\">" + getGameInstruction("first_and_last") + "</p>",
-    "              <p class=\"game-prompt\">Fill in the missing letters between the first and the last.</p>",
     "              <p>" + escapeHtml(safeText(data && data.definition, "Definition unavailable.")) + "</p>",
     "              <div class=\"mask\">" + mask + "</div>",
     "              <form class=\"guess-form\" data-first-last-form>",
@@ -1264,14 +1281,17 @@ function renderFirstAndLastMarkup(data) {
 
 function renderFalseCognateMarkup(data) {
   return [
-    "              <h2 class=\"game-title\">False Cognate</h2>",
+    "              <h2 class=\"game-title\">False cognate?</h2>",
     "              <p class=\"section-instruction\">" + getGameInstruction("false_cognate") + "</p>",
-    "              <p class=\"game-prompt\">One of these words is a false cognate. Which one is it?</p>",
-    "              <p>" + escapeHtml(safeText(data && data.word_a && data.word_a.term, "Word A")) + " and " + escapeHtml(safeText(data && data.word_b && data.word_b.term, "Word B")) + "</p>",
+    "              <p class=\"false-cognate-terms\">" + escapeHtml(safeText(data && data.word_a && data.word_a.term, "Word A")) + " and " + escapeHtml(safeText(data && data.word_b && data.word_b.term, "Word B")) + "</p>",
     "              <p>" + escapeHtml(safeText(data && data.question, "Are they truly connected?")) + "</p>",
     "              <div class=\"inline-actions\">",
-    "                <button class=\"option-button\" type=\"button\" data-cognate-choice=\"connected\">connected</button>",
-    "                <button class=\"option-button\" type=\"button\" data-cognate-choice=\"false_cognate\">false cognate</button>",
+    "                <button class=\"option-button\" type=\"button\" data-cognate-choice=\"connected\">",
+    "                  <span class=\"trivia-option-content\"><span>Connected</span><span class=\"trivia-option-marker\" aria-hidden=\"true\"></span></span>",
+    "                </button>",
+    "                <button class=\"option-button\" type=\"button\" data-cognate-choice=\"false_cognate\">",
+    "                  <span class=\"trivia-option-content\"><span>False cognate</span><span class=\"trivia-option-marker\" aria-hidden=\"true\"></span></span>",
+    "                </button>",
     "              </div>",
     "              <p class=\"game-status\" data-cognate-status aria-live=\"polite\"></p>"
   ].join("\n");
@@ -1280,13 +1300,13 @@ function renderFalseCognateMarkup(data) {
 function renderOddOneOutMarkup(data) {
   const options = Array.isArray(data && data.options) ? data.options.slice(0, 5) : [];
   return [
-    "              <h2 class=\"game-title\">Odd One Out</h2>",
+    "              <h2 class=\"game-title\">Odd one out</h2>",
     "              <p class=\"game-prompt\">" + escapeHtml(safeText(data && data.prompt, "Find the outlier.")) + "</p>",
     "              <div class=\"choice-grid\">",
     options.map((option, index) => {
       return [
         "                <button class=\"option-button\" type=\"button\" data-odd-option=\"" + index + "\">",
-        "                  <span class=\"option-title\">" + escapeHtml(safeText(option && option.word, "Word unavailable")) + "</span>",
+        "                  <span class=\"trivia-option-content\"><span>" + escapeHtml(safeText(option && option.word, "Word unavailable")) + "</span><span class=\"trivia-option-marker\" aria-hidden=\"true\"></span></span>",
         "                </button>"
       ].join("\n");
     }).join("\n"),
@@ -1719,20 +1739,29 @@ function attachLieButton(button, buttons, options, container, status) {
     var isLie;
     var index;
     var marker;
-
-    if (button.disabled) {
-      return;
-    }
+    var loopMarker;
 
     selected = Number(button.getAttribute("data-lie-option"));
     isLie = Boolean(options[selected] && options[selected].is_lie);
     marker = button.querySelector(".trivia-option-marker");
 
+    for (index = 0; index < buttons.length; index += 1) {
+      buttons[index].classList.remove("is-selected");
+      buttons[index].classList.remove("is-correct");
+      buttons[index].classList.remove("is-incorrect");
+      loopMarker = buttons[index].querySelector(".trivia-option-marker");
+      if (loopMarker) {
+        loopMarker.textContent = "";
+      }
+    }
+
+    button.classList.add("is-selected");
+
     if (isLie) {
       for (index = 0; index < buttons.length; index += 1) {
         buttons[index].disabled = true;
       }
-      button.classList.add("is-matched");
+      button.classList.add("is-correct");
       if (marker) {
         marker.textContent = "✓";
       }
@@ -1819,6 +1848,7 @@ function setupConceptMatchGame(container, data) {
   function attachWordButton(button) {
     button.onclick = function () {
       var buttonIndex;
+      var marker;
       if (button.disabled) {
         return;
       }
@@ -1828,6 +1858,10 @@ function setupConceptMatchGame(container, data) {
       }
       button.classList.add("is-selected");
       button.classList.remove("is-incorrect");
+      marker = button.querySelector(".match-option-marker");
+      if (marker) {
+        marker.textContent = "";
+      }
       selectedWordId = button.getAttribute("data-match-word");
       attemptMatch();
     };
@@ -1836,6 +1870,7 @@ function setupConceptMatchGame(container, data) {
   function attachDefinitionButton(button) {
     button.onclick = function () {
       var buttonIndex;
+      var marker;
       if (button.disabled) {
         return;
       }
@@ -1845,6 +1880,10 @@ function setupConceptMatchGame(container, data) {
       }
       button.classList.add("is-selected");
       button.classList.remove("is-incorrect");
+      marker = button.querySelector(".match-option-marker");
+      if (marker) {
+        marker.textContent = "";
+      }
       selectedDefinitionId = button.getAttribute("data-match-definition");
       attemptMatch();
     };
@@ -1873,10 +1912,10 @@ function setupConceptMatchGame(container, data) {
       wordButton.className = "option-button is-matched";
       definitionButton.className = "option-button is-matched";
       if (wordMarker) {
-        wordMarker.textContent = "";
+        wordMarker.textContent = "✓";
       }
       if (definitionMarker) {
-        definitionMarker.textContent = "";
+        definitionMarker.textContent = "✓";
       }
       setStatus(status, "", true);
 
@@ -1891,10 +1930,10 @@ function setupConceptMatchGame(container, data) {
         definitionButton.classList.add("is-incorrect");
       }
       if (wordMarker) {
-        wordMarker.textContent = "";
+        wordMarker.textContent = "×";
       }
       if (definitionMarker) {
-        definitionMarker.textContent = "";
+        definitionMarker.textContent = "×";
       }
       setStatus(status, "", false);
       if (wordButton) {
@@ -1983,7 +2022,7 @@ function setupFirstAndLastGame(container, data) {
     event.preventDefault();
     middle = String(input.value || "").trim();
     if (!middle) {
-      setStatus(status, "Enter the missing middle letters.", false);
+      setStatus(status, "", false);
       return;
     }
 
@@ -1991,6 +2030,7 @@ function setupFirstAndLastGame(container, data) {
     if (normalizeAnswer(guess) === normalizeAnswer(answer)) {
       setStatus(status, "", true);
       setActionButtonState(submitButton, "success");
+      input.classList.add("is-correct");
       input.disabled = true;
       submitButton.disabled = true;
     } else {
@@ -2003,6 +2043,8 @@ function setupFirstAndLastGame(container, data) {
     if (!submitButton.disabled) {
       setActionButtonState(submitButton, "idle");
     }
+    input.classList.remove("is-correct");
+    setStatus(status, "", false);
   };
 }
 
@@ -2021,27 +2063,37 @@ function attachCognateButton(button, buttons, container, status, answer) {
   button.onclick = function () {
     var choice;
     var index;
-    var correctButton;
+    var marker;
+    var loopMarker;
 
-    if (button.disabled) {
-      return;
-    }
-
+    button.classList.remove("is-incorrect");
     choice = button.getAttribute("data-cognate-choice");
+    marker = button.querySelector(".trivia-option-marker");
+
     for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].disabled = true;
+      buttons[index].classList.remove("is-selected");
+      buttons[index].classList.remove("is-correct");
+      buttons[index].classList.remove("is-incorrect");
+      loopMarker = buttons[index].querySelector(".trivia-option-marker");
+      if (loopMarker) {
+        loopMarker.textContent = "";
+      }
     }
+
+    button.classList.add("is-selected");
 
     if (choice === answer) {
       button.classList.add("is-correct");
+      if (marker) {
+        marker.textContent = "✓";
+      }
       setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
-      setStatus(status, "", false);
-      correctButton = container.querySelector('[data-cognate-choice="' + answer + '"]');
-      if (correctButton) {
-        correctButton.classList.add("is-correct");
+      if (marker) {
+        marker.textContent = "×";
       }
+      setStatus(status, "", false);
     }
   };
 }
@@ -2062,37 +2114,37 @@ function attachOddButton(button, buttons, options, container, status) {
     var selected;
     var isOdd;
     var index;
-    var correctIndex;
-    var correctButton;
-
-    if (button.disabled) {
-      return;
-    }
+    var marker;
+    var loopMarker;
 
     selected = Number(button.getAttribute("data-odd-option"));
     isOdd = Boolean(options[selected] && options[selected].is_odd);
+    marker = button.querySelector(".trivia-option-marker");
 
     for (index = 0; index < buttons.length; index += 1) {
-      buttons[index].disabled = true;
+      buttons[index].classList.remove("is-selected");
+      buttons[index].classList.remove("is-correct");
+      buttons[index].classList.remove("is-incorrect");
+      loopMarker = buttons[index].querySelector(".trivia-option-marker");
+      if (loopMarker) {
+        loopMarker.textContent = "";
+      }
     }
+
+    button.classList.add("is-selected");
 
     if (isOdd) {
       button.classList.add("is-correct");
+      if (marker) {
+        marker.textContent = "✓";
+      }
       setStatus(status, "", true);
     } else {
       button.classList.add("is-incorrect");
+      if (marker) {
+        marker.textContent = "×";
+      }
       setStatus(status, "", false);
-      correctIndex = -1;
-      for (index = 0; index < options.length; index += 1) {
-        if (options[index] && options[index].is_odd) {
-          correctIndex = index;
-          break;
-        }
-      }
-      correctButton = container.querySelector('[data-odd-option="' + correctIndex + '"]');
-      if (correctButton) {
-        correctButton.classList.add("is-correct");
-      }
     }
   };
 }

@@ -31,13 +31,14 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 - Prefer lesser-known passages over canonical ones. Avoid the quotes everyone already knows.
 - If the quote is not in English, include the original language text first, then the English translation.
 - The quote should resonate with the essay's territory without illustrating it literally.
+- Use a middle dot ` · ` as a separator for both the quote attribution (Author · Source) and the person info (Years · Location).
 
 ## Person rules
 - Feature someone the reader is genuinely unlikely to know. The person should require real effort to recognise.
 - Derive the person freely — anyone who fits the essay's territory and the owner's intellectual range is a valid candidate. Do not rely on a fixed list.
 - Do not repeat a person from the last 10 digests.
 - Two paragraphs: achievement or contribution first, complication or irony second.
-- Format dates and location exactly as `1824 – 1907 — City, Country`.
+- Format dates and location exactly as `1824 – 1907 · City, Country`.
 
 ## Number rules
 - One real, verifiable figure per digest. Label approximate figures explicitly.
