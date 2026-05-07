@@ -367,6 +367,9 @@
       .option-button,
       .secondary-button,
       .primary-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
         min-height: 2.6rem;
         padding: 0.5rem 0.7rem;
         border-radius: 0;
@@ -435,6 +438,12 @@
         border: 0;
         border-left: 1px solid var(--border);
         background: transparent;
+      }
+
+      .button-marker {
+        display: inline-block;
+        min-width: 0.65rem;
+        color: var(--accent-dim);
       }
 
       .choice-grid {

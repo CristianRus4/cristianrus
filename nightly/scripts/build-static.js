@@ -180,9 +180,12 @@ const PAGE_STYLE = `
 
       .date-line {
         margin: 0 0 2.5rem;
+        display: block;
+        width: 100%;
         color: var(--dim);
         font-size: 0.72rem;
         letter-spacing: 0.2em;
+        text-align: right;
         text-transform: uppercase;
       }
 
@@ -364,6 +367,9 @@ const PAGE_STYLE = `
       .option-button,
       .secondary-button,
       .primary-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
         min-height: 2.6rem;
         padding: 0.5rem 0.7rem;
         border-radius: 0;
@@ -432,6 +438,12 @@ const PAGE_STYLE = `
         border: 0;
         border-left: 1px solid var(--border);
         background: transparent;
+      }
+
+      .button-marker {
+        display: inline-block;
+        min-width: 0.65rem;
+        color: var(--accent-dim);
       }
 
       .choice-grid {
@@ -801,10 +813,10 @@ function renderQuestions(questions) {
         "              </div>",
         "              <div class=\"question-actions\">",
         "                <button class=\"pill-button\" type=\"button\" data-question-toggle=\"deeper\" aria-expanded=\"false\">",
-        "                  go deeper",
+        "                  <span class=\"button-marker\" aria-hidden=\"true\">+</span><span>Deeper</span>",
         "                </button>",
         "                <button class=\"pill-button\" type=\"button\" data-question-toggle=\"experiment\" aria-expanded=\"false\">",
-        "                  experiment",
+        "                  <span class=\"button-marker\" aria-hidden=\"true\">+</span><span>Experiment</span>",
         "                </button>",
         "              </div>",
         "              <div class=\"question-panel\" data-question-panel=\"deeper\" hidden>",
@@ -1141,6 +1153,15 @@ function setupQuestionCard(card) {
   var panels = card.querySelectorAll("[data-question-panel]");
   var index;
 
+  function setButtonState(button, isOpen) {
+    var marker = button.querySelector(".button-marker");
+    button.classList.toggle("is-active", isOpen);
+    button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    if (marker) {
+      marker.textContent = isOpen ? "-" : "+";
+    }
+  }
+
   function closeAll() {
     var panelIndex;
     for (panelIndex = 0; panelIndex < panels.length; panelIndex += 1) {
@@ -1148,8 +1169,7 @@ function setupQuestionCard(card) {
     }
 
     for (panelIndex = 0; panelIndex < buttons.length; panelIndex += 1) {
-      buttons[panelIndex].classList.remove("is-active");
-      buttons[panelIndex].setAttribute("aria-expanded", "false");
+      setButtonState(buttons[panelIndex], false);
     }
   }
 
@@ -1163,8 +1183,7 @@ function setupQuestionCard(card) {
 
       if (!isOpen) {
         targetPanel.hidden = false;
-        this.classList.add("is-active");
-        this.setAttribute("aria-expanded", "true");
+        setButtonState(this, true);
       }
     };
   }
