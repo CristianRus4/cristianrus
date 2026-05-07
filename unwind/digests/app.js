@@ -1,17 +1,17 @@
 var app;
-var NIGHTLY_PAGE_DATA;
+var UNWIND_PAGE_DATA;
 document.addEventListener("DOMContentLoaded", function () {
-  var dataElement = document.getElementById("nightly-page-data");
+  var dataElement = document.getElementById("unwind-page-data");
   app = document.getElementById("app");
   if (!app || !dataElement) {
     return;
   }
-  NIGHTLY_PAGE_DATA = JSON.parse(dataElement.textContent || "{}");
+  UNWIND_PAGE_DATA = JSON.parse(dataElement.textContent || "{}");
   setupSectionJumpButton();
   setupQuestionToggles();
   setupAnswersReveal();
-  setupTrivia(NIGHTLY_PAGE_DATA.trivia);
-  setupGame(NIGHTLY_PAGE_DATA.game, NIGHTLY_PAGE_DATA.date);
+  setupTrivia(UNWIND_PAGE_DATA.trivia);
+  setupGame(UNWIND_PAGE_DATA.game, UNWIND_PAGE_DATA.date);
 });
 function setupQuestionToggles() {
   var cards = app.querySelectorAll("[data-question-card]");
@@ -40,7 +40,7 @@ function setupSectionJumpButton() {
   button.type = "button";
   button.className = "section-jump-button";
   button.setAttribute("aria-label", "Jump to next section");
-  button.innerHTML = "<span aria-hidden=\"true\">⌄</span>";
+  button.innerHTML = "<span aria-hidden=\"true\">&minus;</span>";
 
   button.onclick = function () {
     jumpToNextSection();
@@ -191,7 +191,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
 }
 
 function setupGame(game, dateString) {
-  var container = document.getElementById("nightly-game");
+  var container = document.getElementById("unwind-game");
   if (!container) {
     return;
   }

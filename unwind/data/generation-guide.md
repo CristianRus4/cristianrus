@@ -1,4 +1,4 @@
-# Nightly Generation Guide
+# Unwind Generation Guide
 
 ## Core principle
 There is no content pool to draw from. Everything — essay topics, words, people, quotes — is generated fresh each batch. Read `user-profile.json` to understand who this person is: what they have read, what they watch, what they care about, how they think. Use that understanding to generate content that feels true to them. The profile is a window into a personality, not a boundary around permitted topics. Go wherever the essay territory and genuine intellectual curiosity leads.
@@ -96,4 +96,4 @@ Each digest entry must contain exactly:
 ## Workflow
 1. Review quote attribution, game correctness, and visible topic repetition before saving.
 2. Save each digest as its own file in `data/digests/` using `YYYY-MM-DD.json`.
-3. Run `node nightly/scripts/build-static.js` to generate static pages in `nightly/digests/`.
+3. Run `node unwind/scripts/build-static.js` to generate static pages in `unwind/digests/`.

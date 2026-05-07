@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta
       name="description"
-      content="Nightly Digest — open today's digest."
+      content="UNWIND — open today's unwind."
     >
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.cristianrus.me/nightly">
-    <meta property="og:title" content="Nightly Digest">
+    <meta property="og:url" content="https://www.cristianrus.me/unwind">
+    <meta property="og:title" content="UNWIND">
     <meta
       property="og:description"
-      content="Open today's digest."
+      content="Open today's unwind."
     >
     <meta property="og:image" content="https://www.cristianrus.me/images/avatar.jpg">
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico">
-    <title>Nightly Digest</title>
+    <title>UNWIND</title>
     <style>
       @font-face {
         font-family: "Quattro";
@@ -111,12 +111,12 @@
       .launcher-title,
       .archive-toggle {
         margin: 0;
-        font-family: "Quattro Italic", serif;
         color: var(--accent);
       }
 
       .launcher-title {
         margin: 0 -0.22em 2.5rem 0;
+        font-family: "Quattro", serif;
         font-size: clamp(1.4rem, 5vw, 1.8rem);
         font-weight: 400;
         line-height: 1;
@@ -131,7 +131,9 @@
         transform: translateX(-50%);
         padding: 0;
         background: transparent;
-        font-size: 0.95rem;
+        font-family: "Quattro", serif;
+        font-size: 0.78rem;
+        font-weight: 400;
         letter-spacing: 0.14em;
         text-transform: uppercase;
         cursor: pointer;
@@ -287,8 +289,8 @@
     <main class="launcher">
       <section class="launcher-main">
         <div class="launcher-stack">
-          <h1 class="launcher-title">NIGHTLY DIGEST</h1>
-          <button type="button" class="open-digest-button" id="openDigestButton">Reveal today's digest</button>
+          <h1 class="launcher-title">UNWIND</h1>
+          <button type="button" class="open-digest-button" id="openDigestButton">Today's unwind</button>
           <p class="status" id="status"></p>
         </div>
       </section>
@@ -367,7 +369,7 @@
 
         button.onclick = function () {
           button.disabled = true;
-          status.textContent = "Finding today's digest...";
+          status.textContent = "Finding today's unwind...";
           resolveDigest(getCandidateDates(), 0);
         };
 
@@ -395,13 +397,13 @@
 
         function resolveDigest(candidates, index) {
           if (index >= candidates.length) {
-            status.textContent = "Opening the latest available digest...";
+            status.textContent = "Opening the latest available unwind...";
             if (archiveEntries.length) {
               window.location.href = "./digests/" + archiveEntries[0].date + ".html";
               return;
             }
             button.disabled = false;
-            status.textContent = "No digest found.";
+            status.textContent = "No unwind found.";
             return;
           }
 

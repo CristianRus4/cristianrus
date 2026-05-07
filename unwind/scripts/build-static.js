@@ -127,19 +127,28 @@ const PAGE_STYLE = `
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 2.2rem;
-        height: 2.2rem;
-        padding: 0;
-        border: 1px solid var(--accent);
+        min-width: 2.1rem;
+        min-height: 2.1rem;
+        padding: 0.3rem 0.85rem;
+        border: 1px solid var(--border);
         border-radius: 0;
-        background: var(--accent);
-        color: var(--bg);
-        font-size: 1.15rem;
+        background: transparent;
+        color: var(--text);
+        font-size: 0.88rem;
         line-height: 1;
+        transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+        cursor: pointer;
       }
 
       .section-jump-button[disabled] {
         opacity: 0.45;
+      }
+
+      .section-jump-button:hover,
+      .section-jump-button:focus-visible {
+        border-color: var(--accent);
+        background-color: var(--accent);
+        color: var(--bg);
       }
 
       .section-jump-button span {
@@ -149,7 +158,7 @@ const PAGE_STYLE = `
         width: 100%;
         height: 100%;
         font-family: system-ui, sans-serif;
-        transform: translateY(-0.08em);
+        line-height: 1;
       }
 
       .stack {
@@ -236,7 +245,7 @@ const PAGE_STYLE = `
         text-transform: uppercase;
       }
 
-      .back-to-nightly {
+      .back-to-unwind {
         display: inline-block;
         color: var(--accent-dim);
         font-size: 0.72rem;
@@ -257,17 +266,17 @@ const PAGE_STYLE = `
       }
 
       .meta-row .date-line,
-      .meta-row .back-to-nightly {
+      .meta-row .back-to-unwind {
         margin: 0;
         width: auto;
       }
 
-      .back-to-nightly {
+      .back-to-unwind {
         float: left;
         text-align: left;
       }
 
-      .stack > .back-to-nightly {
+      .stack > .back-to-unwind {
         margin-top: 2.5rem;
       }
 
@@ -863,29 +872,29 @@ function renderDigestPage(entry) {
     "  <head>",
     "    <meta charset=\"utf-8\">",
     "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">",
-    "    <meta name=\"description\" content=\"Nightly Digest — a static daily page with an essay, a question ritual, and a small game.\">",
+    "    <meta name=\"description\" content=\"UNWIND — a static daily page with an essay, a question ritual, and a small game.\">",
     "    <meta property=\"og:type\" content=\"website\">",
-    "    <meta property=\"og:url\" content=\"https://www.cristianrus.me/nightly/digests/" + escapeAttribute(entry.date) + ".html\">",
-    "    <meta property=\"og:title\" content=\"" + escapeAttribute(entry.title) + " — Nightly Digest\">",
-    "    <meta property=\"og:description\" content=\"A nightly reading ritual with one digest per day.\">",
+    "    <meta property=\"og:url\" content=\"https://www.cristianrus.me/unwind/digests/" + escapeAttribute(entry.date) + ".html\">",
+    "    <meta property=\"og:title\" content=\"" + escapeAttribute(entry.title) + " — UNWIND\">",
+    "    <meta property=\"og:description\" content=\"A daily unwind with one reading per day.\">",
     "    <meta property=\"og:image\" content=\"https://www.cristianrus.me/images/avatar.jpg\">",
     "    <link rel=\"icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
     "    <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
     "    <link rel=\"stylesheet\" href=\"./" + SHARED_STYLE_NAME + "\">",
-    "    <title>" + escapeHtml(entry.title) + " — Nightly Digest</title>",
+    "    <title>" + escapeHtml(entry.title) + " — UNWIND</title>",
     "  </head>",
     "  <body>",
     "    <main class=\"page\">",
     "      <header class=\"masthead\">",
     "        <a class=\"site-link\" href=\"../../\">Cristian Rus</a>",
-    "        <p class=\"site-kicker\">nightly digest</p>",
+    "        <p class=\"site-kicker\">UNWIND</p>",
     "      </header>",
     "      <div id=\"app\" class=\"stack\">",
     renderDigestContent(entry),
-    "        <p class=\"back-to-nightly\"><a href=\"../index.html\">THE NIGHTLY</a></p>",
+    "        <p class=\"back-to-unwind\"><a href=\"../index.html\">UNWIND</a></p>",
     "      </div>",
     "    </main>",
-    "    <script id=\"nightly-page-data\" type=\"application/json\">" + safeJson(entry) + "</script>",
+    "    <script id=\"unwind-page-data\" type=\"application/json\">" + safeJson(entry) + "</script>",
     "    <script src=\"./" + SHARED_SCRIPT_NAME + "\"></script>",
     "  </body>",
     "</html>",
@@ -924,22 +933,22 @@ function renderArchivePage(digests) {
     "  <head>",
     "    <meta charset=\"utf-8\">",
     "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">",
-    "    <meta name=\"description\" content=\"Nightly Digest archive.\">",
+    "    <meta name=\"description\" content=\"UNWIND archive.\">",
     "    <link rel=\"icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
     "    <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
     "    <link rel=\"stylesheet\" href=\"./" + SHARED_STYLE_NAME + "\">",
-    "    <title>Nightly Digest Archive</title>",
+    "    <title>UNWIND Archive</title>",
     "  </head>",
     "  <body>",
     "    <main class=\"page\">",
     "      <div class=\"stack\">",
     "        <section class=\"card\">",
-    "          <div class=\"meta-row\"><a class=\"back-to-nightly\" href=\"../index.html\">THE NIGHTLY</a><p class=\"date-line\">Nightly Archive</p></div>",
+    "          <div class=\"meta-row\"><a class=\"back-to-unwind\" href=\"../index.html\">UNWIND</a><p class=\"date-line\">UNWIND Archive</p></div>",
     "          <h1 class=\"entry-title\">Every available digest</h1>",
     "          <p class=\"entry-subtitle\"><a href=\"../index.html\">Back to today launcher</a></p>",
     "        </section>",
     sections,
-    "        <p class=\"back-to-nightly\"><a href=\"../index.html\">THE NIGHTLY</a></p>",
+    "        <p class=\"back-to-unwind\"><a href=\"../index.html\">UNWIND</a></p>",
     "      </div>",
     "    </main>",
     "  </body>",
@@ -951,7 +960,7 @@ function renderArchivePage(digests) {
 function renderDigestContent(entry) {
   return [
     "        <section class=\"card\">",
-    "          <div class=\"meta-row\"><a class=\"back-to-nightly\" href=\"../index.html\">THE NIGHTLY</a><p class=\"date-line\">" + escapeHtml(formatLongDate(entry.date)) + "</p></div>",
+    "          <div class=\"meta-row\"><a class=\"back-to-unwind\" href=\"../index.html\">UNWIND</a><p class=\"date-line\">" + escapeHtml(formatLongDate(entry.date)) + "</p></div>",
     "          <h1 class=\"entry-title\">" + escapeHtml(entry.title) + "</h1>",
     renderParagraphs(entry.essay.paragraphs, 10, entry.essay.blockquote),
     "        </section>",
@@ -1021,7 +1030,7 @@ function renderDigestContent(entry) {
     "",
     "        <section class=\"card\">",
     "          <div class=\"word-box interactive-plain\">",
-    "            <div id=\"nightly-game\" class=\"game-shell\">",
+    "            <div id=\"unwind-game\" class=\"game-shell\">",
     renderGameMarkup(entry.game, entry.date),
     "            </div>",
     "          </div>",
@@ -1418,12 +1427,12 @@ function renderConceptMatchAnswer(data) {
 
 function buildInteractionScript(entry) {
   return [
-    "var NIGHTLY_PAGE_DATA = " + safeJson(entry) + ";",
+    "var UNWIND_PAGE_DATA = " + safeJson(entry) + ";",
     "var app = document.getElementById(\"app\");",
     "document.addEventListener(\"DOMContentLoaded\", function () {",
     "  setupQuestionToggles();",
-    "  setupTrivia(NIGHTLY_PAGE_DATA.trivia);",
-    "  setupGame(NIGHTLY_PAGE_DATA.game, NIGHTLY_PAGE_DATA.date);",
+    "  setupTrivia(UNWIND_PAGE_DATA.trivia);",
+    "  setupGame(UNWIND_PAGE_DATA.game, UNWIND_PAGE_DATA.date);",
     "});",
     interactionFunctions()
   ].join("\n");
@@ -1436,19 +1445,19 @@ function buildSharedStyle() {
 function buildSharedScript() {
   return [
     "var app;",
-    "var NIGHTLY_PAGE_DATA;",
+    "var UNWIND_PAGE_DATA;",
     "document.addEventListener(\"DOMContentLoaded\", function () {",
-    "  var dataElement = document.getElementById(\"nightly-page-data\");",
+    "  var dataElement = document.getElementById(\"unwind-page-data\");",
     "  app = document.getElementById(\"app\");",
     "  if (!app || !dataElement) {",
     "    return;",
     "  }",
-    "  NIGHTLY_PAGE_DATA = JSON.parse(dataElement.textContent || \"{}\");",
+    "  UNWIND_PAGE_DATA = JSON.parse(dataElement.textContent || \"{}\");",
     "  setupSectionJumpButton();",
     "  setupQuestionToggles();",
     "  setupAnswersReveal();",
-    "  setupTrivia(NIGHTLY_PAGE_DATA.trivia);",
-    "  setupGame(NIGHTLY_PAGE_DATA.game, NIGHTLY_PAGE_DATA.date);",
+    "  setupTrivia(UNWIND_PAGE_DATA.trivia);",
+    "  setupGame(UNWIND_PAGE_DATA.game, UNWIND_PAGE_DATA.date);",
     "});",
     interactionFunctions().trim(),
     ""
@@ -1484,7 +1493,7 @@ function setupSectionJumpButton() {
   button.type = "button";
   button.className = "section-jump-button";
   button.setAttribute("aria-label", "Jump to next section");
-  button.innerHTML = "<span aria-hidden=\\"true\\">⌄</span>";
+  button.innerHTML = "<span aria-hidden=\\"true\\">&minus;</span>";
 
   button.onclick = function () {
     jumpToNextSection();
@@ -1635,7 +1644,7 @@ function attachTriviaButton(button, buttons, explanation, trivia) {
 }
 
 function setupGame(game, dateString) {
-  var container = document.getElementById("nightly-game");
+  var container = document.getElementById("unwind-game");
   if (!container) {
     return;
   }
@@ -2301,7 +2310,7 @@ function normalizeEntry(entry, fallbackDate) {
 
   return {
     date: safeText(entry && entry.date, fallbackDate),
-    title: safeText(entry && entry.title, "Nightly Digest"),
+    title: safeText(entry && entry.title, "UNWIND"),
     essay: {
       paragraphs: essayParagraphs,
       blockquote: safeText(entry && entry.essay && entry.essay.blockquote, "The note for tonight is still being prepared."),
