@@ -425,7 +425,9 @@
         var archiveClose = document.getElementById("archiveClose");
         var archiveGroups = document.getElementById("archiveGroups");
 
-        renderArchive(archiveEntries);
+        var visibleArchiveEntries = filterArchiveEntriesForToday(archiveEntries);
+
+        renderArchive(visibleArchiveEntries);
 
         button.onclick = function () {
           button.disabled = true;
@@ -458,8 +460,8 @@
         function resolveDigest(candidates, index) {
           if (index >= candidates.length) {
             status.textContent = "Opening the latest available unwind...";
-            if (archiveEntries.length) {
-              window.location.href = "./digests/" + archiveEntries[0].date + ".html";
+            if (visibleArchiveEntries.length) {
+              window.location.href = "./digests/" + visibleArchiveEntries[0].date + ".html";
               return;
             }
             button.disabled = false;
@@ -518,6 +520,14 @@
           }
 
           archiveGroups.innerHTML = html;
+        }
+
+        function filterArchiveEntriesForToday(entries) {
+          var today = formatLocalDate(new Date());
+
+          return entries.filter(function (entry) {
+            return entry.date <= today;
+          });
         }
 
         function groupByMonth(entries) {
