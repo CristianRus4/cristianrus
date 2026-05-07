@@ -56,7 +56,9 @@
         max-width: 680px;
         margin: 0 auto;
         padding: 2.5rem 1.5rem 6rem;
+        background: #0e0d0b; /* Fallback for Kindle */
         background: var(--bg);
+        color: #f8f5ef; /* Fallback for Kindle */
         color: var(--text);
         font-family: "Quattro", serif;
         font-size: 18px;
@@ -125,9 +127,11 @@
         width: 1.575rem;
         height: 1.575rem;
         padding: 0;
-        border: 1px solid rgba(var(--black-rgb), 0.8);
+        border: 0;
         border-radius: 0;
-        background: rgba(var(--black-rgb), 0.8);
+        background: #c4a96e; /* Fallback for Kindle */
+        background: rgba(var(--gold-rgb), 0.8);
+        color: #0e0d0b; /* Fallback for Kindle */
         color: var(--bg);
         font-size: 1.45rem;
         line-height: 1;
@@ -173,8 +177,10 @@
       }
 
       .section-filled {
-        background: rgba(var(--black-rgb), 0.8);
-        border: 1px solid rgba(var(--black-rgb), 0.8);
+        background: #c4a96e; /* Fallback for Kindle */
+        background: rgba(var(--gold-rgb), 0.8);
+        border: 0;
+        color: #0e0d0b; /* Fallback for Kindle */
         color: var(--bg);
         padding: 0.45rem 1.1rem 1rem;
       }
@@ -220,8 +226,7 @@
 
       .date-line,
       .back-to-nightly {
-        display: block;
-        width: 100%;
+        display: inline-block;
         color: var(--accent-dim);
         font-size: 0.72rem;
         letter-spacing: 0.2em;
@@ -229,10 +234,15 @@
       }
 
       .meta-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
+        display: block;
         margin-bottom: 2.5rem;
+        width: 100%;
+      }
+
+      .meta-row::after {
+        content: "";
+        display: table;
+        clear: both;
       }
 
       .meta-row .date-line,
@@ -242,12 +252,12 @@
       }
 
       .date-line {
-        margin: 0 0 2.5rem;
+        float: right;
         text-align: right;
       }
 
       .back-to-nightly {
-        margin: 2.5rem 0 0;
+        float: left;
         text-align: left;
       }
 
@@ -294,7 +304,7 @@
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
         border-left: 4px solid var(--accent);
-        color: var(--dim);
+        color: var(--text);
         background: transparent;
       }
 
@@ -302,7 +312,7 @@
         margin: 1.8rem 0 1.8rem var(--leading-inset);
         padding: 0.2rem 1.3rem 0.2rem 1.4rem;
         border-left: 4px solid var(--accent);
-        color: var(--dim);
+        color: var(--text);
         background: transparent;
       }
 
