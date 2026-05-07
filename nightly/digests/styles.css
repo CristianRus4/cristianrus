@@ -695,9 +695,9 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.35rem;
-        font-family: "Quattro Italic", serif;
+        font-family: "Quattro", serif;
         font-size: 1.35rem;
-        color: var(--accent);
+        color: var(--text);
       }
 
       .mask span {

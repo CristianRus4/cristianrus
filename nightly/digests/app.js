@@ -523,12 +523,12 @@ function setupLetterByLetterGame(container, data) {
       currentMask = renderMask(answer, guessedLetters);
       mask.innerHTML = currentMask;
       if (currentMask.indexOf("_") === -1) {
-        setStatus(status, successNote || "Solved.", true);
+        setStatus(status, "", true);
         setActionButtonState(submitButton, "success");
         submitButton.disabled = true;
         input.disabled = true;
       } else {
-        setStatus(status, "Good letter.", true);
+        setStatus(status, "", true);
         setActionButtonState(submitButton, "idle");
       }
     } else {
