@@ -25,8 +25,8 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 - The `origin` field names the language and gives etymological or cultural context. The `definition` field is the lived sense of the word, not a dictionary entry.
 
 ## Quote rules
-- Draw from authors in `user-profile.json`. Authors marked as primary may appear at most once every 5 days. Secondary authors at most once every 14 days.
-- Never reuse a quote. Track by source title and approximate location.
+- The quote can be from anyone — the authors list in `user-profile.json` describes who the owner reads and admires, but the quote is not limited to those people. Any writer, thinker, poet, or figure whose words fit is valid.
+- Never reuse a quote. Track by author and source.
 - Prefer lesser-known passages over canonical ones. Avoid the quotes everyone already knows.
 - If the quote is not in English, include the original language text first, then the English translation.
 - The quote should resonate with the essay's territory without illustrating it literally.
