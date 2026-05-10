@@ -8,6 +8,17 @@ There is no content pool to draw from. Everything — essay topics, words, peopl
 2. Read the last 10 files in `data/digests/` and extract what has already been used: essay topics, words, authors quoted, people featured, places, films, and game types. Do not repeat any of these within the new batch or within those last 10 entries.
 3. Generate one `DigestEntry` JSON object per requested day, saved to `data/digests/YYYY-MM-DD.json`.
 
+## Expanded profile fields
+
+The profile now includes six fields beyond authors, books, films, music, interests, and languages. Read each one during step 1 and apply as follows:
+
+- **`trusted_publications`** — these define the quality register and intellectual genre. Every section of every digest should feel like it belongs in one of these outlets. Use them to calibrate voice, depth, and the level of assumed reader engagement. The register is rigorous but not academic; serious but not solemn.
+- **`avoid`** — hard constraints on tone, framing, and topic treatment. Nothing in this list should appear anywhere in a digest — not in the essay, not in the questions, not in the fragment or game. This applies not just to subject matter but to rhetorical posture: a piece should not sound like the things described here even when its topic differs.
+- **`what_resonates_in_writing`** — active qualities to build into every essay, fragment, and person paragraph. These are not optional stylistic preferences; they describe what makes a piece land for this reader. The existing essay rules already encode several of them (tension over resolution, concrete images over abstraction) — treat the others as extensions of the same logic.
+- **`values`** — the implicit worldview. Essays and questions need not state these explicitly, but should never contradict them. A piece that celebrates speed, productivity framing, forced resolution, or naive optimism contradicts this profile at its core regardless of its stated topic.
+- **`recurring_motifs`** — background texture, not essay subjects. These images belong to this reader's sensibility and may appear incidentally — a passing detail, a word choice that carries atmosphere, the setting of a now_here. They are never the point of a digest. Do not build essays, fragments, or questions around them. Do not reach for them. At most one should surface in any digest, and only when the essay's independent territory makes it genuinely natural.
+- **`podcasts_and_audio`** — supplementary cultural range alongside books and films. Figures and ideas from these programmes are valid sources for quotes and person sections, subject to the same rules as all other sources (no repetition, prefer lesser-known passages).
+
 ## Essay rules
 - Generate topics that a person with this sensibility would find genuinely resonant. The profile gives you a sense of what that means — use it to calibrate, not to restrict. Topics are not limited to anything listed there.
 - No topic from the last 10 digests may be repeated, but similarity of angle counts — a rephrase does not constitute a different topic.
