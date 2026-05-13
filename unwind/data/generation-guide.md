@@ -28,6 +28,10 @@ The profile now includes six fields beyond authors, books, films, music, interes
 - The `blockquote` renders after all paragraphs. Treat it as the sentence the essay has been building toward — not a summary, but a crystallisation. The paragraphs must earn it.
 - Write the essay so that the final 2–3 paragraphs drive toward the blockquote: the last paragraph before it should arrive at the tension or image the blockquote then states plainly.
 - The `blockquote` field holds a single sentence, stated without attribution.
+- **Writing Style**: The voice and style of the essay should be modeled after one specific author from the `authors` list in `user-profile.json` (or a similar writer).
+- Do not mix the styles of multiple authors in a single digest. Instead, select an author whose style naturally fits the theme of the day's essay. For example, for a scientific essay about how light works, adopt an informative, accessible style like Hank Green or Steven Pinker, rather than a contemplative or philosophical tone like Marcus Aurelius.
+- Channel the selected author's tone, pacing, and approach, but avoid parody or excessive imitation (e.g., do not use archaic language just because a classical author was chosen). The style should feel organic and perfectly suited to the topic.
+- Rotate through different author styles across the generated batches to ensure a diverse set of voices.
 
 ## Tension rules
 - This section appears immediately after the essay.
