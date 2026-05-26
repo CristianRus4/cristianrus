@@ -1,0 +1,101 @@
+{
+  "date": "2026-06-27",
+  "title": "The Joy That Precedes the Event Itself",
+  "essay": {
+    "paragraphs": [
+      "A child told that the family will be going to the seaside in two weeks does not, on receiving the news, register the information and move on. The child enters a state. The state lasts for the entire fortnight of the wait. The walls of the bedroom are slightly different walls now. The breakfast cereal is slightly different cereal. The ordinary Tuesday is slightly different in a way that makes the school day easier to bear. None of this is the trip itself. The trip itself, when it arrives, will be three days of pleasure and small frustrations and the sand in the wrong places. The two weeks of leaning forward into the anticipated trip are, in any honest accounting, a substantial portion of the actual pleasure the trip will produce, and may in many cases exceed the pleasure of the trip itself.",
+      "Dutch has a noun for this state. Voorpret: literally 'pre-fun' or 'fore-pleasure,' the joy of anticipation that arrives in the days or weeks before an event whose arrival is expected. The word is in everyday Dutch use and is one of the more reliably cited examples of the small lexical resources Dutch has developed for emotional states that English does not isolate. The word names what the child in the example is doing, what the adult planning a holiday is doing, what the cinephile in the days before the release of a long-awaited film is doing, what the food enthusiast does in the morning of an evening for which a particular restaurant has been booked. The state is widespread, recognisable, and English has handled it only with awkward periphrasis like 'looking forward to' or 'anticipating with pleasure.'",
+      "What is interesting about voorpret, considered as an emotional phenomenon, is its empirical relationship to the eventual experience. Psychological research conducted over the past two decades has consistently found that the anticipatory pleasure of an upcoming positive event is, on average, more durable, more reliably positive, and often more intense than the pleasure of the event itself. The trip, in actuality, contains the small frustrations and the unpredicted difficulties that the anticipation does not. The anticipation is pure in a way the actual event cannot be, because the anticipation is constructed by the imagination, and the imagination — left to itself — produces a version of the event purged of the friction that any real event must contain.",
+      "This has, predictably, generated a small industry of research and writing on whether the anticipation is therefore the more rationally pursued good — whether one should structure one's life around the cultivation of anticipations rather than around the events themselves. The conclusions are, predictably, more complicated than the framing suggests. The anticipation depends on the event's arrival for its initial energy: the trip planned but never taken does not generate voorpret, and the trip booked and then cancelled produces a deflation that the original anticipation does not survive. The anticipation is parasitic on the actual event, even when the actual event produces less pleasure than the anticipation did. The two are not separate goods to be traded off against each other; they are linked phases of a single larger experience.",
+      "What this opens up, considered more broadly, is the question of how much of human happiness is conducted in the temporal halo around named events rather than in the events themselves. The anniversary dinner is a few hours; the planning of it can extend across weeks. The summer holiday is a week or two; the looking forward to it can structure an entire spring. The reunion with the old friend is a single afternoon; the slow build-up of pleasure in the days before, and the slow integration in the days after, may collectively contain more of the experience's value than the meeting itself. The Dutch word names one phase of this temporal halo; the broader principle it points to is that the events of a life are larger than the events themselves, and a life optimised only for the events as such is missing the part of the experience that, on careful measurement, often turns out to be the most reliable component.",
+      "What resists in the contemporary culture is the structural pressure to compress the temporal halo. The instant booking, the just-in-time scheduling, the trip planned three days before departure — each of these eliminates the voorpret that the older patterns of anticipation produced. The economic argument is one of efficiency; the experiential cost is the substantial portion of pleasure that the anticipation phase used to supply. A culture that has optimised the logistics of events without preserving the conditions for anticipation has, on the measurable evidence, made itself less happy in the name of convenience, and the trade-off is one that almost no one has explicitly chosen, because the eliminated voorpret was not in the explicit budget of either the individuals or the industries making the optimisation."
+    ],
+    "blockquote": "The events of a life are larger than the events themselves — and a culture that has optimised the logistics without preserving the conditions for anticipation has made itself less happy in the name of convenience."
+  },
+  "tension": {
+    "positions": [
+      "Voorpret names a substantial and underexamined component of human happiness, and the contemporary compression of the temporal halo around events — through instant booking, just-in-time logistics, and convenience-optimised scheduling — has eliminated a measurable portion of the pleasure that the older patterns of anticipation produced. The deliberate cultivation of voorpret is one of the more accessible ways to recover the lost dimension without requiring any change in the events themselves.",
+      "The valorisation of anticipatory pleasure risks producing a kind of compulsory looking-forward that becomes its own form of present-tense impoverishment. The person who is always inhabiting the joy of the next event has constructed a life of perpetual deferral, and the cultivation of voorpret can shade into the inability to inhabit the present moment that the contrary tradition of mindfulness practice has spent considerable effort trying to address."
+    ]
+  },
+  "number": {
+    "value": "67",
+    "label": "Percentage of respondents in a 2010 study by the University of Surrey who reported that the anticipation of a holiday produced as much or more happiness than the holiday itself, with the anticipation effect typically peaking in the eight weeks before departure and being substantially diminished by trips booked less than two weeks in advance."
+  },
+  "fragment": "He had booked the tickets in February and had spent the four months between then and the trip in a state of low-grade pleasant agitation he had not experienced since he was nine. The destination did not particularly matter. What mattered was that the calendar had a date on it, that the months between were oriented toward it, that every difficult Tuesday was now a Tuesday closer to the trip. By the time he boarded the train in late June he had already had four months of the holiday's effect on him. The actual five days that followed were, in their way, anticlimactic. He went home and started planning the next one immediately.",
+  "word": {
+    "term": "voorpret",
+    "pronunciation": "/ˈvoːrˌprɛt/",
+    "original": null,
+    "origin": "Dutch (Nederlands), a compound of 'voor' (before, fore-, pre-) and 'pret' (fun, pleasure, enjoyment). The word is in everyday use in both Netherlands Dutch and Belgian Dutch (Flemish), with a slight regional variation in connotation but essentially the same semantic core. Dutch has a notable productive capacity for emotional compounds of this kind — 'naar-pret' for post-event reminiscence is less established but occasionally used — and the broader Germanic family includes related but not identical concepts (German 'Vorfreude' is the closest cognate). The word entered English-language popular awareness primarily through the cross-cultural happiness research literature of the past two decades.",
+    "definition": "The pleasure of anticipation — the joy that arrives in the days or weeks before a positive event whose arrival is expected, distinct from the pleasure of the event itself and often, in psychological research, more durable than it. Names a specific temporal phase of the experience of a positive event, located in advance of the event and depending on the event's expected arrival but separate from any actual experience of the event itself."
+  },
+  "quote": {
+    "text": "De vreugde van het wachten op iets goeds is vaak groter dan het goede zelf, omdat de verwachting niet weet wat ons toebehoort en wat ons zal teleurstellen.",
+    "translation": "The joy of waiting for something good is often greater than the good itself, because anticipation does not yet know what will belong to us and what will disappoint us.",
+    "author": "Cees Nooteboom",
+    "source": "Roads to Berlin (Berlijnse Notities), 2009 edition"
+  },
+  "on_this_day": {
+    "year": "1880",
+    "place": "Tuscumbia, Alabama, USA",
+    "text": "On 27 June 1880, Helen Keller was born in Tuscumbia, Alabama, to a family whose previous nineteen months had been organised in the kind of voorpret-saturated anticipation that any household awaits the arrival of a first child. The illness that would deprive her of sight and hearing at nineteen months was at this point still entirely in the future; the period between the announcement of the pregnancy and the birth, and the long first eighteen months of her life, contained for her parents the full undiminished anticipatory pleasure that the subsequent decades would substantially reshape. The narrative the world would later attach to Keller's life — the deprivation, the breakthrough with Anne Sullivan, the long public career — was not the narrative her parents were inhabiting on the day of her birth, and the anticipation that preceded that birth is part of her story even though it is not the part that the popular accounts have generally preserved."
+  },
+  "person": {
+    "name": "Geert Hofstede",
+    "dates": "1928 – 2020 · Haarlem, Netherlands / Velp, Netherlands",
+    "paragraphs": [
+      "Geert Hofstede was the Dutch social psychologist whose 1970s research at IBM — conducted on a dataset of 116,000 employee surveys from forty countries — produced the cross-cultural dimensions framework that has, for fifty years, been the most cited single tool in international management studies and cross-cultural comparative social science. The original four dimensions (power distance, individualism-collectivism, masculinity-femininity, uncertainty avoidance) were extended in subsequent work to six, and the framework has been applied across an enormous range of practical and scholarly contexts, including substantial work on national differences in time orientation that touches directly on phenomena like voorpret. Dutch culture, on Hofstede's measures, scored unusually high on long-term orientation and unusually low on uncertainty avoidance — both consistent with the cultural conditions that would produce and maintain a vocabulary for anticipatory pleasure.",
+      "Hofstede's complication is that the framework that made his career has been substantially criticised, particularly in the past two decades, on methodological and conceptual grounds. The IBM dataset, however large, was a single multinational corporation's workforce; the national-level scores derived from it have been used in contexts they may not warrant; and the implicit assumption that nations are the appropriate unit of cultural analysis has been challenged by anthropologists and cross-cultural psychologists working on more disaggregated frameworks. Hofstede himself acknowledged some of these limitations in later editions of his work, but the framework's enormous practical uptake has substantially outrun the careful scholarly conversation about its actual reliability. The work is foundational and the work is contested, and the two facts coexist in the way they often do with influential social-science instruments."
+    ]
+  },
+  "now_here": {
+    "name": "The Quay at Hoorn",
+    "location": "Hoorn, North Holland, Netherlands",
+    "text": "An old harbour quay in the small Frisian-coast town of Hoorn, north of Amsterdam on the IJsselmeer (formerly the Zuiderzee until the closing of the Afsluitdijk in 1932 converted the salt-water bay into a freshwater lake). The quay was, in the seventeenth century, one of the principal departure points of the Dutch East India Company's ships bound for Java, Sumatra, Banda, the Moluccas, and the trading ports of South Asia and the Pacific; the trips departed across the world's longest commercial voyages of the period, and the families who saw the sailors off were committing to anticipations measured in years rather than weeks. The Dutch capacity for the long anticipation, of which voorpret is the everyday domestic version, was developed in part through several centuries of organising household life around departures and arrivals on this scale. The quay is now a small marina with weekend sailors, but the architecture of the surrounding warehouses preserves the geometry of the longer-distance trade that gave the town its older shape."
+  },
+  "questions": [
+    {
+      "text": "Is there an upcoming event in your life that you are currently in the state of voorpret about — and what does the state actually feel like, attended to from inside rather than referenced from outside?",
+      "deeper": "How much of the eventual pleasure of the upcoming event do you suspect is already being experienced through the anticipation? And does the suspicion change anything about how you would like to relate to the days between now and the event?",
+      "experiment": "If there is an upcoming positive event in your life, spend ten minutes this week deliberately inhabiting the voorpret — sitting with the anticipation, noticing what it does in your body and mind, allowing the pleasure to be present in its own right rather than as a preview of the eventual event. Notice whether the deliberate attention amplifies the state or dissipates it."
+    },
+    {
+      "text": "The essay suggests that the contemporary compression of time has eliminated much of the conditions for voorpret. Have you noticed this in your own life — have your last-minute bookings, just-in-time arrangements, and instant access systematically reduced the anticipatory pleasure you once routinely experienced?",
+      "deeper": "If you have, is the loss something you have noticed only through this kind of explicit reflection, or has it been present to you as a felt impoverishment all along? And would the recovery of longer planning horizons be available to you if you decided to recover them?",
+      "experiment": "Book one upcoming positive event — a trip, a dinner, a concert, a visit — at least eight weeks in advance, even if your usual practice would have been to book closer to the date. Notice across the intervening weeks what the longer anticipation produces, and decide on the basis of the experience whether the convenience of the shorter horizon was worth what it was costing you."
+    },
+    {
+      "text": "The essay also warns against the cultivation of voorpret as compulsory looking-forward that becomes its own form of present-tense impoverishment. Can you find the line, in your own life, between the healthy anticipation of upcoming pleasures and the unhealthy escape into them?",
+      "deeper": "What signs in your own conduct would warn you that the anticipation has tipped from one to the other? And do you trust those signs, or do you find yourself ignoring them in favour of the more pleasant continued anticipation?",
+      "experiment": "Pick one current source of voorpret in your life. Spend a day deliberately not allowing yourself to anticipate it — attending fully to the present moment and refusing the small pleasant escapes into the imagined future event. Notice both what becomes available in the present and what you lose by refusing the anticipation, and let the balance inform your subsequent practice."
+    }
+  ],
+  "trivia": {
+    "question": "Voorpret in Dutch has a close cognate in another major Germanic language whose compound word names approximately the same phenomenon. Which of the following is that cognate?",
+    "options": [
+      "German Vorfreude",
+      "Swedish förlust",
+      "Norwegian forskning",
+      "Danish foregribelse"
+    ],
+    "correct": 0,
+    "explanation": "The German 'Vorfreude' is the closest cognate of the Dutch 'voorpret,' constructed from the same prefix ('vor-' or 'voor-' meaning 'before, pre-') and a root meaning 'joy' or 'pleasure' ('Freude' in German, 'pret' in Dutch). Both words name the specific phenomenon of anticipatory pleasure and are in everyday use in their respective languages. The other options name unrelated concepts: 'förlust' is Swedish for 'loss,' 'forskning' is Norwegian for 'research,' and 'foregribelse' is Danish for 'anticipation' in a more neutral and abstract sense, without the specifically pleasurable connotation."
+  },
+  "game": {
+    "type": "false_cognate",
+    "data": {
+      "word_a": {"term": "voorpret", "language": "Dutch", "meaning": "the joy of anticipation; pleasure experienced before an expected positive event"},
+      "word_b": {"term": "fret", "language": "English", "meaning": "to worry or be anxious; to wear away through friction"},
+      "question": "Both 'pret' (the second element of the Dutch compound) and 'fret' (the English verb) are short Germanic-looking words touching on emotional states. Are they true cognates with a shared etymological root, or false cognates that resemble each other only by coincidence?",
+      "answer": "false_cognate",
+      "explanation": "Despite the surface similarity, the words are not cognate. The Dutch 'pret' (joy, fun, pleasure) derives from a Middle Dutch word of uncertain origin, possibly related to a Latin borrowing. The English 'fret' derives from the Old English verb 'fretan' (to devour, to eat away), from a Proto-Germanic root meaning 'to consume' — preserved in the modern senses of both 'to wear away' (metal frets in the marine sense) and, by metaphorical extension, 'to be eaten away by anxiety.' The semantic territories of the two words happen to be related by opposition — joy and worry — but the etymological histories are entirely independent."
+    }
+  },
+  "movie": {
+    "title": "Le Voyage en ballon",
+    "director": "Albert Lamorisse",
+    "year": "1960",
+    "text": "Albert Lamorisse's hour-long French film, made for general audiences but particularly aimed at children, in which a young boy and his grandfather travel across France in a hot-air balloon, the entire journey filmed from a second balloon flying alongside. The film is one of the most fully sustained cinematic expressions of voorpret in any tradition: the entire structure of the picture is the slow build-up of anticipation as the journey progresses across the landscape, with each new region visible from above producing the leaning-forward into what the next region will contain. Lamorisse's earlier film, 'The Red Balloon' (1956), is more famous, but 'Le Voyage en ballon' is the more direct study of how pleasure is constituted by the slow approach to what is being looked forward to."
+  }
+}
