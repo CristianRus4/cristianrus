@@ -43,11 +43,7 @@
 html {
     background-color: var(--bg);
     font-family: 'Geist', sans-serif;
-        font-weight: 350;
-
-
- 
-
+    font-weight: 350;
 }
 
 nav {
@@ -87,16 +83,14 @@ h1 {
      font-size: 1em;
     margin-bottom: 1.5em;
     margin-top: 1.5em;
-         font-weight: 500;
-         color: var(--title);
-
-    
+    font-weight: 600;
+    color: var(--title);
 }
 
 
 h2 {
      font-size: 1em;
-    font-weight: 400;
+    font-weight: 550;
     margin-bottom: 0.5em;
     margin-top: 2.5em;
     
@@ -105,7 +99,7 @@ h2 {
 
 h3 {
      font-size: 1em;
-    font-weight: 300;
+    font-weight: 500;
     margin-bottom: 0.5em;
     margin-top: 2.5em;
     
@@ -114,7 +108,7 @@ h3 {
 
 strong {
      
-    font-weight: 500;
+    font-weight: 600;
     
 }
 
@@ -293,7 +287,7 @@ figcaption {
 
 a:link, a:visited {
     background: var(--title); 
-    font-weight: 400;
+    font-weight: 500;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
@@ -302,7 +296,7 @@ a:link, a:visited {
 a:hover {
 
     background: linear-gradient(to bottom left, var(--link-hover-start) 6%, var(--link-hover-end) 100%);
-    font-weight: 400;
+    font-weight: 500;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
@@ -398,9 +392,9 @@ a:hover {
 /* New static section label (not a button/link) */
 .section-label {
   font-size: 1em;
-  font-weight: 400; /* lighter like sub-buttons used to be */
+  font-weight: 350;
   line-height: 1.2;
-  opacity: 0.75; /* dim like sub-buttons */
+  color: var(--title);
   padding: 0;
   margin: 0;
 }
@@ -425,11 +419,10 @@ a:hover {
   padding: 0.1em 0; /* no left padding */
 }
 
-/* Sub-items slightly dimmed; full on hover for feedback */
+/* Sub-items use weight instead of opacity for hierarchy */
 .extra-button a {
-  opacity: 1; /* full strength */
-  font-weight: 500; /* stronger like former section label */
-  color: var(--text); /* match subtitle color */
+  font-weight: 500;
+  color: var(--title);
   background: none; /* cancel global gradient link color */
   -webkit-background-clip: initial;
   -webkit-text-fill-color: currentColor;
@@ -519,11 +512,12 @@ a:hover {
     /* Darker avatar border in dark mode for subtlety */
     .header { color: var(--title-dark); }
     .avatar { border-color: var(--avatar-border-dark); }
+    .section-label { color: var(--title-dark); }
 
-    /* Buttons match subtitle color in dark mode */
+    /* Buttons match link color in dark mode */
     .extra-button a,
     .extra-button a:hover {
-      color: var(--text-dark); /* same as body/subtitle in dark */
+      color: var(--title-dark);
       background: none;
       -webkit-background-clip: initial;
       -webkit-text-fill-color: currentColor;

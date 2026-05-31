@@ -21,13 +21,26 @@
 
 	<h1>about</h1>
 
-	<p>Hey, I'm Cristian, a digital designer based in Wellington, New Zealand.</p>
+	<p>Hey, I'm Cristian, a designer based in Wellington, New Zealand.</p>
 
-	<p>During my career, I have focused on how design and technology influence society and human behavior. My aim is to communicate and devise design-oriented solutions for the interactions between customers and businesses. Currently working as a designer and developing my own apps.</p>
+	<p>I'm focused on how design and technology influence society and human behavior. The aim is to communicate and devise design-oriented solutions for the interactions between customers and businesses. Currently working as a designer and developing my own apps.</p>
 
 	<p>Previously I spent over five years as a tech journalist at <a href="https://webedia-group.com" target="_blank">Webedia</a> and worked as a designer for various companies conducting research on user interactions, crafting interfaces and designing digital spaces.</p>
 
-	<p>The most effective way to contact me is by email at <a href="mailto:cristianrus@hey.com">cristianrus@hey.com</a> or by call or text at <a href="tel:+642041926150">+64 20 4192 6150</a>. Otherwise, if we're in the same city, we can have a coffee or go for a walk. Thank you for your time.</p>
+	<p>The most effective way to contact me is <a id="copy-email" href="#">by email</a> or a <a href="tel:+642041926150">text</a>.</p>
+	<script type="text/javascript">
+	const copyEmail = document.getElementById('copy-email');
+	copyEmail.addEventListener('click', function(e) {
+	  e.preventDefault();
+	  navigator.clipboard.writeText('cristianrus@hey.com');
+	  this.textContent = 'address copied';
+	  setTimeout(() => {
+	    this.textContent = 'by email';
+	  }, 1500);
+	});
+	</script>
+	</body>
+
 
 	</body>
 </html>

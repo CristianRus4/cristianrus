@@ -38,20 +38,9 @@
   <div class="button-container">
   <div class="section-label">apps</div>
   <div class="extra-buttons">
-    <button class="extra-button"><a href="/apps/left">Left</a></button>
-    <button class="extra-button"><a href="/apps/ftnss">ftnss</a></button>
-    <button class="extra-button"><a href="/apps/txtpod">txtpod</a></button>
-    <button id="apps-ellipsis" class="extra-button" aria-expanded="false">···</button>
-  </div>
-  <div id="more-apps" style="display:none;">
-    <div class="extra-buttons">
-      <button class="extra-button"><a href="/apps/bites">Bites</a></button>
-      <button class="extra-button"><a href="/apps/notsobusy">NotSoBusy</a></button>
-    </div>
-    <div class="extra-buttons">
-      <button class="extra-button"><a href="/apps/kiwicamping">KiwiCamping</a></button>
-      <button class="extra-button"><a href="/apps/ftnss-workouts">ftnss Workouts</a></button>
-    </div>
+    <button class="extra-button"><a href="https://getleft.app">Left</a></button>
+    <button class="extra-button"><a href="https://ftnss.app">ftnss</a></button>
+    <button class="extra-button"><a href="https://txtpod.app">txtpod</a></button>
   </div>
   </div>
 
@@ -73,16 +62,6 @@
       this.textContent = 'mail';
     }, 1000);
   });
-  // Reveal extra apps when tapping the ellipsis and hide the ellipsis
-  const appsEllipsis = document.getElementById('apps-ellipsis');
-  const moreApps = document.getElementById('more-apps');
-  if (appsEllipsis && moreApps) {
-    appsEllipsis.addEventListener('click', function() {
-      moreApps.style.display = 'block';
-      appsEllipsis.style.display = 'none';
-      appsEllipsis.setAttribute('aria-expanded', 'true');
-    });
-  }
   </script>
 
 	</body>
