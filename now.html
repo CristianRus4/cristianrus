@@ -234,11 +234,11 @@
                     const lastMovie = data.items[0];
 
                     // Extract movie details
-                    const title = lastMovie.title;
+                    const title = lastMovie.title.replace(/\s+-\s+★.*$/, '').trim();
 
                     // Display last movie watched
                     const lastMovieElement = document.getElementById('last-movie');
-                    lastMovieElement.innerHTML = `${title}`;
+                    lastMovieElement.textContent = title;
                 } else {
                     console.error('RSS feed data is empty or invalid');
                 }
@@ -325,7 +325,7 @@
             // Proxy URL to fetch the RSS feed
             const proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-            const goodreadsFeed = 'https://www.goodreads.com/review/list_rss/74821928?key=camdfkmNuO8PqylPKlVe_AckSkL5KnbljWIRS8Dd_HO_Nq_m&shelf=read';
+            const goodreadsFeed = 'https://www.goodreads.com/review/list_rss/74821928?key=camdfkmNuO8PqylPKlVe_AckSkL5KnbljWIRS8Dd_HO_Nq_m&shelf=read&sort=date_added';
             const cacheBuster = Date.now();
 
             // Fetch the RSS feed using the proxy. Goodreads returns this shelf ordered by date added descending.
@@ -334,7 +334,10 @@
                 .then(data => {
                     // Check if data contains items
                     if (data.items && data.items.length > 0) {
-                        const latestBook = data.items[0];
+                        const latestBook = data.items.find(item => {
+                            const readAtMatch = item.description.match(/read at:\s*(.*?)<br/);
+                            return !readAtMatch || readAtMatch[1].trim() === '';
+                        }) || data.items[0];
 
                         // Extract book details
                         const title = latestBook.title;
