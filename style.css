@@ -151,14 +151,14 @@ p {
 th {
     text-align: right;
     font-weight: 450;
-    vertical-align: center;
+    vertical-align: top;
  
 }
 
 td {
     
     padding-left: 1em;
-    vertical-align: center;
+    vertical-align: top;
 }
 
 figure {
