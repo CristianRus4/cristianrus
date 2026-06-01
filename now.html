@@ -163,11 +163,9 @@
                     const trackName = topTrack.name;
                     const playCount = topTrack.playcount;
 
-                    // Display top track
+                    // Display top artist
                     const topSongElement = document.getElementById('top-song');
-                    topSongElement.innerHTML = `
-                         <em>${trackName}</em> by ${artist}
-                    `;
+                    topSongElement.textContent = artist;
                 } else {
                     console.error('No top tracks found for the user in the last 7 days.');
                 }
@@ -327,26 +325,23 @@
             // Proxy URL to fetch the RSS feed
             const proxyUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-            // Fetch the RSS feed using the proxy
-            fetch(proxyUrl + encodeURIComponent('https://www.goodreads.com/review/list_rss/74821928?key=camdfkmNuO8PqylPKlVe_AckSkL5KnbljWIRS8Dd_HO_Nq_m&shelf=read'))
+            const goodreadsFeed = 'https://www.goodreads.com/review/list_rss/74821928?key=camdfkmNuO8PqylPKlVe_AckSkL5KnbljWIRS8Dd_HO_Nq_m&shelf=read';
+            const cacheBuster = Date.now();
+
+            // Fetch the RSS feed using the proxy. Goodreads returns this shelf ordered by date added descending.
+            fetch(`${proxyUrl}${encodeURIComponent(goodreadsFeed)}&cacheBuster=${cacheBuster}`)
                 .then(response => response.json())
                 .then(data => {
                     // Check if data contains items
                     if (data.items && data.items.length > 0) {
-                        // Find the most recent book by comparing publication dates
-                        let mostRecentBook = data.items[0];
-                        data.items.forEach(item => {
-                            if (new Date(item.pubDate) > new Date(mostRecentBook.pubDate)) {
-                                mostRecentBook = item;
-                            }
-                        });
+                        const latestBook = data.items[0];
 
                         // Extract book details
-                        const title = mostRecentBook.title;
+                        const title = latestBook.title;
                         let author = '';
 
                         // Search for author information in the description
-                        const description = mostRecentBook.description;
+                        const description = latestBook.description;
                         const authorMatch = description.match(/author:\s*(.*?)<br/);
                         if (authorMatch && authorMatch.length === 2) {
                             author = authorMatch[1];
@@ -465,10 +460,10 @@
 	        const calendarUrl = 'https://calendar.google.com/calendar/ical/54eff294d308ada6f3e0686a1c8c3a6f02dfd356ff82729c995aa0e7b17d7de8%40group.calendar.google.com/private-d9f951a9718d34d55a6fc5bf6487f1ca/basic.ics';
 	        const proxyUrl = 'https://api.codetabs.com/v1/proxy/?quest=';
 	        const workoutNames = {
-	            'traditional strength training': 'Strength Training',
-	            'traditional strengh training': 'Strength Training',
-	            'run': 'Running',
-	            'walk': 'Walking'
+	            'traditional strength training': 'strength training',
+	            'traditional strengh training': 'strength training',
+	            'run': 'running',
+	            'walk': 'walking'
 	        };
 
 	        function cleanText(value) {
