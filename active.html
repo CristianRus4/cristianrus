@@ -579,10 +579,30 @@
       tl.style.paddingLeft = tl.style.paddingRight = (scroll.clientWidth / 2) + "px";
       requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; updateFades(); });
     } else {
-      // Mobile: cursor pinned to centre, timeline scrolls under it.
+      // Mobile: cursor pinned to centre, timeline scrolls under it. No snapping — line stays at pixel centre.
       tl.style.paddingLeft = tl.style.paddingRight = (scroll.clientWidth / 2) + "px";
-      scroll.addEventListener("scroll", () => { showAt(Math.round(scroll.scrollLeft / TL_STEP)); updateFades(); });
-      requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; showAt(lastActive); updateFades(); });
+      function mobileShowAt(scrollLeft) {
+        const exactIdx = scrollLeft / TL_STEP;
+        const idx = Math.max(0, Math.min(days.length - 1, Math.round(exactIdx)));
+        const day = days[idx];
+        date.innerHTML = `<span class="caption">${tlDateLabel(day.date)}</span>`;
+        if (day.items.length) {
+          info.innerHTML = day.items.map(a => {
+            const parts = [niceType(a.sport_type || a.type)];
+            if (a.distance > 0) parts.push((a.distance / 1000).toFixed(2) + "km");
+            if (a.moving_time) parts.push(durShort(a.moving_time));
+            return `<small>${esc(parts.join("  ·  "))}</small>`;
+          }).join("");
+        } else info.innerHTML = `<small>Rest</small>`;
+        const prev = tl.querySelector(".tl-day.on"); if (prev) prev.classList.remove("on");
+        if (tl.children[idx]) tl.children[idx].classList.add("on");
+        scrub.dataset.idx = idx;
+        // Position the line at the exact pixel centre, not snapped to a column.
+        scrub.style.left = (scroll.clientWidth / 2) + "px";
+        openScrub();
+      }
+      scroll.addEventListener("scroll", () => { mobileShowAt(scroll.scrollLeft); updateFades(); });
+      requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; mobileShowAt(lastActive * TL_STEP); updateFades(); });
     }
   }
 
