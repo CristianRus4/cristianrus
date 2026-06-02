@@ -593,29 +593,39 @@ a:hover {
 
 /* On the dashboard page, tighten the first viewport and drop the empty status line */
 body:has(#dash) {
-  margin-top: 6vh;
+  margin-top: 4vh;
   margin-bottom: 0;
 }
-body:has(#dash) .sub { margin-bottom: 0.75em; }
+body:has(#dash) .sub { margin-bottom: 0.5em; }
 #status:empty { display: none; }
+
+@media (max-width: 560px) {
+  body:has(#dash) {
+    margin-top: 3vh;
+  }
+  body:has(#dash) .title,
+  body:has(#dash) .sub {
+    margin-top: 0;
+  }
+}
 
 /* All-time scrubbable timeline. Each day is a column; each workout that day is a
    stacked segment whose height = its duration. Data bars are full opacity; the
    hovered/centred day gets a taller cursor bar with details above and date below.
    Edges fade (overlay gradient) only on the side that still has more to scroll. */
-.timeline-summary { margin: 1em 0 0; text-align: left; }
-.timeline-outer { position: relative; height: calc(100vh - 11em); min-height: 0; margin: 0; width: 100vw; margin-left: calc(50% - 50vw); }
-.timeline-scroll { position: absolute; left: 0; right: 0; top: 34%; bottom: clamp(28px, 6vh, 64px); overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+.timeline-summary { margin: 0.75em 0 0; text-align: left; }
+.timeline-outer { position: relative; height: calc(100dvh - 10em); min-height: 0; margin: 0; width: 100vw; margin-left: calc(50% - 50vw); }
+.timeline-scroll { position: absolute; left: 0; right: 0; top: 34%; bottom: clamp(44px, 8vh, 86px); overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
 .timeline-scroll::-webkit-scrollbar { display: none; }
 .timeline { display: flex; align-items: flex-end; height: 100%; }
 .tl-day { flex: 0 0 auto; width: 1px; margin-right: 6px; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; clip-path: inset(100% 0 0 0); transition: clip-path 1500ms ease; }
 .tl-seg { width: 100%; background: var(--title); }
 .timeline.play .tl-day { clip-path: inset(0); }                /* reveal each full day from the bottom on load */
 .tl-day.empty .tl-seg { opacity: 0.18; }                       /* rest-day tick recedes */
-.tl-fade { position: absolute; top: 34%; bottom: clamp(28px, 6vh, 64px); width: 64px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
+.tl-fade { position: absolute; top: 34%; bottom: clamp(44px, 8vh, 86px); width: 64px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
 .tl-fade.left { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
 .tl-fade.right { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
-.tl-scrub { position: absolute; top: 34%; bottom: clamp(28px, 6vh, 64px); width: 0; pointer-events: none; display: none; z-index: 3; }
+.tl-scrub { position: absolute; top: 34%; bottom: clamp(44px, 8vh, 86px); width: 0; pointer-events: none; display: none; z-index: 3; }
 .tl-label { position: absolute; top: 0; left: 0.4em; white-space: nowrap; text-align: left; line-height: 1.35; opacity: 0; transition: opacity 0.01s linear 30ms; }
 .tl-line { position: absolute; inset: 0 auto 0 0; width: 1px; transform: scaleY(0); transform-origin: center; background: linear-gradient(to bottom, var(--link-hover-start), var(--link-hover-end)); transition: transform 150ms ease; }
 .tl-info, .tl-date { font-size: 0.5em; }
