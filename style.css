@@ -599,24 +599,33 @@ body:has(#dash) {
 body:has(#dash) .sub { margin-bottom: 0.5em; }
 #status:empty { display: none; }
 
+@media (max-width: 560px) {
+  .timeline-summary { margin-top: 0.5em; }
+  .timeline-outer {
+    height: calc(100dvh - 18em);
+    margin-top: 0;
+  }
+  .timeline-scroll {
+    top: 8%;
+    bottom: clamp(130px, 24vh, 180px);
+  }
+  .tl-fade {
+    top: 8%;
+    bottom: clamp(130px, 24vh, 180px);
+  }
+  .tl-scrub {
+    top: 8%;
+    bottom: clamp(130px, 24vh, 180px);
+  }
+}
+
 /* All-time scrubbable timeline. Each day is a column; each workout that day is a
    stacked segment whose height = its duration. Data bars are full opacity; the
    hovered/centred day gets a taller cursor bar with details above and date below.
    Edges fade (overlay gradient) only on the side that still has more to scroll. */
 .timeline-summary { margin: 0.75em 0 0; text-align: left; }
 .timeline-outer { position: relative; height: calc(100dvh - 10em); min-height: 0; margin: 0; width: 100vw; margin-left: calc(50% - 50vw); }
-.timeline-scroll {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 34%;
-  bottom: clamp(44px, 8vh, 86px);
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
-}
+.timeline-scroll { position: absolute; left: 0; right: 0; top: 34%; bottom: clamp(44px, 8vh, 86px); overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
 .timeline-scroll::-webkit-scrollbar { display: none; }
 .timeline { display: flex; align-items: flex-end; height: 100%; }
 .tl-day { flex: 0 0 auto; width: 1px; margin-right: 6px; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; clip-path: inset(100% 0 0 0); transition: clip-path 1500ms ease; }
@@ -633,26 +642,6 @@ body:has(#dash) .sub { margin-bottom: 0.5em; }
 .tl-info small { display: block; }
 .tl-scrub.active .tl-line { transform: scaleY(1); }
 .tl-scrub.active .tl-label { opacity: 1; transition-delay: 120ms; }
-
-@media (max-width: 560px) {
-  .timeline-summary { margin-top: 0.5em; }
-  .timeline-outer {
-    height: calc(100dvh - 17em);
-    margin-top: 0;
-  }
-  .timeline-scroll {
-    top: 8%;
-    bottom: clamp(44px, 8vh, 72px);
-  }
-  .tl-fade {
-    top: 8%;
-    bottom: clamp(44px, 8vh, 72px);
-  }
-  .tl-scrub {
-    top: 8%;
-    bottom: clamp(44px, 8vh, 72px);
-  }
-}
 
 /* Range filter row */
 .filters { display: flex; flex-wrap: wrap; gap: 0.25em 1.25em; margin: 0.5em 0 2em; }

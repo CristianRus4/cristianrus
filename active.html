@@ -545,7 +545,7 @@
       scrub.classList.remove("active");
       hideScrubTimer = setTimeout(() => { scrub.style.display = "none"; }, 150);
     }
-    function showAt(idx, reveal = true) {
+    function showAt(idx) {
       idx = Math.max(0, Math.min(days.length - 1, idx));
       const day = days[idx];
       date.innerHTML = `<span class="caption">${tlDateLabel(day.date)}</span>`;
@@ -561,7 +561,7 @@
       if (tl.children[idx]) tl.children[idx].classList.add("on");
       scrub.dataset.idx = idx;
       positionScrub(idx);
-      if (reveal) openScrub();
+      openScrub();
     }
 
     // Default to the most recent day that actually has a workout.
