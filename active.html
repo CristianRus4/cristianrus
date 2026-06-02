@@ -32,6 +32,7 @@
         </div>
         <div class="tl-line"></div>
       </div>
+      <div class="tl-cursor" id="tlcursor"></div>
     </div>
 
     <!--
@@ -483,6 +484,7 @@
   const TL_MINH = 54;     // shortest workout day height in px
   const TL_MAXH = 320;    // tallest day stack in px
   const TL_GROW = 1500;   // ms for the tallest bar to grow on load
+  const TL_CURSOR_SIZE = 8; // visible square cursor size in px
 
   function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
   const tlDateLabel = (d) => d.toLocaleDateString(undefined, { month: "short" }) + " " + ordinal(d.getDate()) + ", " + d.getFullYear();
@@ -490,7 +492,7 @@
   function tlDur(s) { s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return [h, m, x].map(n => String(n).padStart(2, "0")).join(":"); }
 
   function renderTimeline() {
-    const outer = $("tlouter"), scroll = $("tlscroll"), tl = $("tl"), scrub = $("tlscrub"), info = $("tlinfo"), date = $("tldate");
+    const outer = $("tlouter"), scroll = $("tlscroll"), tl = $("tl"), scrub = $("tlscrub"), cursor = $("tlcursor"), info = $("tlinfo"), date = $("tldate");
     if (!ALL.length) { outer.style.display = "none"; return; }
 
     // Group activities by local day, then walk every day from the first to today.
@@ -533,19 +535,59 @@
     function positionScrub(idx) {
       // Sit exactly over the day's 1px bar.
       const pad = scroll.clientWidth / 2;
-      scrub.style.left = (pad + (idx * TL_STEP) - scroll.scrollLeft) + "px";
+      scrub.style.left = (pad + (idx * TL_STEP) + 0.5 - scroll.scrollLeft) + "px";
+    }
+    function positionMorphCursor(clientY) {
+      const x = scrub.getBoundingClientRect().left;
+      const r = scrub.getBoundingClientRect();
+      const y = Math.max(0, Math.min(r.height, clientY - r.top));
+      cursor.style.left = x + "px";
+      cursor.style.top = r.top + "px";
+      cursor.style.height = r.height + "px";
+      cursor.style.setProperty("--tl-origin-y", (y / r.height * 100).toFixed(2) + "%");
+      cursor.style.setProperty("--tl-pointer-y", y.toFixed(1) + "px");
     }
     let hideScrubTimer = null;
+    let morphTimer = null;
     function openScrub() {
       clearTimeout(hideScrubTimer);
+      clearTimeout(morphTimer);
+      outer.classList.add("scrubbing");
       scrub.style.display = "grid";
-      requestAnimationFrame(() => scrub.classList.add("active"));
+      cursor.style.display = "block";
+      if (!cursor.classList.contains("active") && !cursor.classList.contains("touch")) {
+        cursor.classList.add("touch");
+        morphTimer = setTimeout(() => cursor.classList.add("active"), 90);
+      }
+      requestAnimationFrame(() => {
+        scrub.classList.add("active");
+      });
     }
     function closeScrub() {
+      clearTimeout(morphTimer);
+      outer.classList.remove("scrubbing");
       scrub.classList.remove("active");
-      hideScrubTimer = setTimeout(() => { scrub.style.display = "none"; }, 150);
+      cursor.classList.remove("touch");
+      cursor.classList.remove("active");
+      hideScrubTimer = setTimeout(() => {
+        scrub.style.display = "none";
+        cursor.style.display = "none";
+      }, 600);
     }
-    function showAt(idx) {
+    function setScrubOrigin(clientY) {
+      const r = scrub.getBoundingClientRect();
+      const y = Math.max(0, Math.min(r.height, clientY - r.top));
+      scrub.style.setProperty("--tl-origin-y", (y / r.height * 100).toFixed(2) + "%");
+    }
+    function cursorTouchesDay(idx, clientY) {
+      if (clientY == null) return false;
+      const dayEl = tl.children[idx];
+      if (!dayEl) return false;
+      const r = dayEl.getBoundingClientRect();
+      const half = TL_CURSOR_SIZE / 2;
+      return clientY + half >= r.top && clientY - half <= r.bottom;
+    }
+    function showAt(idx, reveal = true, clientY = null) {
       idx = Math.max(0, Math.min(days.length - 1, idx));
       const day = days[idx];
       date.innerHTML = `<span class="caption">${tlDateLabel(day.date)}</span>`;
@@ -561,7 +603,14 @@
       if (tl.children[idx]) tl.children[idx].classList.add("on");
       scrub.dataset.idx = idx;
       positionScrub(idx);
-      openScrub();
+      if (clientY != null) {
+        setScrubOrigin(clientY);
+        positionMorphCursor(clientY);
+      }
+      if (reveal) {
+        if (cursorTouchesDay(idx, clientY)) openScrub();
+        else closeScrub();
+      }
     }
 
     // Default to the most recent day that actually has a workout.
@@ -572,17 +621,18 @@
       // Desktop: nothing shown until the cursor actually moves over the timeline.
       scroll.addEventListener("pointermove", e => {
         const x = e.clientX - scroll.getBoundingClientRect().left;
-        showAt(Math.round((scroll.scrollLeft + x - scroll.clientWidth / 2) / TL_STEP)); // snap to nearest bar
+        showAt(Math.round((scroll.scrollLeft + x - scroll.clientWidth / 2) / TL_STEP), true, e.clientY); // snap to nearest bar
       });
       scroll.addEventListener("pointerleave", closeScrub);
       scroll.addEventListener("scroll", () => { if (scrub.dataset.idx) positionScrub(+scrub.dataset.idx); updateFades(); });
       tl.style.paddingLeft = tl.style.paddingRight = (scroll.clientWidth / 2) + "px";
       requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; updateFades(); });
     } else {
-      // Mobile: cursor pinned to centre, timeline scrolls under it.
+      // Mobile: timeline scrolls under the centre without opening the hover line.
+      outer.classList.add("mobile-scroll");
       tl.style.paddingLeft = tl.style.paddingRight = (scroll.clientWidth / 2) + "px";
-      scroll.addEventListener("scroll", () => { showAt(Math.round(scroll.scrollLeft / TL_STEP)); updateFades(); });
-      requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; showAt(lastActive); updateFades(); });
+      scroll.addEventListener("scroll", () => { showAt(Math.round(scroll.scrollLeft / TL_STEP), false); updateFades(); });
+      requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; showAt(lastActive, false); updateFades(); });
     }
   }
 
