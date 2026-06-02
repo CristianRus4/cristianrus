@@ -64,6 +64,11 @@
 				  </tr>
 
 				  <tr>
+				    <th>strava</td>
+				    <td id="strava-info"></td>
+				  </tr>
+
+				  <tr>
 				    <th>obsessed</td>
 				    <td id="top-song"></td>
 				  </tr>
@@ -672,6 +677,37 @@ function updateCounter() {
 
 // Initial update
 updateCounter();
+</script>
+
+
+<!-- Latest Strava activity (uses the shared client + tokens from strava-workouts) -->
+<script src="strava.js"></script>
+<script>
+    (function () {
+        const el = document.getElementById('strava-info');
+        if (!el) return;
+
+        const km = (m) => m >= 1000 ? (m / 1000).toFixed(1) + ' km' : Math.round(m) + ' m';
+        function dur(s) {
+            const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60);
+            return h ? `${h}h ${m}m` : `${m} min`;
+        }
+
+        Strava.init()
+            .then(() => {
+                if (!Strava.isConnected()) return null; // not linked yet — leave blank
+                return Strava.getActivities(1);
+            })
+            .then(list => {
+                if (!list || !list.length) return;
+                const a = list[0];
+                const type = (a.sport_type || a.type || 'workout').toLowerCase();
+                el.textContent = `${type} · ${km(a.distance)} in ${dur(a.moving_time)}`;
+            })
+            .catch(err => {
+                console.error('Strava (now):', err);
+            });
+    })();
 </script>
 
 

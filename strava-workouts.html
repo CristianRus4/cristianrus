@@ -1,587 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>My Strava Workouts</title>
-<!--
-  ============================================================================
-  SECURITY WARNING
-  ============================================================================
-  This file contains your Strava Client Secret and refresh token in plain
-  text. Anyone who can open this file can read them and act on your behalf.
-
-  - Keep this file PRIVATE. Do NOT deploy it to a public website or commit
-    real secrets to a public repo.
-  - For a public/hosted page, move the token-refresh call to a small backend
-    (serverless function) so the Client Secret never reaches the browser.
-
-  SCOPE NOTE
-  ----------
-  Listing your activities requires the "activity:read" (or
-  "activity:read_all" for private activities) OAuth scope. Your current token
-  shows scope "read", which is NOT enough to list activities. If you see a
-  scope/authorization error below, re-authorize with the correct scope:
-
-  https://www.strava.com/oauth/authorize?client_id=124696&response_type=code&redirect_uri=http://localhost&approval_prompt=force&scope=activity:read_all
-
-  Then exchange the returned "code" for new tokens and paste the refresh
-  token into the CONFIG block below.
-  ============================================================================
--->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="referrer" content="no-referrer">
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+<title>workouts</title>
 <style>
-  :root {
-    --bg: #0f1115;
-    --panel: #181b22;
-    --panel-2: #1f232c;
-    --border: #2a2f3a;
-    --text: #e8eaed;
-    --muted: #9aa3b2;
-    --accent: #fc4c02; /* Strava orange */
-    --accent-soft: rgba(252, 76, 2, 0.12);
-    --good: #4caf50;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.45;
-  }
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--border);
-    background: linear-gradient(180deg, #15171d, #0f1115);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    flex-wrap: wrap;
-  }
-  header h1 {
-    margin: 0;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .logo {
-    background: var(--accent);
-    color: #fff;
-    font-weight: 800;
-    border-radius: 8px;
-    padding: 4px 8px;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-  }
-  .athlete {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
-    color: var(--muted);
-  }
-  .athlete img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-  .controls { display: flex; gap: 10px; align-items: center; }
-  button {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 9px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  button.secondary { background: var(--panel-2); border: 1px solid var(--border); color: var(--text); }
-  button:disabled { opacity: 0.5; cursor: default; }
-  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
-  #status {
-    padding: 14px 18px;
-    border-radius: 10px;
-    margin-bottom: 18px;
-    font-size: 14px;
-    border: 1px solid var(--border);
-    background: var(--panel);
-  }
-  #status.error { border-color: #5a1f1f; background: #2a1414; color: #ffb4a8; }
-  #status.ok { border-color: #1f4a25; background: #142a16; color: #b6f0bd; }
-  #status code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; }
-  #status a { color: var(--accent); }
-
-  .summary-bar {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  .summary-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-  }
-  .summary-card .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-  .summary-card .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
-
-  .activity {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    margin-bottom: 16px;
-    overflow: hidden;
-  }
-  .activity-head {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 16px 18px;
-    cursor: pointer;
-  }
-  .activity-head:hover { background: var(--panel-2); }
-  .type-badge {
-    flex-shrink: 0;
-    width: 44px; height: 44px;
-    border-radius: 10px;
-    background: var(--accent-soft);
-    color: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-  }
-  .activity-title { flex: 1; min-width: 0; }
-  .activity-title .name { font-size: 16px; font-weight: 700; }
-  .activity-title .meta { font-size: 13px; color: var(--muted); margin-top: 2px; }
-  .key-stats { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
-  .key-stats .stat { text-align: right; }
-  .key-stats .stat .v { font-size: 16px; font-weight: 700; }
-  .key-stats .stat .k { font-size: 11px; color: var(--muted); text-transform: uppercase; }
-  .chevron { color: var(--muted); transition: transform 0.2s; font-size: 18px; align-self: center; }
-  .activity.open .chevron { transform: rotate(90deg); }
-
-  .activity-detail { display: none; padding: 0 18px 18px; border-top: 1px solid var(--border); }
-  .activity.open .activity-detail { display: block; }
-  .map-img { width: 100%; max-height: 280px; object-fit: cover; border-radius: 10px; margin: 16px 0; border: 1px solid var(--border); }
-  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
-  .badge { font-size: 12px; padding: 3px 10px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--border); color: var(--muted); }
-  .badge.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-
-  .detail-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
-    margin-top: 8px;
-  }
-  .field {
-    background: var(--panel-2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 10px;
-  }
-  .field .k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
-  .field .v { font-size: 14px; font-weight: 600; margin-top: 2px; word-break: break-word; }
-  .section-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin: 18px 0 6px; }
-  .links a { color: var(--accent); font-size: 13px; margin-right: 16px; }
-  .skeleton { color: var(--muted); padding: 40px; text-align: center; }
-  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 30px; }
+  /* Tiny page-specific tweaks only — everything else comes from style.css */
+  .workout { margin-bottom: 1.25em; }
+  .workout summary { cursor: pointer; list-style: none; }
+  .workout summary::-webkit-details-marker { display: none; }
+  .workout .meta { color: var(--text); opacity: 0.8; font-size: 0.9em; }
+  .workout table { margin-top: 0.75em; }
+  .workout .map { width: 100%; border-radius: 1em; margin-top: 0.75em; }
+  #connect { margin-top: 1em; }
 </style>
 </head>
 <body>
-<header>
-  <h1><span class="logo">STRAVA</span> My Workouts</h1>
-  <div class="athlete" id="athlete"></div>
-  <div class="controls">
-    <label style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;">
-      Show
-      <select id="count" class="secondary" style="padding:8px;border-radius:8px;">
-        <option value="10">10</option>
-        <option value="20" selected>20</option>
-        <option value="30">30</option>
-        <option value="50">50</option>
-      </select>
-    </label>
-    <button id="refresh">Reload</button>
-  </div>
-</header>
 
-<main>
-  <div id="status">Connecting to Strava…</div>
-  <div class="summary-bar" id="summary" style="display:none;"></div>
-  <div id="activities"><div class="skeleton">Loading activities…</div></div>
-</main>
+  <h1 class="title"><a class="titlelink" href="/">Cristian Rus</a></h1>
+  <p class="sub">workouts</p>
 
-<footer>Data from the Strava API v3 · Detailed per-activity fields are fetched on expand.</footer>
+  <p id="status"></p>
+  <p id="connect" style="display:none;"></p>
 
+  <div id="list"></div>
+
+<script src="strava.js"></script>
 <script>
-/* ============================ CONFIG ============================ */
-/* Replace the refresh token if you re-authorize with a new scope.  */
-const CONFIG = {
-  clientId:     "124696",
-  clientSecret: "9d73c6e0e384bd2336b61fc7ae4396c70eb757a6",
-  // The access token expires; we use the refresh token to mint a new one.
-  refreshToken: "f360a2c3db3f7f3e4c3e540fe188e5b1663df8f2",
-  // Optionally seed a still-valid access token to skip the first refresh.
-  accessToken:  "217658275f4ab20219bc54361cb52f6dd159c2c8",
-  accessTokenExpiresAt: 1748845715, // 2026-06-02T06:28:35Z (unix seconds)
-};
+(function () {
+  const statusEl  = document.getElementById("status");
+  const connectEl = document.getElementById("connect");
+  const listEl    = document.getElementById("list");
 
-const API = "https://www.strava.com/api/v3";
-const TOKEN_URL = "https://www.strava.com/oauth/token";
-const LS_KEY = "strava_tokens_v1";
-
-/* ============================ TOKEN HANDLING ============================ */
-function loadTokens() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(LS_KEY) || "null");
-    if (saved && saved.refreshToken) return saved;
-  } catch (e) {}
-  return {
-    accessToken: CONFIG.accessToken,
-    refreshToken: CONFIG.refreshToken,
-    expiresAt: CONFIG.accessTokenExpiresAt,
-  };
-}
-function saveTokens(t) { localStorage.setItem(LS_KEY, JSON.stringify(t)); }
-
-let tokens = loadTokens();
-
-async function getValidAccessToken() {
-  const now = Math.floor(Date.now() / 1000);
-  // Refresh if missing or expiring within 2 minutes.
-  if (tokens.accessToken && tokens.expiresAt && tokens.expiresAt - now > 120) {
-    return tokens.accessToken;
+  /* ---------- formatters ---------- */
+  const km = (m) => m == null ? "—" : (m >= 1000 ? (m / 1000).toFixed(2) + " km" : Math.round(m) + " m");
+  function dur(s) {
+    if (s == null) return "—";
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = Math.round(s % 60);
+    return (h ? h + "h " : "") + (m || h ? m + "m " : "") + sec + "s";
   }
-  setStatus("Refreshing access token…");
-  const res = await fetch(TOKEN_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      client_id: CONFIG.clientId,
-      client_secret: CONFIG.clientSecret,
-      grant_type: "refresh_token",
-      refresh_token: tokens.refreshToken,
-    }),
-  });
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error("Token refresh failed (" + res.status + "): " + txt);
+  function pace(mps, type) {
+    if (!mps) return "—";
+    if (/Ride|Cycl|EBike|Velo|Handcycle/i.test(type || "")) return (mps * 3.6).toFixed(1) + " km/h";
+    const spk = 1000 / mps, mm = Math.floor(spk / 60), ss = Math.round(spk % 60);
+    return mm + ":" + String(ss).padStart(2, "0") + " /km";
   }
-  const data = await res.json();
-  tokens = {
-    accessToken: data.access_token,
-    refreshToken: data.refresh_token || tokens.refreshToken,
-    expiresAt: data.expires_at,
-  };
-  saveTokens(tokens);
-  return tokens.accessToken;
-}
+  const speed = (mps) => mps == null ? "—" : (mps * 3.6).toFixed(1) + " km/h";
+  const elev  = (m) => m == null ? "—" : Math.round(m) + " m";
+  const date  = (iso) => iso ? new Date(iso).toLocaleString(undefined,
+    { weekday: "short", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "—";
+  const esc   = (s) => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-async function api(path) {
-  const token = await getValidAccessToken();
-  const res = await fetch(API + path, { headers: { Authorization: "Bearer " + token } });
-  if (res.status === 401) {
-    // Token invalid — force a refresh once and retry.
-    tokens.expiresAt = 0;
-    const t2 = await getValidAccessToken();
-    const res2 = await fetch(API + path, { headers: { Authorization: "Bearer " + t2 } });
-    if (!res2.ok) throw new Error(await describeError(res2));
-    return res2.json();
+  function row(k, v) {
+    if (v === undefined || v === null || v === "" || (typeof v === "number" && isNaN(v))) return "";
+    return `<tr><th>${k}</th><td>${v}</td></tr>`;
   }
-  if (!res.ok) throw new Error(await describeError(res));
-  return res.json();
-}
 
-async function describeError(res) {
-  let body = "";
-  try { body = JSON.stringify(await res.json()); } catch (e) { body = await res.text(); }
-  return "HTTP " + res.status + " — " + body;
-}
+  /* ---------- detail table (every field Strava returns) ---------- */
+  function detailTable(a) {
+    const loc = [a.location_city, a.location_state, a.location_country].filter(Boolean).join(", ");
+    const map = a.map && (a.map.polyline || a.map.summary_polyline);
+    let html = "";
+    if (map) {
+      const src = "https://staticmap.openstreetmap.de/staticmap.php?size=640x280&path=color:0x555555|weight:4|" +
+                  encodeURIComponent("enc:" + map);
+      html += `<img class="map" alt="route" src="${src}" onerror="this.style.display='none'">`;
+    }
+    html += "<table>";
+    // Overview
+    html += row("type", a.sport_type || a.type);
+    html += row("workout type", a.workout_type);
+    html += row("distance", km(a.distance));
+    html += row("moving time", dur(a.moving_time));
+    html += row("elapsed time", dur(a.elapsed_time));
+    html += row("start (local)", date(a.start_date_local));
+    html += row("start (utc)", date(a.start_date));
+    html += row("timezone", a.timezone);
+    html += row("location", loc);
+    html += row("start lat/lng", a.start_latlng && a.start_latlng.length ? a.start_latlng.map(n => n.toFixed(5)).join(", ") : null);
+    html += row("end lat/lng", a.end_latlng && a.end_latlng.length ? a.end_latlng.map(n => n.toFixed(5)).join(", ") : null);
+    // Performance
+    html += row("avg speed", speed(a.average_speed));
+    html += row("max speed", speed(a.max_speed));
+    html += row("avg pace", pace(a.average_speed, a.sport_type || a.type));
+    html += row("avg cadence", a.average_cadence);
+    html += row("avg power", a.average_watts != null ? a.average_watts + " W" : null);
+    html += row("weighted power", a.weighted_average_watts != null ? a.weighted_average_watts + " W" : null);
+    html += row("max power", a.max_watts != null ? a.max_watts + " W" : null);
+    html += row("energy", a.kilojoules != null ? a.kilojoules + " kJ" : null);
+    html += row("calories", a.calories);
+    html += row("avg temp", a.average_temp != null ? a.average_temp + " °C" : null);
+    // Heart rate / effort / elevation
+    html += row("avg heart rate", a.average_heartrate != null ? a.average_heartrate + " bpm" : null);
+    html += row("max heart rate", a.max_heartrate != null ? a.max_heartrate + " bpm" : null);
+    html += row("suffer score", a.suffer_score);
+    html += row("perceived exertion", a.perceived_exertion);
+    html += row("elevation gain", elev(a.total_elevation_gain));
+    html += row("elevation high", elev(a.elev_high));
+    html += row("elevation low", elev(a.elev_low));
+    // Social
+    html += row("kudos", a.kudos_count);
+    html += row("comments", a.comment_count);
+    html += row("athletes", a.athlete_count);
+    html += row("photos", a.total_photo_count != null ? a.total_photo_count : a.photo_count);
+    html += row("achievements", a.achievement_count);
+    html += row("PRs", a.pr_count);
+    html += row("segment efforts", a.segment_efforts ? a.segment_efforts.length : null);
+    html += row("best efforts", a.best_efforts ? a.best_efforts.length : null);
+    // Gear / device / flags
+    html += row("gear", a.gear && a.gear.name);
+    html += row("device", a.device_name);
+    html += row("commute", a.commute ? "yes" : null);
+    html += row("trainer", a.trainer ? "yes" : null);
+    html += row("manual", a.manual ? "yes" : null);
+    html += row("private", a.private ? "yes" : null);
+    html += row("description", a.description ? esc(a.description) : null);
+    html += row("activity id", a.id);
+    html += row("link", `<a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener">open on Strava</a>`);
+    html += "</table>";
+    return html;
+  }
 
-/* ============================ FORMATTERS ============================ */
-const M_TO_KM = (m) => (m / 1000);
-const fmtDistance = (m) => m == null ? "—" : (m >= 1000 ? M_TO_KM(m).toFixed(2) + " km" : Math.round(m) + " m");
-function fmtDuration(s) {
-  if (s == null) return "—";
-  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = Math.round(s % 60);
-  return (h ? h + "h " : "") + (m || h ? m + "m " : "") + sec + "s";
-}
-function fmtPace(speedMps, type) {
-  if (!speedMps) return "—";
-  // Running/walking: min/km. Cycling: km/h.
-  const cyc = /Ride|Cycl|EBike|Velo|Handcycle/i.test(type || "");
-  if (cyc) return (speedMps * 3.6).toFixed(1) + " km/h";
-  const secPerKm = 1000 / speedMps;
-  const mm = Math.floor(secPerKm / 60), ss = Math.round(secPerKm % 60);
-  return mm + ":" + String(ss).padStart(2, "0") + " /km";
-}
-const fmtSpeed = (mps) => mps == null ? "—" : (mps * 3.6).toFixed(1) + " km/h";
-const fmtDate = (iso) => iso ? new Date(iso).toLocaleString(undefined, {
-  weekday: "short", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"
-}) : "—";
-const fmtElev = (m) => m == null ? "—" : Math.round(m) + " m";
-const yn = (b) => b ? "Yes" : "No";
-
-const TYPE_ICONS = {
-  Run: "🏃", TrailRun: "⛰️", Walk: "🚶", Hike: "🥾", Ride: "🚴", MountainBikeRide: "🚵",
-  GravelRide: "🚴", VirtualRide: "🚴", VirtualRun: "🏃", EBikeRide: "🚴", Swim: "🏊",
-  Workout: "💪", WeightTraining: "🏋️", Yoga: "🧘", Crossfit: "🤸", Rowing: "🚣",
-  Kayaking: "🛶", AlpineSki: "⛷️", BackcountrySki: "🎿", NordicSki: "🎿", Snowboard: "🏂",
-  IceSkate: "⛸️", Golf: "⛳", Soccer: "⚽", Tennis: "🎾", Elliptical: "🌀",
-  StairStepper: "🪜", Canoeing: "🛶", Surfing: "🏄", Kitesurf: "🪁", Windsurf: "🏄",
-  Skateboard: "🛹", InlineSkate: "🛼", RockClimbing: "🧗", StandUpPaddling: "🏄",
-};
-
-/* ============================ RENDERING ============================ */
-function setStatus(msg, cls) {
-  const el = document.getElementById("status");
-  el.innerHTML = msg;
-  el.className = cls || "";
-}
-
-function field(k, v) {
-  if (v === undefined || v === null || v === "" || (typeof v === "number" && isNaN(v))) return "";
-  return `<div class="field"><div class="k">${k}</div><div class="v">${v}</div></div>`;
-}
-
-function renderSummary(list) {
-  const totDist = list.reduce((a, x) => a + (x.distance || 0), 0);
-  const totTime = list.reduce((a, x) => a + (x.moving_time || 0), 0);
-  const totElev = list.reduce((a, x) => a + (x.total_elevation_gain || 0), 0);
-  const totKudos = list.reduce((a, x) => a + (x.kudos_count || 0), 0);
-  const el = document.getElementById("summary");
-  el.style.display = "grid";
-  el.innerHTML = [
-    ["Activities", list.length],
-    ["Total distance", M_TO_KM(totDist).toFixed(1) + " km"],
-    ["Total moving time", fmtDuration(totTime)],
-    ["Total elevation", fmtElev(totElev)],
-    ["Total kudos", totKudos],
-  ].map(([k, v]) => `<div class="summary-card"><div class="label">${k}</div><div class="value">${v}</div></div>`).join("");
-}
-
-function activityCard(a) {
-  const icon = TYPE_ICONS[a.sport_type] || TYPE_ICONS[a.type] || "🏅";
-  const loc = [a.location_city, a.location_state, a.location_country].filter(Boolean).join(", ");
-  const div = document.createElement("div");
-  div.className = "activity";
-  div.dataset.id = a.id;
-
-  div.innerHTML = `
-    <div class="activity-head">
-      <div class="type-badge">${icon}</div>
-      <div class="activity-title">
-        <div class="name">${escapeHtml(a.name || "(untitled)")}</div>
-        <div class="meta">${a.sport_type || a.type} · ${fmtDate(a.start_date_local || a.start_date)}${loc ? " · " + escapeHtml(loc) : ""}</div>
-      </div>
-      <div class="key-stats">
-        <div class="stat"><div class="v">${fmtDistance(a.distance)}</div><div class="k">Distance</div></div>
-        <div class="stat"><div class="v">${fmtDuration(a.moving_time)}</div><div class="k">Moving</div></div>
-        <div class="stat"><div class="v">${fmtPace(a.average_speed, a.sport_type || a.type)}</div><div class="k">Pace</div></div>
-        <div class="stat"><div class="v">${fmtElev(a.total_elevation_gain)}</div><div class="k">Elev gain</div></div>
-      </div>
-      <div class="chevron">›</div>
-    </div>
-    <div class="activity-detail"><div class="skeleton">Loading details…</div></div>
-  `;
-
-  const head = div.querySelector(".activity-head");
-  const detail = div.querySelector(".activity-detail");
-  head.addEventListener("click", async () => {
-    const opening = !div.classList.contains("open");
-    div.classList.toggle("open");
-    if (opening && !detail.dataset.loaded) {
+  /* ---------- one workout (collapsed; details fetched on expand) ---------- */
+  function workoutEl(a) {
+    const det = document.createElement("details");
+    det.className = "workout item";
+    det.innerHTML =
+      `<summary>` +
+        `<span class="tit">${esc(a.name || "(untitled)")}</span><br>` +
+        `<span class="meta">${esc(a.sport_type || a.type)} · ${date(a.start_date_local || a.start_date)} · ` +
+        `${km(a.distance)} · ${dur(a.moving_time)} · ${pace(a.average_speed, a.sport_type || a.type)}</span>` +
+      `</summary>` +
+      `<div class="body"></div>`;
+    const body = det.querySelector(".body");
+    let loaded = false;
+    det.addEventListener("toggle", async () => {
+      if (!det.open || loaded) return;
+      loaded = true;
+      body.innerHTML = `<p class="meta">loading…</p>`;
       try {
-        const full = await api(`/activities/${a.id}?include_all_efforts=false`);
-        detail.innerHTML = renderDetail(full);
-        detail.dataset.loaded = "1";
+        const full = await Strava.getActivity(a.id);
+        body.innerHTML = detailTable(full);
       } catch (e) {
-        // Fall back to the summary object we already have.
-        detail.innerHTML = renderDetail(a) +
-          `<div style="color:var(--muted);font-size:12px;margin-top:10px;">(Showing summary fields only — detailed fetch failed: ${escapeHtml(e.message)})</div>`;
-        detail.dataset.loaded = "1";
+        body.innerHTML = detailTable(a) + `<p class="meta">(summary only — ${esc(e.message)})</p>`;
+      }
+    });
+    return det;
+  }
+
+  /* ---------- boot ---------- */
+  function showConnect(extra) {
+    connectEl.style.display = "block";
+    connectEl.innerHTML =
+      (extra ? extra + "<br>" : "") +
+      `<a href="${Strava.authorizeUrl()}">Connect with Strava →</a>`;
+  }
+
+  async function load() {
+    statusEl.textContent = "loading…";
+    try {
+      const list = await Strava.getActivities(20);
+      if (!Array.isArray(list) || list.length === 0) {
+        statusEl.textContent = "Connected, but no activities were returned.";
+        return;
+      }
+      const totDist = list.reduce((a, x) => a + (x.distance || 0), 0);
+      const totTime = list.reduce((a, x) => a + (x.moving_time || 0), 0);
+      statusEl.textContent =
+        `${list.length} workouts · ${(totDist / 1000).toFixed(1)} km · ${dur(totTime)} total`;
+      listEl.innerHTML = "";
+      list.forEach(a => listEl.appendChild(workoutEl(a)));
+    } catch (e) {
+      const msg = e.message || String(e);
+      if (/scope|activity:read|authoriz/i.test(msg)) {
+        statusEl.textContent = "Your authorization is missing the activity:read scope.";
+        showConnect("Re-authorize to read your activities:");
+      } else {
+        statusEl.textContent = "Couldn't load activities: " + msg;
       }
     }
-  });
-  return div;
-}
-
-function renderDetail(a) {
-  let html = "";
-
-  // Route map (static image via Strava's summary polyline rendered through a free tile service)
-  const poly = (a.map && (a.map.polyline || a.map.summary_polyline)) || null;
-  if (poly) {
-    html += `<img class="map-img" alt="route map" src="${mapUrl(poly)}" onerror="this.style.display='none'" />`;
   }
 
-  // Boolean flags as badges
-  const flags = [
-    ["Commute", a.commute], ["Trainer", a.trainer], ["Manual", a.manual],
-    ["Private", a.private], ["Flagged", a.flagged], ["Has heartrate", a.has_heartrate],
-    ["Device watts", a.device_watts], ["From accepted tag", a.from_accepted_tag],
-  ];
-  html += `<div class="badges">` + flags.map(([k, v]) =>
-    `<span class="badge ${v ? "on" : ""}">${k}: ${yn(v)}</span>`).join("") + `</div>`;
-
-  // Core
-  html += `<div class="section-title">Overview</div><div class="detail-grid">`;
-  html += field("Activity ID", a.id);
-  html += field("Type", a.type);
-  html += field("Sport type", a.sport_type);
-  html += field("Workout type", a.workout_type);
-  html += field("Distance", fmtDistance(a.distance));
-  html += field("Moving time", fmtDuration(a.moving_time));
-  html += field("Elapsed time", fmtDuration(a.elapsed_time));
-  html += field("Start (local)", fmtDate(a.start_date_local));
-  html += field("Start (UTC)", fmtDate(a.start_date));
-  html += field("Timezone", a.timezone);
-  html += field("Gear", a.gear && a.gear.name);
-  html += field("Gear ID", a.gear_id);
-  html += field("Device", a.device_name);
-  html += field("Upload ID", a.upload_id);
-  html += field("External ID", a.external_id);
-  html += `</div>`;
-
-  // Location
-  const loc = [a.location_city, a.location_state, a.location_country].filter(Boolean).join(", ");
-  if (loc || a.start_latlng || a.end_latlng || a.timezone) {
-    html += `<div class="section-title">Location</div><div class="detail-grid">`;
-    html += field("Location", loc);
-    html += field("Start lat/lng", a.start_latlng && a.start_latlng.length ? a.start_latlng.map(n => n.toFixed(5)).join(", ") : null);
-    html += field("End lat/lng", a.end_latlng && a.end_latlng.length ? a.end_latlng.map(n => n.toFixed(5)).join(", ") : null);
-    html += field("UTC offset", a.utc_offset != null ? (a.utc_offset / 3600) + " h" : null);
-    html += `</div>`;
-  }
-
-  // Speed / power / cadence
-  html += `<div class="section-title">Performance</div><div class="detail-grid">`;
-  html += field("Avg speed", fmtSpeed(a.average_speed));
-  html += field("Max speed", fmtSpeed(a.max_speed));
-  html += field("Avg pace", fmtPace(a.average_speed, a.sport_type || a.type));
-  html += field("Avg cadence", a.average_cadence);
-  html += field("Avg watts", a.average_watts != null ? a.average_watts + " W" : null);
-  html += field("Weighted avg watts", a.weighted_average_watts != null ? a.weighted_average_watts + " W" : null);
-  html += field("Max watts", a.max_watts != null ? a.max_watts + " W" : null);
-  html += field("Energy", a.kilojoules != null ? a.kilojoules + " kJ" : null);
-  html += field("Calories", a.calories);
-  html += field("Avg temp", a.average_temp != null ? a.average_temp + " °C" : null);
-  html += `</div>`;
-
-  // Heart rate / effort
-  html += `<div class="section-title">Heart rate &amp; effort</div><div class="detail-grid">`;
-  html += field("Avg heartrate", a.average_heartrate != null ? a.average_heartrate + " bpm" : null);
-  html += field("Max heartrate", a.max_heartrate != null ? a.max_heartrate + " bpm" : null);
-  html += field("Suffer score", a.suffer_score);
-  html += field("Perceived exertion", a.perceived_exertion);
-  html += field("Elev high", fmtElev(a.elev_high));
-  html += field("Elev low", fmtElev(a.elev_low));
-  html += field("Elev gain", fmtElev(a.total_elevation_gain));
-  html += `</div>`;
-
-  // Social
-  html += `<div class="section-title">Social &amp; achievements</div><div class="detail-grid">`;
-  html += field("Kudos", a.kudos_count);
-  html += field("Comments", a.comment_count);
-  html += field("Athletes", a.athlete_count);
-  html += field("Photos", a.total_photo_count != null ? a.total_photo_count : a.photo_count);
-  html += field("Achievements", a.achievement_count);
-  html += field("PRs", a.pr_count);
-  html += field("Segment efforts", a.segment_efforts ? a.segment_efforts.length : null);
-  html += field("Best efforts", a.best_efforts ? a.best_efforts.length : null);
-  html += `</div>`;
-
-  // Description
-  if (a.description) {
-    html += `<div class="section-title">Description</div><div class="field"><div class="v">${escapeHtml(a.description)}</div></div>`;
-  }
-
-  // Splits (metric) if present
-  if (a.splits_metric && a.splits_metric.length) {
-    html += `<div class="section-title">Splits (per km)</div><div class="detail-grid">`;
-    a.splits_metric.forEach((s, i) => {
-      html += field("Km " + (i + 1), `${fmtDuration(s.moving_time)} · ${fmtPace(s.average_speed, a.type)}` +
-        (s.average_heartrate ? ` · ${Math.round(s.average_heartrate)} bpm` : ""));
-    });
-    html += `</div>`;
-  }
-
-  // Links
-  html += `<div class="section-title">Links</div><div class="links">
-    <a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener">Open on Strava ↗</a>
-  </div>`;
-
-  return html;
-}
-
-// Render the route using a static-map service that understands Google encoded polylines.
-function mapUrl(encodedPolyline) {
-  const path = encodeURIComponent("enc:" + encodedPolyline);
-  // OpenStreetMap-based static map (no API key). Falls back gracefully if unavailable.
-  return `https://staticmap.openstreetmap.de/staticmap.php?size=900x300&path=color:0xfc4c02|weight:4|${path}`;
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-}
-
-/* ============================ MAIN ============================ */
-async function loadAthlete() {
-  try {
-    const me = await api("/athlete");
-    const el = document.getElementById("athlete");
-    el.innerHTML =
-      (me.profile_medium ? `<img src="${me.profile_medium}" alt="" />` : "") +
-      `<span>${escapeHtml([me.firstname, me.lastname].filter(Boolean).join(" "))}` +
-      (me.city ? ` · ${escapeHtml(me.city)}` : "") + `</span>`;
-  } catch (e) { /* non-fatal */ }
-}
-
-async function loadActivities() {
-  const container = document.getElementById("activities");
-  const perPage = parseInt(document.getElementById("count").value, 10);
-  container.innerHTML = `<div class="skeleton">Loading activities…</div>`;
-  setStatus("Fetching your latest activities…");
-  try {
-    const list = await api(`/athlete/activities?per_page=${perPage}&page=1`);
-    if (!Array.isArray(list) || list.length === 0) {
-      setStatus("Connected, but no activities were returned. (This is normal if your token's scope is <code>read</code> instead of <code>activity:read</code>.)", "");
-      container.innerHTML = `<div class="skeleton">No activities found.</div>`;
+  async function main() {
+    try {
+      await Strava.init(); // completes OAuth if we returned with ?code=
+    } catch (e) {
+      statusEl.textContent = e.message;
+    }
+    if (!Strava.isConnected()) {
+      statusEl.textContent = "Not connected to Strava yet.";
+      showConnect();
       return;
     }
-    setStatus(`Loaded ${list.length} activities. Click any workout to expand full details.`, "ok");
-    renderSummary(list);
-    container.innerHTML = "";
-    list.forEach((a) => container.appendChild(activityCard(a)));
-  } catch (e) {
-    const msg = e.message || String(e);
-    let hint = "";
-    if (/scope|activity:read|authoriz/i.test(msg)) {
-      hint = `<br><br>This looks like a <b>scope</b> problem. Your token must include <code>activity:read</code> or <code>activity:read_all</code>.
-      <a href="https://www.strava.com/oauth/authorize?client_id=${CONFIG.clientId}&response_type=code&redirect_uri=http://localhost&approval_prompt=force&scope=activity:read_all" target="_blank" rel="noopener">Re-authorize here ↗</a>, then update the refresh token in this file.`;
-    }
-    setStatus("⚠️ Could not load activities.<br><code>" + escapeHtml(msg) + "</code>" + hint, "error");
-    container.innerHTML = "";
+    load();
   }
-}
 
-async function init() {
-  try {
-    await getValidAccessToken();
-  } catch (e) {
-    setStatus("⚠️ Token refresh failed.<br><code>" + escapeHtml(e.message) +
-      "</code><br><br>If this is a CORS error, run the page from a local server " +
-      "or move token refresh to a backend. If it's an auth error, re-authorize on Strava.", "error");
-    return;
-  }
-  await Promise.all([loadAthlete(), loadActivities()]);
-}
-
-document.getElementById("refresh").addEventListener("click", loadActivities);
-document.getElementById("count").addEventListener("change", loadActivities);
-init();
+  main();
+})();
 </script>
+
 </body>
 </html>
