@@ -530,8 +530,8 @@ a:hover {
       -webkit-text-fill-color: transparent;
     }
 
-    /* Only chart elements need dark-mode tweaks — all text inherits the site's
-       body/heading colors, which already switch in dark mode. */
+    /* Single text colour for the whole page; chart elements tweaked below. */
+    #dash, .workout { color: var(--title-dark); }
     .bar-fill, .zone-fill { background: var(--text-dark); }
     .heatmap .box { background: rgba(181, 179, 173, var(--fill, 0)); color: var(--bg-dark); }
     .spark path, .spark .cursor { stroke: var(--text-dark); }
@@ -547,10 +547,12 @@ a:hover {
    WORKOUTS — dashboard, charts, streams (workouts.html, strava-workouts.html)
    ============================================================ */
 
-/* IMPORTANT: text/numbers here DO NOT set their own color or opacity — they
-   inherit the site's body/heading colors (so dark mode just works) and use only
-   size + weight for hierarchy. Custom colors/opacity are reserved for chart
-   elements (heatmap cells, bars, stream lines) — those are page-specific. */
+/* IMPORTANT: text/numbers here DO NOT set their own color or opacity. All text
+   inherits ONE colour from the container below (var(--title), full opacity) so
+   it's uniform and dark-mode-correct; hierarchy is size + weight only. Custom
+   colours/opacity are reserved for chart elements (heatmap cells, bars, stream
+   lines) — those are page-specific. */
+#dash, .workout { color: var(--title); }
 
 /* Range filter row */
 .filters { display: flex; flex-wrap: wrap; gap: 0.25em 1.25em; margin: 0.5em 0 2em; }
@@ -601,8 +603,13 @@ a:hover {
 .workout summary .wdate { display: block; font-size: 0.78em; }
 .workout summary .tit { display: block; font-weight: 450; }
 .workout summary .meta { display: block; font-size: 0.9em; }
+/* When expanded, hide the collapsed details line (repeated inside the table) */
+.workout[open] summary .meta { display: none; }
+/* Indent the expanded content a bit further from the left rule */
+.workout .body { padding-left: 0.9em; }
 .workout .map { width: 100%; border-radius: 1em; margin-top: 0.75em; }
 .workout .body h3 { font-size: 0.95em; font-weight: 550; margin: 1.5em 0 0.4em; }
+.workout .body h3:first-child { margin-top: 0.6em; }
 /* Detail table: let the first column (labels) grow to fit, no wrapping */
 .workout .body table th { white-space: nowrap; }
 

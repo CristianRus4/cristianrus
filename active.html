@@ -18,19 +18,19 @@
 
   <div id="dash" style="display:none;">
     <div class="filters" id="filters">
-      <button data-range="week">this week</button>
+      <button data-range="week" class="on">this week</button>
       <button data-range="month">this month</button>
       <button data-range="90d">last 90 days</button>
-      <button data-range="year" class="on">this year</button>
+      <button data-range="year">this year</button>
       <button data-range="all">all time</button>
     </div>
 
     <div class="stats" id="stats"></div>
 
-    <h2>workout pattern</h2>
+    <h2>active days</h2>
     <div class="bars" id="dow"></div>
 
-    <h2>distribution by type</h2>
+    <h2>workout type</h2>
     <div class="bars" id="types"></div>
 
     <div id="totals-wrap" style="display:none;">
@@ -54,7 +54,7 @@
   const statusEl = $("status"), connectEl = $("connect"), dashEl = $("dash");
   const statsEl = $("stats"), dowEl = $("dow"), typesEl = $("types"), listEl = $("list"), filtersEl = $("filters");
 
-  let ALL = [], range = "year", enrichGen = 0, statsAnimated = false;
+  let ALL = [], range = "week", enrichGen = 0, statsAnimated = false;
 
   // Scramble digits to the final value (same vibe as the /now location animation), ~1.2s.
   function scramble(el, finalText, duration = 1200) {
@@ -210,7 +210,7 @@
     const map = a.map && (a.map.polyline || a.map.summary_polyline);
     // Skip empty values AND placeholder dashes so nothing shows "—".
     const r = (k, v) => (v === undefined || v === null || v === "" || v === "—" || (typeof v === "number" && isNaN(v))) ? "" : `<tr><th>${k}</th><td>${v}</td></tr>`;
-    let html = "";
+    let html = "<h3>workout details</h3>";
     if (map) html += `<img class="map" alt="route" src="https://staticmap.openstreetmap.de/staticmap.php?size=640x280&path=color:0x555555|weight:4|${encodeURIComponent("enc:" + map)}" onerror="this.style.display='none'">`;
     html += "<table>";
     html += r("type", niceType(a.sport_type || a.type)) + r("workout type", a.workout_type);
@@ -385,7 +385,7 @@
         .then(([s, z]) => {
           if (s.status === "fulfilled") {
             const charts = renderStreams(s.value);
-            if (charts && streamsBelow) { streamsBelow.innerHTML = charts; wireSparkScrub(streamsBelow); }
+            if (charts && streamsBelow) { streamsBelow.innerHTML = "<h3>streams</h3>" + charts; wireSparkScrub(streamsBelow); }
           }
           if (z.status === "fulfilled" && asyncDiv) asyncDiv.innerHTML = renderZones(z.value);
         });
@@ -429,6 +429,7 @@
     if (!btn) return;
     range = btn.dataset.range;
     [...filtersEl.querySelectorAll("button")].forEach(b => b.classList.toggle("on", b === btn));
+    statsAnimated = false; // replay the metric scramble on every timeframe change
     render();
   });
 
