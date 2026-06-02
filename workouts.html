@@ -334,7 +334,10 @@
   function render() {
     const list = filtered();
     statusEl.textContent = `${ALL.length} activities total · showing ${list.length} for "${rangeLabel(range)}"`;
-    renderStats(list); renderDow(list); renderTypes(list); renderList(list); enrich(list);
+    renderStats(list); renderDow(list); renderTypes(list); renderList(list);
+    // Only enrich (fetch details for kcal) the workouts actually shown, to stay
+    // well within Strava's shared rate limit on a public page.
+    enrich(list.slice(0, 25));
   }
 
   filtersEl.addEventListener("click", (e) => {
@@ -347,12 +350,29 @@
 
   /* ---------- boot ---------- */
   async function main() {
+    if (typeof Strava === "undefined") { statusEl.textContent = "strava.js failed to load."; return; }
     try { await Strava.init(); } catch (e) { statusEl.textContent = e.message; }
-    if (!Strava.isConnected()) {
-      statusEl.textContent = "Not connected to Strava yet.";
+
+    // SETUP MODE: no baked-in public token yet. Help the owner obtain an
+    // activity:read_all refresh token to paste into strava.js. Visitors never
+    // see this once the token is baked in (then isPublic() is true).
+    if (!Strava.isPublic()) {
       connectEl.style.display = "block";
-      connectEl.innerHTML = `<a href="${Strava.authorizeUrl()}">Connect with Strava →</a>`;
-      return;
+      const scope = Strava.currentScope() || "";
+      const haveActivity = /activity:read/.test(scope);
+      let html = `<strong>One-time setup</strong> (only you see this; visitors won't once you finish):<br>` +
+                 `<a href="${Strava.authorizeUrl()}">Connect with Strava →</a>`;
+      if (Strava.isConnected() && Strava.getRefreshToken()) {
+        html += haveActivity
+          ? `<br><br>Paste this into <code>strava.js</code> → <code>CONFIG.refreshToken</code>, then redeploy:<br>` +
+            `<code style="word-break:break-all;">${esc(Strava.getRefreshToken())}</code>`
+          : `<br><br><em>The current token's scope is "${esc(scope)}" — that can't read activities. Click Connect above to re-authorize with activity access.</em>`;
+      }
+      connectEl.innerHTML = html;
+      if (!haveActivity) {
+        statusEl.textContent = "Connect once with activity access to publish your workouts.";
+        return; // don't attempt to load with a read-only / missing token
+      }
     }
     const cache = Strava.cachedActivities();
     if (cache && Array.isArray(cache.data) && cache.data.length) { ALL = cache.data; dashEl.style.display = "block"; render(); }

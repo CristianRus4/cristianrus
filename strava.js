@@ -23,6 +23,21 @@ window.Strava = (function () {
     clientSecret: "9d73c6e0e384bd2336b61fc7ae4396c70eb757a6",
     // Scope needed to LIST activities. "read" alone is not enough.
     scope:        "activity:read_all",
+
+    // ===================== PUBLIC MODE =====================
+    // Paste YOUR activity:read_all refresh token here and the page becomes
+    // public: every visitor sees your workouts with no login. The page uses
+    // this token to mint a short-lived access token on each load.
+    //
+    // To get it: leave this empty, open the page, click "Connect with Strava"
+    // ONCE (as yourself), approve, and the page will print the refresh token
+    // for you to paste right here. Then it's public forever.
+    //
+    // NOTE: this token + the client secret above are visible in page source.
+    // That's unavoidable on a static site with no backend; it only grants
+    // read access to your Strava data. Don't reuse this secret elsewhere.
+    refreshToken: "",
+    // =======================================================
   };
 
   const API = "https://www.strava.com/api/v3";
@@ -39,6 +54,13 @@ window.Strava = (function () {
   function clearTokens() { localStorage.removeItem(LS_KEY); }
 
   let tokens = loadTokens();
+  // Public mode: a baked-in refresh token always wins over anything stale in
+  // localStorage, so visitors see the owner's data with no login.
+  if (CONFIG.refreshToken) {
+    if (!tokens || tokens.refreshToken !== CONFIG.refreshToken) {
+      tokens = { refreshToken: CONFIG.refreshToken, scope: CONFIG.scope };
+    }
+  }
 
   /* ---- OAuth ---- */
   // redirect_uri is THIS page's URL, so OAuth returns here. The domain must be
@@ -85,7 +107,8 @@ window.Strava = (function () {
   }
 
   async function refresh() {
-    if (!tokens || !tokens.refreshToken) throw new Error("Not connected to Strava.");
+    const rt = (tokens && tokens.refreshToken) || CONFIG.refreshToken;
+    if (!rt) throw new Error("Not connected to Strava.");
     const res = await fetch(TOKEN_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -93,7 +116,7 @@ window.Strava = (function () {
         client_id: CONFIG.clientId,
         client_secret: CONFIG.clientSecret,
         grant_type: "refresh_token",
-        refresh_token: tokens.refreshToken,
+        refresh_token: rt,
       }),
     });
     if (!res.ok) throw new Error("Token refresh failed (" + res.status + "): " + (await res.text()));
@@ -138,8 +161,10 @@ window.Strava = (function () {
   }
 
   function isConnected() { return !!(tokens && tokens.refreshToken); }
+  function isPublic() { return !!CONFIG.refreshToken; }
   function disconnect() { clearTokens(); tokens = null; }
   function currentScope() { return tokens && tokens.scope; }
+  function getRefreshToken() { return tokens && tokens.refreshToken; }
 
   /* ---- API ---- */
   async function api(path) {
@@ -240,7 +265,7 @@ window.Strava = (function () {
   }
 
   return {
-    init, isConnected, disconnect, authorizeUrl, currentScope,
+    init, isConnected, isPublic, disconnect, authorizeUrl, currentScope, getRefreshToken,
     getAthlete, getActivities, getActivity,
     getAllActivities, cachedActivities,
     getActivityCached, getCachedDetail,
