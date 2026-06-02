@@ -17,6 +17,17 @@
   <p id="connect" style="display:none;"></p>
 
   <div id="dash" style="display:none;">
+
+    <!-- All-time scrubbable timeline -->
+    <div class="timeline-outer" id="tlouter">
+      <div class="timeline-scroll" id="tlscroll"><div class="timeline" id="tl"></div></div>
+      <div class="tl-scrub" id="tlscrub">
+        <div class="tl-info" id="tlinfo"></div>
+        <div class="tl-line"></div>
+        <div class="tl-date" id="tldate"></div>
+      </div>
+    </div>
+
     <div class="filters" id="filters">
       <button data-range="week" class="on">this week</button>
       <button data-range="month">this month</button>
@@ -54,7 +65,7 @@
   const statusEl = $("status"), connectEl = $("connect"), dashEl = $("dash");
   const statsEl = $("stats"), dowEl = $("dow"), typesEl = $("types"), listEl = $("list"), filtersEl = $("filters");
 
-  let ALL = [], range = "week", enrichGen = 0, statsAnimated = false;
+  let ALL = [], range = "week", enrichGen = 0, statsAnimated = false, timelineBuilt = false;
 
   // Scramble digits to the final value (same vibe as the /now location animation), ~1.2s.
   function scramble(el, finalText, duration = 1200) {
@@ -415,10 +426,91 @@
     }
   }
 
+  /* ---------- all-time scrubbable timeline ---------- */
+  const TL_STEP = 6;      // px per day (2px bar + 4px gap)
+  const TL_MAXH = 130;    // tallest day stack in px
+
+  function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+  const tlDateLabel = (d) => d.toLocaleDateString(undefined, { month: "short" }) + " " + ordinal(d.getDate());
+  const isoOf = (d) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  function tlDur(s) { s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return [h, m, x].map(n => String(n).padStart(2, "0")).join(":"); }
+
+  function renderTimeline() {
+    const outer = $("tlouter"), scroll = $("tlscroll"), tl = $("tl"), scrub = $("tlscrub"), info = $("tlinfo"), date = $("tldate");
+    if (!ALL.length) { outer.style.display = "none"; return; }
+
+    // Group activities by local day, then walk every day from the first to today.
+    const byDay = {}; let min = null;
+    ALL.forEach(a => {
+      const iso = (a.start_date_local || a.start_date || "").slice(0, 10);
+      if (!iso) return;
+      (byDay[iso] = byDay[iso] || []).push(a);
+      if (!min || iso < min) min = iso;
+    });
+    if (!min) { outer.style.display = "none"; return; }
+    const days = [], end = new Date(); end.setHours(0, 0, 0, 0);
+    for (let d = new Date(min + "T00:00:00"); d <= end; d.setDate(d.getDate() + 1)) {
+      const iso = isoOf(d), items = byDay[iso] || [];
+      days.push({ date: new Date(d), items, dur: items.reduce((s, a) => s + (a.moving_time || 0), 0) });
+    }
+    const maxDur = Math.max(1, ...days.map(d => d.dur));
+    tl.style.width = (days.length * TL_STEP) + "px";
+    // One day = a column; each workout that day is a stacked segment (height = its duration).
+    tl.innerHTML = days.map(d => {
+      if (!d.dur) return `<span class="tl-day empty"><span class="tl-seg" style="height:3px"></span></span>`;
+      const segs = d.items.map(a =>
+        `<span class="tl-seg" style="height:${Math.max(3, (a.moving_time || 0) / maxDur * TL_MAXH).toFixed(0)}px"></span>`
+      ).join("");
+      return `<span class="tl-day">${segs}</span>`;
+    }).join("");
+
+    const mode = matchMedia("(hover: hover)").matches ? "hover" : "scroll";
+
+    function positionScrub(idx) {
+      scrub.style.left = (mode === "scroll" ? outer.clientWidth / 2 : (idx * TL_STEP + TL_STEP / 2) - scroll.scrollLeft) + "px";
+    }
+    function showAt(idx) {
+      idx = Math.max(0, Math.min(days.length - 1, idx));
+      const day = days[idx];
+      date.textContent = tlDateLabel(day.date);
+      if (day.items.length) {
+        info.innerHTML = day.items.map(a => {
+          const parts = [niceType(a.sport_type || a.type)];
+          if (a.distance > 0) parts.push((a.distance / 1000).toFixed(2) + "km");
+          if (a.moving_time) parts.push(tlDur(a.moving_time));
+          if (a.average_speed) parts.push(pace(a.average_speed, a.sport_type || a.type));
+          if (a.average_heartrate) parts.push(Math.round(a.average_heartrate) + "bpm");
+          return `<div>${esc(parts.join("  ·  "))}</div>`;
+        }).join("");
+      } else info.innerHTML = `<div class="rest">rest day</div>`;
+      const prev = tl.querySelector(".tl-day.on"); if (prev) prev.classList.remove("on");
+      if (tl.children[idx]) tl.children[idx].classList.add("on");
+      scrub.dataset.idx = idx;
+      positionScrub(idx);
+      scrub.style.display = "";
+    }
+
+    if (mode === "hover") {
+      scroll.addEventListener("pointermove", e => {
+        const x = e.clientX - scroll.getBoundingClientRect().left;
+        showAt(Math.floor((scroll.scrollLeft + x) / TL_STEP));
+      });
+      scroll.addEventListener("scroll", () => { if (scrub.dataset.idx) positionScrub(+scrub.dataset.idx); });
+      showAt(days.length - 1);
+      scroll.scrollLeft = scroll.scrollWidth;
+    } else {
+      // Mobile: cursor pinned to centre, timeline scrolls under it.
+      tl.style.paddingLeft = tl.style.paddingRight = (outer.clientWidth / 2) + "px";
+      scroll.addEventListener("scroll", () => showAt(Math.round(scroll.scrollLeft / TL_STEP)));
+      requestAnimationFrame(() => { scroll.scrollLeft = scroll.scrollWidth; showAt(days.length - 1); });
+    }
+  }
+
   function render() {
     const list = filtered();
     statusEl.textContent = ""; // no "X activities total" line
     renderStats(list); renderDow(list); renderTypes(list); renderList(list);
+    if (!timelineBuilt) { timelineBuilt = true; renderTimeline(); }
     // Only enrich (fetch details for kcal) the workouts actually shown, to stay
     // well within Strava's shared rate limit on a public page.
     enrich(list.slice(0, 25));

@@ -550,6 +550,26 @@ a:hover {
    lines) — those are page-specific. */
 #dash, .workout { color: var(--title); }
 
+/* All-time scrubbable timeline. Each day is a column; each workout that day is a
+   stacked segment whose height = its duration. Edges fade to hint "scroll for more". */
+.timeline-outer { position: relative; height: 210px; margin: 0 0 3em; }
+.timeline-scroll {
+  position: absolute; left: 0; right: 0; top: 0; bottom: 34px;
+  overflow-x: auto; overflow-y: hidden; scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 30px, #000 calc(100% - 30px), transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 30px, #000 calc(100% - 30px), transparent 100%);
+}
+.timeline-scroll::-webkit-scrollbar { display: none; }
+.timeline { display: flex; align-items: flex-end; height: 100%; }
+.tl-day { flex: 0 0 auto; width: 2px; margin-right: 4px; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; }
+.tl-seg { width: 100%; background: var(--title); opacity: 0.4; }
+.tl-day.empty .tl-seg { opacity: 0.12; }
+.tl-day.on .tl-seg { opacity: 1; }
+.tl-scrub { position: absolute; top: 0; bottom: 0; width: 0; pointer-events: none; display: none; }
+.tl-info { position: absolute; top: 0; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 0.78em; line-height: 1.4; }
+.tl-line { position: absolute; top: 32px; bottom: 16px; left: 0; width: 2px; transform: translateX(-50%); background: var(--title); }
+.tl-date { position: absolute; bottom: 0; left: 0; transform: translateX(-50%); white-space: nowrap; font-size: 0.78em; }
+
 /* Range filter row */
 .filters { display: flex; flex-wrap: wrap; gap: 0.25em 1.25em; margin: 0.5em 0 2em; }
 .filters button {
@@ -635,6 +655,7 @@ a:hover {
    the cascade. Text uses the single title colour; charts use light tones. */
 @media (prefers-color-scheme: dark) {
   #dash, .workout { color: var(--title-dark); }
+  .tl-seg, .tl-line { background: var(--title-dark); }
   .bar-fill, .zone-fill { background: var(--text-dark); }
   .heatmap .box { background: rgba(181, 179, 173, var(--fill, 0)); color: var(--bg-dark); }
   .spark path, .spark .cursor { stroke: var(--text-dark); }
