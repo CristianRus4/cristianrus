@@ -158,7 +158,7 @@
     dowEl.className = "heatmap";
     // Translucent fill via rgba alpha (not CSS opacity) so the label stays fully readable.
     dowEl.innerHTML = names.map((n, i) => {
-      const a = counts[i] ? (0.15 + 0.85 * (counts[i] / max)) : 0.05;
+      const a = counts[i] ? (0.35 + 0.65 * (counts[i] / max)) : 0.14;
       return `<div class="cell"><span class="box" style="--fill:${a.toFixed(2)}" title="${counts[i]} workouts">${n}</span></div>`;
     }).join("");
   }
@@ -431,7 +431,7 @@
   const TL_GROW = 700;    // ms for the tallest bar to grow on load
 
   function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
-  const tlDateLabel = (d) => d.toLocaleDateString(undefined, { month: "short" }) + " " + ordinal(d.getDate());
+  const tlDateLabel = (d) => d.toLocaleDateString(undefined, { month: "short" }) + " " + ordinal(d.getDate()) + ", " + d.getFullYear();
   const isoOf = (d) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   function tlDur(s) { s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return [h, m, x].map(n => String(n).padStart(2, "0")).join(":"); }
 
@@ -506,7 +506,7 @@
       // Desktop: nothing shown until the cursor actually moves over the timeline.
       scroll.addEventListener("pointermove", e => {
         const x = e.clientX - scroll.getBoundingClientRect().left;
-        showAt(Math.floor((scroll.scrollLeft + x) / TL_STEP));
+        showAt(Math.round((scroll.scrollLeft + x - 1) / TL_STEP)); // snap to nearest bar
       });
       scroll.addEventListener("pointerleave", () => { scrub.style.display = "none"; });
       scroll.addEventListener("scroll", () => { if (scrub.dataset.idx) positionScrub(+scrub.dataset.idx); updateFades(); });
