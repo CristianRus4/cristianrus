@@ -162,8 +162,74 @@ window.Strava = (function () {
     api(`/athlete/activities?per_page=${perPage}&page=${page}`);
   const getActivity = (id) => api(`/activities/${id}?include_all_efforts=false`);
 
+  /* ---- bulk: fetch every activity (paginated) with localStorage caching ---- */
+  const ACT_KEY = "strava_activities_v1";
+  const DET_KEY = "strava_details_v1";
+  const ATH_STATS = "strava_stats_v1";
+
+  function cachedActivities() {
+    try { const o = JSON.parse(localStorage.getItem(ACT_KEY)); return o ? o : null; }
+    catch (e) { return null; }
+  }
+
+  // Returns ALL activities. Uses cache unless { force:true } or cache older than maxAgeMs.
+  async function getAllActivities(opts = {}) {
+    const maxAge = opts.maxAgeMs != null ? opts.maxAgeMs : 30 * 60 * 1000; // 30 min
+    const cache = cachedActivities();
+    if (!opts.force && cache && (Date.now() - cache.at) < maxAge && Array.isArray(cache.data)) {
+      return cache.data;
+    }
+    const all = [];
+    const perPage = 200;
+    let page = 1;
+    while (true) {
+      const batch = await api(`/athlete/activities?per_page=${perPage}&page=${page}`);
+      if (!Array.isArray(batch) || batch.length === 0) break;
+      all.push(...batch);
+      if (opts.onProgress) opts.onProgress(all.length);
+      if (batch.length < perPage) break;
+      page++;
+      if (page > 50) break; // safety: 10k activities cap
+    }
+    try { localStorage.setItem(ACT_KEY, JSON.stringify({ at: Date.now(), data: all })); } catch (e) {}
+    return all;
+  }
+
+  /* ---- detail cache (so expanding / enriching is cheap and persistent) ---- */
+  function detailsCache() {
+    try { return JSON.parse(localStorage.getItem(DET_KEY) || "{}"); } catch (e) { return {}; }
+  }
+  function saveDetail(id, data) {
+    const c = detailsCache();
+    c[id] = data;
+    try { localStorage.setItem(DET_KEY, JSON.stringify(c)); }
+    catch (e) { /* quota — drop the cache and keep going */ try { localStorage.removeItem(DET_KEY); } catch (_) {} }
+  }
+  function getCachedDetail(id) { return detailsCache()[id] || null; }
+  async function getActivityCached(id) {
+    const hit = getCachedDetail(id);
+    if (hit) return hit;
+    const full = await getActivity(id);
+    saveDetail(id, full);
+    return full;
+  }
+
+  /* ---- athlete rollup stats: recent/ytd/all totals for ride/run/swim ---- */
+  async function getAthleteStats(force) {
+    if (!force) {
+      try { const o = JSON.parse(localStorage.getItem(ATH_STATS)); if (o && (Date.now() - o.at) < 30 * 60 * 1000) return o.data; } catch (e) {}
+    }
+    const me = (tokens && tokens.athlete) || await getAthlete();
+    const data = await api(`/athletes/${me.id}/stats`);
+    try { localStorage.setItem(ATH_STATS, JSON.stringify({ at: Date.now(), data })); } catch (e) {}
+    return data;
+  }
+
   return {
     init, isConnected, disconnect, authorizeUrl, currentScope,
     getAthlete, getActivities, getActivity,
+    getAllActivities, cachedActivities,
+    getActivityCached, getCachedDetail,
+    getAthleteStats,
   };
 })();
