@@ -607,15 +607,15 @@ body:has(#dash) .sub { margin-bottom: 0.5em; }
   }
   .timeline-scroll {
     top: 8%;
-    bottom: clamp(130px, 24vh, 180px);
+    bottom: clamp(60px, 10vh, 90px);
   }
   .tl-fade {
     top: 8%;
-    bottom: clamp(130px, 24vh, 180px);
+    bottom: clamp(60px, 10vh, 90px);
   }
   .tl-scrub {
     top: 8%;
-    bottom: clamp(130px, 24vh, 180px);
+    bottom: clamp(60px, 10vh, 90px);
   }
 }
 
