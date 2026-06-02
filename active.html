@@ -6,12 +6,12 @@
 <meta name="referrer" content="no-referrer">
 <link rel="stylesheet" type="text/css" href="style.css">
 <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
-<title>workouts</title>
+<title>active</title>
 </head>
 <body>
 
   <h1 class="title"><a class="titlelink" href="/">Cristian Rus</a></h1>
-  <p class="sub">workouts</p>
+  <p class="sub">active</p>
 
   <p id="status"></p>
   <p id="connect" style="display:none;"></p>
@@ -64,7 +64,13 @@
     const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = Math.round(s % 60);
     return (h ? h + "h " : "") + (m || h ? m + "m " : "") + sec + "s";
   }
-  function durShort(s) { const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return h ? `${h}h ${m}m` : `${m}m`; }
+  function durShort(s) { const min = Math.round(s / 60), h = Math.floor(min / 60), m = min % 60; return h ? `${h}h ${m}m` : `${m}m`; }
+  // Normalize Strava sport types into short, friendly labels.
+  function niceType(t) {
+    if (!t) return "Other";
+    if (/strength|weight\s*training|weighttraining|workout/i.test(t)) return "Strength";
+    return t.replace(/([a-z])([A-Z])/g, "$1 $2"); // VirtualRun -> Virtual Run
+  }
   function clock(s) { // m:ss or h:mm:ss for laps/efforts
     s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
     return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(sec).padStart(2, "0");
@@ -110,24 +116,31 @@
     const time = list.reduce((s, a) => s + (a.moving_time || 0), 0);
     const gain = list.reduce((s, a) => s + (a.total_elevation_gain || 0), 0);
     const kcal = list.reduce((s, a) => { const d = Strava.getCachedDetail(a.id); return s + (d && d.calories ? d.calories : 0); }, 0);
+    const activeDays = new Set(list.map(a => (a.start_date_local || a.start_date || "").slice(0, 10))).size;
     statsEl.innerHTML = [
       [list.length, "sessions"],
       [kmRaw(dist).toFixed(1) + " km", "distance"],
       [durShort(time), "moving time"],
       [Math.round(gain) + " m", "elevation"],
       [kcal ? Math.round(kcal).toLocaleString() : "—", `kcal <span id="enrich"></span>`],
+      [activeDays, "active days"],
     ].map(([n, l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
   }
 
   function renderDow(list) {
     const names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], counts = [0, 0, 0, 0, 0, 0, 0];
     list.forEach(a => counts[(new Date(a.start_date_local || a.start_date).getDay() + 6) % 7]++);
-    const total = list.length || 1;
-    barRows(dowEl, names.map((n, i) => ({ label: n, value: counts[i] })), e => (e.value / total * 100).toFixed(0) + "%");
+    const max = Math.max(1, ...counts);
+    dowEl.className = "heatmap";
+    dowEl.innerHTML = names.map((n, i) => {
+      const op = counts[i] ? (0.15 + 0.85 * (counts[i] / max)) : 0;
+      return `<div class="cell"><span class="box" style="opacity:${op.toFixed(2)}"></span>` +
+             `<span class="lab">${n}</span><span class="cnt">${counts[i]}</span></div>`;
+    }).join("");
   }
   function renderTypes(list) {
     const m = {};
-    list.forEach(a => { const t = a.sport_type || a.type || "Other"; m[t] = (m[t] || 0) + 1; });
+    list.forEach(a => { const t = niceType(a.sport_type || a.type); m[t] = (m[t] || 0) + 1; });
     barRows(typesEl, Object.entries(m).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value), e => e.value);
   }
 
@@ -172,29 +185,35 @@
   function detailTable(a) {
     const loc = [a.location_city, a.location_state, a.location_country].filter(Boolean).join(", ");
     const map = a.map && (a.map.polyline || a.map.summary_polyline);
-    const r = (k, v) => (v === undefined || v === null || v === "" || (typeof v === "number" && isNaN(v))) ? "" : `<tr><th>${k}</th><td>${v}</td></tr>`;
+    // Skip empty values AND placeholder dashes so nothing shows "—".
+    const r = (k, v) => (v === undefined || v === null || v === "" || v === "—" || (typeof v === "number" && isNaN(v))) ? "" : `<tr><th>${k}</th><td>${v}</td></tr>`;
     let html = "";
     if (map) html += `<img class="map" alt="route" src="https://staticmap.openstreetmap.de/staticmap.php?size=640x280&path=color:0x555555|weight:4|${encodeURIComponent("enc:" + map)}" onerror="this.style.display='none'">`;
     html += "<table>";
-    html += r("type", a.sport_type || a.type) + r("workout type", a.workout_type);
-    html += r("distance", km(a.distance)) + r("moving time", dur(a.moving_time)) + r("elapsed time", dur(a.elapsed_time));
-    html += r("start (local)", dt(a.start_date_local)) + r("start (utc)", dt(a.start_date)) + r("timezone", a.timezone);
+    html += r("type", niceType(a.sport_type || a.type)) + r("workout type", a.workout_type);
+    html += r("distance", a.distance > 0 ? km(a.distance) : null) + r("moving time", dur(a.moving_time)) + r("elapsed time", dur(a.elapsed_time));
+    // Commented out per request — kept for reference:
+    // html += r("start (local)", dt(a.start_date_local)) + r("start (utc)", dt(a.start_date)) + r("timezone", a.timezone);
     html += r("location", loc);
     html += r("start lat/lng", a.start_latlng && a.start_latlng.length ? a.start_latlng.map(n => n.toFixed(5)).join(", ") : null);
     html += r("end lat/lng", a.end_latlng && a.end_latlng.length ? a.end_latlng.map(n => n.toFixed(5)).join(", ") : null);
-    html += r("avg speed", speed(a.average_speed)) + r("max speed", speed(a.max_speed)) + r("avg pace", pace(a.average_speed, a.sport_type || a.type));
+    html += r("avg speed", a.average_speed ? speed(a.average_speed) : null) + r("max speed", a.max_speed ? speed(a.max_speed) : null) + r("avg pace", a.average_speed ? pace(a.average_speed, a.sport_type || a.type) : null);
     html += r("avg cadence", a.average_cadence);
     html += r("avg power", a.average_watts != null ? a.average_watts + " W" : null) + r("weighted power", a.weighted_average_watts != null ? a.weighted_average_watts + " W" : null) + r("max power", a.max_watts != null ? a.max_watts + " W" : null);
     html += r("energy", a.kilojoules != null ? a.kilojoules + " kJ" : null) + r("calories", a.calories) + r("avg temp", a.average_temp != null ? a.average_temp + " °C" : null);
     html += r("avg heart rate", a.average_heartrate != null ? a.average_heartrate + " bpm" : null) + r("max heart rate", a.max_heartrate != null ? a.max_heartrate + " bpm" : null);
     html += r("suffer score", a.suffer_score) + r("perceived exertion", a.perceived_exertion);
-    html += r("elevation gain", elev(a.total_elevation_gain)) + r("elevation high", elev(a.elev_high)) + r("elevation low", elev(a.elev_low));
-    html += r("kudos", a.kudos_count) + r("comments", a.comment_count) + r("athletes", a.athlete_count) + r("photos", a.total_photo_count != null ? a.total_photo_count : a.photo_count);
-    html += r("achievements", a.achievement_count) + r("PRs", a.pr_count);
+    html += r("elevation gain", a.total_elevation_gain ? elev(a.total_elevation_gain) : null) + r("elevation high", a.elev_high != null ? elev(a.elev_high) : null) + r("elevation low", a.elev_low != null ? elev(a.elev_low) : null);
+    // Commented out per request — kept for reference:
+    // html += r("kudos", a.kudos_count) + r("comments", a.comment_count) + r("athletes", a.athlete_count) + r("photos", a.total_photo_count != null ? a.total_photo_count : a.photo_count);
+    // html += r("achievements", a.achievement_count) + r("PRs", a.pr_count);
     html += r("gear", a.gear && a.gear.name) + r("device", a.device_name);
-    html += r("commute", a.commute ? "yes" : null) + r("trainer", a.trainer ? "yes" : null) + r("manual", a.manual ? "yes" : null) + r("private", a.private ? "yes" : null);
+    html += r("commute", a.commute ? "yes" : null) /* + r("trainer", a.trainer ? "yes" : null) */ + r("manual", a.manual ? "yes" : null) + r("private", a.private ? "yes" : null);
     html += r("description", a.description ? esc(a.description) : null);
-    html += r("activity id", a.id) + r("link", `<a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener">open on Strava</a>`);
+    // Commented out per request — kept for reference:
+    // html += r("activity id", a.id) + r("link", `<a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener">open on Strava</a>`);
+    // Streams render here as a table row (filled in asynchronously, hidden until it has data).
+    html += `<tr class="streams-row" style="display:none"><th>streams</th><td class="streams-cell"></td></tr>`;
     html += "</table>";
     return html;
   }
@@ -235,9 +254,11 @@
       const data = s.map ? stream.data.map(s.map) : stream.data;
       const valid = data.filter(v => v != null);
       if (!valid.length) return;
-      html += `<div class="spark-wrap"><div class="cap"><span>${s.label}</span><span>${s.fmt(Math.min(...valid))}–${s.fmt(Math.max(...valid))} ${s.unit}</span></div>${sparkline(data)}</div>`;
+      const chart = sparkline(data);
+      if (!chart) return; // not enough points to draw
+      html += `<div class="spark-wrap"><div class="cap"><span>${s.label}</span><span>${s.fmt(Math.min(...valid))}–${s.fmt(Math.max(...valid))} ${s.unit}</span></div>${chart}</div>`;
     });
-    return html ? `<h3>streams</h3>${html}` : "";
+    return html; // empty string if no charts — caller hides the row
   }
   function renderZones(zones) {
     if (!Array.isArray(zones) || !zones.length) return "";
@@ -278,11 +299,19 @@
   function workoutEl(a) {
     const det = document.createElement("details");
     det.className = "workout item";
+    const wdate = new Date(a.start_date_local || a.start_date)
+      .toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+    // Build the details line from only the parts we actually have.
+    const parts = [];
+    if (a.distance > 0) parts.push(km(a.distance));
+    if (a.moving_time) parts.push(durShort(a.moving_time));
+    if (a.average_speed) parts.push(pace(a.average_speed, a.sport_type || a.type));
     det.innerHTML =
-      `<summary><span class="tit">${esc(a.name || "(untitled)")}</span><br>` +
-      `<span class="meta">${esc(a.sport_type || a.type)} · ${dt(a.start_date_local || a.start_date)} · ` +
-      `${km(a.distance)} · ${dur(a.moving_time)} · ${pace(a.average_speed, a.sport_type || a.type)}</span></summary>` +
-      `<div class="body"></div>`;
+      `<summary>` +
+        `<span class="wdate">${wdate}</span>` +
+        `<span class="tit">${esc(a.name || "(untitled)")}</span>` +
+        (parts.length ? `<span class="meta">${parts.join(" · ")}</span>` : "") +
+      `</summary><div class="body"></div>`;
     const body = det.querySelector(".body");
     let loaded = false;
     det.addEventListener("toggle", async () => {
@@ -296,14 +325,17 @@
         + renderEfforts("best efforts", full.best_efforts)
         + renderEfforts("segments", full.segment_efforts)
         + `<div class="async"></div>`;
+      const streamsRow = body.querySelector(".streams-row");
+      const streamsCell = body.querySelector(".streams-cell");
+      const asyncDiv = body.querySelector(".async");
       // Streams + zones are separate calls — load them after the table is shown.
-      const async = body.querySelector(".async");
       Promise.allSettled([Strava.getActivityStreams(a.id), Strava.getActivityZones(a.id)])
         .then(([s, z]) => {
-          let extra = "";
-          if (z.status === "fulfilled") extra += renderZones(z.value);
-          if (s.status === "fulfilled") extra += renderStreams(s.value);
-          async.innerHTML = extra;
+          if (s.status === "fulfilled") {
+            const charts = renderStreams(s.value);
+            if (charts && streamsCell) { streamsCell.innerHTML = charts; streamsRow.style.display = ""; }
+          }
+          if (z.status === "fulfilled" && asyncDiv) asyncDiv.innerHTML = renderZones(z.value);
         });
     });
     return det;
@@ -333,7 +365,7 @@
 
   function render() {
     const list = filtered();
-    statusEl.textContent = `${ALL.length} activities total · showing ${list.length} for "${rangeLabel(range)}"`;
+    statusEl.textContent = ""; // no "X activities total" line
     renderStats(list); renderDow(list); renderTypes(list); renderList(list);
     // Only enrich (fetch details for kcal) the workouts actually shown, to stay
     // well within Strava's shared rate limit on a public page.

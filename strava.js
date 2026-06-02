@@ -36,7 +36,7 @@ window.Strava = (function () {
     // NOTE: this token + the client secret above are visible in page source.
     // That's unavoidable on a static site with no backend; it only grants
     // read access to your Strava data. Don't reuse this secret elsewhere.
-    refreshToken: "",
+    refreshToken: "a35b7cbf363e2c3ad51b0d9dd338050bdfd613c0",
     // =======================================================
   };
 
