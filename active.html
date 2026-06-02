@@ -268,7 +268,7 @@
     const def = `${mn.toFixed(dec)}–${mx.toFixed(dec)} ${spec.unit}`;
     const ptsAttr = pts.map(v => v == null ? "" : v.toFixed(2)).join(",");
     return `<div class="spark-wrap" data-pts="${ptsAttr}" data-unit="${spec.unit}" data-dec="${dec}">` +
-      `<div class="cap"><span>${spec.label}</span><span class="cap-val" data-def="${def}">${def}</span></div>` +
+      `<div class="cap"><h3>${spec.label}</h3><span class="cap-val" data-def="${def}">${def}</span></div>` +
       `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">` +
         `<path class="area" d="${area}"/><path d="${line}"/>` +
         `<line class="cursor" x1="0" y1="0" x2="0" y2="${H}" style="display:none"/>` +
@@ -385,7 +385,7 @@
         .then(([s, z]) => {
           if (s.status === "fulfilled") {
             const charts = renderStreams(s.value);
-            if (charts && streamsBelow) { streamsBelow.innerHTML = "<h3>streams</h3>" + charts; wireSparkScrub(streamsBelow); }
+            if (charts && streamsBelow) { streamsBelow.innerHTML = charts; wireSparkScrub(streamsBelow); }
           }
           if (z.status === "fulfilled" && asyncDiv) asyncDiv.innerHTML = renderZones(z.value);
         });

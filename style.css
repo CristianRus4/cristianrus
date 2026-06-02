@@ -530,12 +530,8 @@ a:hover {
       -webkit-text-fill-color: transparent;
     }
 
-    /* Single text colour for the whole page; chart elements tweaked below. */
-    #dash, .workout { color: var(--title-dark); }
-    .bar-fill, .zone-fill { background: var(--text-dark); }
-    .heatmap .box { background: rgba(181, 179, 173, var(--fill, 0)); color: var(--bg-dark); }
-    .spark path, .spark .cursor { stroke: var(--text-dark); }
-    .spark .area { fill: rgba(181, 179, 173, 0.10); }
+    /* (Workouts dark-mode overrides live at the END of this file so they win
+       the cascade over the .workout/#dash rules defined after this block.) */
 
 
 
@@ -613,10 +609,14 @@ a:hover {
 /* Detail table: let the first column (labels) grow to fit, no wrapping */
 .workout .body table th { white-space: nowrap; }
 
-/* Inline SVG stream charts — full width, below the detail table; scrub on hover */
+/* Inline SVG stream charts — full width, below the detail table; scrub on hover.
+   Each chart has its own title (heart rate, speed…) styled like the other h3
+   section titles, with the live/range value on the right. */
 .streams-below { margin: 0.4em 0 0.8em; }
 .spark-wrap { margin: 0.4em 0 0.9em; }
-.spark-wrap .cap { font-size: 0.8em; display: flex; justify-content: space-between; }
+.spark-wrap .cap { display: flex; justify-content: space-between; align-items: baseline; margin: 1.5em 0 0.4em; }
+.spark-wrap .cap h3 { margin: 0; }
+.spark-wrap .cap .cap-val { font-size: 0.85em; font-weight: 400; }
 .spark { width: 100%; height: 60px; display: block; touch-action: none; }
 .spark path { fill: none; stroke: var(--text); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 .spark .area { fill: rgba(85, 85, 85, 0.10); stroke: none; }
@@ -630,3 +630,13 @@ a:hover {
 .pr { font-weight: 600; }
 
 #enrich { font-size: 0.8em; }
+
+/* Workouts dark-mode overrides — placed AFTER the light rules above so they win
+   the cascade. Text uses the single title colour; charts use light tones. */
+@media (prefers-color-scheme: dark) {
+  #dash, .workout { color: var(--title-dark); }
+  .bar-fill, .zone-fill { background: var(--text-dark); }
+  .heatmap .box { background: rgba(181, 179, 173, var(--fill, 0)); color: var(--bg-dark); }
+  .spark path, .spark .cursor { stroke: var(--text-dark); }
+  .spark .area { fill: rgba(181, 179, 173, 0.10); }
+}
