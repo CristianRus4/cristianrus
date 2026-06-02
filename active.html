@@ -31,8 +31,8 @@
     </div>
 
     <div class="filters" id="filters">
-      <button data-range="7d" class="on">7d</button>
-      <button data-range="30d">30d</button>
+      <button data-range="7d">7d</button>
+      <button data-range="30d" class="on">30d</button>
       <button data-range="90d">90d</button>
       <button data-range="365d">365d</button>
       <button data-range="all">all</button>
@@ -43,7 +43,7 @@
     <h2>active days</h2>
     <div class="bars" id="dow"></div>
 
-    <h2>workout type</h2>
+    <h2>sessions</h2>
     <div class="bars" id="types"></div>
 
     <div id="totals-wrap" style="display:none;">
@@ -67,7 +67,7 @@
   const statusEl = $("status"), connectEl = $("connect"), dashEl = $("dash");
   const statsEl = $("stats"), dowEl = $("dow"), typesEl = $("types"), listEl = $("list"), filtersEl = $("filters");
 
-  let ALL = [], range = "7d", enrichGen = 0, timelineBuilt = false;
+  let ALL = [], range = "30d", enrichGen = 0, timelineBuilt = false;
 
   // Scramble digits to the final value (same vibe as the /now location animation), ~0.7s.
   function scramble(el, finalText, duration = 700) {
@@ -167,13 +167,16 @@
     list.forEach(a => { const t = niceType(a.sport_type || a.type); m[t] = (m[t] || 0) + 1; });
     const entries = Object.entries(m).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
     const max = Math.max(1, ...entries.map(e => e.value));
-    const labels = entries.map(e => `${e.label} · ${e.value}`);
-    // Shared label-column width so every bar starts at the same x.
-    typesEl.style.setProperty("--labw", Math.max(...labels.map(s => s.length)) + "ch");
-    typesEl.innerHTML = entries.map((e, i) => `
+    const labelFor = (e) => {
+      const parts = e.label.toLowerCase().split(" ");
+      const last = parts.pop();
+      parts.push(last.endsWith("s") ? last : last + "s");
+      return `${e.value} ${parts.join(" ")}`;
+    };
+    typesEl.innerHTML = entries.map(e => `
       <div class="bar-row2">
-        <span class="lab">${esc(labels[i])}</span>
         <span class="bar-fill" style="width:${(e.value / max * 100).toFixed(1)}%"></span>
+        <span class="lab">${esc(labelFor(e))}</span>
       </div>`).join("");
   }
 
@@ -426,8 +429,9 @@
   }
 
   /* ---------- all-time scrubbable timeline ---------- */
-  const TL_STEP = 6;      // px per day (2px bar + 4px gap)
-  const TL_MAXH = 86;     // tallest day stack in px
+  const TL_STEP = 3;      // px per day (1px bar + 2px gap)
+  const TL_RESTH = 24;    // rest-day tick height in px
+  const TL_MAXH = 128;    // tallest day stack in px
   const TL_GROW = 1500;   // ms for the tallest bar to grow on load
 
   function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
@@ -455,13 +459,14 @@
     }
     const maxDur = Math.max(1, ...days.map(d => d.dur));
     tl.style.width = (days.length * TL_STEP) + "px";
-    // One day = a column; each workout that day is a stacked segment (height = its
-    // duration). Each grows from the bottom; grow time scales with height so the
-    // tallest bar takes TL_GROW ms (constant growth speed).
-    const seg = (h) => `<span class="tl-seg" style="height:${h.toFixed(0)}px;transition-duration:${Math.max(120, TL_GROW * h / TL_MAXH).toFixed(0)}ms"></span>`;
+    // One day = a column; each workout that day is a stacked segment. The whole
+    // column reveals from bottom to top so stacked workouts behave like one bar.
+    const seg = (h) => `<span class="tl-seg" style="height:${h.toFixed(0)}px"></span>`;
     tl.innerHTML = days.map(d => {
-      if (!d.dur) return `<span class="tl-day empty">${seg(3)}</span>`;
-      return `<span class="tl-day">${d.items.map(a => seg(Math.max(3, (a.moving_time || 0) / maxDur * TL_MAXH))).join("")}</span>`;
+      const totalH = d.dur ? TL_RESTH + (d.dur / maxDur * (TL_MAXH - TL_RESTH)) : TL_RESTH;
+      const grow = Math.max(120, TL_GROW * totalH / TL_MAXH).toFixed(0);
+      if (!d.dur) return `<span class="tl-day empty" style="transition-duration:${grow}ms">${seg(TL_RESTH)}</span>`;
+      return `<span class="tl-day" style="transition-duration:${grow}ms">${d.items.map(a => seg(Math.max(3, (a.moving_time || 0) / d.dur * totalH))).join("")}</span>`;
     }).join("");
     requestAnimationFrame(() => tl.classList.add("play")); // trigger grow animation
 
@@ -476,8 +481,18 @@
     }
 
     function positionScrub(idx) {
-      // Sit exactly over the day's bar (bar centre = idx*STEP + 1px).
-      scrub.style.left = (mode === "scroll" ? outer.clientWidth / 2 : (idx * TL_STEP + 1) - scroll.scrollLeft) + "px";
+      // Sit exactly over the day's bar (bar centre = idx*STEP + 0.5px).
+      scrub.style.left = (mode === "scroll" ? outer.clientWidth / 2 : (idx * TL_STEP + 0.5) - scroll.scrollLeft) + "px";
+    }
+    let hideScrubTimer = null;
+    function openScrub() {
+      clearTimeout(hideScrubTimer);
+      scrub.style.display = "block";
+      requestAnimationFrame(() => scrub.classList.add("active"));
+    }
+    function closeScrub() {
+      scrub.classList.remove("active");
+      hideScrubTimer = setTimeout(() => { scrub.style.display = "none"; }, 300);
     }
     function showAt(idx) {
       idx = Math.max(0, Math.min(days.length - 1, idx));
@@ -495,7 +510,7 @@
       if (tl.children[idx]) tl.children[idx].classList.add("on");
       scrub.dataset.idx = idx;
       positionScrub(idx);
-      scrub.style.display = "block";
+      openScrub();
     }
 
     // Default to the most recent day that actually has a workout.
@@ -506,9 +521,9 @@
       // Desktop: nothing shown until the cursor actually moves over the timeline.
       scroll.addEventListener("pointermove", e => {
         const x = e.clientX - scroll.getBoundingClientRect().left;
-        showAt(Math.round((scroll.scrollLeft + x - 1) / TL_STEP)); // snap to nearest bar
+        showAt(Math.round((scroll.scrollLeft + x - 0.5) / TL_STEP)); // snap to nearest bar
       });
-      scroll.addEventListener("pointerleave", () => { scrub.style.display = "none"; });
+      scroll.addEventListener("pointerleave", closeScrub);
       scroll.addEventListener("scroll", () => { if (scrub.dataset.idx) positionScrub(+scrub.dataset.idx); updateFades(); });
       requestAnimationFrame(() => { scroll.scrollLeft = scroll.scrollWidth; updateFades(); });
     } else {

@@ -558,22 +558,25 @@ body:has(#dash) .sub { margin-bottom: 3em; }
    stacked segment whose height = its duration. Data bars are full opacity; the
    hovered/centred day gets a taller cursor bar with details above and date below.
    Edges fade (overlay gradient) only on the side that still has more to scroll. */
-.timeline-outer { position: relative; height: 150px; margin: 0 0 1em; }
-.timeline-scroll { position: absolute; left: 0; right: 0; top: 20px; bottom: 28px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; scroll-snap-type: x proximity; }
+.timeline-outer { position: relative; height: 220px; margin: 2.5em 0 2.75em; }
+.timeline-scroll { position: absolute; left: 0; right: 0; top: 48px; bottom: 48px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; scroll-snap-type: x proximity; }
 .timeline-scroll::-webkit-scrollbar { display: none; }
 .timeline { display: flex; align-items: flex-end; height: 100%; }
-.tl-day { flex: 0 0 auto; width: 2px; margin-right: 4px; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; scroll-snap-align: center; }
-.tl-seg { width: 100%; background: var(--title); transform-origin: bottom; transform: scaleY(0); transition: transform 1500ms ease; }
-.timeline.play .tl-seg { transform: scaleY(1); }               /* grow from the bottom on load */
+.tl-day { flex: 0 0 auto; width: 1px; margin-right: 2px; display: flex; flex-direction: column; justify-content: flex-end; gap: 1px; scroll-snap-align: center; clip-path: inset(100% 0 0 0); transition: clip-path 1500ms ease; }
+.tl-seg { width: 100%; background: var(--title); }
+.timeline.play .tl-day { clip-path: inset(0); }                /* reveal each full day from the bottom on load */
 .tl-day.empty .tl-seg { opacity: 0.18; }                       /* rest-day tick recedes */
-.tl-fade { position: absolute; top: 20px; bottom: 28px; width: 64px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
+.tl-fade { position: absolute; top: 48px; bottom: 48px; width: 64px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
 .tl-fade.left { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
 .tl-fade.right { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
 .tl-scrub { position: absolute; top: 0; bottom: 0; width: 0; pointer-events: none; display: none; z-index: 3; }
 /* Details sit ABOVE the cursor line (anchored 8px above the line's top, growing upward) */
-.tl-info { position: absolute; bottom: 146px; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 0.78em; line-height: 1.35; }
-.tl-line { position: absolute; top: 12px; bottom: 20px; left: 0; width: 2px; transform: translateX(-50%); background: var(--title); }
-.tl-date { position: absolute; bottom: 0; left: 0; transform: translateX(-50%); white-space: nowrap; font-size: 0.78em; line-height: 1; }
+.tl-info { position: absolute; bottom: 180px; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 0.78em; line-height: 1.35; opacity: 0; transition: opacity 0.01s linear; }
+.tl-line { position: absolute; top: 42px; bottom: 42px; left: 0; width: 1px; transform: translateX(-50%) scaleY(0); transform-origin: center; background: var(--title); transition: transform 300ms ease; }
+.tl-date { position: absolute; bottom: 18px; left: 0; transform: translateX(-50%); white-space: nowrap; font-size: 0.78em; line-height: 1; opacity: 0; transition: opacity 0.01s linear; }
+.tl-scrub.active .tl-line { transform: translateX(-50%) scaleY(1); }
+.tl-scrub.active .tl-info,
+.tl-scrub.active .tl-date { opacity: 1; transition-delay: 300ms; }
 
 /* Range filter row */
 .filters { display: flex; flex-wrap: wrap; gap: 0.25em 1.25em; margin: 0.5em 0 2em; }
@@ -586,6 +589,7 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 /* Headline stat grid — 6 metrics: 2 cols on phones, 3 cols on wider screens */
 .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4em 1em; margin-bottom: 2.5em; }
 @media (min-width: 480px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+.stat .n { font-weight: 600; }
 
 /* Weekday pattern — single horizontal heatmap row. Translucent rgba fill =
    relative volume (chart element); label is the PAGE BACKGROUND colour so it
@@ -599,10 +603,10 @@ body:has(#dash) .sub { margin-bottom: 3em; }
   color: var(--bg); background: rgba(85, 85, 85, var(--fill, 0));
 }
 
-/* Type distribution — filled capsule bars only (no track); count is in label */
+/* Type distribution — filled bars lead; session count/type label trails */
 .bars { margin: 0.5em 0 2.5em; }
-.bar-row2 { display: grid; grid-template-columns: var(--labw, 6em) 1fr; align-items: center; gap: 0.8em; margin: 0.45em 0; }
-.bar-row2 .lab { font-size: 0.9em; text-align: right; white-space: nowrap; }
+.bar-row2 { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0.8em; margin: 0.45em 0; }
+.bar-row2 .lab { font-size: 0.9em; white-space: nowrap; }
 .bar-row2 .bar-fill { display: block; height: 0.7em; background: var(--item-bar); border-radius: 0; transition: width 0.6s ease; }
 
 /* Zone bars (label + value), filled capsule only, no track */
