@@ -32,10 +32,10 @@
 
     <div class="filters" id="filters">
       <button data-range="7d"><p>7d</p></button>
-      <button data-range="30d" class="on"><strong>30d</strong></button>
+      <button data-range="30d"><p>30d</p></button>
       <button data-range="90d"><p>90d</p></button>
       <button data-range="365d"><p>365d</p></button>
-      <button data-range="all"><p>all</p></button>
+      <button data-range="all" class="on"><strong>all</strong></button>
     </div>
 
     <div class="stats" id="stats"></div>
@@ -67,7 +67,7 @@
   const statusEl = $("status"), connectEl = $("connect"), dashEl = $("dash");
   const statsEl = $("stats"), dowEl = $("dow"), typesEl = $("types"), listEl = $("list"), filtersEl = $("filters");
 
-  let ALL = [], range = "30d", enrichGen = 0, timelineBuilt = false;
+  let ALL = [], range = "all", enrichGen = 0, timelineBuilt = false;
 
   // Scramble digits to the final value (same vibe as the /now location animation), ~0.7s.
   function scramble(el, finalText, duration = 700) {
@@ -390,7 +390,7 @@
       `<summary>` +
         `<span class="wmain"><h3>${esc(niceType(a.sport_type || a.type))}</h3>` +
         (parts.length ? `<span class="caption meta">${parts.join(" · ")}</span>` : "") +
-        `</span><figcaption class="wdate">${wdate}</figcaption>` +
+        `</span><figcaption class="wdate">${wdate}&nbsp;</figcaption>` +
       `</summary><div class="body"></div>`;
     const body = det.querySelector(".body");
     let loaded = false;
@@ -449,10 +449,10 @@
   }
 
   /* ---------- all-time scrubbable timeline ---------- */
-  const TL_STEP = 3;      // px per day (1px bar + 2px gap)
-  const TL_RESTH = 34;    // rest-day tick height in px
-  const TL_MINH = 64;     // shortest workout day height in px
-  const TL_MAXH = 340;    // tallest day stack in px
+  const TL_STEP = 4;      // px per day (1px bar + 3px gap)
+  const TL_RESTH = 30;    // rest-day tick height in px
+  const TL_MINH = 58;     // shortest workout day height in px
+  const TL_MAXH = 360;    // tallest day stack in px
   const TL_GROW = 1500;   // ms for the tallest bar to grow on load
 
   function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
