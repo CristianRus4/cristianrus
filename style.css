@@ -530,12 +530,17 @@ a:hover {
       -webkit-text-fill-color: transparent;
     }
 
-    /* Workout charts adapt their muted tones in dark mode */
+    /* Workout charts adapt their muted tones in dark mode (text stays full-opacity) */
     .bar-track { background: rgba(181, 179, 173, 0.18); }
-    .bar-fill, .zone-fill, .heatmap .box { background: var(--text-dark); }
+    .bar-fill, .zone-fill { background: var(--text-dark); }
+    .heatmap .box { background: rgba(181, 179, 173, var(--fill, 0)); color: var(--title-dark); }
     .spark path { stroke: var(--text-dark); }
-    .filters button.on { color: var(--title-dark); }
-    .stat .n { color: var(--title-dark); }
+    .spark .area { fill: rgba(181, 179, 173, 0.10); }
+    .filters button.on, .stat .n, .workout summary .tit,
+    .workout .body h3, .wtable thead th, .pr { color: var(--title-dark); }
+    .filters button, .stat .l, .bar-row .lab, .bar-row .val,
+    .workout summary .wdate, .workout summary .meta,
+    .spark-wrap .cap, .wtable th, .wtable td, #enrich { color: var(--text-dark); }
 
 
 
@@ -547,36 +552,43 @@ a:hover {
    WORKOUTS — dashboard, charts, streams (workouts.html, strava-workouts.html)
    ============================================================ */
 
+/* NOTE: text/numbers always use full opacity (matching the rest of the site —
+   hierarchy comes from weight/size/color, never opacity). Opacity/translucency
+   is used ONLY on chart cells, bars, and stream fills. */
+
 /* Range filter row */
 .filters { display: flex; flex-wrap: wrap; gap: 0.25em 1.25em; margin: 0.5em 0 2em; }
 .filters button {
   background: none; border: none; cursor: pointer; padding: 0;
-  font: inherit; color: var(--text); opacity: 0.55;
+  font: inherit; color: var(--text); font-weight: 400;
 }
-.filters button.on { opacity: 1; font-weight: 600; color: var(--title); }
+.filters button.on { font-weight: 600; color: var(--title); }
 
 /* Headline stat grid — 6 metrics: 2 cols on phones, 3 cols on wider screens */
 .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4em 1em; margin-bottom: 2.5em; }
 @media (min-width: 480px) { .stats { grid-template-columns: repeat(3, 1fr); } }
 .stat .n { font-size: 1.25em; font-weight: 600; color: var(--title); line-height: 1.1; }
-.stat .l { font-size: 0.8em; opacity: 0.7; }
+.stat .l { font-size: 0.8em; color: var(--text); }
 
-/* Weekday pattern — single horizontal heatmap row, opacity = relative volume */
+/* Weekday pattern — single horizontal heatmap row; translucent fill (rgba) =
+   relative volume, label sits inside the cell at full opacity. */
 .heatmap { display: flex; gap: 0.4em; margin: 0.5em 0 2.5em; }
-.heatmap .cell { flex: 1; text-align: center; }
-.heatmap .box { display: block; height: 2.4em; border-radius: 6px; background: var(--item-bar); }
-.heatmap .lab { display: block; font-size: 0.78em; opacity: 0.7; margin-top: 0.35em; }
-.heatmap .cnt { display: block; font-size: 0.72em; opacity: 0.5; }
+.heatmap .cell { flex: 1; }
+.heatmap .box {
+  display: flex; align-items: center; justify-content: center;
+  height: 2.6em; border-radius: 6px; font-size: 0.8em; font-weight: 500;
+  color: var(--title); background: rgba(85, 85, 85, var(--fill, 0));
+}
 
 /* Horizontal bar charts (type distribution, zones) */
 .bars { margin: 0.5em 0 2.5em; }
-.bar-row { display: grid; grid-template-columns: 6em 1fr 2.5em; align-items: center; gap: 0.6em; margin: 0.4em 0; }
-.bar-row .lab { font-size: 0.9em; text-align: right; opacity: 0.8; white-space: nowrap; }
+.bar-row { display: grid; grid-template-columns: 4.5em 1fr 2.5em; align-items: center; gap: 0.6em; margin: 0.4em 0; }
+.bar-row .lab { font-size: 0.9em; text-align: right; color: var(--text); white-space: nowrap; }
 .bar-track { background: rgba(85, 85, 85, 0.15); border-radius: 4px; height: 0.7em; overflow: hidden; }
 .bar-fill { display: block; background: var(--item-bar); height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-.bar-row .val { font-size: 0.85em; opacity: 0.7; text-align: right; }
+.bar-row .val { font-size: 0.85em; color: var(--text); text-align: right; }
 
-/* HR / power zone bars use the same track, optionally tinted per zone */
+/* HR / power zone bars use the same track, tinted per zone (bar = opacity ok) */
 .zone-fill { display: block; background: var(--item-bar); height: 100%; border-radius: 4px; }
 .zone-z1 { opacity: 0.35; } .zone-z2 { opacity: 0.5; } .zone-z3 { opacity: 0.65; }
 .zone-z4 { opacity: 0.8; } .zone-z5 { opacity: 1; }
@@ -585,24 +597,27 @@ a:hover {
 .workout { margin-bottom: 1.1em; }
 .workout summary { cursor: pointer; list-style: none; }
 .workout summary::-webkit-details-marker { display: none; }
-.workout summary .wdate { display: block; font-size: 0.78em; opacity: 0.55; }
-.workout summary .tit { display: block; }
-.workout summary .meta { display: block; opacity: 0.75; font-size: 0.9em; }
+.workout summary .wdate { display: block; font-size: 0.78em; color: var(--text); }
+.workout summary .tit { display: block; color: var(--title); font-weight: 450; }
+.workout summary .meta { display: block; font-size: 0.9em; color: var(--text); }
 .workout .map { width: 100%; border-radius: 1em; margin-top: 0.75em; }
-.workout .body h3 { font-size: 0.95em; font-weight: 550; margin: 1.5em 0 0.4em; opacity: 0.85; }
+.workout .body h3 { font-size: 0.95em; font-weight: 550; margin: 1.5em 0 0.4em; color: var(--title); }
+/* Detail table: let the first column (labels) grow to fit, no wrapping */
+.workout .body table th { white-space: nowrap; }
 
-/* Inline SVG stream charts (HR, pace, elevation, power, cadence) */
+/* Inline SVG stream charts — full width, rendered just below the detail table */
+.streams-below { margin: 0.2em 0 0.8em; }
 .spark-wrap { margin: 0.4em 0 0.8em; }
-.spark-wrap .cap { font-size: 0.8em; opacity: 0.7; display: flex; justify-content: space-between; }
+.spark-wrap .cap { font-size: 0.8em; color: var(--text); display: flex; justify-content: space-between; }
 .spark { width: 100%; height: 60px; display: block; }
 .spark path { fill: none; stroke: var(--text); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 .spark .area { fill: rgba(85, 85, 85, 0.10); stroke: none; }
 
 /* Compact data tables (career totals, laps, segments, best efforts) */
 .wtable { width: 100%; border-collapse: collapse; font-size: 0.85em; margin: 0.3em 0 1em; }
-.wtable th, .wtable td { text-align: left; padding: 0.25em 0.6em 0.25em 0; vertical-align: top; white-space: nowrap; }
+.wtable th, .wtable td { text-align: left; padding: 0.25em 0.6em 0.25em 0; vertical-align: top; white-space: nowrap; color: var(--text); }
 .wtable td { padding-left: 0; } /* override global td left padding */
-.wtable thead th { font-weight: 550; opacity: 0.7; border-bottom: 1px solid rgba(85,85,85,0.2); }
-.pr { font-weight: 600; }
+.wtable thead th { font-weight: 550; color: var(--title); border-bottom: 1px solid rgba(85,85,85,0.2); }
+.pr { font-weight: 600; color: var(--title); }
 
-#enrich { font-size: 0.8em; opacity: 0.6; }
+#enrich { font-size: 0.8em; color: var(--text); }

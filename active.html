@@ -132,10 +132,10 @@
     list.forEach(a => counts[(new Date(a.start_date_local || a.start_date).getDay() + 6) % 7]++);
     const max = Math.max(1, ...counts);
     dowEl.className = "heatmap";
+    // Translucent fill via rgba alpha (not CSS opacity) so the label stays fully readable.
     dowEl.innerHTML = names.map((n, i) => {
-      const op = counts[i] ? (0.15 + 0.85 * (counts[i] / max)) : 0;
-      return `<div class="cell"><span class="box" style="opacity:${op.toFixed(2)}"></span>` +
-             `<span class="lab">${n}</span><span class="cnt">${counts[i]}</span></div>`;
+      const a = counts[i] ? (0.15 + 0.85 * (counts[i] / max)) : 0.05;
+      return `<div class="cell"><span class="box" style="--fill:${a.toFixed(2)}" title="${counts[i]} workouts">${n}</span></div>`;
     }).join("");
   }
   function renderTypes(list) {
@@ -203,7 +203,7 @@
     html += r("energy", a.kilojoules != null ? a.kilojoules + " kJ" : null) + r("calories", a.calories) + r("avg temp", a.average_temp != null ? a.average_temp + " °C" : null);
     html += r("avg heart rate", a.average_heartrate != null ? a.average_heartrate + " bpm" : null) + r("max heart rate", a.max_heartrate != null ? a.max_heartrate + " bpm" : null);
     html += r("suffer score", a.suffer_score) + r("perceived exertion", a.perceived_exertion);
-    html += r("elevation gain", a.total_elevation_gain ? elev(a.total_elevation_gain) : null) + r("elevation high", a.elev_high != null ? elev(a.elev_high) : null) + r("elevation low", a.elev_low != null ? elev(a.elev_low) : null);
+    html += r("elevation gain", a.total_elevation_gain ? elev(a.total_elevation_gain) : null) + r("elevation high", a.elev_high ? elev(a.elev_high) : null) + r("elevation low", a.elev_low ? elev(a.elev_low) : null);
     // Commented out per request — kept for reference:
     // html += r("kudos", a.kudos_count) + r("comments", a.comment_count) + r("athletes", a.athlete_count) + r("photos", a.total_photo_count != null ? a.total_photo_count : a.photo_count);
     // html += r("achievements", a.achievement_count) + r("PRs", a.pr_count);
@@ -212,8 +212,8 @@
     html += r("description", a.description ? esc(a.description) : null);
     // Commented out per request — kept for reference:
     // html += r("activity id", a.id) + r("link", `<a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener">open on Strava</a>`);
-    // Streams render here as a table row (filled in asynchronously, hidden until it has data).
-    html += `<tr class="streams-row" style="display:none"><th>streams</th><td class="streams-cell"></td></tr>`;
+    // "streams" label row only; the charts render full-width just below the table.
+    html += `<tr class="streams-row" style="display:none"><th>streams</th><td></td></tr>`;
     html += "</table>";
     return html;
   }
@@ -254,9 +254,11 @@
       const data = s.map ? stream.data.map(s.map) : stream.data;
       const valid = data.filter(v => v != null);
       if (!valid.length) return;
+      const mn = Math.min(...valid), mx = Math.max(...valid);
+      if (mn === mx) return; // flat line (e.g. elevation 0–0) — no useful chart
       const chart = sparkline(data);
       if (!chart) return; // not enough points to draw
-      html += `<div class="spark-wrap"><div class="cap"><span>${s.label}</span><span>${s.fmt(Math.min(...valid))}–${s.fmt(Math.max(...valid))} ${s.unit}</span></div>${chart}</div>`;
+      html += `<div class="spark-wrap"><div class="cap"><span>${s.label}</span><span>${s.fmt(mn)}–${s.fmt(mx)} ${s.unit}</span></div>${chart}</div>`;
     });
     return html; // empty string if no charts — caller hides the row
   }
@@ -321,19 +323,21 @@
       let full = a;
       try { full = await Strava.getActivityCached(a.id); } catch (e) {}
       body.innerHTML = detailTable(full)
+        + `<div class="streams-below"></div>`
         + renderLaps(full.laps)
         + renderEfforts("best efforts", full.best_efforts)
         + renderEfforts("segments", full.segment_efforts)
         + `<div class="async"></div>`;
       const streamsRow = body.querySelector(".streams-row");
-      const streamsCell = body.querySelector(".streams-cell");
+      const streamsBelow = body.querySelector(".streams-below");
       const asyncDiv = body.querySelector(".async");
       // Streams + zones are separate calls — load them after the table is shown.
+      // The "streams" label sits in the table; the charts render full-width below it.
       Promise.allSettled([Strava.getActivityStreams(a.id), Strava.getActivityZones(a.id)])
         .then(([s, z]) => {
           if (s.status === "fulfilled") {
             const charts = renderStreams(s.value);
-            if (charts && streamsCell) { streamsCell.innerHTML = charts; streamsRow.style.display = ""; }
+            if (charts && streamsBelow) { streamsBelow.innerHTML = charts; if (streamsRow) streamsRow.style.display = ""; }
           }
           if (z.status === "fulfilled" && asyncDiv) asyncDiv.innerHTML = renderZones(z.value);
         });
@@ -414,7 +418,7 @@
       ALL = await Strava.getAllActivities({ onProgress: n => { if (!cache) statusEl.textContent = `loading… ${n} activities`; } });
       dashEl.style.display = "block";
       render();
-      renderTotals();
+      // renderTotals(); // career totals hidden for now
       renderAthleteZones();
     } catch (e) {
       const msg = e.message || String(e);
