@@ -163,6 +163,7 @@
       const pct = Math.round(counts[i] / total * 100);
       return `<div class="cell"><div class="box" style="--fill:${a.toFixed(2)}" title="${counts[i]} workouts"><p><span class="day-name">${n}</span><span class="day-pct">${pct}%</span></p></div></div>`;
     }).join("");
+    wireTapReveal(dowEl, ".box");
   }
   function renderTypes(list) {
     const m = {};
@@ -190,6 +191,18 @@
         <span class="bar-fill" style="width:${(e.value / max * 100).toFixed(1)}%"></span>
         <p class="lab"><span class="session-count">${e.value} </span>${esc(nameFor(e.label))}</p>
       </div>`).join("");
+    wireTapReveal(typesEl, ".bar-row2");
+  }
+
+  function wireTapReveal(container, selector) {
+    container.querySelectorAll(selector).forEach(el => {
+      let timer = null;
+      el.addEventListener("click", () => {
+        clearTimeout(timer);
+        el.classList.add("tap");
+        timer = setTimeout(() => el.classList.remove("tap"), 1000);
+      });
+    });
   }
 
   /* ---------- career totals (athlete stats) ---------- */
@@ -449,10 +462,10 @@
   }
 
   /* ---------- all-time scrubbable timeline ---------- */
-  const TL_STEP = 4;      // px per day (1px bar + 3px gap)
-  const TL_RESTH = 30;    // rest-day tick height in px
-  const TL_MINH = 58;     // shortest workout day height in px
-  const TL_MAXH = 360;    // tallest day stack in px
+  const TL_STEP = 7;      // px per day (1px bar + 6px gap)
+  const TL_RESTH = 28;    // rest-day tick height in px
+  const TL_MINH = 54;     // shortest workout day height in px
+  const TL_MAXH = 320;    // tallest day stack in px
   const TL_GROW = 1500;   // ms for the tallest bar to grow on load
 
   function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
@@ -509,7 +522,7 @@
     let hideScrubTimer = null;
     function openScrub() {
       clearTimeout(hideScrubTimer);
-      scrub.style.display = "block";
+      scrub.style.display = "grid";
       requestAnimationFrame(() => scrub.classList.add("active"));
     }
     function closeScrub() {

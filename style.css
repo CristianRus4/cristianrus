@@ -600,23 +600,22 @@ body:has(#dash) .sub { margin-bottom: 1em; }
    hovered/centred day gets a taller cursor bar with details above and date below.
    Edges fade (overlay gradient) only on the side that still has more to scroll. */
 .timeline-outer { position: relative; height: calc(100vh - 9em); min-height: 650px; margin: 1em 0 5em; width: 100vw; margin-left: calc(50% - 50vw); }
-.timeline-scroll { position: absolute; left: 0; right: 0; top: 22%; bottom: 18%; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; scroll-snap-type: x proximity; }
+.timeline-scroll { position: absolute; left: 0; right: 0; top: 35%; bottom: 22%; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; scroll-snap-type: x proximity; }
 .timeline-scroll::-webkit-scrollbar { display: none; }
 .timeline { display: flex; align-items: flex-end; height: 100%; }
-.tl-day { flex: 0 0 auto; width: 1px; margin-right: 3px; display: flex; flex-direction: column; justify-content: flex-end; gap: 1px; scroll-snap-align: center; clip-path: inset(100% 0 0 0); transition: clip-path 1500ms ease; }
+.tl-day { flex: 0 0 auto; width: 1px; margin-right: 6px; display: flex; flex-direction: column; justify-content: flex-end; gap: 1px; scroll-snap-align: center; clip-path: inset(100% 0 0 0); transition: clip-path 1500ms ease; }
 .tl-seg { width: 100%; background: var(--title); }
 .timeline.play .tl-day { clip-path: inset(0); }                /* reveal each full day from the bottom on load */
 .tl-day.empty .tl-seg { opacity: 0.18; }                       /* rest-day tick recedes */
-.tl-fade { position: absolute; top: 22%; bottom: 18%; width: 64px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
+.tl-fade { position: absolute; top: 35%; bottom: 22%; width: 64px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
 .tl-fade.left { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
 .tl-fade.right { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
-.tl-scrub { position: absolute; top: 0; bottom: 0; width: 0; pointer-events: none; display: none; z-index: 3; }
-/* Details sit ABOVE the cursor line (anchored 8px above the line's top, growing upward) */
-.tl-info { position: absolute; bottom: calc(78% + 1.2em); left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center; line-height: 1.35; opacity: 0; transition: opacity 0.01s linear 30ms; }
-.tl-line { position: absolute; top: 24%; bottom: 20%; left: 0; width: 1px; transform: translateX(-50%) scaleY(0); transform-origin: center; background: linear-gradient(to bottom, var(--link-hover-start), var(--link-hover-end)); transition: transform 150ms ease; }
-.tl-date { position: absolute; top: calc(80% + 1.2em); left: 0; transform: translateX(-50%); white-space: nowrap; line-height: 1; opacity: 0; transition: opacity 0.01s linear 30ms; }
+.tl-scrub { position: absolute; top: calc(35% - 2.2em); height: calc(43% + 4.4em); width: 0; pointer-events: none; display: none; z-index: 3; grid-template-rows: auto 1fr auto; justify-items: center; row-gap: 1.2em; }
+.tl-info { white-space: nowrap; text-align: center; line-height: 1.35; opacity: 0; transition: opacity 0.01s linear 30ms; }
+.tl-line { width: 1px; height: 100%; transform: scaleY(0); transform-origin: center; background: linear-gradient(to bottom, var(--link-hover-start), var(--link-hover-end)); transition: transform 150ms ease; }
+.tl-date { white-space: nowrap; line-height: 1; opacity: 0; transition: opacity 0.01s linear 30ms; }
 .tl-info small { display: block; }
-.tl-scrub.active .tl-line { transform: translateX(-50%) scaleY(1); }
+.tl-scrub.active .tl-line { transform: scaleY(1); }
 .tl-scrub.active .tl-info,
 .tl-scrub.active .tl-date { opacity: 1; transition-delay: 120ms; }
 
@@ -646,8 +645,10 @@ body:has(#dash) .sub { margin-bottom: 1em; }
 }
 .heatmap p { margin: 0; }
 .heatmap .day-pct { display: none; }
-.heatmap .box:hover .day-name { display: none; }
-.heatmap .box:hover .day-pct { display: inline; }
+.heatmap .box:hover .day-name,
+.heatmap .box.tap .day-name { display: none; }
+.heatmap .box:hover .day-pct,
+.heatmap .box.tap .day-pct { display: inline; }
 
 /* Type distribution — filled bars lead; session count/type label trails */
 .bars { margin: 0.5em 0 2.5em; }
@@ -655,7 +656,8 @@ body:has(#dash) .sub { margin-bottom: 1em; }
 .bar-row2 .lab { margin: 0; text-align: right; white-space: nowrap; }
 .bar-row2 .bar-fill { display: block; height: 0.7em; background: var(--item-bar); border-radius: 0; transition: width 0.6s ease; }
 .bar-row2 .session-count { display: none; }
-.bar-row2:hover .session-count { display: inline; }
+.bar-row2:hover .session-count,
+.bar-row2.tap .session-count { display: inline; }
 
 /* Zone bars (label + value), filled capsule only, no track */
 .bar-row { display: grid; grid-template-columns: 4.5em 1fr 3em; align-items: center; gap: 0.6em; margin: 0.4em 0; }
