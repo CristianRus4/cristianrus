@@ -322,14 +322,15 @@
     const dec = spec.dec || 0;
     const def = `${mn.toFixed(dec)}–${mx.toFixed(dec)} ${spec.unit}`;
     const ptsAttr = pts.map(v => v == null ? "" : v.toFixed(2)).join(",");
+    const gradId = `spark-cursor-gradient-${spec.key}`;
     return `<div class="spark-wrap" data-pts="${ptsAttr}" data-unit="${spec.unit}" data-dec="${dec}">` +
       `<div class="cap"><h5>${spec.label}</h5><span class="caption cap-val" data-def="${def}">${def}</span></div>` +
       `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">` +
-        `<defs><linearGradient id="spark-cursor-gradient" x1="0" y1="0" x2="0" y2="1">` +
-          `<stop offset="0%" stop-color="var(--link-hover-start)"/><stop offset="100%" stop-color="var(--link-hover-end)"/>` +
+        `<defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">` +
+          `<stop offset="0%" stop-color="#2A2A95"/><stop offset="100%" stop-color="#1CB5E0"/>` +
         `</linearGradient></defs>` +
         `<path class="area" d="${area}"/><path d="${line}"/>` +
-        `<line class="cursor" x1="0" y1="0" x2="0" y2="${H}" style="display:none"/>` +
+        `<line class="cursor" x1="0" y1="0" x2="0" y2="${H}" stroke="url(#${gradId})" style="display:none"/>` +
       `</svg></div>`;
   }
   function renderStreams(streams) {
@@ -532,7 +533,8 @@
 
     function positionScrub(idx) {
       // Sit exactly over the day's bar (bar centre = idx*STEP + 0.5px).
-      scrub.style.left = ((idx * TL_STEP + 0.5) - scroll.scrollLeft) + "px";
+      const pad = outer.clientWidth / 2;
+      scrub.style.left = (pad + (idx * TL_STEP + 0.5) - scroll.scrollLeft) + "px";
     }
     let hideScrubTimer = null;
     function openScrub() {
@@ -571,7 +573,7 @@
       // Desktop: nothing shown until the cursor actually moves over the timeline.
       scroll.addEventListener("pointermove", e => {
         const x = e.clientX - scroll.getBoundingClientRect().left;
-        showAt(Math.round((scroll.scrollLeft + x - 0.5) / TL_STEP)); // snap to nearest bar
+        showAt(Math.round((scroll.scrollLeft + x - outer.clientWidth / 2 - 0.5) / TL_STEP)); // snap to nearest bar
       });
       scroll.addEventListener("pointerleave", closeScrub);
       scroll.addEventListener("scroll", () => { if (scrub.dataset.idx) positionScrub(+scrub.dataset.idx); updateFades(); });

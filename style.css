@@ -12,7 +12,7 @@
     --link-hover-end-dark: #5AC4E1;
     --avatar-border: #21201C;
     --avatar-border-dark: #333333;
-    --item-bar: #555555;
+    --item-bar: var(--title);
 }
 
 /* Font Face */
@@ -612,9 +612,9 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 .tl-fade.right { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
 .tl-scrub { position: absolute; top: 0; bottom: 0; width: 0; pointer-events: none; display: none; z-index: 3; }
 /* Details sit ABOVE the cursor line (anchored 8px above the line's top, growing upward) */
-.tl-info { position: absolute; bottom: 262px; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center; line-height: 1.35; opacity: 0; transition: opacity 0.01s linear 30ms; }
+.tl-info { position: absolute; bottom: 286px; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center; line-height: 1.35; opacity: 0; transition: opacity 0.01s linear 30ms; }
 .tl-line { position: absolute; top: 63px; bottom: 63px; left: 0; width: 1px; transform: translateX(-50%) scaleY(0); transform-origin: center; background: linear-gradient(to bottom, var(--link-hover-start), var(--link-hover-end)); transition: transform 150ms ease; }
-.tl-date { position: absolute; bottom: 59px; left: 0; transform: translateX(-50%); white-space: nowrap; line-height: 1; opacity: 0; transition: opacity 0.01s linear 30ms; }
+.tl-date { position: absolute; top: 286px; left: 0; transform: translateX(-50%); white-space: nowrap; line-height: 1; opacity: 0; transition: opacity 0.01s linear 30ms; }
 .tl-info small { display: block; }
 .tl-scrub.active .tl-line { transform: translateX(-50%) scaleY(1); }
 .tl-scrub.active .tl-info,
@@ -642,7 +642,7 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 .heatmap .box {
   display: flex; align-items: center; justify-content: center;
   height: 1.8em; border-radius: 0; /* shorter, square corners */
-  color: var(--bg); background: rgba(85, 85, 85, var(--fill, 0));
+  color: var(--bg); background: color-mix(in srgb, var(--title) calc(var(--fill) * 100%), transparent);
 }
 .heatmap .box:hover { background: linear-gradient(to bottom left, var(--link-hover-start) 6%, var(--link-hover-end) 100%); }
 .heatmap p { margin: 0; }
@@ -709,7 +709,7 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 .spark { width: 100%; height: 60px; display: block; touch-action: none; }
 .spark path { fill: none; stroke: var(--text); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 .spark .area { fill: rgba(85, 85, 85, 0.10); stroke: none; }
-.spark .cursor { stroke: url(#spark-cursor-gradient); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.spark .cursor { stroke-width: 1; vector-effect: non-scaling-stroke; }
 
 /* Compact data tables (career totals, laps, segments, best efforts) */
 .wtable { width: 100%; border-collapse: collapse; margin: 0.3em 0 1em; }
@@ -725,9 +725,8 @@ body:has(#dash) .sub { margin-bottom: 3em; }
   .tl-line { background: linear-gradient(to bottom, var(--link-hover-start-dark), var(--link-hover-end-dark)); }
   .tl-fade.left { background: linear-gradient(to right, var(--bg-dark), transparent); }
   .tl-fade.right { background: linear-gradient(to left, var(--bg-dark), transparent); }
-  .bar-fill, .zone-fill { background: var(--text-dark); }
-  .heatmap .box { background: rgba(181, 179, 173, var(--fill, 0)); color: var(--bg-dark); }
+  .bar-fill, .zone-fill { background: var(--title-dark); }
+  .heatmap .box { background: color-mix(in srgb, var(--title-dark) calc(var(--fill) * 100%), transparent); color: var(--bg-dark); }
   .spark path { stroke: var(--text-dark); }
-  .spark .cursor { stroke: url(#spark-cursor-gradient); }
   .spark .area { fill: rgba(181, 179, 173, 0.10); }
 }
