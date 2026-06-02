@@ -579,11 +579,10 @@
       tl.style.paddingLeft = tl.style.paddingRight = (scroll.clientWidth / 2) + "px";
       requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; updateFades(); });
     } else {
-      // Mobile: timeline scrolls under the centre without opening the hover line.
-      outer.classList.add("mobile-scroll");
+      // Mobile: cursor pinned to centre, timeline scrolls under it.
       tl.style.paddingLeft = tl.style.paddingRight = (scroll.clientWidth / 2) + "px";
-      scroll.addEventListener("scroll", () => { showAt(Math.round(scroll.scrollLeft / TL_STEP), false); updateFades(); });
-      requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; showAt(lastActive, false); updateFades(); });
+      scroll.addEventListener("scroll", () => { showAt(Math.round(scroll.scrollLeft / TL_STEP)); updateFades(); });
+      requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; showAt(lastActive); updateFades(); });
     }
   }
 

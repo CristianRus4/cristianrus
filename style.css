@@ -642,18 +642,15 @@ body:has(#dash) .sub { margin-bottom: 0.5em; }
   }
   .timeline-scroll {
     top: 8%;
-    bottom: clamp(104px, 19vh, 146px);
+    bottom: clamp(44px, 8vh, 72px);
   }
   .tl-fade {
     top: 8%;
-    bottom: clamp(104px, 19vh, 146px);
+    bottom: clamp(44px, 8vh, 72px);
   }
   .tl-scrub {
     top: 8%;
-    bottom: clamp(104px, 19vh, 146px);
-  }
-  .timeline-outer.mobile-scroll .tl-scrub {
-    display: none !important;
+    bottom: clamp(44px, 8vh, 72px);
   }
 }
 
