@@ -563,7 +563,7 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 .timeline-scroll::-webkit-scrollbar { display: none; }
 .timeline { display: flex; align-items: flex-end; height: 100%; }
 .tl-day { flex: 0 0 auto; width: 2px; margin-right: 4px; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; scroll-snap-align: center; }
-.tl-seg { width: 100%; background: var(--title); transform-origin: bottom; transform: scaleY(0); transition: transform 700ms ease; }
+.tl-seg { width: 100%; background: var(--title); transform-origin: bottom; transform: scaleY(0); transition: transform 1500ms ease; }
 .timeline.play .tl-seg { transform: scaleY(1); }               /* grow from the bottom on load */
 .tl-day.empty .tl-seg { opacity: 0.18; }                       /* rest-day tick recedes */
 .tl-fade { position: absolute; top: 20px; bottom: 28px; width: 64px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
@@ -586,8 +586,6 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 /* Headline stat grid — 6 metrics: 2 cols on phones, 3 cols on wider screens */
 .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4em 1em; margin-bottom: 2.5em; }
 @media (min-width: 480px) { .stats { grid-template-columns: repeat(3, 1fr); } }
-.stat .n { font-size: 1.25em; font-weight: 600; line-height: 1.1; }
-.stat .l { font-size: 0.8em; }
 
 /* Weekday pattern — single horizontal heatmap row. Translucent rgba fill =
    relative volume (chart element); label is the PAGE BACKGROUND colour so it
@@ -621,15 +619,14 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 .workout { margin-bottom: 1.1em; }
 .workout summary { cursor: pointer; list-style: none; }
 .workout summary::-webkit-details-marker { display: none; }
-.workout summary .wdate { display: block; font-size: 0.78em; }
-.workout summary .tit { display: block; font-weight: 450; }
-.workout summary .meta { display: block; font-size: 0.9em; }
+.workout summary .wdate,
+.workout summary .tit,
+.workout summary .meta { display: block; }
 /* When expanded, hide the collapsed details line (repeated inside the table) */
 .workout[open] summary .meta { display: none; }
 /* Indent the expanded content a bit further from the left rule */
 .workout .body { padding-left: 0.9em; }
 .workout .map { width: 100%; border-radius: 1em; margin-top: 0.75em; }
-.workout .body h3 { font-size: 0.95em; font-weight: 550; margin: 1.5em 0 0.4em; }
 .workout .body h3:first-child { margin-top: 0.6em; }
 /* Detail table: let the first column (labels) grow to fit, no wrapping */
 .workout .body table th { white-space: nowrap; }
@@ -641,20 +638,16 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 .spark-wrap { margin: 0.4em 0 0.9em; }
 .spark-wrap .cap { display: flex; justify-content: space-between; align-items: baseline; margin: 1.5em 0 0.4em; }
 .spark-wrap .cap h3 { margin: 0; }
-.spark-wrap .cap .cap-val { font-size: 0.85em; font-weight: 400; }
 .spark { width: 100%; height: 60px; display: block; touch-action: none; }
 .spark path { fill: none; stroke: var(--text); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 .spark .area { fill: rgba(85, 85, 85, 0.10); stroke: none; }
 .spark .cursor { stroke: var(--text); stroke-width: 1; vector-effect: non-scaling-stroke; }
 
 /* Compact data tables (career totals, laps, segments, best efforts) */
-.wtable { width: 100%; border-collapse: collapse; font-size: 0.85em; margin: 0.3em 0 1em; }
+.wtable { width: 100%; border-collapse: collapse; margin: 0.3em 0 1em; }
 .wtable th, .wtable td { text-align: left; padding: 0.25em 0.6em 0.25em 0; vertical-align: top; white-space: nowrap; }
 .wtable td { padding-left: 0; } /* override global td left padding */
-.wtable thead th { font-weight: 550; border-bottom: 1px solid rgba(85,85,85,0.2); }
-.pr { font-weight: 600; }
-
-#enrich { font-size: 0.8em; }
+.wtable thead th { border-bottom: 1px solid rgba(85,85,85,0.2); }
 
 /* Workouts dark-mode overrides — placed AFTER the light rules above so they win
    the cascade. Text uses the single title colour; charts use light tones. */

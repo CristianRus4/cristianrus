@@ -67,7 +67,7 @@
   const statusEl = $("status"), connectEl = $("connect"), dashEl = $("dash");
   const statsEl = $("stats"), dowEl = $("dow"), typesEl = $("types"), listEl = $("list"), filtersEl = $("filters");
 
-  let ALL = [], range = "7d", enrichGen = 0, statsAnimated = false, timelineBuilt = false;
+  let ALL = [], range = "7d", enrichGen = 0, timelineBuilt = false;
 
   // Scramble digits to the final value (same vibe as the /now location animation), ~0.7s.
   function scramble(el, finalText, duration = 700) {
@@ -142,13 +142,13 @@
       [kmRaw(dist).toFixed(1) + " km", "distance"],
       [durShort(time), "moving time"],
       [Math.round(gain) + " m", "elevation"],
-      [kcal ? Math.round(kcal).toLocaleString() : "—", `kcal <span id="enrich"></span>`],
+      [kcal ? Math.round(kcal).toLocaleString() : "—", `kcal <span id="enrich"></span>`, "stat-kcal"],
       [activeDays, "active days"],
-    ].map(([n, l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
-    if (!statsAnimated) {
-      statsAnimated = true;
-      statsEl.querySelectorAll(".stat .n").forEach(el => scramble(el, el.textContent));
-    }
+    ].map(([n, l, id]) => `<div class="stat"><div class="n"${id ? ` id="${id}"` : ""}>${n}</div><div class="l">${l}</div></div>`).join("");
+  }
+  // Run the 0.7s scramble on the current metric values (called on load + filter change).
+  function animateStats() {
+    statsEl.querySelectorAll(".stat .n").forEach(el => scramble(el, el.textContent, 700));
   }
 
   function renderDow(list) {
@@ -428,7 +428,7 @@
   /* ---------- all-time scrubbable timeline ---------- */
   const TL_STEP = 6;      // px per day (2px bar + 4px gap)
   const TL_MAXH = 86;     // tallest day stack in px
-  const TL_GROW = 700;    // ms for the tallest bar to grow on load
+  const TL_GROW = 1500;   // ms for the tallest bar to grow on load
 
   function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
   const tlDateLabel = (d) => d.toLocaleDateString(undefined, { month: "short" }) + " " + ordinal(d.getDate()) + ", " + d.getFullYear();
@@ -522,7 +522,7 @@
   function render() {
     const list = filtered();
     statusEl.textContent = ""; // no "X activities total" line
-    renderStats(list); renderDow(list); renderTypes(list); renderList(list);
+    renderStats(list); animateStats(); renderDow(list); renderTypes(list); renderList(list);
     if (!timelineBuilt) { timelineBuilt = true; renderTimeline(); }
     // Only enrich (fetch details for kcal) the workouts actually shown, to stay
     // well within Strava's shared rate limit on a public page.
@@ -534,7 +534,6 @@
     if (!btn) return;
     range = btn.dataset.range;
     [...filtersEl.querySelectorAll("button")].forEach(b => b.classList.toggle("on", b === btn));
-    statsAnimated = false; // replay the metric scramble on every timeframe change
     render();
   });
 
