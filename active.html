@@ -31,11 +31,11 @@
     </div>
 
     <div class="filters" id="filters">
-      <button data-range="7d">7d</button>
-      <button data-range="30d" class="on">30d</button>
-      <button data-range="90d">90d</button>
-      <button data-range="365d">365d</button>
-      <button data-range="all">all</button>
+      <button data-range="7d"><p>7d</p></button>
+      <button data-range="30d" class="on"><strong>30d</strong></button>
+      <button data-range="90d"><p>90d</p></button>
+      <button data-range="365d"><p>365d</p></button>
+      <button data-range="all"><p>all</p></button>
     </div>
 
     <div class="stats" id="stats"></div>
@@ -45,6 +45,36 @@
 
     <h2>sessions</h2>
     <div class="bars" id="types"></div>
+
+    <div class="type-samples">
+      <h1>h1 sample text</h1>
+      <h2>h2 sample text</h2>
+      <h3>h3 sample text</h3>
+      <h4>h4 sample text</h4>
+      <h5>h5 sample text</h5>
+      <h6>h6 sample text</h6>
+      <p>p sample text</p>
+      <p><strong>strong sample text</strong></p>
+      <p><em>em sample text</em></p>
+      <p><a href="#">a sample link</a></p>
+      <p><small>small sample text</small></p>
+      <blockquote>blockquote sample text</blockquote>
+      <p><code>code sample text</code></p>
+      <pre>pre sample text</pre>
+      <figure>
+        <figcaption>figcaption sample text</figcaption>
+      </figure>
+      <table>
+        <caption>caption sample text</caption>
+        <tbody>
+          <tr><th>th sample text</th><td>td sample text</td></tr>
+        </tbody>
+      </table>
+      <footer>footer sample text</footer>
+      <p class="tit">.tit sample text</p>
+      <p class="ext">.ext sample text</p>
+      <p class="dat">.dat sample text</p>
+    </div>
 
     <div id="totals-wrap" style="display:none;">
       <h2>career totals</h2>
@@ -56,7 +86,7 @@
       <div id="athlete-zones"></div>
     </div>
 
-    <h2>latest workouts</h2>
+    <h2>recent workouts</h2>
     <div id="list"></div>
   </div>
 
@@ -144,7 +174,7 @@
       [Math.round(gain) + " m", "elevation"],
       [kcal ? Math.round(kcal).toLocaleString() : "—", `kcal <span id="enrich"></span>`, "stat-kcal"],
       [activeDays, "active days"],
-    ].map(([n, l, id]) => `<div class="stat"><div class="n"${id ? ` id="${id}"` : ""}>${n}</div><div class="l">${l}</div></div>`).join("");
+    ].map(([n, l, id]) => `<div class="stat"><h1 class="n"${id ? ` id="${id}"` : ""}>${n}</h1><p class="l">${l}</p></div>`).join("");
   }
   // Run the 0.7s scramble on the current metric values (called on load + filter change).
   function animateStats() {
@@ -159,7 +189,7 @@
     // Translucent fill via rgba alpha (not CSS opacity) so the label stays fully readable.
     dowEl.innerHTML = names.map((n, i) => {
       const a = counts[i] ? (0.35 + 0.65 * (counts[i] / max)) : 0.14;
-      return `<div class="cell"><span class="box" style="--fill:${a.toFixed(2)}" title="${counts[i]} workouts">${n}</span></div>`;
+      return `<div class="cell"><div class="box" style="--fill:${a.toFixed(2)}" title="${counts[i]} workouts"><p>${n}</p></div></div>`;
     }).join("");
   }
   function renderTypes(list) {
@@ -168,15 +198,18 @@
     const entries = Object.entries(m).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
     const max = Math.max(1, ...entries.map(e => e.value));
     const labelFor = (e) => {
-      const parts = e.label.toLowerCase().split(" ");
+      if (e.label === "Strength") return `${e.value} lifting`;
+      const parts = (e.label === "Strength" ? "lifting" : e.label).toLowerCase().split(" ");
       const last = parts.pop();
       parts.push(last.endsWith("s") ? last : last + "s");
       return `${e.value} ${parts.join(" ")}`;
     };
+    const labels = entries.map(labelFor);
+    if (labels.length) typesEl.style.setProperty("--labw", Math.max(...labels.map(s => s.length)) + "ch");
     typesEl.innerHTML = entries.map(e => `
       <div class="bar-row2">
         <span class="bar-fill" style="width:${(e.value / max * 100).toFixed(1)}%"></span>
-        <span class="lab">${esc(labelFor(e))}</span>
+        <p class="lab">${esc(labelFor(e))}</p>
       </div>`).join("");
   }
 
@@ -222,8 +255,8 @@
     const loc = [a.location_city, a.location_state, a.location_country].filter(Boolean).join(", ");
     const map = a.map && (a.map.polyline || a.map.summary_polyline);
     // Skip empty values AND placeholder dashes so nothing shows "—".
-    const r = (k, v) => (v === undefined || v === null || v === "" || v === "—" || (typeof v === "number" && isNaN(v))) ? "" : `<tr><th>${k}</th><td>${v}</td></tr>`;
-    let html = "<h3>workout details</h3>";
+    const r = (k, v) => (v === undefined || v === null || v === "" || v === "—" || (typeof v === "number" && isNaN(v))) ? "" : `<tr><td>${k}</td><td>${v}</td></tr>`;
+    let html = "<h4>workout details</h4>";
     if (map) html += `<img class="map" alt="route" src="https://staticmap.openstreetmap.de/staticmap.php?size=640x280&path=color:0x555555|weight:4|${encodeURIComponent("enc:" + map)}" onerror="this.style.display='none'">`;
     html += "<table>";
     html += r("type", niceType(a.sport_type || a.type)) + r("workout type", a.workout_type);
@@ -281,7 +314,7 @@
     const def = `${mn.toFixed(dec)}–${mx.toFixed(dec)} ${spec.unit}`;
     const ptsAttr = pts.map(v => v == null ? "" : v.toFixed(2)).join(",");
     return `<div class="spark-wrap" data-pts="${ptsAttr}" data-unit="${spec.unit}" data-dec="${dec}">` +
-      `<div class="cap"><h3>${spec.label}</h3><span class="cap-val" data-def="${def}">${def}</span></div>` +
+      `<div class="cap"><h4>${spec.label}</h4><em class="cap-val" data-def="${def}">${def}</em></div>` +
       `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">` +
         `<path class="area" d="${area}"/><path d="${line}"/>` +
         `<line class="cursor" x1="0" y1="0" x2="0" y2="${H}" style="display:none"/>` +
@@ -335,7 +368,7 @@
         label: "Z" + (i + 1), value: b.time || 0, cls: "zone-z" + Math.min(5, i + 1),
         pct: (b.time || 0) / total * 100,
       }));
-      html += `<h3>${z.type === "heartrate" ? "heart-rate" : z.type} zones</h3><div class="bars">`;
+      html += `<h4>${z.type === "heartrate" ? "heart-rate" : z.type} zones</h4><div class="bars">`;
       const wrap = document.createElement("div");
       barRows(wrap, entries, e => durShort(e.value) + " · " + e.pct.toFixed(0) + "%", "zone-fill");
       html += wrap.innerHTML + `</div>`;
@@ -347,7 +380,7 @@
     let rows = laps.map(l =>
       `<tr><td>${l.lap_index}</td><td>${km(l.distance)}</td><td>${clock(l.moving_time)}</td>` +
       `<td>${pace(l.average_speed, l.type)}</td><td>${l.average_heartrate ? Math.round(l.average_heartrate) : "—"}</td></tr>`).join("");
-    return `<h3>laps</h3><table class="wtable"><thead><tr><th>#</th><th>dist</th><th>time</th><th>pace</th><th>hr</th></tr></thead><tbody>${rows}</tbody></table>`;
+    return `<h4>laps</h4><table class="wtable"><thead><tr><th>#</th><th>dist</th><th>time</th><th>pace</th><th>hr</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
   function renderEfforts(title, efforts) {
     if (!Array.isArray(efforts) || !efforts.length) return "";
@@ -357,12 +390,12 @@
         `<td>${e.distance ? km(e.distance) : "—"}</td><td>${clock(e.elapsed_time)}</td>` +
         `<td>${e.average_heartrate ? Math.round(e.average_heartrate) + " bpm" : "—"}</td></tr>`;
     }).join("");
-    return `<h3>${title}</h3><table class="wtable"><thead><tr><th>name</th><th>dist</th><th>time</th><th>hr</th></tr></thead><tbody>${rows}</tbody></table>`;
+    return `<h4>${title}</h4><table class="wtable"><thead><tr><th>name</th><th>dist</th><th>time</th><th>hr</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
   function workoutEl(a) {
     const det = document.createElement("details");
-    det.className = "workout item";
+    det.className = "workout";
     const wdate = new Date(a.start_date_local || a.start_date)
       .toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
     // Build the details line from only the parts we actually have.
@@ -372,16 +405,20 @@
     if (a.average_speed) parts.push(pace(a.average_speed, a.sport_type || a.type));
     det.innerHTML =
       `<summary>` +
-        `<span class="wdate">${wdate}</span>` +
-        `<span class="tit">${esc(a.name || "(untitled)")}</span>` +
-        (parts.length ? `<span class="meta">${parts.join(" · ")}</span>` : "") +
+        `<span class="wmain"><h3>${esc(niceType(a.sport_type || a.type))}</h3>` +
+        (parts.length ? `<em class="meta">${parts.join(" · ")}</em>` : "") +
+        `</span><em class="wdate">${wdate}</em>` +
       `</summary><div class="body"></div>`;
     const body = det.querySelector(".body");
     let loaded = false;
     det.addEventListener("toggle", async () => {
-      if (!det.open || loaded) return;
+      if (!det.open) return;
+      listEl.querySelectorAll("details.workout[open]").forEach(openDet => {
+        if (openDet !== det) openDet.open = false;
+      });
+      if (loaded) return;
       loaded = true;
-      body.innerHTML = `<p class="meta">loading…</p>`;
+      body.innerHTML = `<p>loading…</p>`;
       let full = a;
       try { full = await Strava.getActivityCached(a.id); } catch (e) {}
       body.innerHTML = detailTable(full)
@@ -431,7 +468,8 @@
   /* ---------- all-time scrubbable timeline ---------- */
   const TL_STEP = 3;      // px per day (1px bar + 2px gap)
   const TL_RESTH = 24;    // rest-day tick height in px
-  const TL_MAXH = 128;    // tallest day stack in px
+  const TL_MINH = 42;     // shortest workout day height in px
+  const TL_MAXH = 192;    // tallest day stack in px
   const TL_GROW = 1500;   // ms for the tallest bar to grow on load
 
   function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
@@ -463,7 +501,7 @@
     // column reveals from bottom to top so stacked workouts behave like one bar.
     const seg = (h) => `<span class="tl-seg" style="height:${h.toFixed(0)}px"></span>`;
     tl.innerHTML = days.map(d => {
-      const totalH = d.dur ? TL_RESTH + (d.dur / maxDur * (TL_MAXH - TL_RESTH)) : TL_RESTH;
+      const totalH = d.dur ? TL_MINH + (d.dur / maxDur * (TL_MAXH - TL_MINH)) : TL_RESTH;
       const grow = Math.max(120, TL_GROW * totalH / TL_MAXH).toFixed(0);
       if (!d.dur) return `<span class="tl-day empty" style="transition-duration:${grow}ms">${seg(TL_RESTH)}</span>`;
       return `<span class="tl-day" style="transition-duration:${grow}ms">${d.items.map(a => seg(Math.max(3, (a.moving_time || 0) / d.dur * totalH))).join("")}</span>`;
@@ -497,15 +535,15 @@
     function showAt(idx) {
       idx = Math.max(0, Math.min(days.length - 1, idx));
       const day = days[idx];
-      date.textContent = tlDateLabel(day.date);
+      date.innerHTML = `<small>${tlDateLabel(day.date)}</small>`;
       if (day.items.length) {
         info.innerHTML = day.items.map(a => {
           const parts = [niceType(a.sport_type || a.type)];
           if (a.distance > 0) parts.push((a.distance / 1000).toFixed(2) + "km");
           if (a.moving_time) parts.push(durShort(a.moving_time));
-          return `<div>${esc(parts.join("  ·  "))}</div>`;
+          return `<small>${esc(parts.join("  ·  "))}</small>`;
         }).join("");
-      } else info.innerHTML = `<div>Rest</div>`;
+      } else info.innerHTML = `<small>Rest</small>`;
       const prev = tl.querySelector(".tl-day.on"); if (prev) prev.classList.remove("on");
       if (tl.children[idx]) tl.children[idx].classList.add("on");
       scrub.dataset.idx = idx;
@@ -548,7 +586,10 @@
     const btn = e.target.closest("button[data-range]");
     if (!btn) return;
     range = btn.dataset.range;
-    [...filtersEl.querySelectorAll("button")].forEach(b => b.classList.toggle("on", b === btn));
+    [...filtersEl.querySelectorAll("button")].forEach(b => {
+      b.classList.toggle("on", b === btn);
+      b.innerHTML = b === btn ? `<strong>${b.dataset.range}</strong>` : `<p>${b.dataset.range}</p>`;
+    });
     render();
   });
 

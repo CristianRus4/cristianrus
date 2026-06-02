@@ -79,37 +79,54 @@ iframe {
 
 
 
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, footer {
+    font-size: 1em;
+}
+
 h1 {
-     font-size: 1em;
     margin-bottom: 1.5em;
     margin-top: 1.5em;
-    font-weight: 600;
+    font-weight: 650;
     color: var(--title);
 }
 
-
 h2 {
-     font-size: 1em;
-    font-weight: 550;
+    font-weight: 600;
     margin-bottom: 0.5em;
     margin-top: 2.5em;
-    
     color: var(--title);
 }
 
 h3 {
-     font-size: 1em;
+    font-weight: 550;
+    margin-bottom: 0.5em;
+    margin-top: 2.5em;
+    color: var(--title);
+}
+
+h4 {
     font-weight: 500;
     margin-bottom: 0.5em;
     margin-top: 2.5em;
-    
+    color: var(--title);
+}
 
+h5 {
+    font-weight: 450;
+    margin-bottom: 0.5em;
+    margin-top: 2.5em;
+    color: var(--title);
+}
+
+h6 {
+    font-weight: 400;
+    margin-bottom: 0.5em;
+    margin-top: 2.5em;
+    color: var(--title);
 }
 
 strong {
-     
-    font-weight: 600;
-    
+    font-weight: 500;
 }
 
 .title {
@@ -135,10 +152,45 @@ animation: fadeInFromBottom 1.5s ease forwards;
 
 
 p {
-    
     margin-top: 0.5em;
     margin-bottom: 1em;
- 
+}
+
+em {
+    font-style: italic;
+}
+
+small {
+    font-size: 1em;
+}
+
+blockquote {
+    margin: 0.5em 0 1em 1.5em;
+    font-style: italic;
+}
+
+code, pre {
+    font-family: 'Geist', sans-serif;
+}
+
+pre {
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    white-space: pre-wrap;
+}
+
+caption, figcaption, footer {
+    text-align: left;
+    opacity: 0.72;
+}
+
+figcaption {
+    font-style: italic;
+}
+
+caption {
+    padding: 0;
+    caption-side: top;
 }
 
 
@@ -150,7 +202,7 @@ p {
 
 th {
     text-align: right;
-    font-weight: 450;
+    font-weight: 500;
     vertical-align: top;
  
 }
@@ -202,17 +254,6 @@ img {
 /* Gradient ring on hover matching link hover gradient */
 /* Slight image scale on hover */
 .avatar-link:hover .avatar { transform: scale(1.05); }
-
-
-figcaption {
-    text-align: right;
-    
-    font-family: 'Geist', sans-serif;
-    margin-top: -0.5em;
-    margin-right: 1em;
-    font-style: italic;
-}
-
 
 
 .value {
@@ -487,7 +528,7 @@ a:hover {
 
 
 }
-    h1,h2 {
+    h1, h2, h3, h4, h5, h6 {
        
         color: var(--title-dark);
     }
@@ -558,22 +599,22 @@ body:has(#dash) .sub { margin-bottom: 3em; }
    stacked segment whose height = its duration. Data bars are full opacity; the
    hovered/centred day gets a taller cursor bar with details above and date below.
    Edges fade (overlay gradient) only on the side that still has more to scroll. */
-.timeline-outer { position: relative; height: 220px; margin: 2.5em 0 2.75em; }
-.timeline-scroll { position: absolute; left: 0; right: 0; top: 48px; bottom: 48px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; scroll-snap-type: x proximity; }
+.timeline-outer { position: relative; height: 330px; margin: 3em 0 3.25em; }
+.timeline-scroll { position: absolute; left: 0; right: 0; top: 72px; bottom: 72px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; scroll-snap-type: x proximity; }
 .timeline-scroll::-webkit-scrollbar { display: none; }
 .timeline { display: flex; align-items: flex-end; height: 100%; }
 .tl-day { flex: 0 0 auto; width: 1px; margin-right: 2px; display: flex; flex-direction: column; justify-content: flex-end; gap: 1px; scroll-snap-align: center; clip-path: inset(100% 0 0 0); transition: clip-path 1500ms ease; }
 .tl-seg { width: 100%; background: var(--title); }
 .timeline.play .tl-day { clip-path: inset(0); }                /* reveal each full day from the bottom on load */
 .tl-day.empty .tl-seg { opacity: 0.18; }                       /* rest-day tick recedes */
-.tl-fade { position: absolute; top: 48px; bottom: 48px; width: 64px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
+.tl-fade { position: absolute; top: 72px; bottom: 72px; width: 64px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
 .tl-fade.left { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
 .tl-fade.right { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
 .tl-scrub { position: absolute; top: 0; bottom: 0; width: 0; pointer-events: none; display: none; z-index: 3; }
 /* Details sit ABOVE the cursor line (anchored 8px above the line's top, growing upward) */
-.tl-info { position: absolute; bottom: 180px; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 0.78em; line-height: 1.35; opacity: 0; transition: opacity 0.01s linear; }
-.tl-line { position: absolute; top: 42px; bottom: 42px; left: 0; width: 1px; transform: translateX(-50%) scaleY(0); transform-origin: center; background: var(--title); transition: transform 300ms ease; }
-.tl-date { position: absolute; bottom: 18px; left: 0; transform: translateX(-50%); white-space: nowrap; font-size: 0.78em; line-height: 1; opacity: 0; transition: opacity 0.01s linear; }
+.tl-info { position: absolute; bottom: 270px; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center; line-height: 1.35; opacity: 0; transition: opacity 0.01s linear; }
+.tl-line { position: absolute; top: 63px; bottom: 63px; left: 0; width: 1px; transform: translateX(-50%) scaleY(0); transform-origin: center; background: var(--title); transition: transform 300ms ease; }
+.tl-date { position: absolute; bottom: 27px; left: 0; transform: translateX(-50%); white-space: nowrap; line-height: 1; opacity: 0; transition: opacity 0.01s linear; }
 .tl-scrub.active .tl-line { transform: translateX(-50%) scaleY(1); }
 .tl-scrub.active .tl-info,
 .tl-scrub.active .tl-date { opacity: 1; transition-delay: 300ms; }
@@ -582,14 +623,14 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 .filters { display: flex; flex-wrap: wrap; gap: 0.25em 1.25em; margin: 0.5em 0 2em; }
 .filters button {
   background: none; border: none; cursor: pointer; padding: 0;
-  font: inherit; color: inherit; font-weight: 400;
+  font: inherit; color: inherit;
 }
-.filters button.on { font-weight: 600; }
+.filters p { margin: 0; }
 
 /* Headline stat grid — 6 metrics: 2 cols on phones, 3 cols on wider screens */
 .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4em 1em; margin-bottom: 2.5em; }
 @media (min-width: 480px) { .stats { grid-template-columns: repeat(3, 1fr); } }
-.stat .n { font-weight: 600; }
+.stat h1, .stat p { margin: 0; }
 
 /* Weekday pattern — single horizontal heatmap row. Translucent rgba fill =
    relative volume (chart element); label is the PAGE BACKGROUND colour so it
@@ -599,41 +640,53 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 .heatmap .box {
   display: flex; align-items: center; justify-content: center;
   height: 1.8em; border-radius: 0; /* shorter, square corners */
-  font-size: 0.8em; font-weight: 500;
   color: var(--bg); background: rgba(85, 85, 85, var(--fill, 0));
 }
+.heatmap p { margin: 0; }
 
 /* Type distribution — filled bars lead; session count/type label trails */
 .bars { margin: 0.5em 0 2.5em; }
-.bar-row2 { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0.8em; margin: 0.45em 0; }
-.bar-row2 .lab { font-size: 0.9em; white-space: nowrap; }
+.bar-row2 { display: grid; grid-template-columns: minmax(0, 1fr) var(--labw, auto); align-items: center; gap: 0.8em; margin: 0.45em 0; }
+.bar-row2 .lab { margin: 0; text-align: right; white-space: nowrap; }
 .bar-row2 .bar-fill { display: block; height: 0.7em; background: var(--item-bar); border-radius: 0; transition: width 0.6s ease; }
 
 /* Zone bars (label + value), filled capsule only, no track */
 .bar-row { display: grid; grid-template-columns: 4.5em 1fr 3em; align-items: center; gap: 0.6em; margin: 0.4em 0; }
-.bar-row .lab { font-size: 0.9em; text-align: right; white-space: nowrap; }
+.bar-row .lab { text-align: right; white-space: nowrap; }
 .bar-track { background: transparent; height: 0.7em; }
 .bar-fill { display: block; background: var(--item-bar); height: 100%; border-radius: 0; transition: width 0.6s ease; }
-.bar-row .val { font-size: 0.85em; text-align: right; }
+.bar-row .val { text-align: right; }
 .zone-fill { display: block; background: var(--item-bar); height: 100%; border-radius: 0; }
 .zone-z1 { opacity: 0.35; } .zone-z2 { opacity: 0.5; } .zone-z3 { opacity: 0.65; }
 .zone-z4 { opacity: 0.8; } .zone-z5 { opacity: 1; }
 
-/* Expandable workout rows — three lines: date, title, details */
-.workout { margin-bottom: 1.1em; }
+/* Expandable workout rows */
+.workout { margin-bottom: 1.35em; }
 .workout summary { cursor: pointer; list-style: none; }
 .workout summary::-webkit-details-marker { display: none; }
-.workout summary .wdate,
-.workout summary .tit,
-.workout summary .meta { display: block; }
-/* When expanded, hide the collapsed details line (repeated inside the table) */
-.workout[open] summary .meta { display: none; }
-/* Indent the expanded content a bit further from the left rule */
-.workout .body { padding-left: 0.9em; }
+.workout summary {
+  display: flex;
+  align-items: baseline;
+  gap: 1em;
+}
+.workout summary .wmain {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75em;
+  min-width: 0;
+}
+.workout summary h3 { margin: 0; white-space: nowrap; }
+.workout summary .meta { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.workout summary .wdate { margin-left: auto; white-space: nowrap; }
+.workout .body { margin-top: 0.8em; }
 .workout .map { width: 100%; border-radius: 1em; margin-top: 0.75em; }
-.workout .body h3:first-child { margin-top: 0.6em; }
+.workout .body h4:first-child { margin-top: 0.6em; }
 /* Detail table: let the first column (labels) grow to fit, no wrapping */
-.workout .body table th { white-space: nowrap; }
+.workout .body table td:first-child { padding-left: 0; white-space: nowrap; }
+
+@media (max-width: 560px) {
+  .workout summary .meta { display: none; }
+}
 
 /* Inline SVG stream charts — full width, below the detail table; scrub on hover.
    Each chart has its own title (heart rate, speed…) styled like the other h3
@@ -641,7 +694,7 @@ body:has(#dash) .sub { margin-bottom: 3em; }
 .streams-below { margin: 0.4em 0 0.8em; }
 .spark-wrap { margin: 0.4em 0 0.9em; }
 .spark-wrap .cap { display: flex; justify-content: space-between; align-items: baseline; margin: 1.5em 0 0.4em; }
-.spark-wrap .cap h3 { margin: 0; }
+.spark-wrap .cap h4 { margin: 0; }
 .spark { width: 100%; height: 60px; display: block; touch-action: none; }
 .spark path { fill: none; stroke: var(--text); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 .spark .area { fill: rgba(85, 85, 85, 0.10); stroke: none; }
