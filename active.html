@@ -69,8 +69,8 @@
 
   let ALL = [], range = "7d", enrichGen = 0, statsAnimated = false, timelineBuilt = false;
 
-  // Scramble digits to the final value (same vibe as the /now location animation), ~1.2s.
-  function scramble(el, finalText, duration = 1200) {
+  // Scramble digits to the final value (same vibe as the /now location animation), ~0.7s.
+  function scramble(el, finalText, duration = 700) {
     const digits = "0123456789";
     const start = performance.now();
     const iv = setInterval(() => {
@@ -427,7 +427,8 @@
 
   /* ---------- all-time scrubbable timeline ---------- */
   const TL_STEP = 6;      // px per day (2px bar + 4px gap)
-  const TL_MAXH = 120;    // tallest day stack in px
+  const TL_MAXH = 86;     // tallest day stack in px
+  const TL_GROW = 700;    // ms for the tallest bar to grow on load
 
   function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
   const tlDateLabel = (d) => d.toLocaleDateString(undefined, { month: "short" }) + " " + ordinal(d.getDate());
@@ -454,14 +455,15 @@
     }
     const maxDur = Math.max(1, ...days.map(d => d.dur));
     tl.style.width = (days.length * TL_STEP) + "px";
-    // One day = a column; each workout that day is a stacked segment (height = its duration).
+    // One day = a column; each workout that day is a stacked segment (height = its
+    // duration). Each grows from the bottom; grow time scales with height so the
+    // tallest bar takes TL_GROW ms (constant growth speed).
+    const seg = (h) => `<span class="tl-seg" style="height:${h.toFixed(0)}px;transition-duration:${Math.max(120, TL_GROW * h / TL_MAXH).toFixed(0)}ms"></span>`;
     tl.innerHTML = days.map(d => {
-      if (!d.dur) return `<span class="tl-day empty"><span class="tl-seg" style="height:3px"></span></span>`;
-      const segs = d.items.map(a =>
-        `<span class="tl-seg" style="height:${Math.max(3, (a.moving_time || 0) / maxDur * TL_MAXH).toFixed(0)}px"></span>`
-      ).join("");
-      return `<span class="tl-day">${segs}</span>`;
+      if (!d.dur) return `<span class="tl-day empty">${seg(3)}</span>`;
+      return `<span class="tl-day">${d.items.map(a => seg(Math.max(3, (a.moving_time || 0) / maxDur * TL_MAXH))).join("")}</span>`;
     }).join("");
+    requestAnimationFrame(() => tl.classList.add("play")); // trigger grow animation
 
     const mode = matchMedia("(hover: hover)").matches ? "hover" : "scroll";
     const fadeL = $("tlfadel"), fadeR = $("tlfader");
@@ -474,7 +476,8 @@
     }
 
     function positionScrub(idx) {
-      scrub.style.left = (mode === "scroll" ? outer.clientWidth / 2 : (idx * TL_STEP + TL_STEP / 2) - scroll.scrollLeft) + "px";
+      // Sit exactly over the day's bar (bar centre = idx*STEP + 1px).
+      scrub.style.left = (mode === "scroll" ? outer.clientWidth / 2 : (idx * TL_STEP + 1) - scroll.scrollLeft) + "px";
     }
     function showAt(idx) {
       idx = Math.max(0, Math.min(days.length - 1, idx));
@@ -484,12 +487,10 @@
         info.innerHTML = day.items.map(a => {
           const parts = [niceType(a.sport_type || a.type)];
           if (a.distance > 0) parts.push((a.distance / 1000).toFixed(2) + "km");
-          if (a.moving_time) parts.push(tlDur(a.moving_time));
-          if (a.average_speed) parts.push(pace(a.average_speed, a.sport_type || a.type));
-          if (a.average_heartrate) parts.push(Math.round(a.average_heartrate) + "bpm");
+          if (a.moving_time) parts.push(durShort(a.moving_time));
           return `<div>${esc(parts.join("  ·  "))}</div>`;
         }).join("");
-      } else info.innerHTML = `<div class="rest">rest day</div>`;
+      } else info.innerHTML = `<div>Rest</div>`;
       const prev = tl.querySelector(".tl-day.on"); if (prev) prev.classList.remove("on");
       if (tl.children[idx]) tl.children[idx].classList.add("on");
       scrub.dataset.idx = idx;
@@ -502,12 +503,14 @@
     for (let i = days.length - 1; i >= 0; i--) { if (days[i].items.length) { lastActive = i; break; } }
 
     if (mode === "hover") {
+      // Desktop: nothing shown until the cursor actually moves over the timeline.
       scroll.addEventListener("pointermove", e => {
         const x = e.clientX - scroll.getBoundingClientRect().left;
         showAt(Math.floor((scroll.scrollLeft + x) / TL_STEP));
       });
+      scroll.addEventListener("pointerleave", () => { scrub.style.display = "none"; });
       scroll.addEventListener("scroll", () => { if (scrub.dataset.idx) positionScrub(+scrub.dataset.idx); updateFades(); });
-      requestAnimationFrame(() => { scroll.scrollLeft = scroll.scrollWidth; showAt(lastActive); updateFades(); });
+      requestAnimationFrame(() => { scroll.scrollLeft = scroll.scrollWidth; updateFades(); });
     } else {
       // Mobile: cursor pinned to centre, timeline scrolls under it.
       tl.style.paddingLeft = tl.style.paddingRight = (outer.clientWidth / 2) + "px";
