@@ -610,10 +610,11 @@ body:has(#dash) .sub { margin-bottom: 1em; }
 .tl-fade { position: absolute; top: 35%; bottom: 22%; width: 64px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
 .tl-fade.left { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
 .tl-fade.right { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
-.tl-scrub { position: absolute; top: calc(35% - 2.2em); height: calc(43% + 4.4em); width: 0; pointer-events: none; display: none; z-index: 3; grid-template-rows: auto 1fr auto; justify-items: center; row-gap: 1.2em; }
-.tl-info { white-space: nowrap; text-align: center; line-height: 1.35; opacity: 0; transition: opacity 0.01s linear 30ms; }
+.tl-scrub { position: absolute; top: calc(35% - 3.2em); height: calc(43% + 3.2em); width: 0; pointer-events: none; display: none; z-index: 3; grid-template-rows: auto auto 1fr; justify-items: start; row-gap: 0.35em; }
+.tl-info { white-space: nowrap; text-align: left; line-height: 1.35; opacity: 0; transition: opacity 0.01s linear 30ms; }
 .tl-line { width: 1px; height: 100%; transform: scaleY(0); transform-origin: center; background: linear-gradient(to bottom, var(--link-hover-start), var(--link-hover-end)); transition: transform 150ms ease; }
 .tl-date { white-space: nowrap; line-height: 1; opacity: 0; transition: opacity 0.01s linear 30ms; }
+.tl-info, .tl-date { font-size: 0.5em; }
 .tl-info small { display: block; }
 .tl-scrub.active .tl-line { transform: scaleY(1); }
 .tl-scrub.active .tl-info,
@@ -645,10 +646,12 @@ body:has(#dash) .sub { margin-bottom: 1em; }
 }
 .heatmap p { margin: 0; }
 .heatmap .day-pct { display: none; }
-.heatmap .box:hover .day-name,
 .heatmap .box.tap .day-name { display: none; }
-.heatmap .box:hover .day-pct,
 .heatmap .box.tap .day-pct { display: inline; }
+@media (hover: hover) {
+  .heatmap .box:hover .day-name { display: none; }
+  .heatmap .box:hover .day-pct { display: inline; }
+}
 
 /* Type distribution — filled bars lead; session count/type label trails */
 .bars { margin: 0.5em 0 2.5em; }
@@ -656,8 +659,10 @@ body:has(#dash) .sub { margin-bottom: 1em; }
 .bar-row2 .lab { margin: 0; text-align: right; white-space: nowrap; }
 .bar-row2 .bar-fill { display: block; height: 0.7em; background: var(--item-bar); border-radius: 0; transition: width 0.6s ease; }
 .bar-row2 .session-count { display: none; }
-.bar-row2:hover .session-count,
 .bar-row2.tap .session-count { display: inline; }
+@media (hover: hover) {
+  .bar-row2:hover .session-count { display: inline; }
+}
 
 /* Zone bars (label + value), filled capsule only, no track */
 .bar-row { display: grid; grid-template-columns: 4.5em 1fr 3em; align-items: center; gap: 0.6em; margin: 0.4em 0; }

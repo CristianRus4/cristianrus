@@ -24,9 +24,9 @@
       <div class="tl-fade left" id="tlfadel"></div>
       <div class="tl-fade right" id="tlfader"></div>
       <div class="tl-scrub" id="tlscrub">
+        <div class="tl-date" id="tldate"></div>
         <div class="tl-info" id="tlinfo"></div>
         <div class="tl-line"></div>
-        <div class="tl-date" id="tldate"></div>
       </div>
     </div>
 
@@ -197,11 +197,12 @@
   function wireTapReveal(container, selector) {
     container.querySelectorAll(selector).forEach(el => {
       let timer = null;
-      el.addEventListener("click", () => {
+      const reveal = () => {
         clearTimeout(timer);
         el.classList.add("tap");
         timer = setTimeout(() => el.classList.remove("tap"), 1000);
-      });
+      };
+      el.addEventListener("pointerdown", reveal);
     });
   }
 
@@ -516,7 +517,7 @@
 
     function positionScrub(idx) {
       // Sit exactly over the day's bar (bar centre = idx*STEP + 0.5px).
-      const pad = outer.clientWidth / 2;
+      const pad = scroll.clientWidth / 2;
       scrub.style.left = (pad + (idx * TL_STEP + 0.5) - scroll.scrollLeft) + "px";
     }
     let hideScrubTimer = null;
@@ -556,15 +557,15 @@
       // Desktop: nothing shown until the cursor actually moves over the timeline.
       scroll.addEventListener("pointermove", e => {
         const x = e.clientX - scroll.getBoundingClientRect().left;
-        showAt(Math.round((scroll.scrollLeft + x - outer.clientWidth / 2 - 0.5) / TL_STEP)); // snap to nearest bar
+        showAt(Math.round((scroll.scrollLeft + x - scroll.clientWidth / 2 - 0.5) / TL_STEP)); // snap to nearest bar
       });
       scroll.addEventListener("pointerleave", closeScrub);
       scroll.addEventListener("scroll", () => { if (scrub.dataset.idx) positionScrub(+scrub.dataset.idx); updateFades(); });
-      tl.style.paddingLeft = tl.style.paddingRight = (outer.clientWidth / 2) + "px";
+      tl.style.paddingLeft = tl.style.paddingRight = (scroll.clientWidth / 2) + "px";
       requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; updateFades(); });
     } else {
       // Mobile: cursor pinned to centre, timeline scrolls under it.
-      tl.style.paddingLeft = tl.style.paddingRight = (outer.clientWidth / 2) + "px";
+      tl.style.paddingLeft = tl.style.paddingRight = (scroll.clientWidth / 2) + "px";
       scroll.addEventListener("scroll", () => { showAt(Math.round(scroll.scrollLeft / TL_STEP)); updateFades(); });
       requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; showAt(lastActive); updateFades(); });
     }
