@@ -600,12 +600,22 @@ body:has(#dash) .sub { margin-bottom: 0.5em; }
 #status:empty { display: none; }
 
 @media (max-width: 560px) {
-  body:has(#dash) {
-    margin-top: 3vh;
-  }
-  body:has(#dash) .title,
-  body:has(#dash) .sub {
+  .timeline-summary { margin-top: 0.5em; }
+  .timeline-outer {
+    height: calc(100dvh - 18em);
     margin-top: 0;
+  }
+  .timeline-scroll {
+    top: 8%;
+    bottom: clamp(130px, 24vh, 180px);
+  }
+  .tl-fade {
+    top: 8%;
+    bottom: clamp(130px, 24vh, 180px);
+  }
+  .tl-scrub {
+    top: 8%;
+    bottom: clamp(130px, 24vh, 180px);
   }
 }
 
