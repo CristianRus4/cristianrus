@@ -530,7 +530,69 @@ a:hover {
       -webkit-text-fill-color: transparent;
     }
 
+    /* Workout charts adapt their muted tones in dark mode */
+    .bar-track { background: rgba(181, 179, 173, 0.18); }
+    .bar-fill, .zone-fill { background: var(--text-dark); }
+    .spark { stroke: var(--text-dark); }
+    .filters button.on { color: var(--title-dark); }
+    .stat .n { color: var(--title-dark); }
 
-   
+
+
 
 }
+
+
+/* ============================================================
+   WORKOUTS — dashboard, charts, streams (workouts.html, strava-workouts.html)
+   ============================================================ */
+
+/* Range filter row */
+.filters { display: flex; flex-wrap: wrap; gap: 0.25em 1.25em; margin: 0.5em 0 2em; }
+.filters button {
+  background: none; border: none; cursor: pointer; padding: 0;
+  font: inherit; color: var(--text); opacity: 0.55;
+}
+.filters button.on { opacity: 1; font-weight: 600; color: var(--title); }
+
+/* Headline stat grid */
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5em 1em; margin-bottom: 2.5em; }
+@media (min-width: 480px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+.stat .n { font-size: 1.8em; font-weight: 600; color: var(--title); line-height: 1.1; }
+.stat .l { font-size: 0.85em; opacity: 0.7; }
+
+/* Horizontal bar charts (weekday pattern, type distribution, zones) */
+.bars { margin: 0.5em 0 2.5em; }
+.bar-row { display: grid; grid-template-columns: 4.5em 1fr auto; align-items: center; gap: 0.6em; margin: 0.35em 0; }
+.bar-row .lab { font-size: 0.9em; text-align: right; opacity: 0.8; }
+.bar-track { background: rgba(85, 85, 85, 0.15); border-radius: 4px; height: 0.7em; overflow: hidden; }
+.bar-fill { background: var(--item-bar); height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.bar-row .val { font-size: 0.85em; opacity: 0.7; min-width: 3.2em; text-align: right; }
+
+/* HR / power zone bars use the same track, optionally tinted per zone */
+.zone-fill { background: var(--item-bar); height: 100%; border-radius: 4px; }
+.zone-z1 { opacity: 0.35; } .zone-z2 { opacity: 0.5; } .zone-z3 { opacity: 0.65; }
+.zone-z4 { opacity: 0.8; } .zone-z5 { opacity: 1; }
+
+/* Expandable workout rows */
+.workout { margin-bottom: 1.1em; }
+.workout summary { cursor: pointer; list-style: none; }
+.workout summary::-webkit-details-marker { display: none; }
+.workout .meta { opacity: 0.75; font-size: 0.9em; }
+.workout .map { width: 100%; border-radius: 1em; margin-top: 0.75em; }
+.workout .body h3 { font-size: 0.95em; font-weight: 550; margin: 1.5em 0 0.4em; opacity: 0.85; }
+
+/* Inline SVG stream charts (HR, pace, elevation, power, cadence) */
+.spark-wrap { margin: 0.4em 0 0.8em; }
+.spark-wrap .cap { font-size: 0.8em; opacity: 0.7; display: flex; justify-content: space-between; }
+.spark { width: 100%; height: 60px; display: block; }
+.spark path { fill: none; stroke: var(--text); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.spark .area { fill: rgba(85, 85, 85, 0.10); stroke: none; }
+
+/* Compact data tables (laps, segments, best efforts) */
+.wtable { width: 100%; border-collapse: collapse; font-size: 0.88em; margin: 0.3em 0 0.5em; }
+.wtable th, .wtable td { text-align: left; padding: 0.2em 0.8em 0.2em 0; vertical-align: top; }
+.wtable thead th { font-weight: 550; opacity: 0.7; border-bottom: 1px solid rgba(85,85,85,0.2); }
+.pr { font-weight: 600; }
+
+#enrich { font-size: 0.8em; opacity: 0.6; }

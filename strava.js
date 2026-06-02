@@ -160,7 +160,21 @@ window.Strava = (function () {
   const getAthlete = () => api("/athlete");
   const getActivities = (perPage = 20, page = 1) =>
     api(`/athlete/activities?per_page=${perPage}&page=${page}`);
-  const getActivity = (id) => api(`/activities/${id}?include_all_efforts=false`);
+  // include_all_efforts=true → populates segment_efforts, best_efforts, laps.
+  const getActivity = (id) => api(`/activities/${id}?include_all_efforts=true`);
+
+  // Time-series for a workout (heart rate, power, altitude, speed, cadence, …).
+  const getActivityStreams = (id, keys) =>
+    api(`/activities/${id}/streams?keys=${encodeURIComponent(
+      (keys || ["time", "heartrate", "altitude", "velocity_smooth", "watts", "cadence", "distance"]).join(",")
+    )}&key_by_type=true`);
+
+  // Time spent in each heart-rate / power zone for a workout.
+  const getActivityZones = (id) => api(`/activities/${id}/zones`);
+  const getActivityLaps  = (id) => api(`/activities/${id}/laps`);
+
+  // The athlete's configured HR / power zone thresholds.
+  const getAthleteZones = () => api(`/athlete/zones`);
 
   /* ---- bulk: fetch every activity (paginated) with localStorage caching ---- */
   const ACT_KEY = "strava_activities_v1";
@@ -230,6 +244,7 @@ window.Strava = (function () {
     getAthlete, getActivities, getActivity,
     getAllActivities, cachedActivities,
     getActivityCached, getCachedDetail,
-    getAthleteStats,
+    getAthleteStats, getAthleteZones,
+    getActivityStreams, getActivityZones, getActivityLaps,
   };
 })();

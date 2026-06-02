@@ -7,34 +7,6 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
 <title>workouts</title>
-<style>
-  /* Page-local only; colors/fonts come from style.css */
-  .filters { display: flex; flex-wrap: wrap; gap: 0.25em 1.25em; margin: 0.5em 0 2em; }
-  .filters button {
-    background: none; border: none; cursor: pointer; padding: 0;
-    font: inherit; color: var(--text); opacity: 0.6;
-  }
-  .filters button.on { opacity: 1; font-weight: 600; color: var(--title); }
-
-  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5em 1em; margin-bottom: 2.5em; }
-  @media (min-width: 480px) { .stats { grid-template-columns: repeat(4, 1fr); } }
-  .stat .n { font-size: 1.8em; font-weight: 600; color: var(--title); line-height: 1.1; }
-  .stat .l { font-size: 0.85em; opacity: 0.7; }
-
-  .bars { margin: 0.5em 0 2.5em; }
-  .bar-row { display: grid; grid-template-columns: 3.5em 1fr auto; align-items: center; gap: 0.6em; margin: 0.35em 0; }
-  .bar-row .lab { font-size: 0.9em; text-align: right; opacity: 0.8; }
-  .bar-track { background: color-mix(in srgb, var(--text) 15%, transparent); border-radius: 4px; height: 0.7em; }
-  .bar-fill { background: var(--item-bar); height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-  .bar-row .val { font-size: 0.85em; opacity: 0.7; min-width: 3.2em; text-align: right; }
-
-  .workout { margin-bottom: 1.1em; }
-  .workout summary { cursor: pointer; list-style: none; }
-  .workout summary::-webkit-details-marker { display: none; }
-  .workout .meta { opacity: 0.75; font-size: 0.9em; }
-  .workout .map { width: 100%; border-radius: 1em; margin-top: 0.75em; }
-  #enrich { font-size: 0.8em; opacity: 0.6; }
-</style>
 </head>
 <body>
 
@@ -61,6 +33,16 @@
     <h2>distribution by type</h2>
     <div class="bars" id="types"></div>
 
+    <div id="totals-wrap" style="display:none;">
+      <h2>career totals</h2>
+      <div id="totals"></div>
+    </div>
+
+    <div id="zones-wrap" style="display:none;">
+      <h2>my zones</h2>
+      <div id="athlete-zones"></div>
+    </div>
+
     <h2>latest workouts</h2>
     <div id="list"></div>
   </div>
@@ -68,18 +50,11 @@
 <script src="strava.js"></script>
 <script>
 (function () {
-  const statusEl  = document.getElementById("status");
-  const connectEl = document.getElementById("connect");
-  const dashEl    = document.getElementById("dash");
-  const statsEl   = document.getElementById("stats");
-  const dowEl     = document.getElementById("dow");
-  const typesEl   = document.getElementById("types");
-  const listEl    = document.getElementById("list");
-  const filtersEl = document.getElementById("filters");
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $("status"), connectEl = $("connect"), dashEl = $("dash");
+  const statsEl = $("stats"), dowEl = $("dow"), typesEl = $("types"), listEl = $("list"), filtersEl = $("filters");
 
-  let ALL = [];          // every activity (summary)
-  let range = "year";    // active filter
-  let enrichGen = 0;     // bumps when filter changes, to cancel stale kcal enrichment
+  let ALL = [], range = "year", enrichGen = 0;
 
   /* ---------- formatters ---------- */
   const kmRaw = (m) => m / 1000;
@@ -89,9 +64,10 @@
     const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = Math.round(s % 60);
     return (h ? h + "h " : "") + (m || h ? m + "m " : "") + sec + "s";
   }
-  function durShort(s) {
-    const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60);
-    return h ? `${h}h ${m}m` : `${m}m`;
+  function durShort(s) { const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60); return h ? `${h}h ${m}m` : `${m}m`; }
+  function clock(s) { // m:ss or h:mm:ss for laps/efforts
+    s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+    return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(sec).padStart(2, "0");
   }
   function pace(mps, type) {
     if (!mps) return "—";
@@ -100,26 +76,32 @@
     return mm + ":" + String(ss).padStart(2, "0") + " /km";
   }
   const speed = (mps) => mps == null ? "—" : (mps * 3.6).toFixed(1) + " km/h";
-  const elev  = (m) => m == null ? "—" : Math.round(m) + " m";
-  const dt    = (iso) => iso ? new Date(iso).toLocaleString(undefined,
+  const elev = (m) => m == null ? "—" : Math.round(m) + " m";
+  const dt = (iso) => iso ? new Date(iso).toLocaleString(undefined,
     { weekday: "short", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "—";
-  const esc   = (s) => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   /* ---------- filtering ---------- */
   function rangeStart(r) {
     const now = new Date();
-    if (r === "week") {
-      const d = new Date(now); const day = (d.getDay() + 6) % 7; // Monday = 0
-      d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - day); return d;
-    }
+    if (r === "week") { const d = new Date(now), day = (d.getDay() + 6) % 7; d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - day); return d; }
     if (r === "month") return new Date(now.getFullYear(), now.getMonth(), 1);
-    if (r === "90d")   { const d = new Date(now); d.setDate(d.getDate() - 90); return d; }
-    if (r === "year")  return new Date(now.getFullYear(), 0, 1);
-    return new Date(0); // all
+    if (r === "90d") { const d = new Date(now); d.setDate(d.getDate() - 90); return d; }
+    if (r === "year") return new Date(now.getFullYear(), 0, 1);
+    return new Date(0);
   }
-  function filtered() {
-    const start = rangeStart(range);
-    return ALL.filter(a => new Date(a.start_date_local || a.start_date) >= start);
+  const filtered = () => { const s = rangeStart(range); return ALL.filter(a => new Date(a.start_date_local || a.start_date) >= s); };
+  const rangeLabel = (r) => ({ week: "this week", month: "this month", "90d": "last 90 days", year: "this year", all: "all time" }[r]);
+
+  /* ---------- bar chart helper ---------- */
+  function barRows(container, entries, fmtVal, cls) {
+    const max = Math.max(1, ...entries.map(e => e.value));
+    container.innerHTML = entries.map(e => `
+      <div class="bar-row">
+        <span class="lab">${e.label}</span>
+        <span class="bar-track"><span class="${cls || "bar-fill"} ${e.cls || ""}" style="width:${(e.value / max * 100).toFixed(1)}%"></span></span>
+        <span class="val">${fmtVal(e)}</span>
+      </div>`).join("");
   }
 
   /* ---------- headline stats ---------- */
@@ -127,12 +109,7 @@
     const dist = list.reduce((s, a) => s + (a.distance || 0), 0);
     const time = list.reduce((s, a) => s + (a.moving_time || 0), 0);
     const gain = list.reduce((s, a) => s + (a.total_elevation_gain || 0), 0);
-    // kcal only exists on detailed activities; sum whatever is already cached.
-    const kcal = list.reduce((s, a) => {
-      const d = Strava.getCachedDetail(a.id);
-      return s + (d && d.calories ? d.calories : 0);
-    }, 0);
-
+    const kcal = list.reduce((s, a) => { const d = Strava.getCachedDetail(a.id); return s + (d && d.calories ? d.calories : 0); }, 0);
     statsEl.innerHTML = [
       [list.length, "sessions"],
       [kmRaw(dist).toFixed(1) + " km", "distance"],
@@ -142,33 +119,56 @@
     ].map(([n, l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
   }
 
-  function barRows(container, entries, fmtVal) {
-    const max = Math.max(1, ...entries.map(e => e.value));
-    container.innerHTML = entries.map(e => `
-      <div class="bar-row">
-        <span class="lab">${e.label}</span>
-        <span class="bar-track"><span class="bar-fill" style="width:${(e.value / max * 100).toFixed(1)}%"></span></span>
-        <span class="val">${fmtVal(e)}</span>
-      </div>`).join("");
-  }
-
   function renderDow(list) {
-    const names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    const counts = [0, 0, 0, 0, 0, 0, 0];
-    list.forEach(a => { const d = new Date(a.start_date_local || a.start_date); counts[(d.getDay() + 6) % 7]++; });
+    const names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], counts = [0, 0, 0, 0, 0, 0, 0];
+    list.forEach(a => counts[(new Date(a.start_date_local || a.start_date).getDay() + 6) % 7]++);
     const total = list.length || 1;
-    barRows(dowEl, names.map((n, i) => ({ label: n, value: counts[i] })),
-      e => (e.value / total * 100).toFixed(0) + "%");
+    barRows(dowEl, names.map((n, i) => ({ label: n, value: counts[i] })), e => (e.value / total * 100).toFixed(0) + "%");
   }
-
   function renderTypes(list) {
     const m = {};
     list.forEach(a => { const t = a.sport_type || a.type || "Other"; m[t] = (m[t] || 0) + 1; });
-    const entries = Object.entries(m).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
-    barRows(typesEl, entries, e => e.value);
+    barRows(typesEl, Object.entries(m).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value), e => e.value);
   }
 
-  /* ---------- detail table (all fields) ---------- */
+  /* ---------- career totals (athlete stats) ---------- */
+  async function renderTotals() {
+    try {
+      const s = await Strava.getAthleteStats();
+      const block = (title, t) => !t || !t.count ? "" :
+        `<tr><th>${title}</th><td>${t.count}</td><td>${kmRaw(t.distance).toFixed(0)} km</td><td>${durShort(t.moving_time)}</td><td>${elev(t.elevation_gain)}</td></tr>`;
+      let rows = "";
+      [["Run", "run"], ["Ride", "ride"], ["Swim", "swim"]].forEach(([label, k]) => {
+        rows += block(`${label} · 4wk`, s[`recent_${k}_totals`]);
+        rows += block(`${label} · YTD`, s[`ytd_${k}_totals`]);
+        rows += block(`${label} · all`, s[`all_${k}_totals`]);
+      });
+      if (!rows) return;
+      let recs = "";
+      if (s.biggest_ride_distance) recs += `<tr><th>biggest ride</th><td colspan="4">${kmRaw(s.biggest_ride_distance).toFixed(1)} km</td></tr>`;
+      if (s.biggest_climb_elevation_gain) recs += `<tr><th>biggest climb</th><td colspan="4">${elev(s.biggest_climb_elevation_gain)}</td></tr>`;
+      $("totals").innerHTML =
+        `<table class="wtable"><thead><tr><th></th><th>count</th><th>distance</th><th>time</th><th>elev</th></tr></thead><tbody>${rows}${recs}</tbody></table>`;
+      $("totals-wrap").style.display = "block";
+    } catch (e) { /* stats unavailable */ }
+  }
+
+  /* ---------- athlete zones ---------- */
+  async function renderAthleteZones() {
+    try {
+      const z = await Strava.getAthleteZones();
+      const fmtZones = (zones, unit) => zones.map((zn, i) =>
+        `Z${i + 1} ${zn.min}${zn.max > 0 ? "–" + zn.max : "+"} ${unit}`).join(" · ");
+      let html = "";
+      if (z.heart_rate && z.heart_rate.zones) html += `<p><strong>heart rate</strong><br>${fmtZones(z.heart_rate.zones, "bpm")}</p>`;
+      if (z.power && z.power.zones) html += `<p><strong>power</strong><br>${fmtZones(z.power.zones, "W")}</p>`;
+      if (!html) return;
+      $("athlete-zones").innerHTML = html;
+      $("zones-wrap").style.display = "block";
+    } catch (e) { /* zones not configured */ }
+  }
+
+  /* ---------- per-workout detail building blocks ---------- */
   function detailTable(a) {
     const loc = [a.location_city, a.location_state, a.location_country].filter(Boolean).join(", ");
     const map = a.map && (a.map.polyline || a.map.summary_polyline);
@@ -176,53 +176,103 @@
     let html = "";
     if (map) html += `<img class="map" alt="route" src="https://staticmap.openstreetmap.de/staticmap.php?size=640x280&path=color:0x555555|weight:4|${encodeURIComponent("enc:" + map)}" onerror="this.style.display='none'">`;
     html += "<table>";
-    html += r("type", a.sport_type || a.type);
-    html += r("workout type", a.workout_type);
-    html += r("distance", km(a.distance));
-    html += r("moving time", dur(a.moving_time));
-    html += r("elapsed time", dur(a.elapsed_time));
-    html += r("start (local)", dt(a.start_date_local));
-    html += r("start (utc)", dt(a.start_date));
-    html += r("timezone", a.timezone);
+    html += r("type", a.sport_type || a.type) + r("workout type", a.workout_type);
+    html += r("distance", km(a.distance)) + r("moving time", dur(a.moving_time)) + r("elapsed time", dur(a.elapsed_time));
+    html += r("start (local)", dt(a.start_date_local)) + r("start (utc)", dt(a.start_date)) + r("timezone", a.timezone);
     html += r("location", loc);
     html += r("start lat/lng", a.start_latlng && a.start_latlng.length ? a.start_latlng.map(n => n.toFixed(5)).join(", ") : null);
     html += r("end lat/lng", a.end_latlng && a.end_latlng.length ? a.end_latlng.map(n => n.toFixed(5)).join(", ") : null);
-    html += r("avg speed", speed(a.average_speed));
-    html += r("max speed", speed(a.max_speed));
-    html += r("avg pace", pace(a.average_speed, a.sport_type || a.type));
+    html += r("avg speed", speed(a.average_speed)) + r("max speed", speed(a.max_speed)) + r("avg pace", pace(a.average_speed, a.sport_type || a.type));
     html += r("avg cadence", a.average_cadence);
-    html += r("avg power", a.average_watts != null ? a.average_watts + " W" : null);
-    html += r("weighted power", a.weighted_average_watts != null ? a.weighted_average_watts + " W" : null);
-    html += r("max power", a.max_watts != null ? a.max_watts + " W" : null);
-    html += r("energy", a.kilojoules != null ? a.kilojoules + " kJ" : null);
-    html += r("calories", a.calories);
-    html += r("avg temp", a.average_temp != null ? a.average_temp + " °C" : null);
-    html += r("avg heart rate", a.average_heartrate != null ? a.average_heartrate + " bpm" : null);
-    html += r("max heart rate", a.max_heartrate != null ? a.max_heartrate + " bpm" : null);
-    html += r("suffer score", a.suffer_score);
-    html += r("perceived exertion", a.perceived_exertion);
-    html += r("elevation gain", elev(a.total_elevation_gain));
-    html += r("elevation high", elev(a.elev_high));
-    html += r("elevation low", elev(a.elev_low));
-    html += r("kudos", a.kudos_count);
-    html += r("comments", a.comment_count);
-    html += r("athletes", a.athlete_count);
-    html += r("photos", a.total_photo_count != null ? a.total_photo_count : a.photo_count);
-    html += r("achievements", a.achievement_count);
-    html += r("PRs", a.pr_count);
-    html += r("segment efforts", a.segment_efforts ? a.segment_efforts.length : null);
-    html += r("best efforts", a.best_efforts ? a.best_efforts.length : null);
-    html += r("gear", a.gear && a.gear.name);
-    html += r("device", a.device_name);
-    html += r("commute", a.commute ? "yes" : null);
-    html += r("trainer", a.trainer ? "yes" : null);
-    html += r("manual", a.manual ? "yes" : null);
-    html += r("private", a.private ? "yes" : null);
+    html += r("avg power", a.average_watts != null ? a.average_watts + " W" : null) + r("weighted power", a.weighted_average_watts != null ? a.weighted_average_watts + " W" : null) + r("max power", a.max_watts != null ? a.max_watts + " W" : null);
+    html += r("energy", a.kilojoules != null ? a.kilojoules + " kJ" : null) + r("calories", a.calories) + r("avg temp", a.average_temp != null ? a.average_temp + " °C" : null);
+    html += r("avg heart rate", a.average_heartrate != null ? a.average_heartrate + " bpm" : null) + r("max heart rate", a.max_heartrate != null ? a.max_heartrate + " bpm" : null);
+    html += r("suffer score", a.suffer_score) + r("perceived exertion", a.perceived_exertion);
+    html += r("elevation gain", elev(a.total_elevation_gain)) + r("elevation high", elev(a.elev_high)) + r("elevation low", elev(a.elev_low));
+    html += r("kudos", a.kudos_count) + r("comments", a.comment_count) + r("athletes", a.athlete_count) + r("photos", a.total_photo_count != null ? a.total_photo_count : a.photo_count);
+    html += r("achievements", a.achievement_count) + r("PRs", a.pr_count);
+    html += r("gear", a.gear && a.gear.name) + r("device", a.device_name);
+    html += r("commute", a.commute ? "yes" : null) + r("trainer", a.trainer ? "yes" : null) + r("manual", a.manual ? "yes" : null) + r("private", a.private ? "yes" : null);
     html += r("description", a.description ? esc(a.description) : null);
-    html += r("activity id", a.id);
-    html += r("link", `<a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener">open on Strava</a>`);
+    html += r("activity id", a.id) + r("link", `<a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener">open on Strava</a>`);
     html += "</table>";
     return html;
+  }
+
+  // Downsample to ~n points (bucket average) for a clean sparkline.
+  function downsample(vals, n) {
+    const v = vals.filter(x => x != null);
+    if (v.length <= n) return v;
+    const out = [], step = v.length / n;
+    for (let i = 0; i < n; i++) {
+      const a = Math.floor(i * step), b = Math.floor((i + 1) * step);
+      let sum = 0, c = 0; for (let j = a; j < b; j++) { sum += v[j]; c++; }
+      out.push(c ? sum / c : v[a]);
+    }
+    return out;
+  }
+  function sparkline(vals) {
+    const pts = downsample(vals, 240);
+    if (pts.length < 2) return "";
+    const min = Math.min(...pts), max = Math.max(...pts), rng = (max - min) || 1, W = 1000, H = 100;
+    const xy = pts.map((v, i) => [(i / (pts.length - 1)) * W, H - ((v - min) / rng) * H]);
+    const line = xy.map(([x, y], i) => (i ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1)).join(" ");
+    const area = `M0 ${H} ` + xy.map(([x, y]) => "L" + x.toFixed(1) + " " + y.toFixed(1)).join(" ") + ` L${W} ${H} Z`;
+    return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path class="area" d="${area}"/><path d="${line}"/></svg>`;
+  }
+  function renderStreams(streams) {
+    const specs = [
+      { key: "heartrate", label: "heart rate", unit: "bpm", fmt: v => Math.round(v) },
+      { key: "altitude", label: "elevation", unit: "m", fmt: v => Math.round(v) },
+      { key: "velocity_smooth", label: "speed", unit: "km/h", map: v => v * 3.6, fmt: v => v.toFixed(1) },
+      { key: "watts", label: "power", unit: "W", fmt: v => Math.round(v) },
+      { key: "cadence", label: "cadence", unit: "rpm", fmt: v => Math.round(v) },
+    ];
+    let html = "";
+    specs.forEach(s => {
+      const stream = streams[s.key];
+      if (!stream || !stream.data || !stream.data.length) return;
+      const data = s.map ? stream.data.map(s.map) : stream.data;
+      const valid = data.filter(v => v != null);
+      if (!valid.length) return;
+      html += `<div class="spark-wrap"><div class="cap"><span>${s.label}</span><span>${s.fmt(Math.min(...valid))}–${s.fmt(Math.max(...valid))} ${s.unit}</span></div>${sparkline(data)}</div>`;
+    });
+    return html ? `<h3>streams</h3>${html}` : "";
+  }
+  function renderZones(zones) {
+    if (!Array.isArray(zones) || !zones.length) return "";
+    let html = "";
+    zones.forEach(z => {
+      const buckets = z.distribution_buckets || [];
+      if (!buckets.length) return;
+      const total = buckets.reduce((s, b) => s + (b.time || 0), 0) || 1;
+      const entries = buckets.map((b, i) => ({
+        label: "Z" + (i + 1), value: b.time || 0, cls: "zone-z" + Math.min(5, i + 1),
+        pct: (b.time || 0) / total * 100,
+      }));
+      html += `<h3>${z.type === "heartrate" ? "heart-rate" : z.type} zones</h3><div class="bars">`;
+      const wrap = document.createElement("div");
+      barRows(wrap, entries, e => durShort(e.value) + " · " + e.pct.toFixed(0) + "%", "zone-fill");
+      html += wrap.innerHTML + `</div>`;
+    });
+    return html;
+  }
+  function renderLaps(laps) {
+    if (!Array.isArray(laps) || laps.length < 2) return "";
+    let rows = laps.map(l =>
+      `<tr><td>${l.lap_index}</td><td>${km(l.distance)}</td><td>${clock(l.moving_time)}</td>` +
+      `<td>${pace(l.average_speed, l.type)}</td><td>${l.average_heartrate ? Math.round(l.average_heartrate) : "—"}</td></tr>`).join("");
+    return `<h3>laps</h3><table class="wtable"><thead><tr><th>#</th><th>dist</th><th>time</th><th>pace</th><th>hr</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+  function renderEfforts(title, efforts) {
+    if (!Array.isArray(efforts) || !efforts.length) return "";
+    let rows = efforts.map(e => {
+      const pr = e.pr_rank === 1;
+      return `<tr class="${pr ? "pr" : ""}"><td>${esc((e.segment && e.segment.name) || e.name || "")}${pr ? " · PR" : ""}</td>` +
+        `<td>${e.distance ? km(e.distance) : "—"}</td><td>${clock(e.elapsed_time)}</td>` +
+        `<td>${e.average_heartrate ? Math.round(e.average_heartrate) + " bpm" : "—"}</td></tr>`;
+    }).join("");
+    return `<h3>${title}</h3><table class="wtable"><thead><tr><th>name</th><th>dist</th><th>time</th><th>hr</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
   function workoutEl(a) {
@@ -239,50 +289,52 @@
       if (!det.open || loaded) return;
       loaded = true;
       body.innerHTML = `<p class="meta">loading…</p>`;
-      try { body.innerHTML = detailTable(await Strava.getActivityCached(a.id)); }
-      catch (e) { body.innerHTML = detailTable(a) + `<p class="meta">(summary only — ${esc(e.message)})</p>`; }
+      let full = a;
+      try { full = await Strava.getActivityCached(a.id); } catch (e) {}
+      body.innerHTML = detailTable(full)
+        + renderLaps(full.laps)
+        + renderEfforts("best efforts", full.best_efforts)
+        + renderEfforts("segments", full.segment_efforts)
+        + `<div class="async"></div>`;
+      // Streams + zones are separate calls — load them after the table is shown.
+      const async = body.querySelector(".async");
+      Promise.allSettled([Strava.getActivityStreams(a.id), Strava.getActivityZones(a.id)])
+        .then(([s, z]) => {
+          let extra = "";
+          if (z.status === "fulfilled") extra += renderZones(z.value);
+          if (s.status === "fulfilled") extra += renderStreams(s.value);
+          async.innerHTML = extra;
+        });
     });
     return det;
   }
 
-  function renderList(list) {
-    listEl.innerHTML = "";
-    list.slice(0, 25).forEach(a => listEl.appendChild(workoutEl(a)));
-  }
+  function renderList(list) { listEl.innerHTML = ""; list.slice(0, 25).forEach(a => listEl.appendChild(workoutEl(a))); }
 
-  /* ---------- background kcal enrichment (fetch details, throttled) ---------- */
+  /* ---------- background kcal enrichment ---------- */
   async function enrich(list) {
     const gen = ++enrichGen;
-    const enrichNote = document.getElementById("enrich");
     const todo = list.filter(a => !Strava.getCachedDetail(a.id));
-    if (!todo.length) { if (enrichNote) enrichNote.textContent = ""; return; }
+    const note = () => $("enrich");
+    if (!todo.length) { if (note()) note().textContent = ""; return; }
     let done = 0;
     for (const a of todo) {
-      if (gen !== enrichGen) return; // filter changed — abort
+      if (gen !== enrichGen) return;
       try { await Strava.getActivityCached(a.id); }
-      catch (e) { if (/429/.test(e.message)) { if (enrichNote) enrichNote.textContent = "(rate-limited)"; return; } }
+      catch (e) { if (/429/.test(e.message)) { if (note()) note().textContent = "(rate-limited)"; return; } }
       done++;
       if (done % 3 === 0 || done === todo.length) {
-        renderStats(filtered()); // refresh kcal live
-        const note = document.getElementById("enrich");
-        if (note) note.textContent = done < todo.length ? `(loading ${done}/${todo.length})` : "";
+        renderStats(filtered());
+        if (note()) note().textContent = done < todo.length ? `(loading ${done}/${todo.length})` : "";
       }
-      await new Promise(res => setTimeout(res, 180)); // be gentle with rate limits
+      await new Promise(res => setTimeout(res, 180));
     }
   }
 
-  /* ---------- render everything for the active range ---------- */
   function render() {
     const list = filtered();
     statusEl.textContent = `${ALL.length} activities total · showing ${list.length} for "${rangeLabel(range)}"`;
-    renderStats(list);
-    renderDow(list);
-    renderTypes(list);
-    renderList(list);
-    enrich(list);
-  }
-  function rangeLabel(r) {
-    return { week: "this week", month: "this month", "90d": "last 90 days", year: "this year", all: "all time" }[r];
+    renderStats(list); renderDow(list); renderTypes(list); renderList(list); enrich(list);
   }
 
   filtersEl.addEventListener("click", (e) => {
@@ -295,37 +347,30 @@
 
   /* ---------- boot ---------- */
   async function main() {
-    try { await Strava.init(); }
-    catch (e) { statusEl.textContent = e.message; }
-
+    try { await Strava.init(); } catch (e) { statusEl.textContent = e.message; }
     if (!Strava.isConnected()) {
       statusEl.textContent = "Not connected to Strava yet.";
       connectEl.style.display = "block";
       connectEl.innerHTML = `<a href="${Strava.authorizeUrl()}">Connect with Strava →</a>`;
       return;
     }
-
-    // Show instantly from cache if we have it, then refresh in the background.
     const cache = Strava.cachedActivities();
-    if (cache && Array.isArray(cache.data) && cache.data.length) {
-      ALL = cache.data; dashEl.style.display = "block"; render();
-    } else {
-      statusEl.textContent = "loading all activities…";
-    }
+    if (cache && Array.isArray(cache.data) && cache.data.length) { ALL = cache.data; dashEl.style.display = "block"; render(); }
+    else statusEl.textContent = "loading all activities…";
 
     try {
       ALL = await Strava.getAllActivities({ onProgress: n => { if (!cache) statusEl.textContent = `loading… ${n} activities`; } });
       dashEl.style.display = "block";
       render();
+      renderTotals();
+      renderAthleteZones();
     } catch (e) {
       const msg = e.message || String(e);
       if (/scope|activity:read|authoriz/i.test(msg)) {
         statusEl.textContent = "Your authorization is missing the activity:read scope.";
         connectEl.style.display = "block";
         connectEl.innerHTML = `Re-authorize: <a href="${Strava.authorizeUrl()}">Connect with Strava →</a>`;
-      } else if (!ALL.length) {
-        statusEl.textContent = "Couldn't load activities: " + msg;
-      }
+      } else if (!ALL.length) statusEl.textContent = "Couldn't load activities: " + msg;
     }
   }
 
