@@ -24,8 +24,10 @@
       <div class="tl-fade left" id="tlfadel"></div>
       <div class="tl-fade right" id="tlfader"></div>
       <div class="tl-scrub" id="tlscrub">
-        <div class="tl-date" id="tldate"></div>
-        <div class="tl-info" id="tlinfo"></div>
+        <div class="tl-label">
+          <div class="tl-date" id="tldate"></div>
+          <div class="tl-info" id="tlinfo"></div>
+        </div>
         <div class="tl-line"></div>
       </div>
     </div>
@@ -516,9 +518,9 @@
     }
 
     function positionScrub(idx) {
-      // Sit exactly over the day's bar (bar centre = idx*STEP + 0.5px).
+      // Sit exactly over the day's 1px bar.
       const pad = scroll.clientWidth / 2;
-      scrub.style.left = (pad + (idx * TL_STEP + 0.5) - scroll.scrollLeft) + "px";
+      scrub.style.left = (pad + (idx * TL_STEP) - scroll.scrollLeft) + "px";
     }
     let hideScrubTimer = null;
     function openScrub() {
@@ -533,7 +535,7 @@
     function showAt(idx) {
       idx = Math.max(0, Math.min(days.length - 1, idx));
       const day = days[idx];
-      date.innerHTML = `<small>${tlDateLabel(day.date)}</small>`;
+      date.innerHTML = `<span class="caption">${tlDateLabel(day.date)}</span>`;
       if (day.items.length) {
         info.innerHTML = day.items.map(a => {
           const parts = [niceType(a.sport_type || a.type)];
@@ -557,7 +559,7 @@
       // Desktop: nothing shown until the cursor actually moves over the timeline.
       scroll.addEventListener("pointermove", e => {
         const x = e.clientX - scroll.getBoundingClientRect().left;
-        showAt(Math.round((scroll.scrollLeft + x - scroll.clientWidth / 2 - 0.5) / TL_STEP)); // snap to nearest bar
+        showAt(Math.round((scroll.scrollLeft + x - scroll.clientWidth / 2) / TL_STEP)); // snap to nearest bar
       });
       scroll.addEventListener("pointerleave", closeScrub);
       scroll.addEventListener("scroll", () => { if (scrub.dataset.idx) positionScrub(+scrub.dataset.idx); updateFades(); });
