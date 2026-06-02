@@ -54,7 +54,17 @@
   const statusEl = $("status"), connectEl = $("connect"), dashEl = $("dash");
   const statsEl = $("stats"), dowEl = $("dow"), typesEl = $("types"), listEl = $("list"), filtersEl = $("filters");
 
-  let ALL = [], range = "year", enrichGen = 0;
+  let ALL = [], range = "year", enrichGen = 0, statsAnimated = false;
+
+  // Scramble digits to the final value (same vibe as the /now location animation), ~1.2s.
+  function scramble(el, finalText, duration = 1200) {
+    const digits = "0123456789";
+    const start = performance.now();
+    const iv = setInterval(() => {
+      if (performance.now() - start >= duration) { clearInterval(iv); el.textContent = finalText; return; }
+      el.textContent = finalText.replace(/\d/g, () => digits[Math.floor(Math.random() * 10)]);
+    }, 50);
+  }
 
   /* ---------- formatters ---------- */
   const kmRaw = (m) => m / 1000;
@@ -125,6 +135,10 @@
       [kcal ? Math.round(kcal).toLocaleString() : "—", `kcal <span id="enrich"></span>`],
       [activeDays, "active days"],
     ].map(([n, l]) => `<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
+    if (!statsAnimated) {
+      statsAnimated = true;
+      statsEl.querySelectorAll(".stat .n").forEach(el => scramble(el, el.textContent));
+    }
   }
 
   function renderDow(list) {
@@ -141,7 +155,16 @@
   function renderTypes(list) {
     const m = {};
     list.forEach(a => { const t = niceType(a.sport_type || a.type); m[t] = (m[t] || 0) + 1; });
-    barRows(typesEl, Object.entries(m).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value), e => e.value);
+    const entries = Object.entries(m).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
+    const max = Math.max(1, ...entries.map(e => e.value));
+    const labels = entries.map(e => `${e.label} · ${e.value}`);
+    // Shared label-column width so every bar starts at the same x.
+    typesEl.style.setProperty("--labw", Math.max(...labels.map(s => s.length)) + "ch");
+    typesEl.innerHTML = entries.map((e, i) => `
+      <div class="bar-row2">
+        <span class="lab">${esc(labels[i])}</span>
+        <span class="bar-fill" style="width:${(e.value / max * 100).toFixed(1)}%"></span>
+      </div>`).join("");
   }
 
   /* ---------- career totals (athlete stats) ---------- */
@@ -212,8 +235,6 @@
     html += r("description", a.description ? esc(a.description) : null);
     // Commented out per request — kept for reference:
     // html += r("activity id", a.id) + r("link", `<a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener">open on Strava</a>`);
-    // "streams" label row only; the charts render full-width just below the table.
-    html += `<tr class="streams-row" style="display:none"><th>streams</th><td></td></tr>`;
     html += "</table>";
     return html;
   }
@@ -230,37 +251,65 @@
     }
     return out;
   }
-  function sparkline(vals) {
-    const pts = downsample(vals, 240);
+  // One chart. Stores its points on the wrapper so we can scrub on hover/touch.
+  function streamChart(spec, rawData) {
+    const data = spec.map ? rawData.map(v => v == null ? null : spec.map(v)) : rawData;
+    const valid = data.filter(v => v != null);
+    if (!valid.length) return "";
+    const mn = Math.min(...valid), mx = Math.max(...valid);
+    if (mn === mx) return ""; // flat line (e.g. elevation 0–0) — no useful chart
+    const pts = downsample(data, 240);
     if (pts.length < 2) return "";
-    const min = Math.min(...pts), max = Math.max(...pts), rng = (max - min) || 1, W = 1000, H = 100;
-    const xy = pts.map((v, i) => [(i / (pts.length - 1)) * W, H - ((v - min) / rng) * H]);
+    const W = 1000, H = 100, rng = (mx - mn) || 1;
+    const xy = pts.map((v, i) => [(i / (pts.length - 1)) * W, H - ((v - mn) / rng) * H]);
     const line = xy.map(([x, y], i) => (i ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1)).join(" ");
     const area = `M0 ${H} ` + xy.map(([x, y]) => "L" + x.toFixed(1) + " " + y.toFixed(1)).join(" ") + ` L${W} ${H} Z`;
-    return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><path class="area" d="${area}"/><path d="${line}"/></svg>`;
+    const dec = spec.dec || 0;
+    const def = `${mn.toFixed(dec)}–${mx.toFixed(dec)} ${spec.unit}`;
+    const ptsAttr = pts.map(v => v == null ? "" : v.toFixed(2)).join(",");
+    return `<div class="spark-wrap" data-pts="${ptsAttr}" data-unit="${spec.unit}" data-dec="${dec}">` +
+      `<div class="cap"><span>${spec.label}</span><span class="cap-val" data-def="${def}">${def}</span></div>` +
+      `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">` +
+        `<path class="area" d="${area}"/><path d="${line}"/>` +
+        `<line class="cursor" x1="0" y1="0" x2="0" y2="${H}" style="display:none"/>` +
+      `</svg></div>`;
   }
   function renderStreams(streams) {
     const specs = [
-      { key: "heartrate", label: "heart rate", unit: "bpm", fmt: v => Math.round(v) },
-      { key: "altitude", label: "elevation", unit: "m", fmt: v => Math.round(v) },
-      { key: "velocity_smooth", label: "speed", unit: "km/h", map: v => v * 3.6, fmt: v => v.toFixed(1) },
-      { key: "watts", label: "power", unit: "W", fmt: v => Math.round(v) },
-      { key: "cadence", label: "cadence", unit: "rpm", fmt: v => Math.round(v) },
+      { key: "heartrate", label: "heart rate", unit: "bpm", dec: 0 },
+      { key: "altitude", label: "elevation", unit: "m", dec: 0 },
+      { key: "velocity_smooth", label: "speed", unit: "km/h", map: v => v * 3.6, dec: 1 },
+      { key: "watts", label: "power", unit: "W", dec: 0 },
+      { key: "cadence", label: "cadence", unit: "rpm", dec: 0 },
     ];
     let html = "";
     specs.forEach(s => {
       const stream = streams[s.key];
       if (!stream || !stream.data || !stream.data.length) return;
-      const data = s.map ? stream.data.map(s.map) : stream.data;
-      const valid = data.filter(v => v != null);
-      if (!valid.length) return;
-      const mn = Math.min(...valid), mx = Math.max(...valid);
-      if (mn === mx) return; // flat line (e.g. elevation 0–0) — no useful chart
-      const chart = sparkline(data);
-      if (!chart) return; // not enough points to draw
-      html += `<div class="spark-wrap"><div class="cap"><span>${s.label}</span><span>${s.fmt(mn)}–${s.fmt(mx)} ${s.unit}</span></div>${chart}</div>`;
+      html += streamChart(s, stream.data);
     });
-    return html; // empty string if no charts — caller hides the row
+    return html; // empty string if no charts
+  }
+  // Wire hover/touch scrubbing: show the value under the cursor in the caption.
+  function wireSparkScrub(container) {
+    container.querySelectorAll(".spark-wrap").forEach(wrap => {
+      const pts = (wrap.dataset.pts || "").split(",").map(s => s === "" ? null : parseFloat(s));
+      const unit = wrap.dataset.unit || "", dec = parseInt(wrap.dataset.dec || "0", 10);
+      const capVal = wrap.querySelector(".cap-val"), def = capVal.dataset.def;
+      const svg = wrap.querySelector("svg"), cursor = svg.querySelector(".cursor");
+      const at = (clientX) => {
+        const r = svg.getBoundingClientRect();
+        let f = (clientX - r.left) / r.width; f = Math.max(0, Math.min(1, f));
+        const v = pts[Math.round(f * (pts.length - 1))];
+        if (v == null) return;
+        capVal.textContent = `${v.toFixed(dec)} ${unit}`;
+        cursor.setAttribute("x1", (f * 1000).toFixed(1));
+        cursor.setAttribute("x2", (f * 1000).toFixed(1));
+        cursor.style.display = "";
+      };
+      wrap.addEventListener("pointermove", e => at(e.clientX));
+      wrap.addEventListener("pointerleave", () => { capVal.textContent = def; cursor.style.display = "none"; });
+    });
   }
   function renderZones(zones) {
     if (!Array.isArray(zones) || !zones.length) return "";
@@ -328,16 +377,15 @@
         + renderEfforts("best efforts", full.best_efforts)
         + renderEfforts("segments", full.segment_efforts)
         + `<div class="async"></div>`;
-      const streamsRow = body.querySelector(".streams-row");
       const streamsBelow = body.querySelector(".streams-below");
       const asyncDiv = body.querySelector(".async");
       // Streams + zones are separate calls — load them after the table is shown.
-      // The "streams" label sits in the table; the charts render full-width below it.
+      // Charts render full-width below the table; hover/touch to scrub values.
       Promise.allSettled([Strava.getActivityStreams(a.id), Strava.getActivityZones(a.id)])
         .then(([s, z]) => {
           if (s.status === "fulfilled") {
             const charts = renderStreams(s.value);
-            if (charts && streamsBelow) { streamsBelow.innerHTML = charts; if (streamsRow) streamsRow.style.display = ""; }
+            if (charts && streamsBelow) { streamsBelow.innerHTML = charts; wireSparkScrub(streamsBelow); }
           }
           if (z.status === "fulfilled" && asyncDiv) asyncDiv.innerHTML = renderZones(z.value);
         });
@@ -345,7 +393,7 @@
     return det;
   }
 
-  function renderList(list) { listEl.innerHTML = ""; list.slice(0, 25).forEach(a => listEl.appendChild(workoutEl(a))); }
+  function renderList(list) { listEl.innerHTML = ""; list.forEach(a => listEl.appendChild(workoutEl(a))); }
 
   /* ---------- background kcal enrichment ---------- */
   async function enrich(list) {
