@@ -595,6 +595,7 @@ a:hover {
 body:has(#dash) {
   margin-top: 10%;
   margin-bottom: 0;
+  overflow: hidden;
 }
 #status:empty { display: none; }
 
@@ -608,7 +609,7 @@ body:has(#dash) {
    hovered/centred day gets a taller cursor bar with details above and date below.
    Edges fade (overlay gradient) only on the side that still has more to scroll. */
 .timeline-summary { margin: 0.75em 0 0; text-align: left; }
-.timeline-outer { position: relative; height: 50vh; min-height: 0; margin: 0; width: 100vw; margin-left: calc(50% - 50vw); overflow: visible; }
+.timeline-outer { position: relative; height: 50vh; min-height: 0; margin: 0; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; }
 .timeline-scroll { position: fixed; left: 0; right: 0; top: auto; bottom: 10vh; height: 30vh; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
 .timeline-scroll::-webkit-scrollbar { display: none; }
 .timeline { display: flex; align-items: flex-end; height: 100%; }
