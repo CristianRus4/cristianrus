@@ -185,11 +185,13 @@
     const names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], counts = [0, 0, 0, 0, 0, 0, 0];
     list.forEach(a => counts[(new Date(a.start_date_local || a.start_date).getDay() + 6) % 7]++);
     const max = Math.max(1, ...counts);
+    const total = counts.reduce((s, c) => s + c, 0) || 1;
     dowEl.className = "heatmap";
     // Translucent fill via rgba alpha (not CSS opacity) so the label stays fully readable.
     dowEl.innerHTML = names.map((n, i) => {
       const a = counts[i] ? (0.35 + 0.65 * (counts[i] / max)) : 0.14;
-      return `<div class="cell"><div class="box" style="--fill:${a.toFixed(2)}" title="${counts[i]} workouts"><p>${n}</p></div></div>`;
+      const pct = Math.round(counts[i] / total * 100);
+      return `<div class="cell"><div class="box" style="--fill:${a.toFixed(2)}" title="${counts[i]} workouts"><p><span class="day-name">${n}</span><span class="day-pct">${pct}%</span></p></div></div>`;
     }).join("");
   }
   function renderTypes(list) {
@@ -197,6 +199,13 @@
     list.forEach(a => { const t = niceType(a.sport_type || a.type); m[t] = (m[t] || 0) + 1; });
     const entries = Object.entries(m).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
     const max = Math.max(1, ...entries.map(e => e.value));
+    const nameFor = (label) => {
+      if (label === "Strength") return "lifting";
+      const parts = label.toLowerCase().split(" ");
+      const last = parts.pop();
+      parts.push(last.endsWith("s") ? last : last + "s");
+      return parts.join(" ");
+    };
     const labelFor = (e) => {
       if (e.label === "Strength") return `${e.value} lifting`;
       const parts = (e.label === "Strength" ? "lifting" : e.label).toLowerCase().split(" ");
@@ -209,7 +218,7 @@
     typesEl.innerHTML = entries.map(e => `
       <div class="bar-row2">
         <span class="bar-fill" style="width:${(e.value / max * 100).toFixed(1)}%"></span>
-        <p class="lab">${esc(labelFor(e))}</p>
+        <p class="lab"><span class="session-count">${e.value} </span>${esc(nameFor(e.label))}</p>
       </div>`).join("");
   }
 
@@ -255,8 +264,8 @@
     const loc = [a.location_city, a.location_state, a.location_country].filter(Boolean).join(", ");
     const map = a.map && (a.map.polyline || a.map.summary_polyline);
     // Skip empty values AND placeholder dashes so nothing shows "—".
-    const r = (k, v) => (v === undefined || v === null || v === "" || v === "—" || (typeof v === "number" && isNaN(v))) ? "" : `<tr><td>${k}</td><td>${v}</td></tr>`;
-    let html = "<h4>workout details</h4>";
+    const r = (k, v) => (v === undefined || v === null || v === "" || v === "—" || (typeof v === "number" && isNaN(v))) ? "" : `<tr><th>${k}</th><td>${v}</td></tr>`;
+    let html = "<h5>workout details</h5>";
     if (map) html += `<img class="map" alt="route" src="https://staticmap.openstreetmap.de/staticmap.php?size=640x280&path=color:0x555555|weight:4|${encodeURIComponent("enc:" + map)}" onerror="this.style.display='none'">`;
     html += "<table>";
     html += r("type", niceType(a.sport_type || a.type)) + r("workout type", a.workout_type);
@@ -314,8 +323,11 @@
     const def = `${mn.toFixed(dec)}–${mx.toFixed(dec)} ${spec.unit}`;
     const ptsAttr = pts.map(v => v == null ? "" : v.toFixed(2)).join(",");
     return `<div class="spark-wrap" data-pts="${ptsAttr}" data-unit="${spec.unit}" data-dec="${dec}">` +
-      `<div class="cap"><h4>${spec.label}</h4><em class="cap-val" data-def="${def}">${def}</em></div>` +
+      `<div class="cap"><h5>${spec.label}</h5><span class="caption cap-val" data-def="${def}">${def}</span></div>` +
       `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">` +
+        `<defs><linearGradient id="spark-cursor-gradient" x1="0" y1="0" x2="0" y2="1">` +
+          `<stop offset="0%" stop-color="var(--link-hover-start)"/><stop offset="100%" stop-color="var(--link-hover-end)"/>` +
+        `</linearGradient></defs>` +
         `<path class="area" d="${area}"/><path d="${line}"/>` +
         `<line class="cursor" x1="0" y1="0" x2="0" y2="${H}" style="display:none"/>` +
       `</svg></div>`;
@@ -368,7 +380,7 @@
         label: "Z" + (i + 1), value: b.time || 0, cls: "zone-z" + Math.min(5, i + 1),
         pct: (b.time || 0) / total * 100,
       }));
-      html += `<h4>${z.type === "heartrate" ? "heart-rate" : z.type} zones</h4><div class="bars">`;
+      html += `<h5>${z.type === "heartrate" ? "heart-rate" : z.type} zones</h5><div class="bars">`;
       const wrap = document.createElement("div");
       barRows(wrap, entries, e => durShort(e.value) + " · " + e.pct.toFixed(0) + "%", "zone-fill");
       html += wrap.innerHTML + `</div>`;
@@ -380,7 +392,7 @@
     let rows = laps.map(l =>
       `<tr><td>${l.lap_index}</td><td>${km(l.distance)}</td><td>${clock(l.moving_time)}</td>` +
       `<td>${pace(l.average_speed, l.type)}</td><td>${l.average_heartrate ? Math.round(l.average_heartrate) : "—"}</td></tr>`).join("");
-    return `<h4>laps</h4><table class="wtable"><thead><tr><th>#</th><th>dist</th><th>time</th><th>pace</th><th>hr</th></tr></thead><tbody>${rows}</tbody></table>`;
+    return `<h5>laps</h5><table class="wtable"><thead><tr><th>#</th><th>dist</th><th>time</th><th>pace</th><th>hr</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
   function renderEfforts(title, efforts) {
     if (!Array.isArray(efforts) || !efforts.length) return "";
@@ -390,7 +402,7 @@
         `<td>${e.distance ? km(e.distance) : "—"}</td><td>${clock(e.elapsed_time)}</td>` +
         `<td>${e.average_heartrate ? Math.round(e.average_heartrate) + " bpm" : "—"}</td></tr>`;
     }).join("");
-    return `<h4>${title}</h4><table class="wtable"><thead><tr><th>name</th><th>dist</th><th>time</th><th>hr</th></tr></thead><tbody>${rows}</tbody></table>`;
+    return `<h5>${title}</h5><table class="wtable"><thead><tr><th>name</th><th>dist</th><th>time</th><th>hr</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
   function workoutEl(a) {
@@ -406,8 +418,8 @@
     det.innerHTML =
       `<summary>` +
         `<span class="wmain"><h3>${esc(niceType(a.sport_type || a.type))}</h3>` +
-        (parts.length ? `<em class="meta">${parts.join(" · ")}</em>` : "") +
-        `</span><em class="wdate">${wdate}</em>` +
+        (parts.length ? `<span class="caption meta">${parts.join(" · ")}</span>` : "") +
+        `</span><figcaption class="wdate">${wdate}</figcaption>` +
       `</summary><div class="body"></div>`;
     const body = det.querySelector(".body");
     let loaded = false;
@@ -520,7 +532,7 @@
 
     function positionScrub(idx) {
       // Sit exactly over the day's bar (bar centre = idx*STEP + 0.5px).
-      scrub.style.left = (mode === "scroll" ? outer.clientWidth / 2 : (idx * TL_STEP + 0.5) - scroll.scrollLeft) + "px";
+      scrub.style.left = ((idx * TL_STEP + 0.5) - scroll.scrollLeft) + "px";
     }
     let hideScrubTimer = null;
     function openScrub() {
@@ -530,7 +542,7 @@
     }
     function closeScrub() {
       scrub.classList.remove("active");
-      hideScrubTimer = setTimeout(() => { scrub.style.display = "none"; }, 300);
+      hideScrubTimer = setTimeout(() => { scrub.style.display = "none"; }, 150);
     }
     function showAt(idx) {
       idx = Math.max(0, Math.min(days.length - 1, idx));
@@ -563,7 +575,8 @@
       });
       scroll.addEventListener("pointerleave", closeScrub);
       scroll.addEventListener("scroll", () => { if (scrub.dataset.idx) positionScrub(+scrub.dataset.idx); updateFades(); });
-      requestAnimationFrame(() => { scroll.scrollLeft = scroll.scrollWidth; updateFades(); });
+      tl.style.paddingLeft = tl.style.paddingRight = (outer.clientWidth / 2) + "px";
+      requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; updateFades(); });
     } else {
       // Mobile: cursor pinned to centre, timeline scrolls under it.
       tl.style.paddingLeft = tl.style.paddingRight = (outer.clientWidth / 2) + "px";
