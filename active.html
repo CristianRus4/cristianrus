@@ -31,11 +31,11 @@
     </div>
 
     <div class="filters" id="filters">
-      <button data-range="7d" class="on">7 days</button>
-      <button data-range="30d">30 days</button>
-      <button data-range="90d">90 days</button>
-      <button data-range="365d">365 days</button>
-      <button data-range="all">all time</button>
+      <button data-range="7d" class="on">7d</button>
+      <button data-range="30d">30d</button>
+      <button data-range="90d">90d</button>
+      <button data-range="365d">365d</button>
+      <button data-range="all">all</button>
     </div>
 
     <div class="stats" id="stats"></div>
@@ -494,8 +494,12 @@
       if (tl.children[idx]) tl.children[idx].classList.add("on");
       scrub.dataset.idx = idx;
       positionScrub(idx);
-      scrub.style.display = "";
+      scrub.style.display = "block";
     }
+
+    // Default to the most recent day that actually has a workout.
+    let lastActive = days.length - 1;
+    for (let i = days.length - 1; i >= 0; i--) { if (days[i].items.length) { lastActive = i; break; } }
 
     if (mode === "hover") {
       scroll.addEventListener("pointermove", e => {
@@ -503,12 +507,12 @@
         showAt(Math.floor((scroll.scrollLeft + x) / TL_STEP));
       });
       scroll.addEventListener("scroll", () => { if (scrub.dataset.idx) positionScrub(+scrub.dataset.idx); updateFades(); });
-      requestAnimationFrame(() => { scroll.scrollLeft = scroll.scrollWidth; showAt(days.length - 1); updateFades(); });
+      requestAnimationFrame(() => { scroll.scrollLeft = scroll.scrollWidth; showAt(lastActive); updateFades(); });
     } else {
       // Mobile: cursor pinned to centre, timeline scrolls under it.
       tl.style.paddingLeft = tl.style.paddingRight = (outer.clientWidth / 2) + "px";
       scroll.addEventListener("scroll", () => { showAt(Math.round(scroll.scrollLeft / TL_STEP)); updateFades(); });
-      requestAnimationFrame(() => { scroll.scrollLeft = scroll.scrollWidth; showAt(days.length - 1); updateFades(); });
+      requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; showAt(lastActive); updateFades(); });
     }
   }
 

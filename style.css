@@ -550,24 +550,28 @@ a:hover {
    lines) — those are page-specific. */
 #dash, .workout { color: var(--title); }
 
+/* On the dashboard page, tighten the big subtitle gap and drop the empty status line */
+body:has(#dash) .sub { margin-bottom: 1.5em; }
+#status:empty { display: none; }
+
 /* All-time scrubbable timeline. Each day is a column; each workout that day is a
    stacked segment whose height = its duration. Data bars are full opacity; the
    hovered/centred day gets a taller cursor bar with details above and date below.
    Edges fade (overlay gradient) only on the side that still has more to scroll. */
-.timeline-outer { position: relative; height: 200px; margin: 0 0 3em; }
-.timeline-scroll { position: absolute; left: 0; right: 0; top: 30px; bottom: 30px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+.timeline-outer { position: relative; height: 138px; margin: 0 0 0.5em; }
+.timeline-scroll { position: absolute; left: 0; right: 0; top: 20px; bottom: 26px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
 .timeline-scroll::-webkit-scrollbar { display: none; }
 .timeline { display: flex; align-items: flex-end; height: 100%; }
 .tl-day { flex: 0 0 auto; width: 2px; margin-right: 4px; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; }
 .tl-seg { width: 100%; background: var(--title); }              /* full opacity always */
 .tl-day.empty .tl-seg { opacity: 0.18; }                        /* rest-day tick recedes */
-.tl-fade { position: absolute; top: 30px; bottom: 30px; width: 32px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
+.tl-fade { position: absolute; top: 20px; bottom: 26px; width: 32px; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 2; }
 .tl-fade.left { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
 .tl-fade.right { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
 .tl-scrub { position: absolute; top: 0; bottom: 0; width: 0; pointer-events: none; display: none; z-index: 3; }
-.tl-info { position: absolute; top: 0; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 0.78em; line-height: 1.4; }
-.tl-line { position: absolute; top: 28px; bottom: 22px; left: 0; width: 2px; transform: translateX(-50%); background: var(--title); }
-.tl-date { position: absolute; bottom: 0; left: 0; transform: translateX(-50%); white-space: nowrap; font-size: 0.78em; }
+.tl-info { position: absolute; top: 0; left: 0; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 0.78em; line-height: 1.35; }
+.tl-line { position: absolute; top: 16px; bottom: 22px; left: 0; width: 2px; transform: translateX(-50%); background: var(--title); }
+.tl-date { position: absolute; bottom: 0; left: 0; transform: translateX(-50%); white-space: nowrap; font-size: 1.3em; font-weight: 500; line-height: 1; }
 
 /* Range filter row */
 .filters { display: flex; flex-wrap: wrap; gap: 0.25em 1.25em; margin: 0.5em 0 2em; }
