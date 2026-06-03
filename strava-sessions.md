@@ -1,6 +1,13 @@
 # Strava Workouts — Last 2 Weeks
 Updated: 2026-06-03
 
+## 2026-06-04 — Strength
+- Moving time: 0m
+- Elapsed time: 0m
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 94
+
 ## 2026-06-03 — Run
 - Distance: 5.02 km
 - Moving time: 33m
@@ -12,6 +19,12 @@ Updated: 2026-06-03
 - Elevation high: 0 m
 - Elevation low: 0 m
 - Calories: 373
+
+## 2026-06-02 — Strength
+- Moving time: 1m
+- Elapsed time: 1m
+- Elevation high: 0 m
+- Elevation low: 0 m
 
 ## 2026-06-02 — Walk
 - Distance: 3.02 km
