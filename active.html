@@ -479,10 +479,8 @@
 
   /* ---------- all-time scrubbable timeline ---------- */
   const TL_STEP = 7;      // px per day (1px bar + 6px gap)
-  const TL_RESTH = 28;    // rest-day tick height in px
-  const TL_MINH = 54;     // shortest workout day height in px
-  const TL_MAXH = 320;    // tallest day stack in px
   const TL_GROW = 1500;   // ms for the tallest bar to grow on load
+  // Bar heights are derived from the container's actual rendered height at call time.
 
   function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
   const tlDateLabel = (d) => d.toLocaleDateString(undefined, { month: "short" }) + " " + ordinal(d.getDate()) + ", " + d.getFullYear();
@@ -509,9 +507,15 @@
     }
     const maxDur = Math.max(1, ...days.map(d => d.dur));
     tl.style.width = (days.length * TL_STEP) + "px";
+    // Heights relative to the actual rendered container so bars never clip on any screen size.
+    // Tallest workout = 90% (hover line is 100% via CSS), rest-day tick = 8%, shortest = 15%.
+    const contH = Math.max(scroll.clientHeight, 120);
+    const TL_MAXH = contH * 0.90;
+    const TL_MINH = contH * 0.15;
+    const TL_RESTH = contH * 0.08;
     // One day = a column; each workout that day is a stacked segment. The whole
     // column reveals from bottom to top so stacked workouts behave like one bar.
-    const seg = (h) => `<span class="tl-seg" style="height:${h.toFixed(0)}px"></span>`;
+    const seg = (h) => `<span class="tl-seg" style="height:${h.toFixed(1)}px"></span>`;
     tl.innerHTML = days.map(d => {
       const totalH = d.dur ? TL_MINH + (d.dur / maxDur * (TL_MAXH - TL_MINH)) : TL_RESTH;
       const grow = Math.max(120, TL_GROW * totalH / TL_MAXH).toFixed(0);
