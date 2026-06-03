@@ -13,13 +13,15 @@ if (!STRAVA_CLIENT_ID || !STRAVA_CLIENT_SECRET || !STRAVA_REFRESH_TOKEN) {
   process.exit(1);
 }
 
+const UA = "Mozilla/5.0 (compatible; strava-cache-bot/1.0)";
+
 function post(url, body) {
   return new Promise((resolve, reject) => {
     const data = JSON.stringify(body);
     const u = new URL(url);
     const req = https.request(
       { hostname: u.hostname, path: u.pathname, method: "POST",
-        headers: { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(data) } },
+        headers: { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(data), "User-Agent": UA } },
       (res) => {
         let raw = "";
         res.on("data", (c) => (raw += c));
@@ -42,7 +44,7 @@ function get(url, token) {
     https
       .get(
         { hostname: u.hostname, path: u.pathname + u.search,
-          headers: { Authorization: `Bearer ${token}` } },
+          headers: { Authorization: `Bearer ${token}`, "User-Agent": UA } },
         (res) => {
           let raw = "";
           res.on("data", (c) => (raw += c));
