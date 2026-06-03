@@ -2,7 +2,6 @@
 // Fetches all Strava activities and writes strava-cache.json to the repo root.
 // Required env vars: STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET, STRAVA_REFRESH_TOKEN
 
-const https = require("https");
 const fs = require("fs");
 const path = require("path");
 
@@ -13,76 +12,50 @@ if (!STRAVA_CLIENT_ID || !STRAVA_CLIENT_SECRET || !STRAVA_REFRESH_TOKEN) {
   process.exit(1);
 }
 
-const UA = "Mozilla/5.0 (compatible; strava-cache-bot/1.0)";
-
-function post(url, body) {
-  return new Promise((resolve, reject) => {
-    const data = JSON.stringify(body);
-    const u = new URL(url);
-    const req = https.request(
-      { hostname: u.hostname, path: u.pathname, method: "POST",
-        headers: { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(data), "User-Agent": UA } },
-      (res) => {
-        let raw = "";
-        res.on("data", (c) => (raw += c));
-        res.on("end", () => {
-          if (res.statusCode < 200 || res.statusCode >= 300)
-            return reject(new Error(`HTTP ${res.statusCode}: ${raw}`));
-          resolve(JSON.parse(raw));
-        });
-      }
-    );
-    req.on("error", reject);
-    req.write(data);
-    req.end();
-  });
-}
-
-function get(url, token) {
-  return new Promise((resolve, reject) => {
-    const u = new URL(url);
-    https
-      .get(
-        { hostname: u.hostname, path: u.pathname + u.search,
-          headers: { Authorization: `Bearer ${token}`, "User-Agent": UA } },
-        (res) => {
-          let raw = "";
-          res.on("data", (c) => (raw += c));
-          res.on("end", () => {
-            if (res.statusCode < 200 || res.statusCode >= 300)
-              return reject(new Error(`HTTP ${res.statusCode}: ${raw}`));
-            resolve(JSON.parse(raw));
-          });
-        }
-      )
-      .on("error", reject);
-  });
-}
+// Browser-like headers to pass Strava's CloudFront WAF.
+const BASE_HEADERS = {
+  "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Accept": "application/json, text/plain, */*",
+  "Accept-Language": "en-US,en;q=0.9",
+  "Origin": "https://www.strava.com",
+  "Referer": "https://www.strava.com/",
+};
 
 async function main() {
+  // Token refresh — send as form-encoded (what browsers send to OAuth endpoints).
   console.log("Refreshing Strava access token…");
-  const tokenData = await post("https://www.strava.com/oauth/token", {
-    client_id: STRAVA_CLIENT_ID,
-    client_secret: STRAVA_CLIENT_SECRET,
-    grant_type: "refresh_token",
-    refresh_token: STRAVA_REFRESH_TOKEN,
+  const tokenRes = await fetch("https://www.strava.com/oauth/token", {
+    method: "POST",
+    headers: { ...BASE_HEADERS, "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id:     STRAVA_CLIENT_ID,
+      client_secret: STRAVA_CLIENT_SECRET,
+      grant_type:    "refresh_token",
+      refresh_token: STRAVA_REFRESH_TOKEN,
+    }),
   });
-  const { access_token: accessToken } = tokenData;
-  console.log(`Token valid until ${new Date(tokenData.expires_at * 1000).toISOString()}`);
+  if (!tokenRes.ok) {
+    const text = await tokenRes.text();
+    throw new Error(`Token refresh HTTP ${tokenRes.status}: ${text}`);
+  }
+  const { access_token, expires_at } = await tokenRes.json();
+  console.log(`Token valid until ${new Date(expires_at * 1000).toISOString()}`);
 
+  // Paginate all activities.
   const all = [];
-  const perPage = 200;
   let page = 1;
   while (page <= 50) {
     process.stdout.write(`Fetching page ${page}… `);
-    const batch = await get(
-      `https://www.strava.com/api/v3/athlete/activities?per_page=${perPage}&page=${page}`,
-      accessToken
+    const res = await fetch(
+      `https://www.strava.com/api/v3/athlete/activities?per_page=200&page=${page}`,
+      { headers: { ...BASE_HEADERS, Authorization: `Bearer ${access_token}` } }
     );
+    if (!res.ok) throw new Error(`Activities HTTP ${res.status}`);
+    const batch = await res.json();
     if (!Array.isArray(batch) || !batch.length) { console.log("done."); break; }
     all.push(...batch);
     console.log(`${all.length} activities`);
-    if (batch.length < perPage) break;
+    if (batch.length < 200) break;
     page++;
   }
 
