@@ -1,0 +1,35 @@
+name: Sync Strava activities
+
+on:
+  schedule:
+    - cron: "0 5 * * *"   # 5 AM UTC daily
+  workflow_dispatch:        # allow manual run from GitHub UI
+
+permissions:
+  contents: write           # needed to commit strava-cache.json
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch Strava activities
+        env:
+          STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
+        run: node scripts/strava-fetch.js
+
+      - name: Commit and push strava-cache.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add strava-cache.json
+          git diff --staged --quiet && echo "No new activities — skipping commit." && exit 0
+          git commit -m "chore: sync Strava activities $(date -u +%Y-%m-%d)"
+          git push

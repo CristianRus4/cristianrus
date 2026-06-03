@@ -38,6 +38,11 @@ window.Strava = (function () {
     // read access to your Strava data. Don't reuse this secret elsewhere.
     refreshToken: "a35b7cbf363e2c3ad51b0d9dd338050bdfd613c0",
     // =======================================================
+
+    // Pre-baked activity list updated daily by the strava-sync GitHub Action.
+    // getAllActivities() loads this first so visitors never hit the Strava API
+    // for the activity list. Falls back to the live API if the file is absent.
+    staticDataUrl: "strava-cache.json",
   };
 
   const API = "https://www.strava.com/api/v3";
@@ -211,13 +216,28 @@ window.Strava = (function () {
     catch (e) { return null; }
   }
 
-  // Returns ALL activities. Uses cache unless { force:true } or cache older than maxAgeMs.
+  // Returns ALL activities. Priority: localStorage (30 min) → static snapshot → live API.
   async function getAllActivities(opts = {}) {
     const maxAge = opts.maxAgeMs != null ? opts.maxAgeMs : 30 * 60 * 1000; // 30 min
     const cache = cachedActivities();
     if (!opts.force && cache && (Date.now() - cache.at) < maxAge && Array.isArray(cache.data)) {
       return cache.data;
     }
+
+    // Try the pre-baked static snapshot (updated daily by GitHub Actions).
+    if (!opts.force && CONFIG.staticDataUrl) {
+      try {
+        const res = await fetch(CONFIG.staticDataUrl);
+        if (res.ok) {
+          const snap = await res.json();
+          if (Array.isArray(snap.data) && snap.data.length) {
+            try { localStorage.setItem(ACT_KEY, JSON.stringify({ at: Date.now(), data: snap.data })); } catch (e) {}
+            return snap.data;
+          }
+        }
+      } catch (e) { /* static file missing or network error — fall through to live API */ }
+    }
+
     const all = [];
     const perPage = 200;
     let page = 1;
