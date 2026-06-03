@@ -605,7 +605,12 @@
         scrub.style.left = (scroll.clientWidth / 2) + "px";
         openScrub();
       }
-      scroll.addEventListener("scroll", () => { mobileShowAt(scroll.scrollLeft); updateFades(); });
+      let userHasTouched = false;
+      scroll.addEventListener("touchstart", () => { userHasTouched = true; }, { passive: true });
+      scroll.addEventListener("scroll", () => {
+        updateFades();
+        if (userHasTouched) mobileShowAt(scroll.scrollLeft);
+      });
       requestAnimationFrame(() => { scroll.scrollLeft = lastActive * TL_STEP; mobileShowAt(lastActive * TL_STEP); updateFades(); });
     }
   }
