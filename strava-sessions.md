@@ -1,5 +1,26 @@
 # Strava Workouts — Last 2 Weeks
-Updated: 2026-06-03
+Updated: 2026-06-04
+
+## 2026-06-04 — Walk
+- Distance: 2.58 km
+- Moving time: 31m
+- Elapsed time: 31m
+- Avg pace/speed: 12:02 /km
+- Max speed: 7.6 km/h
+- Avg heart rate: 112 bpm
+- Max heart rate: 127 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 221
+
+## 2026-06-04 — Strength
+- Moving time: 1h 15m
+- Elapsed time: 1h 15m
+- Avg heart rate: 132 bpm
+- Max heart rate: 132 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 729
 
 ## 2026-06-04 — Strength
 - Moving time: 0m
