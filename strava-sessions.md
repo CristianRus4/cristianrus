@@ -1,6 +1,27 @@
 # Strava Workouts — Last 2 Weeks
 Updated: 2026-06-06
 
+## 2026-06-07 — Strength
+- Moving time: 1h 5m
+- Elapsed time: 1h 5m
+- Avg heart rate: 121 bpm
+- Max heart rate: 121 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 551
+
+## 2026-06-07 — Run
+- Distance: 1.33 km
+- Moving time: 10m
+- Elapsed time: 10m
+- Avg pace/speed: 7:36 /km
+- Max speed: 10.6 km/h
+- Avg heart rate: 144 bpm
+- Max heart rate: 153 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 110
+
 ## 2026-06-04 — Walk
 - Distance: 2.58 km
 - Moving time: 31m
@@ -395,16 +416,3 @@ Romanian Deadlift  · Smith Machine
 - Elevation high: 0 m
 - Elevation low: 0 m
 - Calories: 172
-
-## 2026-05-23 — Walk
-- Distance: 2.29 km
-- Moving time: 29m
-- Elapsed time: 36m
-- Avg pace/speed: 12:40 /km
-- Max speed: 13.1 km/h
-- Avg heart rate: 100 bpm
-- Max heart rate: 112 bpm
-- Elevation gain: 19 m
-- Elevation high: 65 m
-- Elevation low: 42 m
-- Calories: 128
