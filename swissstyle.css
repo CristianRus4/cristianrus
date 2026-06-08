@@ -115,8 +115,9 @@ body {
     margin: 0 0 0.4em 0;
     max-width: 16ch;
     text-align: right;
-    font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+    font-size: clamp(0.68rem, 1vw, 0.86rem);
     font-weight: 700;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     line-height: 1.2;
     color: var(--ink);
@@ -127,6 +128,13 @@ body {
     display: block;
     margin: 0 0 2rem;
     pointer-events: auto;
+}
+.top-head::before {
+    content: "";
+    display: block;
+    height: 1px;
+    margin: 0 0 1.5rem;
+    background: color-mix(in srgb, var(--ink) 70%, transparent);
 }
 .top-head .sub {
     display: none;
@@ -154,6 +162,17 @@ body:has(.top-head) {
     justify-content: space-between;
     align-items: flex-end;
     gap: 1.5rem;
+}
+.bottom-title-row::after,
+.active-head::after {
+    content: "";
+    position: fixed;
+    left: 5vw;
+    right: 5vw;
+    bottom: calc(8vh - 1.25rem);
+    height: 1px;
+    pointer-events: none;
+    background: color-mix(in srgb, var(--ink) 70%, transparent);
 }
 
 /* Section headings — quiet uppercase labels. */
@@ -208,9 +227,25 @@ a.titlelink:hover {
     text-align: left;
     padding-right: 1.5em;
     font-weight: 700;
-    text-transform: lowercase;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 }
-#animated-table td { padding-left: 0; }
+#animated-table {
+    border-collapse: collapse;
+}
+#animated-table td {
+    padding-left: 0;
+    text-align: left;
+}
+#animated-table th,
+#animated-table td {
+    width: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+#animated-table th {
+    min-width: 9rem;
+}
 #animated-table tr { opacity: 1 !important; }
 #counter { color: var(--ink); }
 
