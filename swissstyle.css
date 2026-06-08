@@ -286,9 +286,10 @@ body:has(.home-hero) {
 }
 .home-hero .sub {
     position: relative;
-    right: 1.6em;
+    right: 1lh;
     margin-bottom: 0;
-    max-width: 14ch;
+    max-width: none;
+    white-space: nowrap;
     transform: rotate(90deg);
     transform-origin: right bottom;
 }
@@ -347,8 +348,8 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
 .active-head .title { flex: 1 1 auto; }
 .active-head .sub {
     position: relative;
-    right: 4.8em;
-    margin-bottom: 0.4em;
+    right: 3lh;
+    margin-bottom: 0;
     max-width: none;
     transform: rotate(90deg);
     transform-origin: right bottom;
