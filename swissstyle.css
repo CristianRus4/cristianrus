@@ -69,6 +69,7 @@ body {
     margin: 0;
     padding: 4vh 5vw 6em;
     text-align: left;
+    --swiss-title-size: clamp(5.1rem, 18vw, 15rem);
 }
 
 /* ---- Header block: big title on the leading edge, small subtitle
@@ -89,8 +90,8 @@ body {
 .title {
     margin: 0;
     flex: 1 1 auto;
-    font-size: clamp(3.4rem, 15vw, 10rem);
-    line-height: 0.86;
+    font-size: var(--swiss-title-size);
+    line-height: 0.76;
     font-weight: 700;
     letter-spacing: -0.03em;
 }
@@ -246,7 +247,7 @@ body:has(.home-hero) {
     --home-inset-y: 8vh;
     --home-grid-gap: clamp(0.75rem, 1.25vw, 1.25rem);
     --home-rule: color-mix(in srgb, var(--ink) 70%, transparent);
-    --home-title-size: clamp(5.1rem, 18vw, 15rem);
+    --home-title-size: var(--swiss-title-size);
     --home-title-block: calc(var(--home-title-size) * 0.76 * 2);
 }
 

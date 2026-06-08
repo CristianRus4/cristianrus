@@ -96,6 +96,7 @@
 			</div>
 			<div class="bottom-title-row">
 				<h1 class="title"><a class="titlelink" href="/">Now</a></h1>
+				<p class="sub" id="current-time"></p>
 			</div>
 		</header>
 
@@ -104,6 +105,33 @@
 
 
 <script>
+  function scrambleText(el, finalText, duration = 700) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const start = Date.now();
+    const timer = setInterval(() => {
+      if (Date.now() - start >= duration) {
+        clearInterval(timer);
+        el.textContent = finalText;
+        return;
+      }
+      el.textContent = finalText.replace(/[A-Z0-9]/gi, () => chars[Math.floor(Math.random() * chars.length)]);
+    }, 50);
+  }
+
+  function renderCurrentTime() {
+    const el = document.getElementById('current-time');
+    if (!el) return;
+    const text = new Date().toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    }).toUpperCase();
+    scrambleText(el, text);
+  }
+
+  renderCurrentTime();
+  setInterval(renderCurrentTime, 60000);
+
   // Function to generate a random letter
   function getRandomLetter() {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';

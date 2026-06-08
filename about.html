@@ -30,9 +30,18 @@
 		</div>
 		<div class="bottom-title-row">
 			<h1 class="title"><a class="titlelink" href="/">About</a></h1>
+			<p class="sub" id="about-date"></p>
 		</div>
 	</header>
 	<script type="text/javascript">
+	const aboutDate = document.getElementById('about-date');
+	if (aboutDate) {
+	  const now = new Date();
+	  const month = now.toLocaleString(undefined, { month: 'short' }).toUpperCase();
+	  const year = String(now.getFullYear()).slice(-2);
+	  aboutDate.textContent = `${month} '${year}`;
+	}
+
 	const copyEmail = document.getElementById('copy-email');
 	copyEmail.addEventListener('click', function(e) {
 	  e.preventDefault();
