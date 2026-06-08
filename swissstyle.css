@@ -237,7 +237,7 @@ body:has(.home-hero)::after {
     position: fixed;
     left: var(--home-inset-x);
     right: var(--home-inset-x);
-    bottom: calc(var(--home-inset-y) + clamp(7.4rem, 14vw, 13rem));
+    bottom: calc(var(--home-inset-y) + clamp(8rem, 15vw, 14rem));
     height: 1px;
     background: var(--home-rule);
     z-index: 1;
@@ -338,22 +338,21 @@ body:has(.home-hero)::after {
     transform-origin: right bottom;
 }
 
-/* Poster crop, rendered as a duotone block against the paper. */
+/* Large printed avatar, closer to the original treatment. */
 .home-bg-avatar {
     position: fixed;
     z-index: 0;
-    left: calc(var(--home-inset-x) * 2);
-    bottom: calc(var(--home-inset-y) * 2);
-    transform: none;
-    width: min(58vw, 58vh);
-    height: min(70vw, 68vh);
+    left: 10vw;
+    bottom: 6vh;
+    width: min(64vw, 52vh);
+    height: auto;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
-    object-position: center;
     border: none;
-    border-radius: 0;
-    filter: grayscale(1) contrast(1.45) sepia(1) saturate(2.4) hue-rotate(320deg);
-    mix-blend-mode: luminosity;
-    opacity: 0.72;
+    border-radius: 50%;
+    filter: grayscale(1) contrast(1.05);
+    mix-blend-mode: multiply;
+    opacity: 0.85;
     pointer-events: none;
 }
 
@@ -373,8 +372,13 @@ body:has(.home-hero)::after {
     }
     .home-bg-avatar {
         width: 72vw;
-        height: 54vh;
+        height: auto;
     }
+    .home-hero .sub {
+        bottom: 50vh;
+        transform: translateY(50%) rotate(90deg);
+    }
+    .home-hero .sub br { display: none; }
 }
 
 @media (max-width: 768px) {
