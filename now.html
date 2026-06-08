@@ -164,7 +164,7 @@
 
 
 <script type="text/javascript">document.addEventListener("DOMContentLoaded", function() {
-    const cells = document.querySelectorAll("#animated-table td");
+    const cells = Array.from(document.querySelectorAll("#animated-table td")).filter(cell => cell.textContent.trim() || cell.children.length);
     cells.forEach((cell, index) => {
         setTimeout(() => {
             cell.classList.add("visible");
