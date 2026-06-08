@@ -144,6 +144,7 @@ body:has(.top-head) {
 }
 .bottom-content {
     max-width: 820px;
+    width: 100%;
     margin-bottom: 2rem;
     pointer-events: auto;
 }
@@ -156,6 +157,16 @@ body:has(.top-head) {
     justify-content: space-between;
     align-items: flex-end;
     gap: 1.5rem;
+}
+.bottom-title-row .sub {
+    position: fixed;
+    right: calc(5vw + 1lh);
+    bottom: 8vh;
+    margin: 0;
+    max-width: none;
+    white-space: nowrap;
+    transform: rotate(90deg);
+    transform-origin: right bottom;
 }
 /* Section headings — quiet uppercase labels. */
 h2 {
@@ -214,6 +225,7 @@ a.titlelink:hover {
 }
 #animated-table {
     border-collapse: collapse;
+    margin-left: 0;
 }
 #animated-table td {
     padding-left: 0;
