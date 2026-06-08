@@ -239,7 +239,8 @@ a.titlelink:hover {
     text-transform: uppercase;
 }
 #animated-table {
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0 0.35rem;
     margin-left: 0;
 }
 #animated-table td {
@@ -248,12 +249,17 @@ a.titlelink:hover {
     font-size: clamp(0.68rem, 1vw, 0.86rem);
     font-weight: 500;
     line-height: 1.2;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+#animated-table td.visible {
+    opacity: 1;
 }
 #animated-table th,
 #animated-table td {
     width: auto;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-top: 0.08rem;
+    padding-bottom: 0.08rem;
 }
 #animated-table th {
     min-width: 9rem;

@@ -164,14 +164,11 @@
 
 
 <script type="text/javascript">document.addEventListener("DOMContentLoaded", function() {
-    // Get all table rows
-    const rows = document.querySelectorAll("#animated-table tr");
-
-    // Loop through each row and add a class to trigger the animation
-    rows.forEach((row, index) => {
+    const cells = document.querySelectorAll("#animated-table td");
+    cells.forEach((cell, index) => {
         setTimeout(() => {
-            row.style.opacity = "1";
-        }, index * 170); 
+            cell.classList.add("visible");
+        }, index * 300);
     });
 });
 </script>
