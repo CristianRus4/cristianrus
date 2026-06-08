@@ -245,6 +245,9 @@ a.titlelink:hover {
 #animated-table td {
     padding-left: 0;
     text-align: left;
+    font-size: clamp(0.68rem, 1vw, 0.86rem);
+    font-weight: 500;
+    line-height: 1.2;
 }
 #animated-table th,
 #animated-table td {
