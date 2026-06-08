@@ -235,7 +235,7 @@ body:has(.home-hero) {
     z-index: 1;
     display: grid;
     grid-template-columns: max-content max-content 1fr;
-    column-gap: 3rem;
+    column-gap: 6rem;
     line-height: 1.6;
     margin: 0;
     font-size: clamp(0.85rem, 1.5vw, 1.05rem);
@@ -287,6 +287,8 @@ body:has(.home-hero) {
 .home-hero .sub {
     margin-bottom: 0;
     max-width: 14ch;
+    transform: rotate(90deg);
+    transform-origin: right bottom;
 }
 
 /* Big, printed (grayscale × multiply) avatar in the background. */
@@ -308,7 +310,7 @@ body:has(.home-hero) {
 }
 
 @media (max-width: 520px) {
-    .home-nav { gap: 0.5rem; font-size: 0.9rem; }
+    .home-nav { column-gap: 1.5rem; font-size: 0.9rem; }
 }
 @media (max-width: 768px) {
     .active-head .active-summary-workouts { display: none !important; }
@@ -344,6 +346,8 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
 .active-head .sub {
     margin-bottom: 0.4em;
     max-width: none;
+    transform: rotate(90deg);
+    transform-origin: right bottom;
 }
 .active-head .sub span {
     display: block;
