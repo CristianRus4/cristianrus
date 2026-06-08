@@ -230,6 +230,8 @@ body:has(.home-hero) {
     --home-inset-y: 8vh;
     --home-grid-gap: clamp(0.75rem, 1.25vw, 1.25rem);
     --home-rule: color-mix(in srgb, var(--ink) 70%, transparent);
+    --home-title-size: clamp(5.1rem, 18vw, 15rem);
+    --home-title-block: calc(var(--home-title-size) * 0.76 * 2);
 }
 
 body:has(.home-hero)::after {
@@ -237,7 +239,7 @@ body:has(.home-hero)::after {
     position: fixed;
     left: var(--home-inset-x);
     right: var(--home-inset-x);
-    bottom: calc(var(--home-inset-y) + clamp(8rem, 15vw, 14rem));
+    bottom: calc(var(--home-inset-y) + var(--home-title-block) + 1rem);
     height: 1px;
     background: var(--home-rule);
     z-index: 1;
@@ -264,11 +266,11 @@ body:has(.home-hero)::after {
     text-align: left;
 }
 .home-nav .nav-col:nth-child(1) { grid-column: 1 / span 1; }
-.home-nav .nav-col:nth-child(2) { grid-column: 3 / span 1; }
+.home-nav .nav-col:nth-child(2) { grid-column: 2 / span 1; }
 .home-nav .nav-col:nth-child(3) { grid-column: 6 / span 1; }
 .home-nav .nav-col:last-child {
-    align-items: flex-start;
-    text-align: left;
+    align-items: flex-end;
+    text-align: right;
 }
 .home-nav .section-label {
     text-transform: uppercase;
@@ -286,7 +288,7 @@ body:has(.home-hero)::after {
 
 .home-meta {
     position: fixed;
-    left: var(--home-inset-x);
+    left: 55vw;
     top: calc(2.2rem + 8.5rem);
     z-index: 2;
     margin: 0;
@@ -303,7 +305,7 @@ body:has(.home-hero)::after {
     position: fixed;
     top: 2.2rem;
     bottom: var(--home-inset-y);
-    left: 35vw;
+    left: 20vw;
     width: 1px;
     background: var(--home-rule);
 }
@@ -322,7 +324,7 @@ body:has(.home-hero)::after {
 .home-hero .title {
     grid-column: 1 / span 4;
     text-transform: none;
-    font-size: clamp(5.1rem, 18vw, 15rem);
+    font-size: var(--home-title-size);
     line-height: 0.76;
     letter-spacing: -0.045em;
 }
@@ -357,6 +359,9 @@ body:has(.home-hero)::after {
 }
 
 @media (max-width: 640px) {
+    body:has(.home-hero)::after {
+        bottom: calc(var(--home-inset-y) - 1.25rem);
+    }
     .home-nav {
         grid-template-columns: repeat(3, minmax(0, 1fr));
         column-gap: var(--home-grid-gap);
@@ -375,8 +380,10 @@ body:has(.home-hero)::after {
         height: auto;
     }
     .home-hero .sub {
-        bottom: 50vh;
-        transform: translateY(50%) rotate(90deg);
+        right: calc(var(--home-inset-x) + 1lh);
+        top: 50%;
+        bottom: auto;
+        transform: translateY(-50%) rotate(90deg);
     }
     .home-hero .sub br { display: none; }
 }
