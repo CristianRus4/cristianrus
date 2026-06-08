@@ -221,6 +221,7 @@ a.titlelink:hover {
    ============================================================ */
 body:has(.home-hero) {
     max-width: none;
+    min-width: 320px;
     padding: 2.2rem 5vw calc(8vh + 10rem);
     min-height: 100vh;
     position: relative;
@@ -235,7 +236,7 @@ body:has(.home-hero) {
     z-index: 1;
     display: grid;
     grid-template-columns: max-content max-content 1fr;
-    column-gap: 6rem;
+    column-gap: clamp(2.5rem, 8vw, 6rem);
     line-height: 1.6;
     margin: 0;
     font-size: clamp(0.85rem, 1.5vw, 1.05rem);
@@ -285,11 +286,13 @@ body:has(.home-hero) {
     letter-spacing: -0.035em;
 }
 .home-hero .sub {
-    position: relative;
-    right: 1lh;
+    position: fixed;
+    right: calc(5vw + 2lh);
+    bottom: 8vh;
     margin-bottom: 0;
     max-width: none;
     white-space: nowrap;
+    text-transform: uppercase;
     transform: rotate(90deg);
     transform-origin: right bottom;
 }
@@ -298,9 +301,9 @@ body:has(.home-hero) {
 .home-bg-avatar {
     position: fixed;
     z-index: 0;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -52%);
+    left: 10vw;
+    bottom: 6vh;
+    transform: none;
     width: min(64vw, 52vh);
     aspect-ratio: 1 / 1;
     object-fit: cover;
@@ -312,9 +315,6 @@ body:has(.home-hero) {
     pointer-events: none;
 }
 
-@media (max-width: 520px) {
-    .home-nav { column-gap: 1.5rem; font-size: 0.9rem; }
-}
 @media (max-width: 768px) {
     .active-head .active-summary-workouts { display: none !important; }
 }
