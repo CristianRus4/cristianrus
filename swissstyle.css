@@ -77,7 +77,7 @@ body {
     position: fixed;
     left: 5vw;
     right: 5vw;
-    bottom: 15vh;
+    bottom: 8vh;
     z-index: 2;
     display: flex;
     justify-content: space-between;
@@ -89,7 +89,7 @@ body {
 .title {
     margin: 0;
     flex: 1 1 auto;
-    font-size: clamp(2.75rem, 13vw, 8rem);
+    font-size: clamp(3.4rem, 15vw, 10rem);
     line-height: 0.86;
     font-weight: 700;
     letter-spacing: -0.03em;
@@ -133,7 +133,7 @@ body {
 }
 
 body:has(.top-head) {
-    padding-top: 15vh;
+    padding-top: 8vh;
     padding-bottom: 6em;
 }
 
@@ -221,7 +221,7 @@ a.titlelink:hover {
    ============================================================ */
 body:has(.home-hero) {
     max-width: none;
-    padding: 2.2rem 5vw calc(15vh + 9rem);
+    padding: 2.2rem 5vw calc(8vh + 10rem);
     min-height: 100vh;
     position: relative;
     overflow: hidden;
@@ -270,7 +270,7 @@ body:has(.home-hero) {
     position: fixed;
     left: 5vw;
     right: 5vw;
-    bottom: 15vh;
+    bottom: 8vh;
     z-index: 1;
     display: flex;
     justify-content: space-between;
@@ -280,11 +280,13 @@ body:has(.home-hero) {
 .home-hero .title {
     flex: 0 1 auto;
     text-transform: none;          /* title-case wordmark, poster style */
-    font-size: clamp(3rem, 13vw, 9rem);
+    font-size: clamp(3.8rem, 15vw, 11rem);
     line-height: 0.84;
     letter-spacing: -0.035em;
 }
 .home-hero .sub {
+    position: relative;
+    right: 1.6em;
     margin-bottom: 0;
     max-width: 14ch;
     transform: rotate(90deg);
@@ -323,7 +325,7 @@ body:has(.home-hero) {
    ============================================================ */
 body:has(.active-head) {
     max-width: none;
-    padding: 4vh 5vw calc(15vh + 9rem);
+    padding: 4vh 5vw calc(8vh + 10rem);
 }
 body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
     margin-top: 0;
@@ -334,7 +336,7 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
     position: fixed;
     left: 5vw;
     right: 5vw;
-    bottom: 15vh;
+    bottom: 8vh;
     z-index: 2;
     display: flex;
     justify-content: space-between;
@@ -344,6 +346,8 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
 }
 .active-head .title { flex: 1 1 auto; }
 .active-head .sub {
+    position: relative;
+    right: 4.8em;
     margin-bottom: 0.4em;
     max-width: none;
     transform: rotate(90deg);
