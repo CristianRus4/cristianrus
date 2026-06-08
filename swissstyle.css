@@ -129,13 +129,6 @@ body {
     margin: 0 0 2rem;
     pointer-events: auto;
 }
-.top-head::before {
-    content: "";
-    display: block;
-    height: 1px;
-    margin: 0 0 1.5rem;
-    background: color-mix(in srgb, var(--ink) 70%, transparent);
-}
 .top-head .sub {
     display: none;
 }
@@ -163,18 +156,6 @@ body:has(.top-head) {
     align-items: flex-end;
     gap: 1.5rem;
 }
-.bottom-title-row::after,
-.active-head::after {
-    content: "";
-    position: fixed;
-    left: 5vw;
-    right: 5vw;
-    bottom: calc(8vh - 1.25rem);
-    height: 1px;
-    pointer-events: none;
-    background: color-mix(in srgb, var(--ink) 70%, transparent);
-}
-
 /* Section headings — quiet uppercase labels. */
 h2 {
     font-size: clamp(1.05rem, 2.5vw, 1.4rem);
