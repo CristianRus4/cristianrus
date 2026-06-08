@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-swiss="home">
 	<head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="theme-color" content="#D6402F">
 	<meta name="description" content="Cristian Rus — digital designer and iOS developer based in Wellington, New Zealand.">
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://www.cristianrus.me/">
@@ -10,6 +11,7 @@
 	<meta property="og:description" content="Cristian Rus — digital designer and iOS developer based in Wellington, New Zealand.">
 	<meta property="og:image" content="https://www.cristianrus.me/images/avatar.jpg">
 	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="swissstyle.css">
 	<link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
 	<title>Cristian Rus</title>
@@ -17,41 +19,32 @@
 
 	<body>
 
-<div class="header">
-  <a class="avatar-link" href="/" aria-label="Home">
-    <img class="avatar" src="images/avatar.jpg" alt="Cristian Rus avatar"/>
-  </a>
-  <div class="header-text">
-    <h1 class="title"><a class="titlelink" href="/">Cristian Rus</a></h1>
-    <p class="sub">design & human behaviour</p>
-  </div>
-</div>
+  <img class="home-bg-avatar" src="images/avatar.jpg" alt="Cristian Rus"/>
 
-  <div class="button-container">
-  <div class="section-label">about</div>
-  <div class="extra-buttons">
-    <button class="extra-button"><a href="about">me</a></button>
-    <button class="extra-button"><a href="now">now</a></button>
-    <button class="extra-button"><a href="active">active</a></button>
-  </div>
-  </div>
+  <nav class="home-nav">
+    <div class="nav-col">
+      <div class="section-label">about</div>
+      <a href="about">me</a>
+      <a href="now">now</a>
+      <a href="active">active</a>
+    </div>
+    <div class="nav-col">
+      <div class="section-label">apps</div>
+      <a href="https://getleft.app">Left</a>
+      <a href="https://ftnss.app">ftnss</a>
+      <a href="https://txtpod.app">txtpod</a>
+    </div>
+    <div class="nav-col">
+      <div class="section-label">contact</div>
+      <a id="copy-email" href="#">mail</a>
+      <a href="sms:+642041926150">text</a>
+      <a href="twitter">x</a>
+    </div>
+  </nav>
 
-  <div class="button-container">
-  <div class="section-label">apps</div>
-  <div class="extra-buttons">
-    <button class="extra-button"><a href="https://getleft.app">Left</a></button>
-    <button class="extra-button"><a href="https://ftnss.app">ftnss</a></button>
-    <button class="extra-button"><a href="https://txtpod.app">txtpod</a></button>
-  </div>
-  </div>
-
-  <div class="button-container">
-  <div class="section-label">contact</div>
-  <div class="extra-buttons">
-    <button class="extra-button"><a id="copy-email" href="#">mail</a></button>
-    <button class="extra-button"><a href="sms:+642041926150">text</a></button>
-    <button class="extra-button"><a href="twitter">x</a></button>
-  </div>
+  <div class="home-hero">
+    <h1 class="title"><a class="titlelink" href="/">Cristian<br>Rus</a></h1>
+    <p class="sub">design &amp; human behaviour</p>
   </div>
 
   <script type="text/javascript">

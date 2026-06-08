@@ -1,0 +1,313 @@
+/* ============================================================
+   swissstyle.css — Swiss / brutalist / minimalist treatment.
+
+   Loaded AFTER style.css and applied only to the pages opted in
+   via the <html data-swiss="…"> attribute:
+     home · about · now · active · lorem · attitude
+
+   It mostly re-paints what style.css already lays out: by
+   redefining the colour variables the base stylesheet draws with,
+   every title, paragraph, item bar and timeline segment adopts the
+   page ink automatically, in both light and dark mode.
+   ============================================================ */
+
+/* ---- Palette — muted, printed-ink tones (poster style) ---- */
+[data-swiss] {
+    --red:     #D6402F;   /* home     */
+    --orange:  #DD6A3C;   /* about    */
+    --yellow:  #E9B53E;   /* lorem    */
+    --green:   #9CC547;   /* active   */
+    --teal:    #4C9B9B;   /* now      */
+    --purple:  #5E578C;   /* attitude */
+
+    /* Two inks, slightly off pure black/white for the printed feel. */
+    --ink-light: #F2EAD8; /* warm cream */
+    --ink-dark:  #16160F; /* near-black */
+
+    /* Re-paint every variable the base stylesheet uses so all of
+       style.css follows the page ink in light AND dark mode. */
+    --bg:          var(--paper);
+    --bg-dark:     var(--paper);
+    --text:        var(--ink);
+    --text-dark:   var(--ink);
+    --title:       var(--ink);
+    --title-dark:  var(--ink);
+    --avatar-border:      var(--ink);
+    --avatar-border-dark: var(--ink);
+    --item-bar:    var(--ink);
+
+    /* The active timeline hover-bar reads these — no longer blue. */
+    --link-hover-start:      var(--red);
+    --link-hover-end:        var(--purple);
+    --link-hover-start-dark: var(--red);
+    --link-hover-end-dark:   var(--purple);
+}
+
+/* ---- Per-page paper (background) + ink (foreground) ---- */
+[data-swiss="home"]     { --paper: var(--red);    --ink: var(--ink-light); }
+[data-swiss="about"]    { --paper: var(--orange); --ink: var(--ink-light); }
+[data-swiss="now"]      { --paper: var(--teal);   --ink: var(--ink-light); }
+[data-swiss="active"]   { --paper: var(--green);  --ink: var(--ink-dark);  }
+[data-swiss="lorem"]    { --paper: var(--yellow); --ink: var(--ink-dark);  }
+[data-swiss="attitude"] { --paper: var(--purple); --ink: var(--ink-light); }
+
+/* ---- The whole viewport gets the colour (light + dark) ---- */
+html[data-swiss]      { background-color: var(--paper); }
+[data-swiss] body     { background-color: var(--paper); color: var(--ink); min-height: 100vh; }
+
+/* ---- Printed-paper grain over everything ---- */
+[data-swiss] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- Remove ONLY the "rise up on appear" entrance animation.
+        Other animations are JS-driven (now's table fade, active's
+        scramble + timeline) and are left untouched. ---- */
+[data-swiss] .title,
+[data-swiss] .sub,
+[data-swiss] .avatar,
+[data-swiss] .header,
+[data-swiss] .button-container,
+[data-swiss] .extra-buttons {
+    animation: none !important;
+    opacity: 1 !important;
+    margin-top: 0;
+}
+
+/* ---- Type ---- */
+[data-swiss] body {
+    font-family: 'Geist', sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Big page title — full-bleed width, bold, uppercase, sized to fit
+   the viewport on one line where possible. */
+[data-swiss] .title {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: 0 5vw;
+    box-sizing: border-box;
+    font-size: clamp(2.75rem, 14vw, 8rem);
+    line-height: 0.88;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 0.3em;
+}
+[data-swiss] .titlelink,
+[data-swiss] .titlelink:hover {
+    font-weight: 700 !important;
+    color: var(--ink);
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    box-shadow: none;
+}
+
+/* On the text pages the headline fills the first screen, bottom-left
+   (bottom leading). Active is excluded — its timeline is pinned to
+   the bottom of the viewport; home has its own layout below. */
+[data-swiss="about"]    body,
+[data-swiss="now"]      body,
+[data-swiss="lorem"]    body,
+[data-swiss="attitude"] body { margin-top: 4vh; }
+
+[data-swiss="about"]    .title,
+[data-swiss="now"]      .title,
+[data-swiss="lorem"]    .title,
+[data-swiss="attitude"] .title {
+    min-height: 80vh;
+    display: flex;
+    align-items: flex-end;
+}
+
+/* Section headings — quiet uppercase labels. */
+[data-swiss] h2 {
+    font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-top: 2.2em;
+    color: var(--ink);
+}
+[data-swiss] h3, [data-swiss] h4, [data-swiss] h5, [data-swiss] h6 {
+    color: var(--ink);
+}
+
+/* Section labels (menu headers). */
+[data-swiss] .section-label {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.4em;
+}
+
+/* ---- Links — bold, no resting underline; the old blue gradient is
+        replaced by a printed-marker invert on hover. ---- */
+[data-swiss] a:link,
+[data-swiss] a:visited {
+    color: var(--ink);
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: none;
+    transition: background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
+}
+[data-swiss] a:hover {
+    color: var(--paper);
+    background: var(--ink);
+    -webkit-text-fill-color: var(--paper);
+    box-shadow: 0 0 0 0.1em var(--ink);
+    text-decoration: none;
+}
+
+/* Title link is exempt from the invert so the headline stays calm. */
+[data-swiss] a.titlelink:link,
+[data-swiss] a.titlelink:visited,
+[data-swiss] a.titlelink:hover {
+    background: none;
+    box-shadow: none;
+    color: var(--ink);
+    -webkit-text-fill-color: currentColor;
+}
+
+/* ---- Attitude / item bars: ink, square, a touch bolder. ---- */
+[data-swiss] .item::before {
+    background-color: var(--ink);
+    width: 4px;
+}
+
+/* ---- now table: keep the fade (JS), align to the Swiss ink. ---- */
+[data-swiss] #animated-table th { color: var(--ink); }
+[data-swiss] #counter { color: var(--ink); }
+
+/* ============================================================
+   HOME — poster layout: menu across the top in three columns, big
+   two-line wordmark bottom-left, tagline bottom-right, the avatar
+   sitting large and printed in the background.
+   ============================================================ */
+[data-swiss="home"] body {
+    max-width: none;
+    margin: 0;
+    padding: 2.2rem 5vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.home-nav {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    line-height: 1.55;
+}
+.home-nav .nav-col { display: flex; flex-direction: column; }
+.home-nav .nav-col:nth-child(1) { align-items: flex-start;  text-align: left; }
+.home-nav .nav-col:nth-child(2) { align-items: center;      text-align: center; }
+.home-nav .nav-col:nth-child(3) { align-items: flex-end;    text-align: right; }
+
+.home-hero {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+}
+[data-swiss="home"] .title {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    text-transform: none;            /* title-case wordmark, poster style */
+    text-align: left;
+    font-size: clamp(3rem, 13vw, 9rem);
+    line-height: 0.84;
+    letter-spacing: -0.035em;
+}
+.home-hero .sub {
+    margin: 0 0 0.4em 0;
+    text-align: right;
+    align-self: flex-end;
+    max-width: 14ch;
+    font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+    line-height: 1.3;
+    color: var(--ink);
+}
+
+/* Big, printed (grayscale × multiply) avatar in the background. */
+.home-bg-avatar {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    width: min(72vw, 58vh);
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border: none;
+    border-radius: 50%;
+    filter: grayscale(1) contrast(1.05);
+    mix-blend-mode: multiply;
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+@media (max-width: 520px) {
+    .home-nav { gap: 0.5rem; font-size: 0.9rem; }
+}
+
+/* ============================================================
+   Dark mode — keep the colour background; do NOT fall back to the
+   base stylesheet's dark palette.
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+    html[data-swiss]  { background-color: var(--paper); }
+    [data-swiss] body { background-color: var(--paper); color: var(--ink); }
+
+    [data-swiss] h1, [data-swiss] h2, [data-swiss] h3,
+    [data-swiss] h4, [data-swiss] h5, [data-swiss] h6 { color: var(--ink); }
+
+    [data-swiss] a:link,
+    [data-swiss] a:visited {
+        color: var(--ink);
+        background: none;
+        -webkit-text-fill-color: currentColor;
+        box-shadow: none;
+    }
+    [data-swiss] a:hover {
+        color: var(--paper);
+        background: var(--ink);
+        -webkit-text-fill-color: var(--paper);
+        box-shadow: 0 0 0 0.1em var(--ink);
+    }
+    [data-swiss] a.titlelink:link,
+    [data-swiss] a.titlelink:visited,
+    [data-swiss] a.titlelink:hover {
+        background: none; box-shadow: none; color: var(--ink);
+        -webkit-text-fill-color: currentColor;
+    }
+
+    /* active timeline pieces that style.css repaints in dark mode */
+    [data-swiss] .tl-seg     { background: var(--ink); }
+    [data-swiss] .tl-fade.left  { background: linear-gradient(to right, var(--paper), transparent); }
+    [data-swiss] .tl-fade.right { background: linear-gradient(to left,  var(--paper), transparent); }
+}
