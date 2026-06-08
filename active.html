@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-swiss="active">
+<html lang="en" style="--paper:#9CC547; --ink:#16160F">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -12,14 +12,15 @@
 </head>
 <body>
 
-  <h1 class="title"><a class="titlelink" href="/">active</a></h1>
+  <header class="active-head">
+    <h1 class="title"><a class="titlelink" href="/">active</a></h1>
+    <p class="sub" id="timeline-summary"></p>
+  </header>
 
   <p id="status"></p>
   <p id="connect" style="display:none;"></p>
 
   <div id="dash" style="display:none;">
-
-    <p class="timeline-summary" id="timeline-summary"></p>
 
     <!-- All-time scrubbable timeline -->
     <div class="timeline-outer" id="tlouter">
