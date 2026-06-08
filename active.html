@@ -13,7 +13,7 @@
 <body>
 
   <header class="active-head">
-    <h1 class="title"><a class="titlelink" href="/">active</a></h1>
+    <h1 class="title"><a class="titlelink" href="/">Active</a></h1>
     <p class="sub" id="timeline-summary"></p>
   </header>
 
@@ -99,8 +99,11 @@
   // Normalize Strava sport types into short, friendly labels.
   function niceType(t) {
     if (!t) return "Other";
-    if (/strength|weight\s*training|weighttraining|workout/i.test(t)) return "Strength";
+    if (/strength|weight\s*training|weighttraining|workout/i.test(t)) return "Weight training";
     return t.replace(/([a-z])([A-Z])/g, "$1 $2"); // VirtualRun -> Virtual Run
+  }
+  function hasDistanceMetric(a) {
+    return a.distance > 0 && !/strength|weight\s*training|weighttraining|workout/i.test(a.sport_type || a.type || "");
   }
   function clock(s) { // m:ss or h:mm:ss for laps/efforts
     s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
@@ -163,9 +166,7 @@
     const list = ALL;
     const dist = list.reduce((s, a) => s + (a.distance || 0), 0);
     const time = list.reduce((s, a) => s + (a.moving_time || 0), 0);
-    const text = `${list.length} workouts · ${kmRaw(dist).toFixed(1)} km · ${durShort(time)}`;
-    timelineSummaryEl.textContent = text;
-    scramble(timelineSummaryEl, text, 700);
+    timelineSummaryEl.innerHTML = `<span class="active-summary-workouts">${list.length} workouts</span><span>${kmRaw(dist).toFixed(1)} km</span><span>${durShort(time)}</span>`;
   }
 
   function renderDow(list) {
@@ -188,15 +189,15 @@
     const entries = Object.entries(m).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
     const max = Math.max(1, ...entries.map(e => e.value));
     const nameFor = (label) => {
-      if (label === "Strength") return "lifting";
+      if (label === "Weight training") return "lifting";
       const parts = label.toLowerCase().split(" ");
       const last = parts.pop();
       parts.push(last.endsWith("s") ? last : last + "s");
       return parts.join(" ");
     };
     const labelFor = (e) => {
-      if (e.label === "Strength") return `${e.value} lifting`;
-      const parts = (e.label === "Strength" ? "lifting" : e.label).toLowerCase().split(" ");
+      if (e.label === "Weight training") return `${e.value} lifting`;
+      const parts = (e.label === "Weight training" ? "lifting" : e.label).toLowerCase().split(" ");
       const last = parts.pop();
       parts.push(last.endsWith("s") ? last : last + "s");
       return `${e.value} ${parts.join(" ")}`;
@@ -270,7 +271,7 @@
     if (map) html += `<img class="map" alt="route" src="https://staticmap.openstreetmap.de/staticmap.php?size=640x280&path=color:0x555555|weight:4|${encodeURIComponent("enc:" + map)}" onerror="this.style.display='none'">`;
     html += "<table>";
     html += r("type", niceType(a.sport_type || a.type)) + r("workout type", a.workout_type);
-    html += r("distance", a.distance > 0 ? km(a.distance) : null) + r("moving time", dur(a.moving_time)) + r("elapsed time", dur(a.elapsed_time));
+    html += r("distance", hasDistanceMetric(a) ? km(a.distance) : null) + r("moving time", dur(a.moving_time)) + r("elapsed time", dur(a.elapsed_time));
     // Commented out per request — kept for reference:
     // html += r("start (local)", dt(a.start_date_local)) + r("start (utc)", dt(a.start_date)) + r("timezone", a.timezone);
     html += r("location", loc);
@@ -414,7 +415,7 @@
       .toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
     // Build the details line from only the parts we actually have.
     const parts = [];
-    if (a.distance > 0) parts.push(km(a.distance));
+    if (hasDistanceMetric(a)) parts.push(km(a.distance));
     if (a.moving_time) parts.push(durShort(a.moving_time));
     if (a.average_speed) parts.push(pace(a.average_speed, a.sport_type || a.type));
     det.innerHTML =
@@ -558,7 +559,7 @@
       if (day.items.length) {
         info.innerHTML = day.items.map(a => {
           const parts = [niceType(a.sport_type || a.type)];
-          if (a.distance > 0) parts.push((a.distance / 1000).toFixed(2) + "km");
+          if (hasDistanceMetric(a)) parts.push((a.distance / 1000).toFixed(2) + "km");
           if (a.moving_time) parts.push(durShort(a.moving_time));
           return `<small>${esc(parts.join("  ·  "))}</small>`;
         }).join("");
@@ -595,7 +596,7 @@
         if (day.items.length) {
           info.innerHTML = day.items.map(a => {
             const parts = [niceType(a.sport_type || a.type)];
-            if (a.distance > 0) parts.push((a.distance / 1000).toFixed(2) + "km");
+            if (hasDistanceMetric(a)) parts.push((a.distance / 1000).toFixed(2) + "km");
             if (a.moving_time) parts.push(durShort(a.moving_time));
             return `<small>${esc(parts.join("  ·  "))}</small>`;
           }).join("");

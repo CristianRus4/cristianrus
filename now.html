@@ -26,8 +26,8 @@
 
 	<body>
 
-		<header class="page-head">
-			<h1 class="title"><a class="titlelink" href="/">now</a></h1>
+		<header class="page-head bottom-head">
+			<h1 class="title"><a class="titlelink" href="/">Now</a></h1>
 			<p class="sub"><a href="/">home</a></p>
 		</header>
 
@@ -698,6 +698,14 @@ updateCounter();
             const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60);
             return h ? `${h}h ${m}m` : `${m} min`;
         }
+        function niceType(t) {
+            if (!t) return 'workout';
+            if (/strength|weight\s*training|weighttraining|workout/i.test(t)) return 'weight training';
+            return t.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
+        }
+        function hasDistanceMetric(a) {
+            return a.distance > 0 && !/strength|weight\s*training|weighttraining|workout/i.test(a.sport_type || a.type || '');
+        }
 
         Strava.init()
             .then(() => {
@@ -707,8 +715,10 @@ updateCounter();
             .then(list => {
                 if (!list || !list.length) return;
                 const a = list[0];
-                const type = (a.sport_type || a.type || 'workout').toLowerCase();
-                el.textContent = `${type} · ${km(a.distance)} in ${dur(a.moving_time)}`;
+                const type = niceType(a.sport_type || a.type);
+                el.textContent = hasDistanceMetric(a)
+                    ? `${type} · ${km(a.distance)} in ${dur(a.moving_time)}`
+                    : `${type} · ${dur(a.moving_time)}`;
             })
             .catch(err => {
                 console.error('Strava (now):', err);
