@@ -1,5 +1,5 @@
 # Strava Workouts — Last 2 Weeks
-Updated: 2026-06-09
+Updated: 2026-06-10
 
 ## 2026-06-08 — Walk
 - Distance: 5.50 km
@@ -354,11 +354,3 @@ Romanian Deadlift  · Smith Machine
 • Set 1 — 65 kg × 6
 • Set 2 — 65 kg × 6
 • Set 3 — 65 kg × 6
-
-## 2026-05-26 — Strength
-- Moving time: 18m
-- Elapsed time: 18m
-- Avg heart rate: 70 bpm
-- Max heart rate: 73 bpm
-- Elevation high: 0 m
-- Elevation low: 0 m
