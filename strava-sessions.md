@@ -1,5 +1,38 @@
 # Strava Workouts — Last 2 Weeks
-Updated: 2026-06-11
+Updated: 2026-06-12
+
+## 2026-06-12 — Walk
+- Distance: 2.96 km
+- Moving time: 30m
+- Elapsed time: 30m
+- Avg pace/speed: 10:13 /km
+- Max speed: 7.7 km/h
+- Avg heart rate: 126 bpm
+- Max heart rate: 137 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 171
+
+## 2026-06-12 — Strength
+- Moving time: 1h 15m
+- Elapsed time: 1h 15m
+- Avg heart rate: 111 bpm
+- Max heart rate: 111 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 520
+
+## 2026-06-12 — Run
+- Distance: 2.34 km
+- Moving time: 15m
+- Elapsed time: 16m
+- Avg pace/speed: 6:26 /km
+- Max speed: 12.4 km/h
+- Avg heart rate: 133 bpm
+- Max heart rate: 168 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 169
 
 ## 2026-06-08 — Walk
 - Distance: 5.50 km
@@ -290,67 +323,3 @@ Pull Up · Bodyweight
 - Elevation high: 0 m
 - Elevation low: 0 m
 - Calories: 119
-
-## 2026-05-28 — Strength
-- Moving time: 1h 7m
-- Elapsed time: 1h 7m
-- Avg heart rate: 119 bpm
-- Max heart rate: 152 bpm
-- Elevation high: 0 m
-- Elevation low: 0 m
-- Calories: 531
-- Description: Tracked with Bevel
-
-Leg Press · Machine
-• Set 1 — 100 kg × 8
-• Set 2 — 75 kg × 10
-• Set 3 — 75 kg × 10
-
-Captain Chair Leg Raise · Bodyweight
-• Set 1 — 15 reps
-• Set 2 — 15 reps
-• Set 3 — 15 reps
-
-Leg Extensions · Machine
-• Set 1 — 55 kg × 10
-• Set 2 — 55 kg × 10
-• Set 3 — 55 kg × 10
-
-Pull Up · Bodyweight
-• Set 1 — 7 reps
-
-Squat · Smith Machine
-• Set 1 — 25 kg × 10
-• Set 2 — 35 kg × 10
-• Set 3 — 35 kg × 10
-
-Seated Leg Curl · Machine
-• Set 1 — 75 kg × 10
-• Set 2 — 60 kg × 8
-• Set 3 — 60 kg × 10
-
-Pull Up · Bodyweight
-• Set 1 — 10 reps
-
-Decline Crunch · Bodyweight
-• Set 1 — 15 reps
-• Set 2 — 15 reps
-• Set 3 — 15 reps
-
-Pull Up · Bodyweight
-• Set 1 — 7 reps
-
-Calf Raises · Machine
-• Set 1 — 75 kg × 12
-• Set 2 — 95 kg × 12
-• Set 3 — 105 kg × 12
-• Set 4 — 105 kg × 12
-
-Leg Press · Machine
-• Set 1 — 105 kg × 10
-• Set 2 — 105 kg × 10
-
-Romanian Deadlift  · Smith Machine
-• Set 1 — 65 kg × 6
-• Set 2 — 65 kg × 6
-• Set 3 — 65 kg × 6
