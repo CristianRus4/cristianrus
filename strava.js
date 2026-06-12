@@ -227,7 +227,7 @@ window.Strava = (function () {
     // Try the pre-baked static snapshot (updated daily by GitHub Actions).
     if (!opts.force && CONFIG.staticDataUrl) {
       try {
-        const res = await fetch(CONFIG.staticDataUrl);
+        const res = await fetch(CONFIG.staticDataUrl, { cache: "no-cache" });
         if (res.ok) {
           const snap = await res.json();
           if (Array.isArray(snap.data) && snap.data.length) {
