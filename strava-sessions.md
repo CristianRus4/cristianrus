@@ -1,5 +1,38 @@
 # Strava Workouts — Last 2 Weeks
-Updated: 2026-06-13
+Updated: 2026-06-14
+
+## 2026-06-14 — Walk
+- Distance: 4.01 km
+- Moving time: 45m
+- Elapsed time: 45m
+- Avg pace/speed: 11:13 /km
+- Max speed: 6.3 km/h
+- Avg heart rate: 113 bpm
+- Max heart rate: 122 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 275
+
+## 2026-06-14 — Strength
+- Moving time: 1h 29m
+- Elapsed time: 1h 29m
+- Avg heart rate: 116 bpm
+- Max heart rate: 116 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 694
+
+## 2026-06-14 — Run
+- Distance: 2.46 km
+- Moving time: 15m
+- Elapsed time: 15m
+- Avg pace/speed: 6:07 /km
+- Max speed: 16.8 km/h
+- Avg heart rate: 156 bpm
+- Max heart rate: 171 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 177
 
 ## 2026-06-12 — Walk
 - Distance: 2.96 km
@@ -247,79 +280,3 @@ Back Extension · Bodyweight
 - Elevation high: 7 m
 - Elevation low: 0 m
 - Calories: 101
-
-## 2026-05-30 — Strength
-- Moving time: 53m
-- Elapsed time: 53m
-- Avg heart rate: 121 bpm
-- Max heart rate: 149 bpm
-- Elevation high: 0 m
-- Elevation low: 0 m
-- Calories: 448
-- Description: Tracked with Bevel
-
-Chest Press · Machine
-• Set 1 — 45 kg × 10
-• Set 2 — 52.5 kg × 10
-• Set 3 — 52.5 kg × 10
-
-Shoulder Press · Machine
-• Set 1 — 30 kg × 10
-• Set 2 — 30 kg × 10
-• Set 3 — 30 kg × 10
-
-Captain Chair Leg Raise · Bodyweight
-• Set 1 — 15 reps
-• Set 2 — 15 reps
-• Set 3 — 15 reps
-
-Decline Crunch · Bodyweight
-• Set 1 — 15 reps
-• Set 2 — 15 reps
-
-Chest Fly · Dumbbell (Double)
-• Set 1 — 7.5 kg × 10
-• Set 2 — 5 kg × 10
-• Set 3 — 7.5 kg × 10
-
-Decline Crunch · Bodyweight
-• Set 1 — 15 reps
-
-Pull Up · Bodyweight
-• Set 1 — 7 reps
-
-Assisted Tricep Dip · Machine Assisted
-• Set 1 — 35 kg × 10
-• Set 2 — 35 kg × 10
-• Set 3 — 35 kg × 10
-
-Tricep Pushdown · Cable (Single)
-• Set 1 — 30 kg × 10
-• Set 2 — 30 kg × 10
-• Set 3 — 25 kg × 10
-
-Front Raise · Cable (Single)
-• Set 1 — 15 kg × 10
-• Set 2 — 15 kg × 10
-• Set 3 — 10 kg × 10
-
-Lateral Raise · Dumbbell (Double)
-• Set 1 — 7.5 kg × 10
-• Set 2 — 5 kg × 10
-• Set 3 — 5 kg × 10
-
-Pull Up · Bodyweight
-• Set 1 — 7 reps
-• Set 2 — 4 reps
-
-## 2026-05-30 — Run
-- Distance: 1.50 km
-- Moving time: 10m
-- Elapsed time: 10m
-- Avg pace/speed: 6:46 /km
-- Max speed: 11.8 km/h
-- Avg heart rate: 125 bpm
-- Max heart rate: 166 bpm
-- Elevation high: 0 m
-- Elevation low: 0 m
-- Calories: 119
