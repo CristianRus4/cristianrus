@@ -1,5 +1,5 @@
 # Strava Workouts — Last 2 Weeks
-Updated: 2026-06-19
+Updated: 2026-06-20
 
 ## 2026-06-19 — Strength
 - Moving time: 1h 38m
