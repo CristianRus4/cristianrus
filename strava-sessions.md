@@ -1,5 +1,26 @@
 # Strava Workouts — Last 2 Weeks
-Updated: 2026-06-21
+Updated: 2026-06-22
+
+## 2026-06-22 — Strength
+- Moving time: 1h 52m
+- Elapsed time: 1h 52m
+- Avg heart rate: 113 bpm
+- Max heart rate: 113 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 812
+
+## 2026-06-22 — Run
+- Distance: 1.64 km
+- Moving time: 10m
+- Elapsed time: 10m
+- Avg pace/speed: 6:07 /km
+- Max speed: 13.0 km/h
+- Avg heart rate: 137 bpm
+- Max heart rate: 175 bpm
+- Elevation high: 0 m
+- Elevation low: 0 m
+- Calories: 120
 
 ## 2026-06-21 — Walk
 - Distance: 5.99 km
@@ -175,24 +196,3 @@ Updated: 2026-06-21
 - Elevation high: 0 m
 - Elevation low: 0 m
 - Calories: 116
-
-## 2026-06-07 — Strength
-- Moving time: 1h 5m
-- Elapsed time: 1h 5m
-- Avg heart rate: 121 bpm
-- Max heart rate: 121 bpm
-- Elevation high: 0 m
-- Elevation low: 0 m
-- Calories: 551
-
-## 2026-06-07 — Run
-- Distance: 1.33 km
-- Moving time: 10m
-- Elapsed time: 10m
-- Avg pace/speed: 7:36 /km
-- Max speed: 10.6 km/h
-- Avg heart rate: 144 bpm
-- Max heart rate: 153 bpm
-- Elevation high: 0 m
-- Elevation low: 0 m
-- Calories: 110
