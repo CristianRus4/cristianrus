@@ -1,5 +1,5 @@
 # Strava Workouts — Last 2 Weeks
-Updated: 2026-06-27
+Updated: 2026-06-28
 
 ## 2026-06-23 — Walk
 - Distance: 2.17 km
