@@ -26,7 +26,8 @@
             <p>The service runs entirely on your device. We do not collect or store any personal data.</p>
             <p>Purchase-related information is managed securely by RevenueCat and used only to verify and restore purchases if you reinstall the app.</p>
             <p>Questions? <a href="mailto:cristianrus@hey.com">Contact us</a> anytime.</p>
-            <p>© 2025 Cristian Rus. Coded in New Zealand.</p>
+            <p>© <span class="copyright-year"></span> cntxt, coded in NZ.</p>
+            <script>document.querySelectorAll(".copyright-year").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
         </section>
     </main>
     <footer>
