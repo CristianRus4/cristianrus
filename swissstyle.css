@@ -269,7 +269,7 @@ a.titlelink:hover {
 
 /* ============================================================
    HOME — poster layout: menu across the top in three left-aligned
-   columns; big two-line wordmark bottom-left; tagline trailing;
+   columns; big one-line wordmark bottom-left; tagline trailing;
    avatar large and printed in the background.
    ============================================================ */
 body:has(.home-hero) {
@@ -284,7 +284,7 @@ body:has(.home-hero) {
     --home-grid-gap: clamp(0.75rem, 1.25vw, 1.25rem);
     --home-rule: color-mix(in srgb, var(--ink) 70%, transparent);
     --home-title-size: var(--swiss-title-size);
-    --home-title-block: calc(var(--home-title-size) * 0.76 * 2);
+    --home-title-block: calc(var(--home-title-size) * 0.76);
 }
 
 body:has(.home-hero)::after {
