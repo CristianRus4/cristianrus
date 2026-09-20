@@ -285,6 +285,9 @@ body:has(.home-hero) {
     --home-rule: color-mix(in srgb, var(--ink) 70%, transparent);
     --home-title-size: var(--swiss-title-size);
     --home-title-block: calc(var(--home-title-size) * 0.76);
+    /* Ceiling for the vertical tagline: below 03 CONTACT / MAIL TEXT SOCIAL
+       and no higher than the NZ / DESIGN & CODE meta row. */
+    --home-sub-top: 8rem;
 }
 
 body:has(.home-hero)::after {
@@ -386,9 +389,15 @@ body:has(.home-hero)::after {
     right: calc(var(--home-inset-x) + 2lh);
     bottom: var(--home-inset-y);
     margin-bottom: 0;
-    max-width: none;
+    /* After rotate(90deg) this width is the vertical span. Cap it so
+       the spine cannot climb into the top-right contact stack. */
+    max-width: max(0rem, calc(100dvh - var(--home-inset-y) - var(--home-sub-top)));
+    overflow: hidden;
     white-space: nowrap;
-    font-size: clamp(0.68rem, 1vw, 0.86rem);
+    font-size: min(
+        clamp(0.68rem, 1vw, 0.86rem),
+        calc((100dvh - var(--home-inset-y) - var(--home-sub-top)) / 24)
+    );
     font-weight: 700;
     letter-spacing: 0.04em;
     line-height: 1.2;
@@ -446,6 +455,10 @@ body:has(.home-hero)::after {
         transform: translateY(-50%) rotate(90deg);
     }
     .home-hero .sub br { display: none; }
+}
+
+@media (max-height: 480px) {
+    .home-hero .sub { display: none; }
 }
 
 @media (max-width: 768px) {
