@@ -208,9 +208,9 @@ a:visited {
     transition: background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
 }
 a:hover {
-    color: #fff;
+    color: var(--paper);
     background: var(--ink);
-    -webkit-text-fill-color: #fff;
+    -webkit-text-fill-color: var(--paper);
     box-shadow: 0 0 0 0.1em var(--ink);
     text-decoration: none;
 }
@@ -572,9 +572,9 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
         box-shadow: none;
     }
     a:hover {
-        color: #fff;
+        color: var(--void);
         background: var(--ink);
-        -webkit-text-fill-color: #fff;
+        -webkit-text-fill-color: var(--void);
         box-shadow: 0 0 0 0.1em var(--ink);
     }
     a.titlelink:link,
