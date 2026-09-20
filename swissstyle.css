@@ -599,8 +599,10 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
     }
     .home-bg-avatar {
         mix-blend-mode: screen;
-        opacity: 0.17;
-        filter: grayscale(1) contrast(1.05);
+        opacity: 0.22;
+        filter: grayscale(1) contrast(1.6) brightness(0.65);
+        -webkit-mask-image: radial-gradient(circle, #000 32%, transparent 70%);
+        mask-image: radial-gradient(circle, #000 32%, transparent 70%);
     }
 
     .tl-seg     { background: var(--paper); }
