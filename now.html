@@ -70,8 +70,8 @@
 				  </tr>
 
 				  <tr>
-				    <th>steps</td>
-				    <td id="steps-info"></td>
+				    <th>workout</td>
+				    <td id="workout-info"></td>
 				  </tr>
 
 				  <tr>
@@ -721,12 +721,12 @@ updateCounter();
 </script>
 
 
-<!-- Latest workout + steps from Nexus (Apple Health snapshot) -->
+<!-- Today's activity + latest workout from Nexus (Apple Health snapshot) -->
 <script>
     (function () {
         const activeEl = document.getElementById('active-info');
-        const stepsEl = document.getElementById('steps-info');
-        if (!activeEl && !stepsEl) return;
+        const workoutEl = document.getElementById('workout-info');
+        if (!activeEl && !workoutEl) return;
 
         fetch('now-active.json?t=' + Date.now())
             .then(response => {
@@ -734,13 +734,23 @@ updateCounter();
                 return response.json();
             })
             .then(data => {
-                if (activeEl && data.workout && data.workout.name) {
+                if (activeEl) {
+                    const parts = [];
+                    if (data.moveKcal != null) {
+                        parts.push(Math.round(Number(data.moveKcal)).toLocaleString('en-NZ') + ' kcal');
+                    }
+                    if (data.steps != null) {
+                        parts.push(Math.round(Number(data.steps)).toLocaleString('en-NZ') + ' steps');
+                    }
+                    if (data.exerciseMin != null) {
+                        parts.push(Math.round(Number(data.exerciseMin)) + ' min');
+                    }
+                    if (parts.length) activeEl.textContent = parts.join(' · ');
+                }
+                if (workoutEl && data.workout && data.workout.name) {
                     const name = data.workout.name;
                     const mins = data.workout.durationMin;
-                    activeEl.textContent = mins ? name + ' · ' + mins + ' min' : name;
-                }
-                if (stepsEl && data.steps != null) {
-                    stepsEl.textContent = Math.round(Number(data.steps)).toLocaleString('en-NZ');
+                    workoutEl.textContent = mins ? name + ' · ' + mins + ' min' : name;
                 }
             })
             .catch(err => {
