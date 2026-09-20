@@ -16,22 +16,23 @@
     /* Fallbacks if a page forgets to declare its colours. */
     --paper: #DD6A3C;
     --ink:   #F2EAD8;
+    --void:  #070707; /* cntxtlabs.co dark-mode black */
 
     /* Re-paint every variable the base stylesheet draws with, so all
        of style.css follows the page ink in light AND dark mode. */
     --bg:          var(--paper);
-    --bg-dark:     var(--paper);
+    --bg-dark:     var(--void);
     --text:        var(--ink);
     --text-dark:   var(--ink);
     --title:       var(--ink);
-    --title-dark:  var(--ink);
+    --title-dark:  var(--paper);
     --avatar-border:      var(--ink);
-    --avatar-border-dark: var(--ink);
+    --avatar-border-dark: var(--paper);
     --item-bar:    var(--ink);
 }
 
 /* ---- The whole viewport gets the colour (light + dark) ---- */
-html  { background-color: var(--paper); }
+html  { background-color: var(--paper); color-scheme: light dark; }
 body  { background-color: var(--paper); color: var(--ink); min-height: 100vh; }
 
 /* ---- Printed-paper grain over everything ---- */
@@ -539,14 +540,29 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
 .tl-line { background: var(--ink); }
 
 /* ============================================================
-   Dark mode — keep the colour background; do NOT fall back to the
-   base stylesheet's dark palette.
+   Dark mode — near-black ground (same #070707 as cntxtlabs.co).
+   Body copy stays cream (--ink). Titles, labels, rules and other
+   chrome pick up the page's light-mode paper colour.
    ============================================================ */
 @media (prefers-color-scheme: dark) {
-    html  { background-color: var(--paper); }
-    body  { background-color: var(--paper); color: var(--ink); }
+    html  { background-color: var(--void); }
+    body  { background-color: var(--void); color: var(--ink); }
 
-    h1, h2, h3, h4, h5, h6 { color: var(--ink); }
+    body::before {
+        mix-blend-mode: overlay;
+        opacity: 0.14;
+    }
+
+    h1, h2, h3, h4, h5, h6,
+    .title,
+    .sub,
+    .section-label,
+    .home-meta,
+    .home-nav .section-label,
+    #animated-table th,
+    .header {
+        color: var(--paper);
+    }
 
     a:link,
     a:visited {
@@ -556,20 +572,33 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
         box-shadow: none;
     }
     a:hover {
-        color: var(--paper);
-        background: var(--ink);
-        -webkit-text-fill-color: var(--paper);
-        box-shadow: 0 0 0 0.1em var(--ink);
+        color: var(--void);
+        background: var(--paper);
+        -webkit-text-fill-color: var(--void);
+        box-shadow: 0 0 0 0.1em var(--paper);
     }
     a.titlelink:link,
     a.titlelink:visited,
     a.titlelink:hover {
-        background: none; box-shadow: none; color: var(--ink);
+        background: none;
+        box-shadow: none;
+        color: var(--paper);
         -webkit-text-fill-color: currentColor;
     }
 
-    .tl-seg     { background: var(--ink); }
-    .tl-line    { background: var(--ink); }
-    .tl-fade.left  { background: linear-gradient(to right, var(--paper), transparent); }
-    .tl-fade.right { background: linear-gradient(to left,  var(--paper), transparent); }
+    .item::before { background-color: var(--paper); }
+
+    body:has(.home-hero) {
+        --home-rule: color-mix(in srgb, var(--paper) 70%, transparent);
+    }
+    .home-bg-avatar {
+        mix-blend-mode: screen;
+        opacity: 0.62;
+        filter: grayscale(1) contrast(1.08);
+    }
+
+    .tl-seg     { background: var(--paper); }
+    .tl-line    { background: var(--paper); }
+    .tl-fade.left  { background: linear-gradient(to right, var(--void), transparent); }
+    .tl-fade.right { background: linear-gradient(to left,  var(--void), transparent); }
 }
