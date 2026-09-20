@@ -1,17 +1,27 @@
 /* ============================================================================
    Nexus Apple Health workouts — public snapshot client for /active
    ----------------------------------------------------------------------------
-   Reads nexus-workouts.json (refreshed by a Grok automation from Nexus).
-   Caches the list in localStorage for 30 minutes so repeat visits are instant.
+   Reads nexus-workouts.json (refreshed by a Grok automation from Nexus) and
+   stitches in frozen Strava history through September 2022. From October 2022
+   onwards the timeline is Apple Health only.
+
+   Caches the merged list in localStorage for 30 minutes.
    Shape is Strava-compatible enough for active.html (start_date, moving_time,
    sport_type, distance, calories, heart-rate averages).
-   ============================================================================ */
+   =========================================================================== */
 window.Nexus = (function () {
   const CONFIG = {
     staticDataUrl: "nexus-workouts.json",
+    stravaHistoryUrl: "strava-cache.json",
+    // Nexus from this day inclusive; Strava for everything before.
+    nexusFrom: "2022-10-01",
   };
-  const ACT_KEY = "nexus_workouts_v1";
+  const ACT_KEY = "nexus_workouts_v2";
   const DEFAULT_MAX_AGE = 30 * 60 * 1000;
+
+  function dayOf(a) {
+    return (a.start_date_local || a.start_date || "").slice(0, 10);
+  }
 
   function cachedActivities() {
     try {
@@ -28,16 +38,34 @@ window.Nexus = (function () {
     } catch (e) { /* quota — snapshot still works */ }
   }
 
+  async function loadJson(url) {
+    const res = await fetch(url + "?t=" + Date.now(), { cache: "no-cache" });
+    if (!res.ok) throw new Error("Couldn't load " + url + " (" + res.status + ")");
+    return res.json();
+  }
+
   async function getAllActivities(opts) {
     opts = opts || {};
     const maxAge = opts.maxAgeMs != null ? opts.maxAgeMs : DEFAULT_MAX_AGE;
     const cache = cachedActivities();
     if (!opts.force && cache && Date.now() - cache.at < maxAge) return cache.data;
 
-    const res = await fetch(CONFIG.staticDataUrl + "?t=" + Date.now(), { cache: "no-cache" });
-    if (!res.ok) throw new Error("Couldn't load workouts (" + res.status + ")");
-    const snap = await res.json();
-    const data = Array.isArray(snap.data) ? snap.data : [];
+    const nexusP = loadJson(CONFIG.staticDataUrl);
+    const stravaP = loadJson(CONFIG.stravaHistoryUrl).catch(function () { return { data: [] }; });
+    const snap = await nexusP;
+    const hist = await stravaP;
+
+    const nexus = (Array.isArray(snap.data) ? snap.data : []).filter(function (a) {
+      const d = dayOf(a);
+      return d && d >= CONFIG.nexusFrom;
+    });
+    const strava = (Array.isArray(hist.data) ? hist.data : []).filter(function (a) {
+      const d = dayOf(a);
+      return d && d < CONFIG.nexusFrom;
+    });
+    const data = nexus.concat(strava).sort(function (a, b) {
+      return (b.start_date || "").localeCompare(a.start_date || "");
+    });
     saveCache(data);
     return data;
   }
@@ -46,7 +74,7 @@ window.Nexus = (function () {
     const cache = cachedActivities();
     if (!cache) return null;
     for (let i = 0; i < cache.data.length; i++) {
-      if (cache.data[i].id === id) return cache.data[i];
+      if (String(cache.data[i].id) === String(id)) return cache.data[i];
     }
     return null;
   }
