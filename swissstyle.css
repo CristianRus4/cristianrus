@@ -210,6 +210,8 @@ a:visited {
 a:hover {
     color: var(--paper);
     background: var(--ink);
+    background-clip: border-box;
+    -webkit-background-clip: border-box;
     -webkit-text-fill-color: var(--paper);
     box-shadow: 0 0 0 0.1em var(--ink);
     text-decoration: none;
@@ -569,11 +571,15 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
         color: var(--ink);
         background: none;
         -webkit-text-fill-color: currentColor;
+        -webkit-background-clip: border-box;
+        background-clip: border-box;
         box-shadow: none;
     }
     a:hover {
         color: var(--void);
         background: var(--ink);
+        background-clip: border-box;
+        -webkit-background-clip: border-box;
         -webkit-text-fill-color: var(--void);
         box-shadow: 0 0 0 0.1em var(--ink);
     }
@@ -593,8 +599,8 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
     }
     .home-bg-avatar {
         mix-blend-mode: screen;
-        opacity: 0.78;
-        filter: grayscale(1) contrast(1.12) sepia(1) hue-rotate(-18deg) saturate(3.4);
+        opacity: 0.88;
+        filter: grayscale(1) contrast(1.18) sepia(1) hue-rotate(-52deg) saturate(6.5);
     }
 
     .tl-seg     { background: var(--paper); }
