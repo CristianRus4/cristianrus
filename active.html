@@ -69,7 +69,10 @@
     -->
   </div>
 
+<!-- Strava client kept in the repo but unused here — the public token/API no longer works.
 <script src="strava.js"></script>
+-->
+<script src="nexus.js"></script>
 <script>
 (function () {
   const $ = (id) => document.getElementById(id);
@@ -147,7 +150,7 @@
     const dist = list.reduce((s, a) => s + (a.distance || 0), 0);
     const time = list.reduce((s, a) => s + (a.moving_time || 0), 0);
     const gain = list.reduce((s, a) => s + (a.total_elevation_gain || 0), 0);
-    const kcal = list.reduce((s, a) => { const d = Strava.getCachedDetail(a.id); return s + (d && d.calories ? d.calories : 0); }, 0);
+    const kcal = list.reduce((s, a) => s + (a.calories || 0), 0);
     const activeDays = new Set(list.map(a => (a.start_date_local || a.start_date || "").slice(0, 10))).size;
     statsEl.innerHTML = [
       [list.length, "sessions"],
@@ -228,7 +231,7 @@
   /* ---------- career totals (athlete stats) ---------- */
   async function renderTotals() {
     try {
-      const s = await Strava.getAthleteStats();
+      const s = await Nexus.getAthleteStats();
       const block = (title, t) => !t || !t.count ? "" :
         `<tr><th>${title}</th><td>${t.count}</td><td>${kmRaw(t.distance).toFixed(0)} km</td><td>${durShort(t.moving_time)}</td><td>${elev(t.elevation_gain)}</td></tr>`;
       let rows = "";
@@ -250,7 +253,7 @@
   /* ---------- athlete zones ---------- */
   async function renderAthleteZones() {
     try {
-      const z = await Strava.getAthleteZones();
+      const z = await Nexus.getAthleteZones();
       const fmtZones = (zones, unit) => zones.map((zn, i) =>
         `Z${i + 1} ${zn.min}${zn.max > 0 ? "–" + zn.max : "+"} ${unit}`).join(" · ");
       let html = "";
@@ -436,7 +439,7 @@
       loaded = true;
       body.innerHTML = `<p>loading…</p>`;
       let full = a;
-      try { full = await Strava.getActivityCached(a.id); } catch (e) {}
+      try { full = await Nexus.getActivityCached(a.id); } catch (e) {}
       body.innerHTML = detailTable(full)
         + `<div class="streams-below"></div>`
         + renderLaps(full.laps)
@@ -447,7 +450,7 @@
       const asyncDiv = body.querySelector(".async");
       // Streams + zones are separate calls — load them after the table is shown.
       // Charts render full-width below the table; hover/touch to scrub values.
-      Promise.allSettled([Strava.getActivityStreams(a.id), Strava.getActivityZones(a.id)])
+      Promise.allSettled([Nexus.getActivityStreams(a.id), Nexus.getActivityZones(a.id)])
         .then(([s, z]) => {
           if (s.status === "fulfilled") {
             const charts = renderStreams(s.value);
@@ -464,13 +467,13 @@
   /* ---------- background kcal enrichment ---------- */
   async function enrich(list) {
     const gen = ++enrichGen;
-    const todo = list.filter(a => !Strava.getCachedDetail(a.id));
+    const todo = list.filter(a => !Nexus.getCachedDetail(a.id));
     const note = () => $("enrich");
     if (!todo.length) { if (note()) note().textContent = ""; return; }
     let done = 0;
     for (const a of todo) {
       if (gen !== enrichGen) return;
-      try { await Strava.getActivityCached(a.id); }
+      try { await Nexus.getActivityCached(a.id); }
       catch (e) { if (/429/.test(e.message)) { if (note()) note().textContent = "(rate-limited)"; return; } }
       done++;
       if (done % 3 === 0 || done === todo.length) {
@@ -647,7 +650,8 @@
   }
 
   /* ---------- boot ---------- */
-  async function main() {
+  /*
+  async function mainStrava() {
     if (typeof Strava === "undefined") { statusEl.textContent = "strava.js failed to load."; return; }
     try { await Strava.init(); } catch (e) { statusEl.textContent = e.message; }
 
@@ -669,7 +673,7 @@
       connectEl.innerHTML = html;
       if (!haveActivity) {
         statusEl.textContent = "Connect once with activity access to publish your workouts.";
-        return; // don't attempt to load with a read-only / missing token
+        return;
       }
     }
     const cache = Strava.cachedActivities();
@@ -680,7 +684,6 @@
       ALL = await Strava.getAllActivities({ onProgress: n => { if (!cache) statusEl.textContent = `loading… ${n} activities`; } });
       dashEl.style.display = "block";
       render();
-      // renderTotals(); // career totals hidden for now
       renderAthleteZones();
     } catch (e) {
       const msg = e.message || String(e);
@@ -689,6 +692,25 @@
         connectEl.style.display = "block";
         connectEl.innerHTML = `Re-authorize: <a href="${Strava.authorizeUrl()}">Connect with Strava →</a>`;
       } else if (!ALL.length) statusEl.textContent = "Couldn't load activities: " + msg;
+    }
+  }
+  */
+
+  async function main() {
+    if (typeof Nexus === "undefined") { statusEl.textContent = "nexus.js failed to load."; return; }
+    const cache = Nexus.cachedActivities();
+    if (cache && Array.isArray(cache.data) && cache.data.length) {
+      ALL = cache.data;
+      dashEl.style.display = "block";
+      render();
+    } else statusEl.textContent = "loading workouts…";
+
+    try {
+      ALL = await Nexus.getAllActivities();
+      dashEl.style.display = "block";
+      render();
+    } catch (e) {
+      if (!ALL.length) statusEl.textContent = "Couldn't load workouts: " + (e.message || e);
     }
   }
 
