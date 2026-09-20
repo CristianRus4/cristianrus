@@ -599,7 +599,7 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
     }
     .home-bg-avatar {
         mix-blend-mode: screen;
-        opacity: 0.425;
+        opacity: 0.17;
         filter: grayscale(1) contrast(1.05);
     }
 
