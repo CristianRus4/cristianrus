@@ -285,9 +285,8 @@ body:has(.home-hero) {
     --home-rule: color-mix(in srgb, var(--ink) 70%, transparent);
     --home-title-size: var(--swiss-title-size);
     --home-title-block: calc(var(--home-title-size) * 0.76);
-    /* Ceiling for the vertical tagline: below 03 CONTACT / MAIL TEXT SOCIAL
-       and no higher than the NZ / DESIGN & CODE meta row. */
-    --home-sub-top: 8rem;
+    /* Ceiling for the vertical tagline: below 03 CONTACT / MAIL TEXT SOCIAL. */
+    --home-sub-top: calc(8rem + 20px);
 }
 
 body:has(.home-hero)::after {
@@ -448,16 +447,21 @@ body:has(.home-hero)::after {
         width: 72vw;
         height: auto;
     }
+    body:has(.home-hero) {
+        /* Align with NZ / DESIGN & CODE / 2026, plus a little air. */
+        --home-sub-top: calc(9.75rem + 20px);
+    }
     .home-hero .sub {
         right: calc(var(--home-inset-x) + 1lh);
-        top: 50%;
-        bottom: auto;
-        transform: translateY(-50%) rotate(90deg);
+        top: auto;
+        bottom: var(--home-inset-y);
+        transform: rotate(90deg);
+        transform-origin: right bottom;
     }
     .home-hero .sub br { display: none; }
 }
 
-@media (max-height: 480px) {
+@media (max-height: 500px) {
     .home-hero .sub { display: none; }
 }
 
