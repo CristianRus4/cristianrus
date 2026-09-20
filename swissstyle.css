@@ -448,15 +448,24 @@ body:has(.home-hero)::after {
         height: auto;
     }
     body:has(.home-hero) {
-        /* Align with NZ / DESIGN & CODE / 2026, plus a little air. */
-        --home-sub-top: calc(9.75rem + 20px);
+        --home-sub-top: 9.75rem;
     }
     .home-hero .sub {
-        right: calc(var(--home-inset-x) + 1lh);
-        top: auto;
-        bottom: var(--home-inset-y);
-        transform: rotate(90deg);
-        transform-origin: right bottom;
+        right: var(--home-inset-x);
+        left: auto;
+        top: 9.75rem;
+        bottom: auto;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: none;
+        transform-origin: right top;
+        max-width: none;
+        max-height: max(0rem, calc(100dvh - 9.75rem - var(--home-title-block) - var(--home-inset-y)));
+        overflow: hidden;
+        font-size: min(
+            clamp(0.68rem, 1vw, 0.86rem),
+            calc((100dvh - 9.75rem - var(--home-title-block) - var(--home-inset-y)) / 24)
+        );
     }
     .home-hero .sub br { display: none; }
 }
