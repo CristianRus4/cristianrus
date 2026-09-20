@@ -742,9 +742,6 @@ updateCounter();
                     if (data.steps != null) {
                         parts.push(Math.round(Number(data.steps)).toLocaleString('en-NZ') + ' steps');
                     }
-                    if (data.exerciseMin != null) {
-                        parts.push(Math.round(Number(data.exerciseMin)) + ' min');
-                    }
                     if (parts.length) activeEl.textContent = parts.join(' · ');
                 }
                 if (workoutEl && data.workout && data.workout.name) {
