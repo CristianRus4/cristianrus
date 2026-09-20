@@ -64,12 +64,15 @@
 				  </tr>
 				  -->
 
-				  <!-- Strava "active" row (hidden)
 				  <tr>
 				    <th>active</td>
-				    <td id="strava-info"></td>
+				    <td id="active-info"></td>
 				  </tr>
-				  -->
+
+				  <tr>
+				    <th>steps</td>
+				    <td id="steps-info"></td>
+				  </tr>
 
 				  <tr>
 				    <th>obsessed</td>
@@ -718,46 +721,33 @@ updateCounter();
 </script>
 
 
-<!-- Latest Strava activity (hidden with the "active" row)
-<script src="strava.js"></script>
+<!-- Latest workout + steps from Nexus (Apple Health snapshot) -->
 <script>
     (function () {
-        const el = document.getElementById('strava-info');
-        if (!el) return;
+        const activeEl = document.getElementById('active-info');
+        const stepsEl = document.getElementById('steps-info');
+        if (!activeEl && !stepsEl) return;
 
-        const km = (m) => m >= 1000 ? (m / 1000).toFixed(1) + ' km' : Math.round(m) + ' m';
-        function dur(s) {
-            const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60);
-            return h ? `${h}h ${m}m` : `${m} min`;
-        }
-        function niceType(t) {
-            if (!t) return 'workout';
-            if (/strength|weight\s*training|weighttraining|workout/i.test(t)) return 'weight training';
-            return t.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
-        }
-        function hasDistanceMetric(a) {
-            return a.distance > 0 && !/strength|weight\s*training|weighttraining|workout/i.test(a.sport_type || a.type || '');
-        }
-
-        Strava.init()
-            .then(() => {
-                if (!Strava.isConnected()) return null; // not linked yet — leave blank
-                return Strava.getActivities(1);
+        fetch('now-active.json?t=' + Date.now())
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                return response.json();
             })
-            .then(list => {
-                if (!list || !list.length) return;
-                const a = list[0];
-                const type = niceType(a.sport_type || a.type);
-                el.textContent = hasDistanceMetric(a)
-                    ? `${type} · ${km(a.distance)} in ${dur(a.moving_time)}`
-                    : `${type} · ${dur(a.moving_time)}`;
+            .then(data => {
+                if (activeEl && data.workout && data.workout.name) {
+                    const name = data.workout.name;
+                    const mins = data.workout.durationMin;
+                    activeEl.textContent = mins ? name + ' · ' + mins + ' min' : name;
+                }
+                if (stepsEl && data.steps != null) {
+                    stepsEl.textContent = Math.round(Number(data.steps)).toLocaleString('en-NZ');
+                }
             })
             .catch(err => {
-                console.error('Strava (now):', err);
+                console.error('Nexus (now):', err);
             });
     })();
 </script>
--->
 
 
 </div>
