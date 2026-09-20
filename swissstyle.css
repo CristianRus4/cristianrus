@@ -242,6 +242,8 @@ a.titlelink:hover {
     border-collapse: separate;
     border-spacing: 0 0.35rem;
     margin-left: 0;
+    width: 100%;
+    table-layout: fixed;
 }
 #animated-table td {
     padding-left: 0;
@@ -263,6 +265,12 @@ a.titlelink:hover {
 }
 #animated-table th {
     min-width: 9rem;
+}
+#animated-table #last-book {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 #animated-table tr { opacity: 1 !important; }
 #counter { color: var(--ink); }

@@ -396,7 +396,9 @@
 
                         // Display last book read
                         const lastBookElement = document.getElementById('last-book');
-                        lastBookElement.innerHTML = `<em>${title}</em> by ${author}`;
+                        const label = author ? `${title} by ${author}` : title;
+                        lastBookElement.innerHTML = author ? `<em>${title}</em> by ${author}` : `<em>${title}</em>`;
+                        lastBookElement.title = label;
                     } else {
                         console.error('RSS feed data is empty or invalid');
                     }
