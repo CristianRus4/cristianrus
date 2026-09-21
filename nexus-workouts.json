@@ -1,23 +1,5 @@
 {
-  "at": 1789983191686,
+  "at": 1789898264341,
   "source": "nexus",
-  "data": [
-    {
-      "id": "67FD96F1-40CB-453E-9F67-EA742E42C5F4",
-      "name": "Functional Strength Training",
-      "type": "Functional Strength Training",
-      "sport_type": "Functional Strength Training",
-      "start_date": "2026-09-20T23:46:08.000Z",
-      "start_date_local": "2026-09-21T12:00:00",
-      "moving_time": 3840,
-      "elapsed_time": 3840,
-      "distance": 0,
-      "calories": 367,
-      "average_heartrate": 103,
-      "max_heartrate": 149,
-      "average_speed": null,
-      "trainer": null,
-      "source": "nexus"
-    }
-  ]
+  "data": []
 }
