@@ -1,13 +1,13 @@
 {
   "date": "2026-09-21",
-  "steps": 8702,
-  "exerciseMin": 92,
-  "moveKcal": 582,
+  "steps": 9661,
+  "exerciseMin": 99,
+  "moveKcal": 673,
   "workout": {
     "id": "67FD96F1-40CB-453E-9F67-EA742E42C5F4",
     "name": "functional strength",
     "durationMin": 64,
     "date": "2026-09-21"
   },
-  "updatedAt": "2026-09-21T16:15:02+12:00"
+  "updatedAt": "2026-09-21T18:24:00+12:00"
 }
