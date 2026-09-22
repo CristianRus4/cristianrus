@@ -2,7 +2,7 @@ name: Sync Nexus health
 
 on:
   schedule:
-    - cron: "10 * * * *"   # hourly, 10 minutes past
+    - cron: "0 12 * * *"   # daily 12:00 UTC (midnight NZST)
   workflow_dispatch:
 
 permissions:
