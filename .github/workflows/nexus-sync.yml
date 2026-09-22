@@ -1,0 +1,33 @@
+name: Sync Nexus health
+
+on:
+  schedule:
+    - cron: "10 * * * *"   # hourly, 10 minutes past
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Fetch Nexus snapshots
+        env:
+          NEXUS_TOKEN: ${{ secrets.NEXUS_TOKEN }}
+        run: node scripts/nexus-sync.js
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add nexus-workouts.json now-active.json
+          git diff --staged --quiet && echo "No changes — skipping commit." && exit 0
+          git commit -m "chore: sync Nexus health $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push

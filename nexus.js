@@ -1,7 +1,7 @@
 /* ============================================================================
    Nexus Apple Health workouts — public snapshot client for /active
    ----------------------------------------------------------------------------
-   Reads nexus-workouts.json (refreshed by a Grok automation from Nexus) and
+   Reads nexus-workouts.json (refreshed by GitHub Actions from Nexus) and
    stitches in frozen Strava history through September 2022. From October 2022
    onwards the timeline is Apple Health only.
 
