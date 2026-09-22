@@ -16,7 +16,7 @@ window.Nexus = (function () {
     // Nexus from this day inclusive; Strava for everything before.
     nexusFrom: "2022-10-01",
   };
-  const ACT_KEY = "nexus_workouts_v2";
+  const ACT_KEY = "nexus_workouts_v3";
   const DEFAULT_MAX_AGE = 30 * 60 * 1000;
 
   function dayOf(a) {
@@ -59,6 +59,11 @@ window.Nexus = (function () {
       const d = dayOf(a);
       return d && d >= CONFIG.nexusFrom;
     });
+    // Empty snapshot is a failed refresh — keep a good cache rather than
+    // collapsing the timeline to Strava-only pre-2022.
+    if (!nexus.length && cache && Array.isArray(cache.data) && cache.data.length) {
+      return cache.data;
+    }
     const strava = (Array.isArray(hist.data) ? hist.data : []).filter(function (a) {
       const d = dayOf(a);
       return d && d < CONFIG.nexusFrom;
