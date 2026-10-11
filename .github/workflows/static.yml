@@ -23,6 +23,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Fill in missing homescreen thumbnails
+        continue-on-error: true
+        run: |
+          for f in images/homescreen/*.webp; do
+            [ -f "images/homescreen/thumbs/$(basename "$f")" ] && continue
+            command -v cwebp >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq webp; }
+            sh scripts/homescreen-thumbs.sh
+            break
+          done
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
