@@ -6,7 +6,7 @@ Static HTML personal website hosted on GitHub Pages.
 
 - Root HTML files — URL routing (`cristianrus.me/[page]`)
 - `/apps` — App landing pages (privacy policies, descriptions)
-- `/books` — Reading material PDFs (NOT the books.html reading list)
+- `/books` — Books to read on the site, in the Unwind-style reader (`books/reader.css` + `books/reader.js`). Not the books.html reading list.
 - `/images` — Site imagery
 - `/fonts` — Custom typefaces
 - `style.css` — Main stylesheet (at root)
@@ -61,6 +61,28 @@ All redirect pages are actively used and include `<meta name="referrer" content=
 Upload the screenshot to `images/homescreen/`, named after its month: `nov26.png`, `November 2026.png`, `2026-11.png` and Spanish names (`dic26`) all work. That's it.
 
 On push, the Pages deploy runs `scripts/homescreen.js`, which renames it to `nov26.webp` (converting PNG/JPG/HEIC), makes its thumbnail in `images/homescreen/thumbs/`, rebuilds the gallery in `homescreen.html` (between the `homescreen:start`/`end` markers — don't edit that part by hand) and commits the result back to `main`. Files it can't date are skipped and listed in the workflow log. You can also run `node scripts/homescreen.js` locally (needs `cwebp` or ImageMagick).
+
+### Adding a book to read
+
+Make `books/<name>.html` with the same head as `books/meditations.html` (it links `reader.css` and `reader.js`), then:
+
+```html
+<header class="cover" id="header" data-title="Title">
+<p class="cover-author">Author</p>
+<h1 class="cover-title">Title</h1>
+<p class="cover-credit">Translated by …</p>
+<nav class="toc" id="nav" aria-label="Contents">
+<h2>Contents</h2>
+<ul><li><a href="#chapter-1">Chapter 1</a></li> …</ul>
+</nav>
+</header>
+<main>
+<h2 id="chapter-1">Chapter 1</h2>
+<p>…</p>
+</main>
+```
+
+Every `<h2 id>` inside `<main>` becomes a chapter. Footnotes as `<li id>` and glossary entries as `<dt id>` open in a small sheet when linked from the text; numbered passages as `<strong id="…">2.1</strong>` at the start of a paragraph hang in the margin. Without JS the book still reads top to bottom.
 
 ## Asset Management
 
