@@ -20,71 +20,114 @@
     <p class="sub">design & human behaviour</p>
     <h1>focus</h1>
     <div class="pomodoro">
+        <p class="phase" id="phase">focus</p>
         <div id="timer" class="timer">25:00</div>
         <div class="controls">
-            <button id="start">play</button>
-            <button id="pause">pause</button>
-            <button id="next">next</button>
-            <button id="reset">reset</button>
+            <button type="button" id="toggle">play</button>
+            <button type="button" id="next">skip</button>
+            <button type="button" id="reset">reset</button>
         </div>
+        <p class="tool-hint keys-hint">space to play or pause · s to skip · r to reset</p>
     </div>
 
     <script>
-        var workDuration = 25 * 60;
-        var breakDuration = 5 * 60;
-        var timeLeft = workDuration;
-        var isRunning = false;
-        var isBreak = false;
-        var timerInterval = null;
+    (function () {
+        // 25 min focus, 5 min break, a 15 min break after every fourth focus.
+        const LENGTH = { focus: 25 * 60, short: 5 * 60, long: 15 * 60 };
+        const LABEL = { focus: 'focus', short: 'break', long: 'long break' };
+        const $ = (id) => document.getElementById(id);
 
-        function updateDisplay() {
-            var minutes = Math.floor(timeLeft / 60);
-            var seconds = timeLeft % 60;
-            document.getElementById('timer').textContent =
-                minutes.toString().padStart(2, '0') + ':' +
-                seconds.toString().padStart(2, '0');
+        let phase = 'focus';
+        let done = 0;            // focus sessions finished
+        let remaining = LENGTH.focus;
+        let endsAt = null;       // timestamp while running; counting from it keeps time right in background tabs
+        let ticker = null;
+        let audio = null;
+
+        const mmss = (secs) => {
+            const s = Math.max(0, Math.ceil(secs));
+            return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+        };
+
+        function render() {
+            const left = endsAt ? (endsAt - Date.now()) / 1000 : remaining;
+            $('timer').textContent = mmss(left);
+            $('phase').textContent = phase === 'focus' ? 'focus · ' + (done % 4 + 1) + ' of 4' : LABEL[phase];
+            $('toggle').textContent = endsAt ? 'pause' : 'play';
+            document.title = endsAt ? mmss(left) + ' · ' + LABEL[phase] : 'focus';
+        }
+
+        // Two soft notes when a phase ends, and a notification if the tab is in the background.
+        function signal() {
+            if (audio) {
+                [0, 0.18].forEach((delay, i) => {
+                    const osc = audio.createOscillator();
+                    const gain = audio.createGain();
+                    osc.frequency.value = i ? 880 : 660;
+                    gain.gain.setValueAtTime(0.0001, audio.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.2, audio.currentTime + delay + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + delay + 0.6);
+                    osc.connect(gain).connect(audio.destination);
+                    osc.start(audio.currentTime + delay);
+                    osc.stop(audio.currentTime + delay + 0.65);
+                });
+            }
+            if (document.hidden && window.Notification && Notification.permission === 'granted') {
+                new Notification(phase === 'focus' ? 'Back to focus' : 'Time for a ' + LABEL[phase]);
+            }
+        }
+
+        function advance() {
+            if (phase === 'focus') {
+                done++;
+                phase = done % 4 === 0 ? 'long' : 'short';
+            } else {
+                phase = 'focus';
+            }
+            remaining = LENGTH[phase];
         }
 
         function tick() {
-            if (timeLeft > 0) {
-                timeLeft--;
-                updateDisplay();
-            } else {
-                isBreak = !isBreak;
-                timeLeft = isBreak ? breakDuration : workDuration;
-                updateDisplay();
+            if (endsAt - Date.now() <= 0) {
+                advance();
+                endsAt = Date.now() + remaining * 1000;   // the next phase starts on its own
+                signal();
             }
+            render();
         }
 
-        document.getElementById('start').addEventListener('click', function() {
-            if (!isRunning) {
-                timerInterval = setInterval(tick, 1000);
-                isRunning = true;
-            }
+        function play() {
+            // Sound and notifications need a click before they're allowed.
+            if (!audio && window.AudioContext) audio = new AudioContext();
+            if (window.Notification && Notification.permission === 'default') Notification.requestPermission();
+            endsAt = Date.now() + remaining * 1000;
+            ticker = setInterval(tick, 250);
+            render();
+        }
+
+        function pause() {
+            remaining = Math.max(0, (endsAt - Date.now()) / 1000);
+            endsAt = null;
+            clearInterval(ticker);
+            render();
+        }
+
+        const toggle = () => (endsAt ? pause() : play());
+        function skip() { if (endsAt) pause(); advance(); render(); }
+        function reset() { if (endsAt) pause(); phase = 'focus'; done = 0; remaining = LENGTH.focus; render(); }
+
+        $('toggle').addEventListener('click', toggle);
+        $('next').addEventListener('click', skip);
+        $('reset').addEventListener('click', reset);
+        document.addEventListener('keydown', (e) => {
+            if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest('button')) return;
+            if (e.key === ' ') { e.preventDefault(); toggle(); }
+            if (e.key === 's' || e.key === 'n') skip();
+            if (e.key === 'r') reset();
         });
 
-        document.getElementById('pause').addEventListener('click', function() {
-            clearInterval(timerInterval);
-            isRunning = false;
-        });
-
-        document.getElementById('reset').addEventListener('click', function() {
-            clearInterval(timerInterval);
-            isRunning = false;
-            isBreak = false;
-            timeLeft = workDuration;
-            updateDisplay();
-        });
-
-        document.getElementById('next').addEventListener('click', function() {
-            clearInterval(timerInterval);
-            isBreak = !isBreak;
-            timeLeft = isBreak ? breakDuration : workDuration;
-            updateDisplay();
-            isRunning = false;
-        });
-
-        updateDisplay();
+        render();
+    })();
     </script>
 </body>
 </html>

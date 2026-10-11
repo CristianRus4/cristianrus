@@ -18,71 +18,43 @@
 
 	<body>
 
-		<div class="value">
+		<main class="value think" aria-live="polite">
+			<p id="thought">There is always a way.</p>
+		</main>
+		<p class="tool-hint think-hint">tap for another</p>
 
-			<p>All is temporary.</p>
+		<script>
+		(function () {
+		  // The principles live on /attitude; this page shows one at a time.
+		  const el = document.getElementById('thought');
+		  let thoughts = [el.textContent];
 
-			<p>Unique rather than the best.</p>
+		  function another() {
+		    if (thoughts.length < 2) return;
+		    let next;
+		    do next = thoughts[Math.floor(Math.random() * thoughts.length)];
+		    while (next === el.textContent);
+		    el.classList.add('fade');
+		    setTimeout(() => { el.textContent = next; el.classList.remove('fade'); }, 180);
+		  }
 
-			<p>The only thing that remains are the connections you make.</p>
+		  fetch('attitude.html')
+		    .then(r => r.text())
+		    .then(html => {
+		      const doc = new DOMParser().parseFromString(html, 'text/html');
+		      const list = Array.from(doc.querySelectorAll('.item-list .item p'), p => p.textContent.trim()).filter(Boolean);
+		      if (!list.length) return;
+		      thoughts = list;
+		      el.textContent = list[Math.floor(Math.random() * list.length)];
+		    })
+		    .catch(err => console.error('Attitude:', err));
 
-			<p>Bad things happen fast, good things happen slowly.</p>
-
-			<p>People are neither for you nor against you, they are thinking about themselves.</p>
-
-			<p>You have an impact on others.</p>
-
-			<p>Friction is the way to improvement.</p>
-
-			<p>Lies never work.</p>
-
-			<p>The more you give, the more you get.</p>
-
-			<p>Nobody owes you anything.</p>
-
-			<p>Sometimes it's not your responsibility, but it's your problem.</p>
-
-			<p>You could leave life right now.</p>
-
-			<p>Perfection is in non-perfection.</p>
-
-			<p>Nostalgia is dangerous.</p>
-
-			<p>There is always a way.</p>
-
-			<p>Winning is for losers.</p>
-
-			<p>Listen.</p>
-
-			<p>Focus.</p>
-
-			<p>Never complain, never explain.</p>
-
-			<p>Avoid expectations.</p>
-
-			<p>Assume your mistakes, then solve them.</p>
-
-			<p>Fail, learn and go again.</p>
-
-			<p>Stay there, until they drag you off the line.</p>
-
-			<p>Chase the wonder.</p>
-
-  <script>
-      window.addEventListener('load', function() {
-        const items = document.querySelectorAll('p');
-        const randomIndex = Math.floor(Math.random() * items.length);
-        items.forEach((item, index) => {
-          if (index === randomIndex) {
-            item.style.display = 'block';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      });
-    </script>
-
-    </div>
+		  document.addEventListener('click', another);
+		  document.addEventListener('keydown', e => {
+		    if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); another(); }
+		  });
+		})();
+		</script>
 
 	</body>
 </html>

@@ -32,7 +32,7 @@
 			<p class="sub">design & human behaviour</p>
 		</header>
 
-		<main>
+		<main data-gallery data-gallery-prev="newer" data-gallery-next="older" data-gallery-reversed data-gallery-play>
 
 		<h1>home screen</h1>
 
@@ -244,116 +244,15 @@
 		<!-- homescreen:end -->
 		</main>
 
-		<dialog class="hs-viewer" id="hs-viewer" aria-label="Home screen viewer">
-			<figure>
-				<img id="hs-v-img" alt="">
-				<figcaption><span id="hs-v-date"></span> <span class="hs-v-count" id="hs-v-count"></span></figcaption>
-			</figure>
-			<div class="hs-v-controls">
-				<button type="button" data-act="newer">newer</button>
-				<button type="button" data-act="play">play</button>
-				<button type="button" data-act="older">older</button>
-				<button type="button" data-act="close">close</button>
-			</div>
-		</dialog>
-
+		<script src="gallery.js"></script>
 		<script>
 		(function () {
-		  const viewer = document.getElementById('hs-viewer');
-		  if (!viewer || typeof viewer.showModal !== 'function') return;
-
-		  // Newest first, same order as the page.
-		  const items = Array.from(document.querySelectorAll('.hs-grid figure')).map(fig => ({
-		    id: fig.id,
-		    link: fig.querySelector('a'),
-		    full: fig.querySelector('a').getAttribute('href'),
-		    thumb: fig.querySelector('img').currentSrc || fig.querySelector('img').src,
-		    label: fig.querySelector('time').textContent.trim()
-		  }));
-		  const img = document.getElementById('hs-v-img');
-		  const dateEl = document.getElementById('hs-v-date');
-		  const countEl = document.getElementById('hs-v-count');
-		  const playBtn = viewer.querySelector('[data-act="play"]');
-		  let index = 0, timer = null, opener = null;
-
-		  function show(i) {
-		    index = Math.max(0, Math.min(items.length - 1, i));
-		    const item = items[index];
-		    // Show the cached thumbnail straight away, swap in the full image once it's here.
-		    img.onerror = () => { img.onerror = null; img.src = item.full; };
-		    img.src = item.thumb;
-		    img.alt = 'Home screen, ' + item.label;
-		    const full = new Image();
-		    full.onload = () => { if (items[index] === item) img.src = item.full; };
-		    full.src = item.full;
-		    [index - 1, index + 1].forEach(n => { if (items[n]) new Image().src = items[n].full; });
-		    dateEl.textContent = item.label;
-		    countEl.textContent = (items.length - index) + ' / ' + items.length;
-		    viewer.querySelector('[data-act="newer"]').disabled = index === 0;
-		    viewer.querySelector('[data-act="older"]').disabled = index === items.length - 1;
-		    history.replaceState(null, '', '#' + item.id);
-		  }
-
-		  function open(i) {
-		    opener = items[i].link;
-		    show(i);
-		    if (!viewer.open) viewer.showModal();
-		  }
-
-		  function stop() {
-		    clearInterval(timer);
-		    timer = null;
-		    playBtn.textContent = 'play';
-		  }
-
-		  function play() {
-		    if (timer) return stop();
-		    if (index === 0) show(items.length - 1);
-		    playBtn.textContent = 'pause';
-		    timer = setInterval(() => (index === 0 ? stop() : show(index - 1)), 700);
-		  }
-
-		  items.forEach((item, i) => item.link.addEventListener('click', e => {
-		    e.preventDefault();
-		    open(i);
-		  }));
-
-		  viewer.addEventListener('click', e => {
-		    const act = e.target.dataset && e.target.dataset.act;
-		    if (e.target === viewer || act === 'close') return viewer.close();
-		    if (act === 'newer') { stop(); show(index - 1); }
-		    if (act === 'older') { stop(); show(index + 1); }
-		    if (act === 'play') play();
-		  });
-
-		  viewer.addEventListener('keydown', e => {
-		    if (e.key === 'ArrowLeft') { stop(); show(index - 1); }
-		    if (e.key === 'ArrowRight') { stop(); show(index + 1); }
-		    if (e.key === ' ' && e.target === viewer) { e.preventDefault(); play(); }
-		  });
-
-		  // Swipe left for older, right for newer.
-		  let startX = null;
-		  viewer.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-		  viewer.addEventListener('touchend', e => {
-		    if (startX === null) return;
-		    const dx = e.changedTouches[0].clientX - startX;
-		    startX = null;
-		    if (Math.abs(dx) < 40) return;
-		    stop();
-		    show(index + (dx < 0 ? 1 : -1));
-		  });
-
-		  viewer.addEventListener('close', () => {
-		    stop();
-		    history.replaceState(null, '', location.pathname + location.search);
-		    if (opener) opener.focus();
-		  });
-
 		  // Year bar: underline the year being looked at, and keep it in view on narrow screens.
 		  const bar = document.getElementById('hs-years');
+		  if (!bar) return;
 		  const years = Array.from(bar.querySelectorAll('a')).map(a => ({ a, section: document.getElementById(a.hash.slice(1)) }));
 		  let current = null, queued = false;
+
 		  function markYear() {
 		    queued = false;
 		    const line = bar.getBoundingClientRect().bottom + 48;
@@ -365,8 +264,6 @@
 		    current = active;
 		    bar.scrollTo({ left: active.a.offsetLeft - (bar.clientWidth - active.a.offsetWidth) / 2 });
 		  }
-		  addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(markYear); } }, { passive: true });
-		  markYear();
 
 		  function markEdges() {
 		    const more = [];
@@ -374,13 +271,12 @@
 		    if (bar.scrollLeft + bar.clientWidth < bar.scrollWidth - 2) more.push('right');
 		    bar.dataset.more = more.join(' ');
 		  }
+
+		  addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(markYear); } }, { passive: true });
 		  bar.addEventListener('scroll', markEdges, { passive: true });
 		  addEventListener('resize', markEdges);
+		  markYear();
 		  markEdges();
-
-		  // Deep links: /homescreen#oct26 opens that month.
-		  const fromHash = items.findIndex(item => '#' + item.id === location.hash);
-		  if (fromHash !== -1) open(fromHash);
 		})();
 		</script>
 

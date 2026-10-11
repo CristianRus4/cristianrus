@@ -824,7 +824,8 @@ html:has(.gallery-page) { scroll-behavior: smooth; }
 .hs-grid figcaption { margin-top: 0.5em; font-style: normal; line-height: 1.2; }
 .hs-y { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-.hs-viewer {
+/* Full-size viewer (gallery.js) — shared by homescreen and tattoos. */
+.gallery-viewer {
   width: 100%;
   height: 100%;
   max-width: none;
@@ -836,22 +837,36 @@ html:has(.gallery-page) { scroll-behavior: smooth; }
   background: var(--bg);
   color: var(--text);
 }
-.hs-viewer[open] { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
-.hs-viewer::backdrop { background: var(--bg); }
-.hs-viewer figure { margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 0; }
-.hs-viewer img {
+.gallery-viewer[open] {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-items: center;
+  gap: 1rem;
+}
+.gallery-viewer::backdrop { background: var(--bg); }
+.gallery-viewer figure {
+  margin: 0;
+  width: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-items: center;
+}
+.gallery-viewer img {
   display: block;
-  height: calc(100dvh - 8rem);
-  max-width: 100%;
-  width: auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   object-fit: contain;
   border-radius: 0;
   touch-action: pan-y;
 }
-.hs-viewer figcaption { margin-top: 0.75em; font-style: normal; color: var(--title); }
-.hs-v-count { opacity: 0.72; margin-left: 0.5em; }
-.hs-v-controls { display: flex; gap: 0.25em 1.5em; }
-.hs-v-controls button {
+.gallery-viewer figcaption { margin-top: 0.75em; font-style: normal; color: var(--title); text-align: center; max-width: 36em; }
+.gv-count { opacity: 0.72; margin-left: 0.5em; }
+.gv-story { display: block; margin-top: 0.35em; color: var(--text); }
+.gv-story:empty { display: none; }
+.gv-controls { display: flex; gap: 0.25em 1.5em; }
+.gv-controls button {
   font: inherit;
   font-weight: 500;
   color: var(--title);
@@ -860,7 +875,7 @@ html:has(.gallery-page) { scroll-behavior: smooth; }
   padding: 0.25em 0;
   cursor: pointer;
 }
-.hs-v-controls button:disabled { opacity: 0.3; cursor: default; }
+.gv-controls button:disabled { opacity: 0.3; cursor: default; }
 
 @media (prefers-color-scheme: dark) {
   .hs-grid img { background: color-mix(in srgb, var(--title-dark) 8%, transparent); }
@@ -871,11 +886,68 @@ html:has(.gallery-page) { scroll-behavior: smooth; }
     -webkit-background-clip: text;
   }
   .hs-years a[aria-current] { background: var(--title-dark); -webkit-background-clip: text; text-decoration-color: var(--title-dark); }
-  .hs-viewer, .hs-viewer::backdrop { background: var(--bg-dark); color: var(--text-dark); }
-  .hs-viewer figcaption, .hs-v-controls button { color: var(--title-dark); }
+  .gallery-viewer, .gallery-viewer::backdrop { background: var(--bg-dark); color: var(--text-dark); }
+  .gallery-viewer figcaption, .gv-controls button { color: var(--title-dark); }
+  .gv-story { color: var(--text-dark); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html:has(.gallery-page) { scroll-behavior: auto; }
   .hs-grid img { transition: none; }
+}
+
+
+/* ============================================================
+   TATTOOS — the designs in a grid with their stories, oldest first
+   (tattoos.html). Black-on-white drawings sit on a soft tile in light
+   mode and turn into light lines in dark mode. Viewer: gallery.js.
+   ============================================================ */
+.tattoo-grid {
+  list-style: none;
+  padding: 0;
+  margin: 2.5em 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 3em 2em;
+}
+.tattoo-grid figure { margin: 0; }
+.tattoo-grid a.tattoo-art:link,
+.tattoo-grid a.tattoo-art:visited,
+.tattoo-grid a.tattoo-art:hover {
+  display: block;
+  border-radius: 0.75em;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--title) 4%, var(--bg));
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+}
+.tattoo-grid img,
+.tattoo-viewer img {
+  mix-blend-mode: multiply;   /* the drawing's white becomes the tile */
+}
+.tattoo-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 0;
+  transition: transform 300ms ease;
+}
+.tattoo-grid a:hover img,
+.tattoo-grid a:focus-visible img { transform: scale(1.04); }
+.tattoo-grid figcaption { opacity: 1; font-style: normal; }
+.tattoo-grid h2 { margin: 1em 0 0.15em; }
+.tattoo-grid p { margin: 0 0 0.6em; }
+.tattoo-meta { opacity: 0.72; }
+
+@media (prefers-color-scheme: dark) {
+  .tattoo-grid a.tattoo-art:link,
+  .tattoo-grid a.tattoo-art:visited,
+  .tattoo-grid a.tattoo-art:hover { background: color-mix(in srgb, var(--title-dark) 6%, var(--bg-dark)); }
+  .tattoo-grid img,
+  .tattoo-viewer img { filter: invert(1); mix-blend-mode: screen; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tattoo-grid img { transition: none; }
 }

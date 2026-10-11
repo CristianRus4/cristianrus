@@ -1,37 +1,108 @@
 /* Shared styles for tool pages: focus, flip, think, time, lofi */
 
+/* Shared: text buttons in the classic link style, and a quiet hint line. */
+.tool-button,
+.controls button {
+    font: inherit;
+    font-weight: 500;
+    color: var(--title);
+    background: none;
+    border: 0;
+    padding: 0.25em 0;
+    cursor: pointer;
+}
+.tool-button:disabled { opacity: 0.35; cursor: default; }
+.tool-hint {
+    margin: 0;
+    opacity: 0.6;
+    font-size: 0.85em;
+}
+
 /* focus.html — Pomodoro timer */
 .pomodoro {
     text-align: center;
     margin-top: 10vh;
 }
 
+.phase { margin: 0 0 0.5em; }
+
 .timer {
     font-size: 20vw;
     line-height: 1;
     font-weight: 700;
+    font-variant-numeric: tabular-nums;
 }
 
-.controls button {
-    font-size: 1em;
-    padding: 0.5em 1em;
-    margin: 0.5em;
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 1.75em;
+    margin: 1.5em 0 2.5em;
 }
 
 @media (prefers-color-scheme: dark) {
-    .controls button {
-        color: #EEEEEC;
-        background: none;
-        border: 1px solid #EEEEEC;
-    }
+    .tool-button,
+    .controls button { color: var(--title-dark); }
 }
 
 /* flip.html — Coin flip display */
 #randomLetters {
     font-size: 5em;
     font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+/* time.html — steady digits so the clock doesn't shift as it changes */
+.timee, .datee { font-variant-numeric: tabular-nums; }
+
+/* think.html — one principle at a time, big */
+.think {
+    width: min(88vw, 18em);
+    font-size: clamp(1.5rem, 4.5vw, 2.75rem);
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--title);
+    text-wrap: balance;
+    cursor: pointer;
+}
+.think p { margin: 0; transition: opacity 0.18s ease; }
+.think p.fade { opacity: 0; }
+.think-hint {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 2rem;
+    text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+    .think { color: var(--title-dark); }
+}
+
+.flip-hint {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 2rem;
+    text-align: center;
+}
+
+/* lofi.html — status line under the play button */
+.lofi-status {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: calc(50% + 70px);
+    text-align: center;
+}
+#playButton { cursor: pointer; }
+#playButton:disabled { opacity: 0.35; cursor: default; }
+
+/* Keyboard hints mean nothing on a phone. */
+@media (hover: none) {
+    .keys-hint { display: none; }
 }

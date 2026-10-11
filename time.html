@@ -28,71 +28,29 @@
     </div>
 
     <script type="text/javascript">
+    (function () {
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-function updateTime() {
-    var now = new Date();
-    var hours = now.getHours();
-    var minutes = now.getMinutes();
-    var meridiem = hours >= 12 ? 'PM' : 'AM';
+        function ordinal(day) {
+            if (day >= 11 && day <= 13) return 'th';
+            return { 1: 'st', 2: 'nd', 3: 'rd' }[day % 10] || 'th';
+        }
 
-    // Convert to 12-hour format
-    hours = hours % 12;
-    hours = hours ? hours : 12; // 0 should be displayed as 12
-    minutes = padZero(minutes);
+        function render() {
+            const now = new Date();
+            const hours = now.getHours() % 12 || 12;
+            const time = hours + ':' + String(now.getMinutes()).padStart(2, '0') + ' ' + (now.getHours() >= 12 ? 'PM' : 'AM');
+            document.getElementById('time').textContent = time;
+            document.getElementById('date').textContent =
+                days[now.getDay()] + ' ' + now.getDate() + ordinal(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+            document.title = time;
+            // Next update right as the minute turns, not a minute after the page loaded.
+            setTimeout(render, 60000 - (now.getSeconds() * 1000 + now.getMilliseconds()) + 20);
+        }
 
-    var timeString = hours + ":" + minutes + " " + meridiem;
-    document.getElementById('time').innerHTML = timeString;
-
-    // Update every minute
-    setTimeout(updateTime, 60000);
-}
-
-function padZero(num) {
-    return (num < 10 ? '0' : '') + num;
-}
-
-// Start the clock
-updateTime();
-
-    </script>
-
-    <script type="text/javascript">
-
-function updateDateTime() {
-    var now = new Date();
-    var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var dayOfWeek = days[now.getDay()];
-    var dayOfMonth = now.getDate();
-    var month = months[now.getMonth()];
-    var year = now.getFullYear();
-
-    // Add ordinal suffix to the day
-    var ordinalSuffix = getOrdinalSuffix(dayOfMonth);
-
-    var dateString = dayOfWeek + ' ' + dayOfMonth + ordinalSuffix + ' ' + month + ' ' + year;
-    document.getElementById('date').innerHTML = dateString;
-
-    // Update every minute
-    setTimeout(updateDateTime, 60000);
-}
-
-// Function to get the ordinal suffix for a given day of the month
-function getOrdinalSuffix(day) {
-    if (day >= 11 && day <= 13) {
-        return 'th';
-    }
-    switch (day % 10) {
-        case 1: return 'st';
-        case 2: return 'nd';
-        case 3: return 'rd';
-        default: return 'th';
-    }
-}
-
-// Start the clock
-updateDateTime();
-
+        render();
+    })();
     </script>
 </body>
 

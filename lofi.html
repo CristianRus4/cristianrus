@@ -20,59 +20,71 @@
 	<h1 class="title"><a class="titlelink" href="/">Cristian Rus</a></h1>
 	<p class="sub">design & human behaviour</p>
 
-	<button id="playButton" onclick="togglePlayPause()">
+	<button id="playButton" type="button" aria-label="Play" disabled>
   <span id="playIcon"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M5 3 L19 12 L5 21 Z"></path>
 </svg></span>
-  <span id="pauseIcon" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <span id="pauseIcon" hidden><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <rect x="6" y="4" width="4" height="16" rx="2" ry="2"></rect>
   <rect x="14" y="4" width="4" height="16" rx="2" ry="2"></rect>
 </svg>
 </span>
 </button>
+	<p class="tool-hint lofi-status" id="status" aria-live="polite">loading…</p>
 
   <div id="player"></div>
 
-  <script type="text/javascript">function togglePlayPause() {
-  var playIcon = document.getElementById('playIcon');
-  var pauseIcon = document.getElementById('pauseIcon');
-
-  playIcon.style.display = playIcon.style.display === 'none' ? 'inline' : 'none';
-  pauseIcon.style.display = pauseIcon.style.display === 'none' ? 'inline' : 'none';
-}
-</script>
-
-  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
+    // Lofi Girl's live radio, played through a hidden YouTube player.
+    // The icon and status follow what the player is actually doing.
     var player;
-    var isPlaying = false;
+    var button = document.getElementById('playButton');
+    var statusEl = document.getElementById('status');
+
+    function show(playing, status) {
+      document.getElementById('playIcon').hidden = playing;
+      document.getElementById('pauseIcon').hidden = !playing;
+      button.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+      statusEl.textContent = status;
+      document.title = playing ? '♪ lofi' : 'lofi';
+    }
+
+    function toggle() {
+      if (!player || button.disabled) return;
+      var state = player.getPlayerState();
+      if (state === YT.PlayerState.PLAYING || state === YT.PlayerState.BUFFERING) player.pauseVideo();
+      else player.playVideo();
+    }
 
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('player', {
-        height: '0', // Set player height to 0 to hide the video
-        width: '0', // Set player width to 0 to hide the video
+        height: '0',
+        width: '0',
         videoId: 'jfKfPfyJRdk',
         events: {
-          'onReady': onPlayerReady
+          onReady: function () {
+            button.disabled = false;
+            show(false, 'lofi hip hop radio · press play');
+          },
+          onStateChange: function (e) {
+            if (e.data === YT.PlayerState.PLAYING) show(true, 'playing lofi hip hop radio');
+            else if (e.data === YT.PlayerState.BUFFERING) show(true, 'tuning in…');
+            else if (e.data === YT.PlayerState.PAUSED) show(false, 'paused');
+            else if (e.data === YT.PlayerState.ENDED) show(false, 'the stream stopped · press play');
+          },
+          onError: function () {
+            show(false, 'the stream isn’t available right now');
+          }
         }
       });
     }
 
-    function onPlayerReady(event) {
-      document.getElementById('playButton').addEventListener('click', function() {
-        if (!isPlaying) {
-          player.playVideo(); // Start playing the video
-          document.getElementById('playButton').classList.remove('pause');
-          document.getElementById('playButton').classList.add('playing');
-        } else {
-          player.pauseVideo(); // Pause the video
-          document.getElementById('playButton').classList.remove('playing');
-          document.getElementById('playButton').classList.add('pause');
-        }
-        isPlaying = !isPlaying;
-      });
-    }
+    button.addEventListener('click', toggle);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === ' ' && e.target !== button) { e.preventDefault(); toggle(); }
+    });
   </script>
+  <script src="https://www.youtube.com/iframe_api" onerror="document.getElementById('status').textContent = 'couldn’t reach YouTube'"></script>
 
 </body>
 

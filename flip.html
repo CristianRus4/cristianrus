@@ -16,46 +16,57 @@
 	<title>flip</title>
 </head>
 <body>
-<p>
+
+<main aria-live="polite">
   <span id="randomLetters"></span>
-</p>
+</main>
+<p class="tool-hint flip-hint" id="tally"></p>
 
 <script>
-  // Function to generate a random character (uppercase letter or number)
-  function getRandomCharacter() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=<>?';
-    return characters.charAt(Math.floor(Math.random() * characters.length));
+(function () {
+  const el = document.getElementById('randomLetters');
+  const tallyEl = document.getElementById('tally');
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=<>?';
+  const sides = ['HEADS', 'TAILS'];
+  const tally = { HEADS: 0, TAILS: 0 };
+  let flipping = false;
+
+  const side = () => sides[Math.floor(Math.random() * 2)];
+  function noise() {
+    if (Math.random() < 0.5) return side();
+    let s = '';
+    for (let i = 0; i < 5; i++) s += characters.charAt(Math.floor(Math.random() * characters.length));
+    return s;
   }
 
-  // Function to randomly select between HEADS and TAILS
-  function getRandomLocation() {
-    const locations = ['HEADS', 'TAILS'];
-    const randomIndex = Math.floor(Math.random() * locations.length);
-    return locations[randomIndex];
-  }
-
-  // Function to update the random letters
-  function updateRandomLetters() {
-    let randomLetters = '';
-    if (Math.random() < 0.5) {
-      randomLetters = getRandomLocation();
-    } else {
-      for (let i = 0; i < 5; i++) {
-        randomLetters += getRandomCharacter(); // Uppercase letters or numbers
+  // Scramble fast, slow down, land. Tap, click or space to flip again.
+  function flip() {
+    if (flipping) return;
+    flipping = true;
+    tallyEl.style.visibility = 'hidden';
+    const steps = 26;
+    let i = 0;
+    (function step() {
+      if (i++ < steps) {
+        el.textContent = noise();
+        setTimeout(step, 30 + Math.pow(i / steps, 3) * 220);
+        return;
       }
-    }
-    document.getElementById('randomLetters').textContent = randomLetters;
+      const result = side();
+      el.textContent = result;
+      tally[result]++;
+      tallyEl.textContent = `heads ${tally.HEADS} · tails ${tally.TAILS} — tap to flip again`;
+      tallyEl.style.visibility = 'visible';
+      flipping = false;
+    })();
   }
 
-  // Change letters every 50 milliseconds
-  const interval = setInterval(updateRandomLetters, 50);
-
-  // After 5 seconds, stop changing the letters and display HEADS or TAILS
-  setTimeout(function() {
-    clearInterval(interval); // Stop the interval
-    document.getElementById('randomLetters').textContent = getRandomLocation();
-  }, 5000);
-
+  document.addEventListener('click', flip);
+  document.addEventListener('keydown', e => {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); }
+  });
+  flip();
+})();
 </script>
 
 </body>

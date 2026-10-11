@@ -12,6 +12,7 @@ Static HTML personal website hosted on GitHub Pages.
 - `style.css` — Main stylesheet (at root)
 - `swissstyle.css` — Swiss poster layer on top of `style.css` (see Styles)
 - `tools.css` — Shared styles for tool pages
+- `gallery.js` — Full-size image viewer shared by homescreen and tattoos (see the comment at its top)
 - `/unwind` — Self-contained daily digest with its own styles
 - `llms.txt` — Plain-markdown summary of the site for LLMs; update it when pages or apps change
 
@@ -32,10 +33,12 @@ The site deliberately has three looks. Keep all three.
 - `books.html` — Reading list (separate from `/books` folder)
 - `attitude.html` — Personal principles
 - `experience.html` — Career history
-- `tattoos.html` — Tattoo collection
+- `tattoos.html` — Tattoo designs with their stories, grid + full-size viewer (thumbnails in `images/tattoos/thumbs/`)
 
 ### Tool pages
 `focus.html`, `flip.html`, `think.html`, `time.html`, `lofi.html`
+
+`think` reads its principles from `attitude.html` — edit them there.
 
 All tool pages share `tools.css` for common styles and are marked with `<!-- TOOL PAGE: name -->`.
 
