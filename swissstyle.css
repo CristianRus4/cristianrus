@@ -280,7 +280,6 @@ a.titlelink:focus-visible {
     text-underline-offset: 0.3em;
 }
 body:has(.top-head) .page-nav { width: 90vw; margin-bottom: clamp(3rem, 10vh, 6rem); }
-body:has(.bottom-head) .page-nav { margin-bottom: 2rem; }
 
 /* ---- Attitude / item bars: ink, square, a touch bolder. ---- */
 .item::before { background-color: var(--ink); width: 4px; }

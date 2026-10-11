@@ -36,9 +36,22 @@
 
 		<h1>home screen</h1>
 
-		<p>A monthly archive of my iPhone home screen, from 2015 to today. Open any month to see it full size<span id="hs-play-intro" hidden>, or <a href="#play" id="hs-play">play them all</a> from the first to the latest</span>.</p>
-
-		<p class="hs-years">Go to <a href="#2026">2026</a> – <a href="#2025">2025</a> – <a href="#2024">2024</a> – <a href="#2023">2023</a> – <a href="#2022">2022</a> – <a href="#2021">2021</a> – <a href="#2020">2020</a> – <a href="#2019">2019</a> – <a href="#2018">2018</a> – <a href="#2017">2017</a> – <a href="#2016">2016</a> – <a href="#2015">2015</a></p>
+		<nav class="hs-years" aria-label="Years">
+			<div class="hs-years-track" id="hs-years">
+				<a href="#2026">2026</a>
+				<a href="#2025">2025</a>
+				<a href="#2024">2024</a>
+				<a href="#2023">2023</a>
+				<a href="#2022">2022</a>
+				<a href="#2021">2021</a>
+				<a href="#2020">2020</a>
+				<a href="#2019">2019</a>
+				<a href="#2018">2018</a>
+				<a href="#2017">2017</a>
+				<a href="#2016">2016</a>
+				<a href="#2015">2015</a>
+			</div>
+		</nav>
 
 		<section class="hs-year" id="2026" aria-labelledby="y2026">
 			<h2 id="y2026">2026</h2>
@@ -335,13 +348,33 @@
 		    if (opener) opener.focus();
 		  });
 
-		  const playIntro = document.getElementById('hs-play-intro');
-		  playIntro.hidden = false;
-		  document.getElementById('hs-play').addEventListener('click', e => {
-		    e.preventDefault();
-		    open(items.length - 1);
-		    play();
-		  });
+		  // Year bar: underline the year being looked at, and keep it in view on narrow screens.
+		  const bar = document.getElementById('hs-years');
+		  const years = Array.from(bar.querySelectorAll('a')).map(a => ({ a, section: document.getElementById(a.hash.slice(1)) }));
+		  let current = null, queued = false;
+		  function markYear() {
+		    queued = false;
+		    const line = bar.getBoundingClientRect().bottom + 48;
+		    let active = years[0];
+		    years.forEach(y => { if (y.section.getBoundingClientRect().top <= line) active = y; });
+		    if (active === current) return;
+		    if (current) current.a.removeAttribute('aria-current');
+		    active.a.setAttribute('aria-current', 'true');
+		    current = active;
+		    bar.scrollTo({ left: active.a.offsetLeft - (bar.clientWidth - active.a.offsetWidth) / 2 });
+		  }
+		  addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(markYear); } }, { passive: true });
+		  markYear();
+
+		  function markEdges() {
+		    const more = [];
+		    if (bar.scrollLeft > 2) more.push('left');
+		    if (bar.scrollLeft + bar.clientWidth < bar.scrollWidth - 2) more.push('right');
+		    bar.dataset.more = more.join(' ');
+		  }
+		  bar.addEventListener('scroll', markEdges, { passive: true });
+		  addEventListener('resize', markEdges);
+		  markEdges();
 
 		  // Deep links: /homescreen#oct26 opens that month.
 		  const fromHash = items.findIndex(item => '#' + item.id === location.hash);

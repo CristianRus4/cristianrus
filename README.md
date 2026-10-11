@@ -20,7 +20,7 @@ Static HTML personal website hosted on GitHub Pages.
 The site deliberately has three looks. Keep all three.
 
 1. **Classic** — `style.css` alone. Light/dark, narrow centred column, gradient link hover. Books, tattoos, experience, homescreen, tools, 404.
-2. **Swiss** — `style.css` + `swissstyle.css`. One flat colour per page (`--paper`/`--ink` on `<html>`), giant title, grain, invert-on-hover links. Home, about, now, attitude, active, lorem. Linking the stylesheet is what opts a page in. Subpages carry the one-line `.page-nav` at the top.
+2. **Swiss** — `style.css` + `swissstyle.css`. One flat colour per page (`--paper`/`--ink` on `<html>`), giant title, grain, invert-on-hover links. Home, about, now, attitude, active, lorem. Linking the stylesheet is what opts a page in. Scrolling pages (attitude, lorem) carry the one-line `.page-nav` at the top; bottom-pinned ones (about, now) don't.
 3. **Unwind** — everything under `/unwind`, styled inline. Independent of the other two.
 
 ## Active Pages
@@ -57,7 +57,7 @@ All redirect pages are actively used and include `<meta name="referrer" content=
 
 1. Save the screenshot as `images/homescreen/<mon><yy>.webp` (e.g. `nov26.webp`).
 2. Run `scripts/homescreen-thumbs.sh` to make its 320px thumbnail in `images/homescreen/thumbs/` (needs `cwebp` or ImageMagick). If you skip this, the deploy makes it and the page falls back to the full image meanwhile.
-3. In `homescreen.html`, copy the first `<li>` of the newest year (or start a new `<section>` for a new year and add it to the "Go to" line) and update the slug, `alt`, `datetime` and month.
+3. In `homescreen.html`, copy the first `<li>` of the newest year (or start a new `<section>` for a new year and add a link to it in the `.hs-years` bar) and update the slug, `alt`, `datetime` and month.
 
 ## Asset Management
 

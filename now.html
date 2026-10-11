@@ -21,10 +21,6 @@
 
 	<body>
 
-		<nav class="page-nav" aria-label="Site">
-			<a href="/">Cristian Rus</a>
-			<span><a href="about">About</a><a href="now" aria-current="page">Now</a></span>
-		</nav>
 
 		<main class="page-head bottom-head">
 			<div class="bottom-content">
@@ -77,6 +73,7 @@
 (function () {
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = (id) => document.getElementById(id);
+  const pageStart = Date.now();
 
   // A row whose source failed or is out of date disappears rather than showing a blank or stale value.
   function hideRow(el) {
@@ -106,19 +103,6 @@
   renderCurrentTime();
   setInterval(renderCurrentTime, 60000);
 
-  // Location: random letters for a few seconds, then the real place (already in the HTML).
-  const locationEl = $('location');
-  const place = locationEl.textContent;
-  if (!calm) {
-    const letters = 'abcdefghijklmnopqrstuvwxyz';
-    const shuffle = setInterval(() => {
-      let s = '';
-      for (let i = 0; i < 13; i++) s += letters[Math.floor(Math.random() * letters.length)];
-      locationEl.textContent = s.charAt(0).toUpperCase() + s.slice(1);
-    }, 50);
-    setTimeout(() => { clearInterval(shuffle); locationEl.textContent = place; }, 3000);
-  }
-
   // Age in years, to nine decimals, once per frame.
   const birth = new Date(1994, 3, 22, 16, 4, 4).getTime();
   const counter = $('counter');
@@ -128,18 +112,59 @@
   })();
 
   // Fade the values in one row at a time.
+  const revealAt = new Map();
   Array.from(document.querySelectorAll('#animated-table tr'))
     .filter(row => row.querySelector('th').textContent.trim())
     .map(row => row.querySelector('td'))
-    .forEach((cell, i) => setTimeout(() => cell.classList.add('visible'), calm ? 0 : i * 300));
+    .forEach((cell, i) => {
+      revealAt.set(cell, calm ? 0 : i * 300);
+      setTimeout(() => cell.classList.add('visible'), revealAt.get(cell));
+    });
+
+  // Every value shows random letters until its data is in. It keeps going for
+  // at least SETTLE_AFTER ms once its row has faded in, so it never just flashes.
+  const SETTLE_AFTER = 700;
+  const letters = 'abcdefghijklmnopqrstuvwxyz';
+  const scrambling = new Map();
+
+  function scramble(el, length) {
+    if (calm) return;
+    const tick = () => {
+      let s = '';
+      for (let i = 0; i < length; i++) s += letters[Math.floor(Math.random() * letters.length)];
+      el.textContent = s.charAt(0).toUpperCase() + s.slice(1);
+    };
+    tick();
+    scrambling.set(el, setInterval(tick, 50));
+  }
+
+  // Stop the letters and show the real value — or hide the row if there isn't one.
+  function settle(el, render) {
+    const wait = calm ? 0 : Math.max(0, pageStart + revealAt.get(el.closest('td')) + SETTLE_AFTER - Date.now());
+    setTimeout(() => {
+      clearInterval(scrambling.get(el));
+      scrambling.delete(el);
+      if (render) render(el);
+      else hideRow(el);
+    }, wait);
+  }
+
+  // Location is already in the HTML; it just gets the letters treatment.
+  const place = $('location').textContent;
+  scramble($('location'), 13);
+  settle($('location'), el => { el.textContent = place; });
+
+  [['weather-info', 16], ['active-info', 14], ['workout-info', 18], ['top-song', 10], ['last-movie', 12], ['last-book', 20]]
+    .forEach(([id, length]) => scramble($(id), length));
 
   // Weather (OpenWeatherMap).
   fetch('https://api.openweathermap.org/data/2.5/weather?q=Wellington,nz&units=metric&appid=1def22ce2b0dcb06bec08ed98beda671')
     .then(r => r.json())
     .then(data => {
-      $('weather-info').textContent = `${data.weather[0].description} and ${Math.floor(data.main.temp)}°C`;
+      const text = `${data.weather[0].description} and ${Math.floor(data.main.temp)}°C`;
+      settle($('weather-info'), el => { el.textContent = text; });
     })
-    .catch(err => { console.error('Weather:', err); hideRow($('weather-info')); });
+    .catch(err => { console.error('Weather:', err); settle($('weather-info')); });
 
   // Today's activity + latest workout (Nexus / Apple Health snapshot).
   const nzToday = new Intl.DateTimeFormat('en-CA', { timeZone: 'Pacific/Auckland' }).format(new Date());
@@ -152,22 +177,18 @@
         if (data.moveKcal > 0) parts.push(Math.round(data.moveKcal).toLocaleString('en-NZ') + ' kcal');
         if (data.steps > 0) parts.push(Math.round(data.steps).toLocaleString('en-NZ') + ' steps');
       }
-      if (parts.length) $('active-info').textContent = parts.join(' · ');
-      else hideRow($('active-info'));
+      settle($('active-info'), parts.length ? el => { el.textContent = parts.join(' · '); } : null);
 
+      // Only workouts from the last two weeks count as "now".
       const w = data.workout;
       const ago = w && w.date ? daysAgo(w.date) : NaN;
-      if (w && w.name && ago >= 0 && ago <= 14) {
-        const when = ago === 0 ? '' : ago === 1 ? ' · yesterday' : ` · ${ago} days ago`;
-        $('workout-info').textContent = (w.durationMin ? `${w.name} · ${w.durationMin} min` : w.name) + when;
-      } else {
-        hideRow($('workout-info'));
-      }
+      const recent = w && w.name && ago >= 0 && ago <= 14;
+      settle($('workout-info'), recent ? el => { el.textContent = w.durationMin ? `${w.name} · ${w.durationMin} min` : w.name; } : null);
     })
     .catch(err => {
       console.error('Nexus (now):', err);
-      hideRow($('active-info'));
-      hideRow($('workout-info'));
+      settle($('active-info'));
+      settle($('workout-info'));
     });
 
   // Most played artist this week (Last.fm).
@@ -177,9 +198,9 @@
     .then(data => {
       const track = data && data.toptracks && data.toptracks.track && data.toptracks.track[0];
       if (!track) throw new Error('no top track this week');
-      $('top-song').textContent = track.artist.name;
+      settle($('top-song'), el => { el.textContent = track.artist.name; });
     })
-    .catch(err => { console.error('Last.fm:', err); hideRow($('top-song')); });
+    .catch(err => { console.error('Last.fm:', err); settle($('top-song')); });
 
   const rss = (feed) => fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed) + '&cacheBuster=' + Date.now())
     .then(r => r.json())
@@ -190,8 +211,11 @@
 
   // Last film logged (Letterboxd).
   rss('https://letterboxd.com/cristianrus4/rss/')
-    .then(items => { $('last-movie').textContent = items[0].title.replace(/\s+-\s+★.*$/, '').trim(); })
-    .catch(err => { console.error('Letterboxd:', err); hideRow($('last-movie')); });
+    .then(items => {
+      const film = items[0].title.replace(/\s+-\s+★.*$/, '').trim();
+      settle($('last-movie'), el => { el.textContent = film; });
+    })
+    .catch(err => { console.error('Letterboxd:', err); settle($('last-movie')); });
 
   // Current book: the newest entry without a "read at" date, else the latest read (Goodreads).
   rss('https://www.goodreads.com/review/list_rss/74821928?key=camdfkmNuO8PqylPKlVe_AckSkL5KnbljWIRS8Dd_HO_Nq_m&shelf=read&sort=date_added')
@@ -202,14 +226,15 @@
       }) || items[0];
       const authorMatch = book.description.match(/author:\s*(.*?)<br/);
       const author = authorMatch ? new DOMParser().parseFromString(authorMatch[1], 'text/html').body.textContent.trim() : '';
-      const cell = $('last-book');
-      const title = document.createElement('em');
-      title.textContent = book.title;
-      cell.replaceChildren(title);
-      if (author) cell.append(' by ' + author);
-      cell.title = author ? `${book.title} by ${author}` : book.title;
+      settle($('last-book'), cell => {
+        const title = document.createElement('em');
+        title.textContent = book.title;
+        cell.replaceChildren(title);
+        if (author) cell.append(' by ' + author);
+        cell.title = author ? `${book.title} by ${author}` : book.title;
+      });
     })
-    .catch(err => { console.error('Goodreads:', err); hideRow($('last-book')); });
+    .catch(err => { console.error('Goodreads:', err); settle($('last-book')); });
 })();
 </script>
 

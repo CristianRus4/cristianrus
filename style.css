@@ -755,6 +755,48 @@ body:has(#dash) {
 body.gallery-page { max-width: 1080px; }
 .gallery-page main > p { max-width: 644px; }
 
+/* Year bar: sticks to the top; the year in view is underlined. */
+.hs-years {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin: 0 0 -1em;
+  padding: 0.75em 0;
+  background: var(--bg);
+}
+.hs-years-track {
+  display: flex;
+  gap: 1.1em;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.hs-years-track::-webkit-scrollbar { display: none; }
+/* Fade whichever edge has more years scrolled out of view (narrow screens). */
+.hs-years-track {
+  --fade-l: 0em;
+  --fade-r: 0em;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent);
+}
+.hs-years-track[data-more~="left"] { --fade-l: 2.5em; }
+.hs-years-track[data-more~="right"] { --fade-r: 2.5em; }
+.hs-years a:link,
+.hs-years a:visited { flex: 0 0 auto; background: var(--text); -webkit-background-clip: text; }
+.hs-years a:hover,
+.hs-years a[aria-current]:hover {
+  background: linear-gradient(to bottom left, var(--link-hover-start) 6%, var(--link-hover-end) 100%);
+  -webkit-background-clip: text;
+}
+.hs-years a[aria-current] {
+  background: var(--title);
+  -webkit-background-clip: text;
+  text-decoration: underline;
+  text-decoration-color: var(--title);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35em;
+}
+html:has(.gallery-page) { scroll-behavior: smooth; }
+.hs-year { scroll-margin-top: 4.25em; }
 .hs-year h2 { margin-top: 3em; }
 .hs-grid {
   list-style: none;
@@ -822,10 +864,18 @@ body.gallery-page { max-width: 1080px; }
 
 @media (prefers-color-scheme: dark) {
   .hs-grid img { background: color-mix(in srgb, var(--title-dark) 8%, transparent); }
+  .hs-years { background: var(--bg-dark); }
+  .hs-years a:link, .hs-years a:visited { background: var(--text-dark); -webkit-background-clip: text; }
+  .hs-years a:hover, .hs-years a[aria-current]:hover {
+    background: linear-gradient(to bottom left, var(--link-hover-start-dark) 6%, var(--link-hover-end-dark) 100%);
+    -webkit-background-clip: text;
+  }
+  .hs-years a[aria-current] { background: var(--title-dark); -webkit-background-clip: text; text-decoration-color: var(--title-dark); }
   .hs-viewer, .hs-viewer::backdrop { background: var(--bg-dark); color: var(--text-dark); }
   .hs-viewer figcaption, .hs-v-controls button { color: var(--title-dark); }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html:has(.gallery-page) { scroll-behavior: auto; }
   .hs-grid img { transition: none; }
 }
