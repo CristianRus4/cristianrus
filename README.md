@@ -10,14 +10,25 @@ Static HTML personal website hosted on GitHub Pages.
 - `/images` — Site imagery
 - `/fonts` — Custom typefaces
 - `style.css` — Main stylesheet (at root)
+- `swissstyle.css` — Swiss poster layer on top of `style.css` (see Styles)
 - `tools.css` — Shared styles for tool pages
+- `/unwind` — Self-contained daily digest with its own styles
+- `llms.txt` — Plain-markdown summary of the site for LLMs; update it when pages or apps change
+
+## Styles
+
+The site deliberately has three looks. Keep all three.
+
+1. **Classic** — `style.css` alone. Light/dark, narrow centred column, gradient link hover. Books, tattoos, experience, homescreen, tools, 404.
+2. **Swiss** — `style.css` + `swissstyle.css`. One flat colour per page (`--paper`/`--ink` on `<html>`), giant title, grain, invert-on-hover links. Home, about, now, attitude, active, lorem. Linking the stylesheet is what opts a page in. Subpages carry the one-line `.page-nav` at the top.
+3. **Unwind** — everything under `/unwind`, styled inline. Independent of the other two.
 
 ## Active Pages
 
 - `index.html` — Homepage
 - `now.html` — Current status
 - `about.html` — About page
-- `homescreen.html` — Phone homescreen archive (2015–present)
+- `homescreen.html` — Phone homescreen archive (2015–present), year grid + full-size viewer
 - `books.html` — Reading list (separate from `/books` folder)
 - `attitude.html` — Personal principles
 - `experience.html` — Career history
@@ -41,6 +52,12 @@ All redirect pages are actively used and include `<meta name="referrer" content=
 - `sos.html` — Emergency info (noindex, not linked from navigation)
 - `hyper.html` — Full site index / link hub
 - `lorem.html` — Typography test page
+
+### Adding a homescreen month
+
+1. Save the screenshot as `images/homescreen/<mon><yy>.webp` (e.g. `nov26.webp`).
+2. Run `scripts/homescreen-thumbs.sh` to make its 320px thumbnail in `images/homescreen/thumbs/` (needs `cwebp` or ImageMagick). If you skip this, the deploy makes it and the page falls back to the full image meanwhile.
+3. In `homescreen.html`, copy the first `<li>` of the newest year (or start a new `<section>` for a new year and add it to the "Go to" line) and update the slug, `alt`, `datetime` and month.
 
 ## Asset Management
 
