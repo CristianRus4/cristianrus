@@ -2,7 +2,7 @@
    swissstyle.css — Swiss / brutalist / minimalist treatment.
 
    Loaded AFTER style.css, only on the pages it's meant for:
-     home · about · now · active · lorem · attitude
+     home · about · now · active · lorem · attitude · think
    (Linking the file is what opts a page in — nothing else.)
 
    The ONLY per-page detail is the colour, declared inline on each
@@ -311,6 +311,38 @@ a.titlelink:focus-visible {
 }
 #animated-table tr { opacity: 1 !important; }
 #counter { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   THINK — one principle from Attitude as the poster: as large as
+   it fits (think.html sizes it), pinned to the bottom like the
+   titles, with its list ("to know" / "to do") as a small label.
+   ============================================================ */
+.bottom-content.think {
+    max-width: none;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+.think-label {
+    margin: 0 0 1.25rem;
+    font-size: clamp(0.68rem, 1vw, 0.86rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--ink);
+}
+.think-label a:link,
+.think-label a:visited { font-weight: 700; }
+.think-line {
+    width: calc(100% - 2.75rem);   /* clear of the rotated hint on the right */
+    margin: 0;
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    text-wrap: balance;
+}
 
 /* ============================================================
    HOME — poster layout: menu across the top in three left-aligned
@@ -629,6 +661,8 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
     }
 
     .item::before { background-color: var(--paper); }
+    .think-line,
+    .think-label { color: var(--paper); }
 
     body:has(.home-hero) {
         --home-rule: color-mix(in srgb, var(--paper) 70%, transparent);

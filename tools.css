@@ -1,4 +1,4 @@
-/* Shared styles for tool pages: focus, flip, think, time, lofi */
+/* Shared styles for tool pages: focus, flip, time, lofi (think is Swiss: swissstyle.css) */
 
 /* Shared: text buttons in the classic link style, and a quiet hint line. */
 .tool-button,
@@ -59,29 +59,6 @@
 
 /* time.html — steady digits so the clock doesn't shift as it changes */
 .timee, .datee { font-variant-numeric: tabular-nums; }
-
-/* think.html — one principle at a time, big */
-.think {
-    width: min(88vw, 18em);
-    font-size: clamp(1.5rem, 4.5vw, 2.75rem);
-    line-height: 1.2;
-    font-weight: 600;
-    color: var(--title);
-    text-wrap: balance;
-    cursor: pointer;
-}
-.think p { margin: 0; transition: opacity 0.18s ease; }
-.think p.fade { opacity: 0; }
-.think-hint {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 2rem;
-    text-align: center;
-}
-@media (prefers-color-scheme: dark) {
-    .think { color: var(--title-dark); }
-}
 
 .flip-hint {
     position: fixed;

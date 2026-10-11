@@ -1,58 +1,122 @@
 <!-- TOOL PAGE: think -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="--paper:#8A3A57; --ink:#F2EAD8">
 	<head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#8A3A57" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#070707" media="(prefers-color-scheme: dark)">
 	<meta name="description" content="A random philosophy and life principle, one at a time.">
+	<link rel="canonical" href="https://www.cristianrus.me/think">
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://www.cristianrus.me/think">
 	<meta property="og:title" content="Think — Cristian Rus">
 	<meta property="og:description" content="A random philosophy and life principle, one at a time.">
 	<meta property="og:image" content="https://www.cristianrus.me/images/avatar.jpg">
+	<link rel="preload" href="fonts/GeistVariableVF.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<link rel="stylesheet" type="text/css" href="tools.css">
+	<link rel="stylesheet" type="text/css" href="swissstyle.css">
 	<link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
-	<title>think</title>
+	<title>Think — Cristian Rus</title>
 	</head>
 
 	<body>
 
-		<main class="value think" aria-live="polite">
-			<p id="thought">There is always a way.</p>
+		<main class="page-head bottom-head">
+			<div class="bottom-content think">
+				<h1 class="think-label"><a href="/">Think</a><span id="think-kind"></span></h1>
+				<p class="think-line" id="thought" aria-live="polite">There is always a way.</p>
+			</div>
+			<div class="bottom-title-row">
+				<p class="sub">tap for another</p>
+			</div>
 		</main>
-		<p class="tool-hint think-hint">tap for another</p>
 
 		<script>
 		(function () {
-		  // The principles live on /attitude; this page shows one at a time.
-		  const el = document.getElementById('thought');
-		  let thoughts = [el.textContent];
+		  // The principles live on /attitude (under "to know" and "to do"); this page shows one at a time.
+		  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		  const line = document.getElementById('thought');
+		  const kind = document.getElementById('think-kind');
+		  let thoughts = [{ text: line.textContent, kind: '' }];
+		  let shown = null;
+		  let timer = null;
+
+		  // Largest size at which the principle fits the width and about half the screen.
+		  function fit(text) {
+		    line.textContent = text;
+		    let lo = 24, hi = Math.min(innerWidth * 0.2, 240);
+		    for (let i = 0; i < 14; i++) {
+		      const mid = (lo + hi) / 2;
+		      line.style.fontSize = mid + 'px';
+		      if (line.scrollWidth <= line.clientWidth + 1 && line.scrollHeight <= innerHeight * 0.55) lo = mid;
+		      else hi = mid;
+		    }
+		    line.style.fontSize = lo + 'px';
+		  }
+
+		  // Same letters-into-place effect as the Now page.
+		  function scrambleTo(text) {
+		    clearInterval(timer);
+		    if (calm) { line.textContent = text; return; }
+		    const letters = 'abcdefghijklmnopqrstuvwxyz';
+		    const start = Date.now();
+		    timer = setInterval(() => {
+		      if (Date.now() - start >= 450) {
+		        clearInterval(timer);
+		        line.textContent = text;
+		        return;
+		      }
+		      line.textContent = text.replace(/[a-z]/gi, ch => {
+		        const r = letters[Math.floor(Math.random() * letters.length)];
+		        return ch === ch.toUpperCase() ? r.toUpperCase() : r;
+		      });
+		    }, 50);
+		  }
+
+		  function show(thought) {
+		    shown = thought;
+		    kind.textContent = thought.kind ? ' · ' + thought.kind : '';
+		    fit(thought.text);
+		    scrambleTo(thought.text);
+		  }
 
 		  function another() {
 		    if (thoughts.length < 2) return;
 		    let next;
 		    do next = thoughts[Math.floor(Math.random() * thoughts.length)];
-		    while (next === el.textContent);
-		    el.classList.add('fade');
-		    setTimeout(() => { el.textContent = next; el.classList.remove('fade'); }, 180);
+		    while (next.text === shown.text);
+		    show(next);
 		  }
 
 		  fetch('attitude.html')
 		    .then(r => r.text())
 		    .then(html => {
 		      const doc = new DOMParser().parseFromString(html, 'text/html');
-		      const list = Array.from(doc.querySelectorAll('.item-list .item p'), p => p.textContent.trim()).filter(Boolean);
-		      if (!list.length) return;
-		      thoughts = list;
-		      el.textContent = list[Math.floor(Math.random() * list.length)];
+		      const list = [];
+		      doc.querySelectorAll('.item-list').forEach(ul => {
+		        const heading = ul.previousElementSibling && ul.previousElementSibling.matches('h2') ? ul.previousElementSibling.textContent.trim() : '';
+		        ul.querySelectorAll('.item p').forEach(p => list.push({ text: p.textContent.trim(), kind: heading }));
+		      });
+		      if (list.length) thoughts = list;
+		      show(thoughts[Math.floor(Math.random() * thoughts.length)]);
 		    })
-		    .catch(err => console.error('Attitude:', err));
+		    .catch(err => {
+		      console.error('Attitude:', err);
+		      show(thoughts[0]);
+		    });
 
-		  document.addEventListener('click', another);
-		  document.addEventListener('keydown', e => {
-		    if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); another(); }
+		  document.addEventListener('click', e => {
+		    if (!e.target.closest('a')) another();
 		  });
+		  document.addEventListener('keydown', e => {
+		    if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') {
+		      if (e.target.closest && e.target.closest('a')) return;
+		      e.preventDefault();
+		      another();
+		    }
+		  });
+		  addEventListener('resize', () => { if (shown) fit(shown.text); });
 		})();
 		</script>
 

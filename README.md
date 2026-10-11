@@ -21,7 +21,7 @@ Static HTML personal website hosted on GitHub Pages.
 The site deliberately has three looks. Keep all three.
 
 1. **Classic** — `style.css` alone. Light/dark, narrow centred column, gradient link hover. Books, tattoos, experience, homescreen, tools, 404.
-2. **Swiss** — `style.css` + `swissstyle.css`. One flat colour per page (`--paper`/`--ink` on `<html>`), giant title, grain, invert-on-hover links. Home, about, now, attitude, active, lorem. Linking the stylesheet is what opts a page in.
+2. **Swiss** — `style.css` + `swissstyle.css`. One flat colour per page (`--paper`/`--ink` on `<html>`), giant title, grain, invert-on-hover links. Home, about, now, attitude, think, active, lorem. Linking the stylesheet is what opts a page in.
 3. **Unwind** — everything under `/unwind`, styled inline. Independent of the other two.
 
 ## Active Pages
@@ -38,9 +38,9 @@ The site deliberately has three looks. Keep all three.
 ### Tool pages
 `focus.html`, `flip.html`, `think.html`, `time.html`, `lofi.html`
 
-`think` reads its principles from `attitude.html` — edit them there.
+`think` (Swiss style) reads its principles from `attitude.html` — edit them there.
 
-All tool pages share `tools.css` for common styles and are marked with `<!-- TOOL PAGE: name -->`.
+The classic tool pages share `tools.css` for common styles and are marked with `<!-- TOOL PAGE: name -->`.
 
 ### Social redirects
 `applesfera`, `xataka`, `letterboxd`, `twitter`, `linkedin`, `reddit`, `pinterest`, `strava`, `telegram`, `trakt`, `music`, `goodreads`, `pocket`, `vimeo`, `paypal`, `facebook`, `phone`, `mail`, `movies`
@@ -58,9 +58,9 @@ All redirect pages are actively used and include `<meta name="referrer" content=
 
 ### Adding a homescreen month
 
-Upload the screenshot to `images/homescreen/`, named after its month: `nov26.png`, `November 2026.png`, `2026-11.png` and Spanish names (`dic26`) all work. That's it.
+Upload the screenshot to `images/homescreen/` named `<month><yy>` in English, like `nov26.png` (a Spanish month such as `dic26` is renamed to `dec26`). That's it.
 
-On push, the Pages deploy runs `scripts/homescreen.js`, which renames it to `nov26.webp` (converting PNG/JPG/HEIC), makes its thumbnail in `images/homescreen/thumbs/`, rebuilds the gallery in `homescreen.html` (between the `homescreen:start`/`end` markers — don't edit that part by hand) and commits the result back to `main`. Files it can't date are skipped and listed in the workflow log. You can also run `node scripts/homescreen.js` locally (needs `cwebp` or ImageMagick).
+On push, the Pages deploy runs `scripts/homescreen.js`, which makes it `nov26.webp` (converting PNG/JPG/HEIC), makes its thumbnail in `images/homescreen/thumbs/`, rebuilds the gallery in `homescreen.html` (between the `homescreen:start`/`end` markers — don't edit that part by hand) and commits the result back to `main`. Files not named like that are skipped and listed in the workflow log. You can also run `node scripts/homescreen.js` locally (needs `cwebp` or ImageMagick).
 
 ### Adding a book to read
 

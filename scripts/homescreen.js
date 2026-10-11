@@ -2,16 +2,14 @@
 /* ============================================================================
    Homescreen gallery builder — run by the Pages deploy on every push.
 
-   Drop a screenshot into images/homescreen/ named after its month and this:
-     1. renames it to the canonical <mon><yy>.webp (oct26.webp), converting
-        PNG/JPG/HEIC to WebP and deleting the original,
+   Drop a screenshot into images/homescreen/ named <month><yy> — nov26.png,
+   oct26.webp — and this:
+     1. makes it the canonical English nov26.webp, converting PNG/JPG/HEIC
+        to WebP (a Spanish month, dic26, becomes dec26),
      2. makes a 320px thumbnail in images/homescreen/thumbs/,
      3. rewrites the gallery in homescreen.html between the
         <!-- homescreen:start --> and <!-- homescreen:end --> markers.
-
-   Accepted names (case and separators don't matter):
-     oct26 · oct2026 · october-2026 · Oct 26 · 2026-10 · 202610
-     Spanish month names work too (ene, abr, ago, dic…).
+   Anything not named like that is skipped and listed in the log.
 
    Needs cwebp (`brew install webp` / `apt install webp`) or ImageMagick only
    when there's something to convert or a thumbnail to make. Exits 3 if one
@@ -30,32 +28,18 @@ const EAGER = 8; // first thumbnails load straight away, the rest lazily
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const SLUGS = MONTHS.map(m => m.slice(0, 3).toLowerCase());
-const SPANISH = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-const MONTH_WORDS = { sept: 8, set: 8 }; // full name or 3-letter start, English or Spanish → 0-11
-[MONTHS.map(m => m.toLowerCase()), SPANISH].forEach(list => list.forEach((m, i) => {
-  MONTH_WORDS[m] = i;
-  MONTH_WORDS[m.slice(0, 3)] = i;
-}));
+// English month abbreviations, plus the Spanish ones that differ, mapped to 0-11.
+const MONTH_ABBR = Object.assign(
+  Object.fromEntries(SLUGS.map((m, i) => [m, i])),
+  { ene: 0, abr: 3, ago: 7, dic: 11 }
+);
 const SOURCE_EXT = [".webp", ".png", ".jpg", ".jpeg", ".heic"];
 
-const monthIndex = (word) => (word in MONTH_WORDS ? MONTH_WORDS[word] : -1);
-
-function fullYear(y) {
-  const n = Number(y);
-  return y.length === 2 ? 2000 + n : n;
-}
-
-// "oct26" / "october-2026" / "2026-10" → { year: 2026, month: 9 } (month 0-based)
+// "nov26" → { year: 2026, month: 10 } (month 0-based); anything else → null.
 function parseName(file) {
-  const name = path.parse(file).name.toLowerCase().trim();
-  let m = name.match(/^([a-z]+)[\s._-]*(\d{4}|\d{2})$/);
-  if (m) {
-    const month = monthIndex(m[1]);
-    if (month !== -1) return { year: fullYear(m[2]), month };
-  }
-  m = name.match(/^(\d{4})[\s._-]?(\d{1,2})$/);
-  if (m && m[2] >= 1 && m[2] <= 12) return { year: Number(m[1]), month: Number(m[2]) - 1 };
-  return null;
+  const m = path.parse(file).name.toLowerCase().trim().match(/^([a-z]{3})(\d{2})$/);
+  if (!m || !(m[1] in MONTH_ABBR)) return null;
+  return { year: 2000 + Number(m[2]), month: MONTH_ABBR[m[1]] };
 }
 
 const slugOf = ({ year, month }) => SLUGS[month] + String(year).slice(-2);
@@ -111,7 +95,7 @@ files.sort((a, b) => isCanonical(b) - isCanonical(a));
 for (const file of files) {
   const date = parseName(file);
   if (!date) {
-    console.warn(`Skipping ${file}: can't tell the month from its name (use e.g. oct26.webp)`);
+    console.warn(`Skipping ${file}: not named like nov26`);
     continue;
   }
   const slug = slugOf(date);
