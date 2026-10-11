@@ -20,7 +20,7 @@ Static HTML personal website hosted on GitHub Pages.
 The site deliberately has three looks. Keep all three.
 
 1. **Classic** — `style.css` alone. Light/dark, narrow centred column, gradient link hover. Books, tattoos, experience, homescreen, tools, 404.
-2. **Swiss** — `style.css` + `swissstyle.css`. One flat colour per page (`--paper`/`--ink` on `<html>`), giant title, grain, invert-on-hover links. Home, about, now, attitude, active, lorem. Linking the stylesheet is what opts a page in. Scrolling pages (attitude, lorem) carry the one-line `.page-nav` at the top; bottom-pinned ones (about, now) don't.
+2. **Swiss** — `style.css` + `swissstyle.css`. One flat colour per page (`--paper`/`--ink` on `<html>`), giant title, grain, invert-on-hover links. Home, about, now, attitude, active, lorem. Linking the stylesheet is what opts a page in.
 3. **Unwind** — everything under `/unwind`, styled inline. Independent of the other two.
 
 ## Active Pages
@@ -55,9 +55,9 @@ All redirect pages are actively used and include `<meta name="referrer" content=
 
 ### Adding a homescreen month
 
-1. Save the screenshot as `images/homescreen/<mon><yy>.webp` (e.g. `nov26.webp`).
-2. Run `scripts/homescreen-thumbs.sh` to make its 320px thumbnail in `images/homescreen/thumbs/` (needs `cwebp` or ImageMagick). If you skip this, the deploy makes it and the page falls back to the full image meanwhile.
-3. In `homescreen.html`, copy the first `<li>` of the newest year (or start a new `<section>` for a new year and add a link to it in the `.hs-years` bar) and update the slug, `alt`, `datetime` and month.
+Upload the screenshot to `images/homescreen/`, named after its month: `nov26.png`, `November 2026.png`, `2026-11.png` and Spanish names (`dic26`) all work. That's it.
+
+On push, the Pages deploy runs `scripts/homescreen.js`, which renames it to `nov26.webp` (converting PNG/JPG/HEIC), makes its thumbnail in `images/homescreen/thumbs/`, rebuilds the gallery in `homescreen.html` (between the `homescreen:start`/`end` markers — don't edit that part by hand) and commits the result back to `main`. Files it can't date are skipped and listed in the workflow log. You can also run `node scripts/homescreen.js` locally (needs `cwebp` or ImageMagick).
 
 ## Asset Management
 

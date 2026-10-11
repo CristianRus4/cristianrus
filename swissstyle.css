@@ -136,7 +136,7 @@ body {
 }
 
 body:has(.top-head) {
-    padding-top: 2.2rem;
+    padding-top: 8vh;
     padding-bottom: 6em;
 }
 
@@ -256,30 +256,6 @@ a.titlelink:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 0.08em;
 }
-
-/* ---- Page nav: the home page's top row, shrunk to one line —
-        name on the leading edge, sections trailing. ---- */
-.page-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1.5rem;
-    margin: 0;
-    text-align: left;
-    font-size: clamp(0.68rem, 1vw, 0.86rem);
-    line-height: 1.2;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-}
-.page-nav a { margin-right: 0; font-weight: 500; }
-.page-nav > a:first-child { font-weight: 700; }
-.page-nav span { display: flex; gap: 1.25em; }
-.page-nav [aria-current="page"] {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.3em;
-}
-body:has(.top-head) .page-nav { width: 90vw; margin-bottom: clamp(3rem, 10vh, 6rem); }
 
 /* ---- Attitude / item bars: ink, square, a touch bolder. ---- */
 .item::before { background-color: var(--ink); width: 4px; }

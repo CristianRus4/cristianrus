@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # lets the homescreen step commit what it generates
   pages: write
   id-token: write
 
@@ -23,15 +23,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Fill in missing homescreen thumbnails
+        with:
+          ref: main   # latest main, so a gallery commit from the previous run is included
+      # New screenshot in images/homescreen/ → canonical name, WebP, thumbnail,
+      # and a fresh gallery in homescreen.html. A no-op when nothing changed.
+      - name: Update homescreen gallery
+        id: homescreen
         continue-on-error: true
         run: |
-          for f in images/homescreen/*.webp; do
-            [ -f "images/homescreen/thumbs/$(basename "$f")" ] && continue
-            command -v cwebp >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq webp; }
-            sh scripts/homescreen-thumbs.sh
-            break
-          done
+          node scripts/homescreen.js || {
+            [ $? -eq 3 ] && sudo apt-get update -qq && sudo apt-get install -y -qq webp && node scripts/homescreen.js
+          }
+      - name: Commit homescreen changes
+        if: steps.homescreen.outcome == 'success'
+        continue-on-error: true
+        run: |
+          git add -A images/homescreen homescreen.html
+          git diff --staged --quiet && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: update homescreen gallery"
+          git push origin HEAD:main || { git pull --rebase origin main && git push origin HEAD:main; }
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
