@@ -20,15 +20,12 @@
 <main aria-live="polite">
   <span id="randomLetters"></span>
 </main>
-<p class="tool-hint flip-hint" id="tally"></p>
 
 <script>
 (function () {
   const el = document.getElementById('randomLetters');
-  const tallyEl = document.getElementById('tally');
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=<>?';
   const sides = ['HEADS', 'TAILS'];
-  const tally = { HEADS: 0, TAILS: 0 };
   let flipping = false;
 
   const side = () => sides[Math.floor(Math.random() * 2)];
@@ -43,7 +40,6 @@
   function flip() {
     if (flipping) return;
     flipping = true;
-    tallyEl.style.visibility = 'hidden';
     const steps = 26;
     let i = 0;
     (function step() {
@@ -54,9 +50,6 @@
       }
       const result = side();
       el.textContent = result;
-      tally[result]++;
-      tallyEl.textContent = `heads ${tally.HEADS} · tails ${tally.TAILS} — tap to flip again`;
-      tallyEl.style.visibility = 'visible';
       flipping = false;
     })();
   }

@@ -16,19 +16,15 @@
     <title>focus</title>
 </head>
 <body>
-    <h1 class="title"><a class="titlelink" href="/">Cristian Rus</a></h1>
-    <p class="sub">design & human behaviour</p>
-    <h1>focus</h1>
-    <div class="pomodoro">
-        <p class="phase" id="phase">focus</p>
+    <main class="pomodoro">
+        <p class="phase" id="phase"></p>
         <div id="timer" class="timer">25:00</div>
         <div class="controls">
             <button type="button" id="toggle">play</button>
             <button type="button" id="next">skip</button>
             <button type="button" id="reset">reset</button>
         </div>
-        <p class="tool-hint keys-hint">space to play or pause · s to skip · r to reset</p>
-    </div>
+    </main>
 
     <script>
     (function () {
@@ -52,7 +48,7 @@
         function render() {
             const left = endsAt ? (endsAt - Date.now()) / 1000 : remaining;
             $('timer').textContent = mmss(left);
-            $('phase').textContent = phase === 'focus' ? 'focus · ' + (done % 4 + 1) + ' of 4' : LABEL[phase];
+            $('phase').textContent = phase === 'focus' ? '' : LABEL[phase];
             $('toggle').textContent = endsAt ? 'pause' : 'play';
             document.title = endsAt ? mmss(left) + ' · ' + LABEL[phase] : 'focus';
         }

@@ -1,6 +1,6 @@
 /* Shared styles for tool pages: focus, flip, time, lofi (think is Swiss: swissstyle.css) */
 
-/* Shared: text buttons in the classic link style, and a quiet hint line. */
+/* Shared: text buttons in the classic link style. */
 .tool-button,
 .controls button {
     font: inherit;
@@ -12,19 +12,19 @@
     cursor: pointer;
 }
 .tool-button:disabled { opacity: 0.35; cursor: default; }
-.tool-hint {
-    margin: 0;
-    opacity: 0.6;
-    font-size: 0.85em;
-}
 
 /* focus.html — Pomodoro timer */
 .pomodoro {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    margin-top: 10vh;
 }
 
-.phase { margin: 0 0 0.5em; }
+.phase { margin: 0 0 0.5em; min-height: 1.65em; }
 
 .timer {
     font-size: 20vw;
@@ -37,7 +37,7 @@
     display: flex;
     justify-content: center;
     gap: 1.75em;
-    margin: 1.5em 0 2.5em;
+    margin: 1.5em 0 0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -60,26 +60,7 @@
 /* time.html — steady digits so the clock doesn't shift as it changes */
 .timee, .datee { font-variant-numeric: tabular-nums; }
 
-.flip-hint {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 2rem;
-    text-align: center;
-}
 
-/* lofi.html — status line under the play button */
-.lofi-status {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: calc(50% + 70px);
-    text-align: center;
-}
+/* lofi.html */
 #playButton { cursor: pointer; }
 #playButton:disabled { opacity: 0.35; cursor: default; }
-
-/* Keyboard hints mean nothing on a phone. */
-@media (hover: none) {
-    .keys-hint { display: none; }
-}

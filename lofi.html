@@ -17,9 +17,6 @@
 </head>
 <body>
 
-	<h1 class="title"><a class="titlelink" href="/">Cristian Rus</a></h1>
-	<p class="sub">design & human behaviour</p>
-
 	<button id="playButton" type="button" aria-label="Play" disabled>
   <span id="playIcon"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M5 3 L19 12 L5 21 Z"></path>
@@ -30,22 +27,19 @@
 </svg>
 </span>
 </button>
-	<p class="tool-hint lofi-status" id="status" aria-live="polite">loading…</p>
 
   <div id="player"></div>
 
   <script>
     // Lofi Girl's live radio, played through a hidden YouTube player.
-    // The icon and status follow what the player is actually doing.
+    // The icon follows what the player is actually doing.
     var player;
     var button = document.getElementById('playButton');
-    var statusEl = document.getElementById('status');
 
-    function show(playing, status) {
+    function show(playing) {
       document.getElementById('playIcon').hidden = playing;
       document.getElementById('pauseIcon').hidden = !playing;
       button.setAttribute('aria-label', playing ? 'Pause' : 'Play');
-      statusEl.textContent = status;
       document.title = playing ? '♪ lofi' : 'lofi';
     }
 
@@ -64,16 +58,14 @@
         events: {
           onReady: function () {
             button.disabled = false;
-            show(false, 'lofi hip hop radio · press play');
+            show(false);
           },
           onStateChange: function (e) {
-            if (e.data === YT.PlayerState.PLAYING) show(true, 'playing lofi hip hop radio');
-            else if (e.data === YT.PlayerState.BUFFERING) show(true, 'tuning in…');
-            else if (e.data === YT.PlayerState.PAUSED) show(false, 'paused');
-            else if (e.data === YT.PlayerState.ENDED) show(false, 'the stream stopped · press play');
+            if (e.data === YT.PlayerState.PLAYING || e.data === YT.PlayerState.BUFFERING) show(true);
+            else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) show(false);
           },
           onError: function () {
-            show(false, 'the stream isn’t available right now');
+            show(false);
           }
         }
       });
@@ -84,7 +76,7 @@
       if (e.key === ' ' && e.target !== button) { e.preventDefault(); toggle(); }
     });
   </script>
-  <script src="https://www.youtube.com/iframe_api" onerror="document.getElementById('status').textContent = 'couldn’t reach YouTube'"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
 
 </body>
 

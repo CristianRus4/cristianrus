@@ -24,23 +24,21 @@
 
 		<main class="page-head bottom-head">
 			<div class="bottom-content think">
-				<h1 class="think-label"><a href="/">Think</a><span id="think-kind"></span></h1>
 				<p class="think-line" id="thought" aria-live="polite">There is always a way.</p>
 			</div>
 			<div class="bottom-title-row">
-				<p class="sub">tap for another</p>
+				<p class="sub" id="think-kind"></p>
 			</div>
 		</main>
 
 		<script>
 		(function () {
 		  // The principles live on /attitude (under "to know" and "to do"); this page shows one at a time.
-		  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		  const line = document.getElementById('thought');
 		  const kind = document.getElementById('think-kind');
 		  let thoughts = [{ text: line.textContent, kind: '' }];
 		  let shown = null;
-		  let timer = null;
+		  line.style.visibility = 'hidden';   // no flash of the fallback line before the real one
 
 		  // Largest size at which the principle fits the width and about half the screen.
 		  function fit(text) {
@@ -55,30 +53,11 @@
 		    line.style.fontSize = lo + 'px';
 		  }
 
-		  // Same letters-into-place effect as the Now page.
-		  function scrambleTo(text) {
-		    clearInterval(timer);
-		    if (calm) { line.textContent = text; return; }
-		    const letters = 'abcdefghijklmnopqrstuvwxyz';
-		    const start = Date.now();
-		    timer = setInterval(() => {
-		      if (Date.now() - start >= 450) {
-		        clearInterval(timer);
-		        line.textContent = text;
-		        return;
-		      }
-		      line.textContent = text.replace(/[a-z]/gi, ch => {
-		        const r = letters[Math.floor(Math.random() * letters.length)];
-		        return ch === ch.toUpperCase() ? r.toUpperCase() : r;
-		      });
-		    }, 50);
-		  }
-
 		  function show(thought) {
 		    shown = thought;
-		    kind.textContent = thought.kind ? ' · ' + thought.kind : '';
+		    kind.textContent = thought.kind;
 		    fit(thought.text);
-		    scrambleTo(thought.text);
+		    line.style.visibility = '';
 		  }
 
 		  function another() {
@@ -106,12 +85,9 @@
 		      show(thoughts[0]);
 		    });
 
-		  document.addEventListener('click', e => {
-		    if (!e.target.closest('a')) another();
-		  });
+		  document.addEventListener('click', another);
 		  document.addEventListener('keydown', e => {
 		    if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') {
-		      if (e.target.closest && e.target.closest('a')) return;
 		      e.preventDefault();
 		      another();
 		    }
