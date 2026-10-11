@@ -1,0 +1,182 @@
+/* ============================================================================
+   Reading preferences — text size, font and theme for books/ and unwind/.
+   Set by reading-prefs.js on <html> (data-font, data-theme, --read-size) and
+   read by each reading stylesheet through these tokens:
+     --read-root   root font size (the chosen size, scaled per font)
+     --font-text   the reading typeface; italics use font-style: italic
+     --bg --surface --border --text --dim --accent …  (the Unwind palette)
+   =========================================================================== */
+
+@font-face {
+  font-family: "Reading Mono";
+  src: url("fonts/Quattro.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Reading Mono";
+  src: url("fonts/Quattro-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Reading Mono";
+  src: url("fonts/Quattro-Italic.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Reading Serif";
+  src: url("fonts/Erode.ttf") format("truetype");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Reading Serif";
+  src: url("fonts/Erode-Italic.ttf") format("truetype");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Reading Sans";
+  src: url("fonts/GeistVariableVF.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --read-size: 18px;
+  --read-scale: 1;
+  --read-root: calc(var(--read-size) * var(--read-scale));   /* use this as the root font size */
+  --font-text: "Reading Mono", "iA Writer Quattro", ui-monospace, Menlo, monospace;
+}
+/* Erode sets smaller than Quattro at the same size; scale it up to match. */
+:root[data-font="serif"] { --font-text: "Reading Serif", Georgia, "Times New Roman", serif; --read-scale: 1.1; }
+:root[data-font="sans"] { --font-text: "Reading Sans", system-ui, -apple-system, sans-serif; }
+
+/* Themes. Auto (no attribute) follows the device. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --black-rgb: 17, 17, 17;
+  --gold-rgb: 112, 84, 28;
+  --bg: #ffffff;
+  --surface: #f5f5f5;
+  --border: rgba(var(--black-rgb), 0.16);
+  --green: #2b7a55;
+  --red: #b24a3b;
+}
+:root[data-theme="sepia"] {
+  color-scheme: light;
+  --black-rgb: 59, 45, 28;
+  --gold-rgb: 128, 82, 20;
+  --bg: #f4ecd8;
+  --surface: #ebe0c6;
+  --border: rgba(var(--black-rgb), 0.18);
+  --green: #3f6f45;
+  --red: #a4472f;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --black-rgb: 248, 245, 239;
+  --gold-rgb: 196, 169, 110;
+  --bg: #0e0d0b;
+  --surface: #161510;
+  --border: rgba(var(--black-rgb), 0.18);
+  --green: #7ab090;
+  --red: #c07060;
+}
+/* Derived colours re-resolve against the theme's base values. */
+:root[data-theme] {
+  --text: rgb(var(--black-rgb));
+  --dim: rgba(var(--black-rgb), 0.7);
+  --accent: rgb(var(--gold-rgb));
+  --accent-dim: rgba(var(--gold-rgb), 0.6);
+  --accent-faint: rgba(var(--gold-rgb), 0.37);
+  --section-accent: rgba(var(--gold-rgb), 0.37);
+  --quote-text: rgba(var(--black-rgb), 0.88);
+}
+
+/* ---- Controls (reading-prefs.js) ---------------------------------------- */
+.reading-prefs {
+  display: grid;
+  gap: 16px;
+  font-size: 13px;          /* controls, not text: fixed sizes so they don't grow with the reading size */
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.rp-row {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+.rp-options { display: flex; flex-wrap: wrap; gap: 6px; }
+.rp-options button {
+  min-width: 42px;
+  height: 40px;
+  padding: 0 10px;
+  font-family: inherit;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 15px;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+}
+.rp-options button[data-font="mono"] { font-family: "Reading Mono", monospace; }
+.rp-options button[data-font="serif"] { font-family: "Reading Serif", serif; font-size: 17px; }
+.rp-options button[data-font="sans"] { font-family: "Reading Sans", sans-serif; }
+.rp-options button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+@media (hover: hover) {
+  .rp-options button:hover { border-color: var(--accent); }
+}
+.rp-options button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* The "Aa" button and its sheet, for pages without their own (Unwind). */
+.rp-toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  cursor: pointer;
+}
+.rp-sheet {
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 1.75rem;
+  border: 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-text);
+}
+.rp-sheet::backdrop { background: rgba(var(--black-rgb), 0.18); }
+@media (max-width: 640px) {
+  .rp-sheet { padding-left: 1.15rem; padding-right: 1.15rem; }
+  .rp-row { grid-template-columns: 56px 1fr; }
+}
+.rp-sheet[open] { animation: rp-rise 220ms ease; }
+@keyframes rp-rise { from { transform: translateY(1.5rem); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .rp-sheet[open] { animation: none; }
+}
+.rp-options button:disabled { opacity: 0.35; cursor: default; }

@@ -1,15 +1,6 @@
-      @font-face {
-        font-family: "Quattro";
-        src: url("../../fonts/Quattro.woff") format("woff");
-      }
-
-      @font-face {
-        font-family: "Quattro Italic";
-        src: url("../../fonts/Quattro-Italic.woff") format("woff");
-      }
-
+      /* Size, font and theme: ../../reading-prefs.css (--read-root, --font-text, palette). */
       :root {
-        font-size: 18px;
+        font-size: var(--read-root, 18px);
         --black-rgb: 17, 17, 17;
         --gold-rgb: 112, 84, 28;
         --bg: #ffffff;
@@ -63,8 +54,8 @@
         max-width: 680px;
         margin: 0 auto;
         padding: 2.5rem 1.5rem 6rem;
-        font-family: "Quattro", serif;
-        font-size: 18px;
+        font-family: var(--font-text);
+        font-size: 1rem;
         line-height: 1.78;
       }
 
@@ -98,7 +89,8 @@
 
       .site-link {
         display: inline-block;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 1.45rem;
         color: var(--accent);
       }
@@ -207,7 +199,8 @@
       .section-label {
         margin: 0 0 0.4rem;
         color: var(--section-accent);
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 0.72rem;
         opacity: 1;
         text-align: right;
@@ -234,6 +227,14 @@
         font-size: 0.72rem;
         letter-spacing: 0.2em;
         text-transform: uppercase;
+      }
+
+      .prefs-toggle {
+        margin-left: 1.4em;
+        color: var(--accent);
+        font-size: 0.9rem;
+        line-height: 1;
+        vertical-align: -0.05em;
       }
 
       .back-to-unwind {
@@ -273,7 +274,8 @@
 
       .entry-title {
         margin: 0 0 1rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 2.1rem;
         font-weight: 400;
         color: var(--accent);
@@ -327,19 +329,22 @@
       }
 
       .fragment-quote p {
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
       }
 
       .essay-blockquote p,
       .quote-block p,
       .fragment-quote p {
         margin: 0;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
       }
 
       .number-value {
         margin: 0 0 0.55rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 2.1rem;
         font-weight: 400;
         line-height: 1.2;
@@ -350,7 +355,8 @@
 
       .word-term {
         margin: 0 0 0.55rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 2.1rem;
         font-weight: 400;
         line-height: 1.2;
@@ -363,7 +369,8 @@
       .game-title,
       .section-heading {
         margin: 0 0 0.2rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 1.45rem;
         line-height: 1.2;
         color: var(--accent);
@@ -424,7 +431,8 @@
       }
 
       .question-text {
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         flex: 1 1 auto;
         margin: 0;
         line-height: inherit;
@@ -433,7 +441,8 @@
       .question-number {
         display: block;
         flex: 0 0 1.6rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         color: var(--accent);
         font-size: 1.5rem;
         line-height: 1.12;
@@ -646,7 +655,8 @@
 
       .game-title {
         margin: 0 0 0.2rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 1.45rem;
         line-height: 1.2;
         color: var(--accent);
@@ -655,7 +665,7 @@
       .option-title {
         display: block;
         margin-bottom: 0;
-        font-family: "Quattro", serif;
+        font-family: var(--font-text);
         font-weight: 400;
         font-size: 1.02rem;
         color: inherit;
@@ -670,7 +680,7 @@
       }
 
       .false-cognate-terms {
-        font-family: "Quattro", serif;
+        font-family: var(--font-text);
         font-size: 1.35rem;
         line-height: 1.35;
       }
@@ -730,7 +740,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.35rem;
-        font-family: "Quattro", serif;
+        font-family: var(--font-text);
         font-size: 1.35rem;
         color: var(--text);
       }

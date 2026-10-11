@@ -7,7 +7,8 @@
      · the URL hash as the place in the book (#book4, #book4-12…), so links,
        notes and the back button all work,
      · a reading-progress line and "Book 4 · 38%" at the top,
-     · a contents sheet (gold button, or C) with text size controls,
+     · a contents sheet (gold button, or C), and "Aa" for the reading
+     settings (size, font, theme — ../reading-prefs.js),
      · footnotes and name-index entries in a small sheet instead of a jump,
      · "Continue" on the cover, from where you left off.
    Keys: ← → previous/next chapter · C contents · Esc closes a sheet.
@@ -22,8 +23,6 @@
     set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* private mode */ } }
   };
   const PLACE = 'reader:place:' + location.pathname.replace(/\.html$/, '');
-  const SIZE = 'reader:size';
-  const SIZES = [15, 16, 17, 18, 20, 22, 24];
   const bookTitle = cover.dataset.title || document.title;
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
@@ -66,13 +65,12 @@
   // ---- Chrome: progress line, top row, contents button + sheet, note sheet ----
   document.body.insertAdjacentHTML('afterbegin', `
     <div class="progress" aria-hidden="true"></div>
-    <div class="reader-meta" id="reader-meta" hidden><a href="#">${bookTitle}</a><span id="reader-where"></span></div>`);
+    <div class="reader-meta" id="reader-meta" hidden><a href="#">${bookTitle}</a><span class="reader-meta-end"><span id="reader-where"></span><button type="button" data-reading-prefs-toggle>Aa</button></span></div>`);
   document.body.insertAdjacentHTML('beforeend', `
     <button type="button" class="contents-button" id="contents-button" aria-label="Contents" hidden><i></i></button>
     <dialog class="sheet contents-sheet" id="contents-sheet" aria-label="Contents">
       <div class="sheet-header"><h2 class="sheet-title">Contents</h2><button type="button" class="reader-link" data-close>Close</button></div>
       <div class="toc"></div>
-      <div class="text-size">Text size <button type="button" data-size="-1" aria-label="Smaller text">A−</button><button type="button" data-size="1" aria-label="Larger text">A+</button></div>
     </dialog>
     <dialog class="sheet note-sheet" id="note-sheet" aria-label="Note">
       <div class="sheet-header"><h2 class="sheet-title">Note</h2><button type="button" class="reader-link" data-close>Close</button></div>
@@ -93,7 +91,7 @@
   const words = main.textContent.split(/\s+/).length;
   const hours = words / 230 / 60;
   const time = hours < 1 ? Math.max(1, Math.round(hours * 60)) + ' min' : Math.round(hours) + (Math.round(hours) === 1 ? ' hour' : ' hours');
-  cover.insertAdjacentHTML('afterbegin', `<div class="reader-meta"><a href="/">Cristian Rus</a><span>${time}</span></div>`);
+  cover.insertAdjacentHTML('afterbegin', `<div class="reader-meta"><a href="/">Cristian Rus</a><span class="reader-meta-end"><span>${time}</span><button type="button" data-reading-prefs-toggle>Aa</button></span></div>`);
   const actions = document.createElement('div');
   actions.className = 'cover-actions';
   (cover.querySelector('.cover-credit') || cover.querySelector('.cover-title')).after(actions);
@@ -271,23 +269,13 @@
     go(chapters.find(c => c.id === place.chapter));
   });
 
-  function setSize(px) {
-    document.documentElement.style.setProperty('--size', px + 'px');
-    store.set(SIZE, px);
-  }
-  const savedSize = store.get(SIZE);
-  if (SIZES.includes(savedSize)) setSize(savedSize);
-  contents.querySelector('.text-size').addEventListener('click', e => {
-    const step = Number(e.target.dataset.size || 0);
-    if (!step) return;
-    const now = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--size')) || 18;
-    const i = SIZES.indexOf(SIZES.reduce((a, b) => (Math.abs(b - now) < Math.abs(a - now) ? b : a)));
-    const fraction = current ? fractionRead() : 0;
-    setSize(SIZES[Math.max(0, Math.min(SIZES.length - 1, i + step))]);
-    if (current) {
-      restore = { chapter: current.id, fraction };
-      showChapter(current);
-    }
+  // Size and font changes reflow the chapter; keep the reader's place.
+  if (window.ReadingPrefs) ReadingPrefs.wrap(apply => {
+    if (!current) return apply();
+    const fraction = fractionRead();
+    apply();
+    restore = { chapter: current.id, fraction };
+    showChapter(current);
   });
 
   document.addEventListener('keydown', e => {

@@ -32,5 +32,6 @@
   <!-- Reading -->
   <url><loc>https://www.cristianrus.me/books/meditations</loc><priority>0.4</priority></url>
   <url><loc>https://www.cristianrus.me/books/discourses</loc><priority>0.4</priority></url>
+  <url><loc>https://www.cristianrus.me/books/ecclesiastes</loc><priority>0.4</priority></url>
 
 </urlset>

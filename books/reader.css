@@ -1,33 +1,11 @@
 /* ============================================================================
    Book reader — Unwind style (Quattro, gold accent, quiet uppercase labels).
-   Used by books/*.html together with books/reader.js. Without JS the whole
-   book reads top to bottom with the same typography.
+   Used by books/*.html together with books/reader.js. Size, font and theme
+   come from ../reading-prefs.css (--read-root, --font-text, the palette).
+   Without JS the whole book reads top to bottom with the same typography.
    =========================================================================== */
 
-@font-face {
-  font-family: "Reader Quattro";
-  src: url("../fonts/Quattro.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Reader Quattro";
-  src: url("../fonts/Quattro-Bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Reader Quattro";
-  src: url("../fonts/Quattro-Italic.woff") format("woff");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
 :root {
-  --size: 18px;
   --black-rgb: 17, 17, 17;
   --gold-rgb: 112, 84, 28;
   --bg: #ffffff;
@@ -56,7 +34,7 @@
 
 html {
   background: var(--bg);
-  font-size: var(--size);
+  font-size: var(--read-root, 18px);
   scroll-padding-top: 4.5rem;
   -webkit-text-size-adjust: 100%;
 }
@@ -67,7 +45,7 @@ body {
   padding: 2.5rem 1.5rem 7rem;
   background: var(--bg);
   color: var(--text);
-  font-family: "Reader Quattro", "iA Writer Quattro", ui-monospace, Menlo, monospace;
+  font-family: var(--font-text);
   font-size: 1rem;
   line-height: 1.78;
   -webkit-font-smoothing: antialiased;
@@ -190,7 +168,16 @@ p > strong[id] {
   text-transform: uppercase;
   color: var(--accent-dim);
 }
-.reader-meta > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.reader-meta > *,
+.reader-meta-end > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.reader-meta-end { display: flex; align-items: baseline; gap: 1.4em; min-width: 0; }
+.reader-meta .rp-toggle {
+  flex: none;
+  color: var(--accent);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
 .reader-meta a:hover { color: var(--accent); }
 
 .cover { margin: 0 0 3rem; }
@@ -381,30 +368,6 @@ p > strong[id] {
   color: var(--accent);
 }
 .sheet .toc > h2 { display: none; }
-
-.text-size {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-.text-size button {
-  min-width: 2.2rem;
-  height: 2.2rem;
-  border: 1px solid var(--border);
-  border-radius: 0;
-  background: none;
-  color: var(--text);
-  font: inherit;
-  font-size: 0.9rem;
-  letter-spacing: 0;
-  cursor: pointer;
-}
-.text-size button:hover { border-color: var(--accent); color: var(--accent); }
 
 .note-sheet .note-body > :last-child { margin-bottom: 0; }
 .note-sheet .note-body dt { margin-top: 0; }

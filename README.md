@@ -13,6 +13,7 @@ Static HTML personal website hosted on GitHub Pages.
 - `swissstyle.css` — Swiss poster layer on top of `style.css` (see Styles)
 - `tools.css` — Shared styles for tool pages
 - `gallery.js` — Full-size image viewer shared by homescreen and tattoos (see the comment at its top)
+- `reading-prefs.js` + `reading-prefs.css` — Text size, font (Mono/Serif/Sans) and theme (Auto/Light/Sepia/Dark) for the books and Unwind, saved in the browser and shared between them. The "Aa" button opens them.
 - `/unwind` — Self-contained daily digest with its own styles
 - `llms.txt` — Plain-markdown summary of the site for LLMs; update it when pages or apps change
 
@@ -22,7 +23,7 @@ The site deliberately has three looks. Keep all three.
 
 1. **Classic** — `style.css` alone. Light/dark, narrow centred column, gradient link hover. Books, tattoos, experience, homescreen, tools, 404.
 2. **Swiss** — `style.css` + `swissstyle.css`. One flat colour per page (`--paper`/`--ink` on `<html>`), giant title, grain, invert-on-hover links. Home, about, now, attitude, think, active, lorem. Linking the stylesheet is what opts a page in.
-3. **Unwind** — everything under `/unwind`, styled inline. Independent of the other two.
+3. **Unwind** — everything under `/unwind`, plus the book reader in `/books`. Digest pages are generated: edit `unwind/scripts/build-static.js`, then run `node unwind/scripts/build-static.js`. Size, font and theme come from `reading-prefs.css`.
 
 ## Active Pages
 

@@ -8,18 +8,9 @@ const SHARED_STYLE_NAME = "styles.css";
 const SHARED_SCRIPT_NAME = "app.js";
 
 const PAGE_STYLE = `
-      @font-face {
-        font-family: "Quattro";
-        src: url("../../fonts/Quattro.woff") format("woff");
-      }
-
-      @font-face {
-        font-family: "Quattro Italic";
-        src: url("../../fonts/Quattro-Italic.woff") format("woff");
-      }
-
+      /* Size, font and theme: ../../reading-prefs.css (--read-root, --font-text, palette). */
       :root {
-        font-size: 18px;
+        font-size: var(--read-root, 18px);
         --black-rgb: 17, 17, 17;
         --gold-rgb: 112, 84, 28;
         --bg: #ffffff;
@@ -73,8 +64,8 @@ const PAGE_STYLE = `
         max-width: 680px;
         margin: 0 auto;
         padding: 2.5rem 1.5rem 6rem;
-        font-family: "Quattro", serif;
-        font-size: 18px;
+        font-family: var(--font-text);
+        font-size: 1rem;
         line-height: 1.78;
       }
 
@@ -108,7 +99,8 @@ const PAGE_STYLE = `
 
       .site-link {
         display: inline-block;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 1.45rem;
         color: var(--accent);
       }
@@ -217,7 +209,8 @@ const PAGE_STYLE = `
       .section-label {
         margin: 0 0 0.4rem;
         color: var(--section-accent);
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 0.72rem;
         opacity: 1;
         text-align: right;
@@ -244,6 +237,14 @@ const PAGE_STYLE = `
         font-size: 0.72rem;
         letter-spacing: 0.2em;
         text-transform: uppercase;
+      }
+
+      .prefs-toggle {
+        margin-left: 1.4em;
+        color: var(--accent);
+        font-size: 0.9rem;
+        line-height: 1;
+        vertical-align: -0.05em;
       }
 
       .back-to-unwind {
@@ -283,7 +284,8 @@ const PAGE_STYLE = `
 
       .entry-title {
         margin: 0 0 1rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 2.1rem;
         font-weight: 400;
         color: var(--accent);
@@ -337,19 +339,22 @@ const PAGE_STYLE = `
       }
 
       .fragment-quote p {
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
       }
 
       .essay-blockquote p,
       .quote-block p,
       .fragment-quote p {
         margin: 0;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
       }
 
       .number-value {
         margin: 0 0 0.55rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 2.1rem;
         font-weight: 400;
         line-height: 1.2;
@@ -360,7 +365,8 @@ const PAGE_STYLE = `
 
       .word-term {
         margin: 0 0 0.55rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 2.1rem;
         font-weight: 400;
         line-height: 1.2;
@@ -373,7 +379,8 @@ const PAGE_STYLE = `
       .game-title,
       .section-heading {
         margin: 0 0 0.2rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 1.45rem;
         line-height: 1.2;
         color: var(--accent);
@@ -434,7 +441,8 @@ const PAGE_STYLE = `
       }
 
       .question-text {
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         flex: 1 1 auto;
         margin: 0;
         line-height: inherit;
@@ -443,7 +451,8 @@ const PAGE_STYLE = `
       .question-number {
         display: block;
         flex: 0 0 1.6rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         color: var(--accent);
         font-size: 1.5rem;
         line-height: 1.12;
@@ -656,7 +665,8 @@ const PAGE_STYLE = `
 
       .game-title {
         margin: 0 0 0.2rem;
-        font-family: "Quattro Italic", serif;
+        font-family: var(--font-text);
+        font-style: italic;
         font-size: 1.45rem;
         line-height: 1.2;
         color: var(--accent);
@@ -665,7 +675,7 @@ const PAGE_STYLE = `
       .option-title {
         display: block;
         margin-bottom: 0;
-        font-family: "Quattro", serif;
+        font-family: var(--font-text);
         font-weight: 400;
         font-size: 1.02rem;
         color: inherit;
@@ -680,7 +690,7 @@ const PAGE_STYLE = `
       }
 
       .false-cognate-terms {
-        font-family: "Quattro", serif;
+        font-family: var(--font-text);
         font-size: 1.35rem;
         line-height: 1.35;
       }
@@ -740,7 +750,7 @@ const PAGE_STYLE = `
         display: flex;
         flex-wrap: wrap;
         gap: 0.35rem;
-        font-family: "Quattro", serif;
+        font-family: var(--font-text);
         font-size: 1.35rem;
         color: var(--text);
       }
@@ -880,7 +890,7 @@ function renderDigestPage(entry) {
     "<html lang=\"en\">",
     "  <head>",
     "    <meta charset=\"utf-8\">",
-    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">",
+    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
     "    <meta name=\"description\" content=\"UNWIND — a static daily page with an essay, a question ritual, and a small game.\">",
     "    <meta property=\"og:type\" content=\"website\">",
     "    <meta property=\"og:url\" content=\"https://www.cristianrus.me/unwind/digests/" + escapeAttribute(entry.date) + ".html\">",
@@ -889,7 +899,9 @@ function renderDigestPage(entry) {
     "    <meta property=\"og:image\" content=\"https://www.cristianrus.me/images/avatar.jpg\">",
     "    <link rel=\"icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
     "    <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
+    "    <link rel=\"stylesheet\" href=\"../../reading-prefs.css\">",
     "    <link rel=\"stylesheet\" href=\"./" + SHARED_STYLE_NAME + "\">",
+    "    <script src=\"../../reading-prefs.js\"></script>",
     "    <title>" + escapeHtml(entry.title) + " — UNWIND</title>",
     "  </head>",
     "  <body>",
@@ -941,18 +953,20 @@ function renderArchivePage(digests) {
     "<html lang=\"en\">",
     "  <head>",
     "    <meta charset=\"utf-8\">",
-    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">",
+    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
     "    <meta name=\"description\" content=\"UNWIND archive.\">",
     "    <link rel=\"icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
     "    <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"../../images/favicon.ico\">",
+    "    <link rel=\"stylesheet\" href=\"../../reading-prefs.css\">",
     "    <link rel=\"stylesheet\" href=\"./" + SHARED_STYLE_NAME + "\">",
+    "    <script src=\"../../reading-prefs.js\"></script>",
     "    <title>UNWIND Archive</title>",
     "  </head>",
     "  <body>",
     "    <main class=\"page\">",
     "      <div class=\"stack\">",
     "        <section class=\"card\">",
-    "          <div class=\"meta-row\"><a class=\"back-to-unwind\" href=\"../index.html\">UNWIND</a><p class=\"date-line\">UNWIND Archive</p></div>",
+    "          <div class=\"meta-row\"><a class=\"back-to-unwind\" href=\"../index.html\">UNWIND</a><p class=\"date-line\">UNWIND Archive<button type=\"button\" class=\"prefs-toggle\" data-reading-prefs-toggle>Aa</button></p></div>",
     "          <h1 class=\"entry-title\">Every available digest</h1>",
     "          <p class=\"entry-subtitle\"><a href=\"../index.html\">Back to today launcher</a></p>",
     "        </section>",
@@ -969,7 +983,7 @@ function renderArchivePage(digests) {
 function renderDigestContent(entry) {
   return [
     "        <section class=\"card\">",
-    "          <div class=\"meta-row\"><a class=\"back-to-unwind\" href=\"../index.html\">UNWIND</a><p class=\"date-line\">" + escapeHtml(formatLongDate(entry.date)) + "</p></div>",
+    "          <div class=\"meta-row\"><a class=\"back-to-unwind\" href=\"../index.html\">UNWIND</a><p class=\"date-line\">" + escapeHtml(formatLongDate(entry.date)) + "<button type=\"button\" class=\"prefs-toggle\" data-reading-prefs-toggle>Aa</button></p></div>",
     "          <h1 class=\"entry-title\">" + escapeHtml(entry.title) + "</h1>",
     renderParagraphs(entry.essay.paragraphs, 10, entry.essay.blockquote),
     "        </section>",
