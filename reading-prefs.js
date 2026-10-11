@@ -6,12 +6,13 @@
    settings. Then, in the page:
      <div data-reading-prefs></div>             the controls, right there
      <button data-reading-prefs-toggle>Aa</button>  opens them in a sheet
+                                                (style it yourself by giving it a class)
    ReadingPrefs.wrap(fn) lets a page run each change itself, e.g. to keep
    the reader's place: fn receives the function that applies the change.
    =========================================================================== */
 (function () {
   var KEY = 'reading:prefs';
-  var SIZES = [15, 16, 17, 18, 20, 22, 24];
+  var SIZES = [12, 13, 14, 15, 16, 17, 18, 20, 22, 24];
   var FONTS = [['mono', 'Mono'], ['serif', 'Serif'], ['sans', 'Sans']];
   var THEMES = [['auto', 'Auto'], ['light', 'Light'], ['sepia', 'Sepia'], ['dark', 'Dark']];
   var root = document.documentElement;
@@ -95,7 +96,7 @@
     document.body.appendChild(sheet);
     sheet.addEventListener('click', function (e) { if (e.target === sheet) sheet.close(); });
     toggles.forEach(function (t) {
-      t.classList.add('rp-toggle');
+      if (!t.className) t.classList.add('rp-toggle');
       t.setAttribute('aria-label', 'Reading settings');
       t.addEventListener('click', function () { sheet.showModal(); });
     });

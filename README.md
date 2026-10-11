@@ -13,7 +13,7 @@ Static HTML personal website hosted on GitHub Pages.
 - `swissstyle.css` — Swiss poster layer on top of `style.css` (see Styles)
 - `tools.css` — Shared styles for tool pages
 - `gallery.js` — Full-size image viewer shared by homescreen and tattoos (see the comment at its top)
-- `reading-prefs.js` + `reading-prefs.css` — Text size, font (Mono/Serif/Sans) and theme (Auto/Light/Sepia/Dark) for the books and Unwind, saved in the browser and shared between them. The "Aa" button opens them.
+- `reading-prefs.js` + `reading-prefs.css` — Text size, font (Mono/Serif/Sans) and theme (Auto/Light/Sepia/Dark) for the books and Unwind, saved in the browser and shared between them. In the books they're at the top of the gold button's sheet; in Unwind, the gold "Aa" above the jump button.
 - `/unwind` — Self-contained daily digest with its own styles
 - `llms.txt` — Plain-markdown summary of the site for LLMs; update it when pages or apps change
 

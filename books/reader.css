@@ -158,28 +158,6 @@ p > strong[id] {
 }
 
 /* ---- Cover --------------------------------------------------------------- */
-.reader-meta {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 0 0 3rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent-dim);
-}
-.reader-meta > *,
-.reader-meta-end > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.reader-meta-end { display: flex; align-items: baseline; gap: 1.4em; min-width: 0; }
-.reader-meta .rp-toggle {
-  flex: none;
-  color: var(--accent);
-  font-size: 0.9rem;
-  letter-spacing: 0.04em;
-  text-transform: none;
-}
-.reader-meta a:hover { color: var(--accent); }
-
 .cover { margin: 0 0 3rem; }
 .cover-author {
   margin: 4rem 0 0.75rem;
@@ -368,6 +346,8 @@ p > strong[id] {
   color: var(--accent);
 }
 .sheet .toc > h2 { display: none; }
+.contents-sheet .reading-prefs { margin: 0 0 2.25rem; }
+.contents-sheet .sheet-title { margin: 0 0 0.5rem; }
 
 .note-sheet .note-body > :last-child { margin-bottom: 0; }
 .note-sheet .note-body dt { margin-top: 0; }

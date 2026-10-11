@@ -134,6 +134,34 @@ const PAGE_STYLE = `
         cursor: pointer;
       }
 
+      /* Reading settings (../../reading-prefs.js): a gold square in the corner,
+         stacked above the jump button while that one is showing. */
+      .prefs-fab {
+        position: fixed;
+        right: 1.5rem;
+        bottom: 1.5rem;
+        z-index: 20;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(2.8rem + 2px);   /* same box as the jump button below it */
+        height: 2.1rem;
+        padding: 0;
+        border: 1px solid var(--accent);
+        border-radius: 0;
+        background: var(--accent);
+        color: var(--bg);
+        font-family: var(--font-text);
+        font-size: 0.88rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: bottom 180ms ease;
+      }
+
+      body:has(.section-jump-button:not([hidden])) .prefs-fab {
+        bottom: calc(1.5rem + 2.1rem + 0.5rem);
+      }
+
       .section-jump-button[disabled] {
         opacity: 0.45;
       }
@@ -237,14 +265,6 @@ const PAGE_STYLE = `
         font-size: 0.72rem;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-      }
-
-      .prefs-toggle {
-        margin-left: 1.4em;
-        color: var(--accent);
-        font-size: 0.9rem;
-        line-height: 1;
-        vertical-align: -0.05em;
       }
 
       .back-to-unwind {
@@ -815,6 +835,15 @@ const PAGE_STYLE = `
           bottom: 1rem;
         }
 
+        .prefs-fab {
+          right: 1rem;
+          bottom: 1rem;
+        }
+
+        body:has(.section-jump-button:not([hidden])) .prefs-fab {
+          bottom: calc(1rem + 2.1rem + 0.5rem);
+        }
+
         .question-actions {
           margin-left: 1.9rem;
         }
@@ -915,6 +944,7 @@ function renderDigestPage(entry) {
     "        <p class=\"back-to-unwind\"><a href=\"../index.html\">UNWIND</a></p>",
     "      </div>",
     "    </main>",
+    "    <button type=\"button\" class=\"prefs-fab\" data-reading-prefs-toggle>Aa</button>",
     "    <script id=\"unwind-page-data\" type=\"application/json\">" + safeJson(entry) + "</script>",
     "    <script src=\"./" + SHARED_SCRIPT_NAME + "\"></script>",
     "  </body>",
@@ -966,7 +996,7 @@ function renderArchivePage(digests) {
     "    <main class=\"page\">",
     "      <div class=\"stack\">",
     "        <section class=\"card\">",
-    "          <div class=\"meta-row\"><a class=\"back-to-unwind\" href=\"../index.html\">UNWIND</a><p class=\"date-line\">UNWIND Archive<button type=\"button\" class=\"prefs-toggle\" data-reading-prefs-toggle>Aa</button></p></div>",
+    "          <div class=\"meta-row\"><a class=\"back-to-unwind\" href=\"../index.html\">UNWIND</a><p class=\"date-line\">UNWIND Archive</p></div>",
     "          <h1 class=\"entry-title\">Every available digest</h1>",
     "          <p class=\"entry-subtitle\"><a href=\"../index.html\">Back to today launcher</a></p>",
     "        </section>",
@@ -974,6 +1004,7 @@ function renderArchivePage(digests) {
     "        <p class=\"back-to-unwind\"><a href=\"../index.html\">UNWIND</a></p>",
     "      </div>",
     "    </main>",
+    "    <button type=\"button\" class=\"prefs-fab\" data-reading-prefs-toggle>Aa</button>",
     "  </body>",
     "</html>",
     ""
@@ -983,7 +1014,7 @@ function renderArchivePage(digests) {
 function renderDigestContent(entry) {
   return [
     "        <section class=\"card\">",
-    "          <div class=\"meta-row\"><a class=\"back-to-unwind\" href=\"../index.html\">UNWIND</a><p class=\"date-line\">" + escapeHtml(formatLongDate(entry.date)) + "<button type=\"button\" class=\"prefs-toggle\" data-reading-prefs-toggle>Aa</button></p></div>",
+    "          <div class=\"meta-row\"><a class=\"back-to-unwind\" href=\"../index.html\">UNWIND</a><p class=\"date-line\">" + escapeHtml(formatLongDate(entry.date)) + "</p></div>",
     "          <h1 class=\"entry-title\">" + escapeHtml(entry.title) + "</h1>",
     renderParagraphs(entry.essay.paragraphs, 10, entry.essay.blockquote),
     "        </section>",

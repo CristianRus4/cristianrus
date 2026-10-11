@@ -6,9 +6,9 @@
      · one chapter at a time, with previous/next at the end of each,
      · the URL hash as the place in the book (#book4, #book4-12…), so links,
        notes and the back button all work,
-     · a reading-progress line and "Book 4 · 38%" at the top,
-     · a contents sheet (gold button, or C), and "Aa" for the reading
-     settings (size, font, theme — ../reading-prefs.js),
+     · a thin reading-progress line at the top,
+     · the gold button (or C): reading settings (size, font, theme —
+       ../reading-prefs.js) and the contents,
      · footnotes and name-index entries in a small sheet instead of a jump,
      · "Continue" on the cover, from where you left off.
    Keys: ← → previous/next chapter · C contents · Esc closes a sheet.
@@ -62,14 +62,15 @@
     c.el.appendChild(nav);
   });
 
-  // ---- Chrome: progress line, top row, contents button + sheet, note sheet ----
+  // ---- Chrome: progress line, the gold button + its sheet (settings, contents), note sheet ----
   document.body.insertAdjacentHTML('afterbegin', `
-    <div class="progress" aria-hidden="true"></div>
-    <div class="reader-meta" id="reader-meta" hidden><a href="#">${bookTitle}</a><span class="reader-meta-end"><span id="reader-where"></span><button type="button" data-reading-prefs-toggle>Aa</button></span></div>`);
+    <div class="progress" aria-hidden="true"></div>`);
   document.body.insertAdjacentHTML('beforeend', `
-    <button type="button" class="contents-button" id="contents-button" aria-label="Contents" hidden><i></i></button>
-    <dialog class="sheet contents-sheet" id="contents-sheet" aria-label="Contents">
-      <div class="sheet-header"><h2 class="sheet-title">Contents</h2><button type="button" class="reader-link" data-close>Close</button></div>
+    <button type="button" class="contents-button" id="contents-button" aria-label="Settings and contents"><i></i></button>
+    <dialog class="sheet contents-sheet" id="contents-sheet" aria-label="Settings and contents">
+      <div class="sheet-header"><span></span><button type="button" class="reader-link" data-close>Close</button></div>
+      <div data-reading-prefs></div>
+      <h2 class="sheet-title">Contents</h2>
       <div class="toc"></div>
     </dialog>
     <dialog class="sheet note-sheet" id="note-sheet" aria-label="Note">
@@ -79,19 +80,13 @@
     </dialog>`);
 
   const progress = document.querySelector('.progress');
-  const meta = document.getElementById('reader-meta');
-  const where = document.getElementById('reader-where');
   const contentsButton = document.getElementById('contents-button');
   const contents = document.getElementById('contents-sheet');
   const noteSheet = document.getElementById('note-sheet');
   const coverToc = cover.querySelector('.toc ul');
   if (coverToc) contents.querySelector('.toc').appendChild(coverToc.cloneNode(true));
 
-  // Reading time and Begin / Continue on the cover.
-  const words = main.textContent.split(/\s+/).length;
-  const hours = words / 230 / 60;
-  const time = hours < 1 ? Math.max(1, Math.round(hours * 60)) + ' min' : Math.round(hours) + (Math.round(hours) === 1 ? ' hour' : ' hours');
-  cover.insertAdjacentHTML('afterbegin', `<div class="reader-meta"><a href="/">Cristian Rus</a><span class="reader-meta-end"><span>${time}</span><button type="button" data-reading-prefs-toggle>Aa</button></span></div>`);
+  // Begin / Continue on the cover.
   const actions = document.createElement('div');
   actions.className = 'cover-actions';
   (cover.querySelector('.cover-credit') || cover.querySelector('.cover-title')).after(actions);
@@ -133,7 +128,6 @@
     const fraction = fractionRead();
     const all = overall(current, fraction);
     progress.style.transform = `scaleX(${all})`;
-    where.textContent = `${current.short} · ${Math.round(all * 100)}%`;
     store.set(PLACE, { chapter: current.id, fraction, overall: all });
   }
 
@@ -150,8 +144,6 @@
     if (current) current.el.hidden = true;
     current = null;
     document.body.classList.remove('reading');
-    meta.hidden = true;
-    contentsButton.hidden = true;
     progress.style.transform = 'scaleX(0)';
     document.title = bookTitle;
     renderCover();
@@ -166,8 +158,6 @@
       current = chapter;
     }
     document.body.classList.add('reading');
-    meta.hidden = false;
-    contentsButton.hidden = false;
     document.title = chapter.title + ' — ' + bookTitle;
     contents.querySelectorAll('a[aria-current]').forEach(a => a.removeAttribute('aria-current'));
     const tocLink = contents.querySelector(`a[href="#${CSS.escape(chapter.id)}"]`);
@@ -283,7 +273,7 @@
     const i = current ? chapters.indexOf(current) : -1;
     if (e.key === 'ArrowRight' && current) go(chapters[i + 1]);
     if (e.key === 'ArrowLeft' && current) go(chapters[i - 1]);
-    if ((e.key === 'c' || e.key === 'C') && current) contents.showModal();
+    if (e.key === 'c' || e.key === 'C') contents.showModal();
   });
 
   route();

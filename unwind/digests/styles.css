@@ -124,6 +124,34 @@
         cursor: pointer;
       }
 
+      /* Reading settings (../../reading-prefs.js): a gold square in the corner,
+         stacked above the jump button while that one is showing. */
+      .prefs-fab {
+        position: fixed;
+        right: 1.5rem;
+        bottom: 1.5rem;
+        z-index: 20;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: calc(2.8rem + 2px);   /* same box as the jump button below it */
+        height: 2.1rem;
+        padding: 0;
+        border: 1px solid var(--accent);
+        border-radius: 0;
+        background: var(--accent);
+        color: var(--bg);
+        font-family: var(--font-text);
+        font-size: 0.88rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: bottom 180ms ease;
+      }
+
+      body:has(.section-jump-button:not([hidden])) .prefs-fab {
+        bottom: calc(1.5rem + 2.1rem + 0.5rem);
+      }
+
       .section-jump-button[disabled] {
         opacity: 0.45;
       }
@@ -227,14 +255,6 @@
         font-size: 0.72rem;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-      }
-
-      .prefs-toggle {
-        margin-left: 1.4em;
-        color: var(--accent);
-        font-size: 0.9rem;
-        line-height: 1;
-        vertical-align: -0.05em;
       }
 
       .back-to-unwind {
@@ -803,6 +823,15 @@
         .section-jump-button {
           right: 1rem;
           bottom: 1rem;
+        }
+
+        .prefs-fab {
+          right: 1rem;
+          bottom: 1rem;
+        }
+
+        body:has(.section-jump-button:not([hidden])) .prefs-fab {
+          bottom: calc(1rem + 2.1rem + 0.5rem);
         }
 
         .question-actions {
