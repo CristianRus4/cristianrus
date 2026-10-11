@@ -42,10 +42,6 @@
 				    <td></td>
 				  </tr>
 				  <tr>
-				    <th scope="row">active</th>
-				    <td id="active-info"></td>
-				  </tr>
-				  <tr>
 				    <th scope="row">workout</th>
 				    <td id="workout-info"></td>
 				  </tr>
@@ -138,15 +134,17 @@
     scrambling.set(el, setInterval(tick, 50));
   }
 
-  // Stop the letters and show the real value — or hide the row if there isn't one.
+  // Stop the letters and show the real value. With nothing to show, the row
+  // goes straight away (usually before it has even faded in).
   function settle(el, render) {
-    const wait = calm ? 0 : Math.max(0, pageStart + revealAt.get(el.closest('td')) + SETTLE_AFTER - Date.now());
-    setTimeout(() => {
+    const done = () => {
       clearInterval(scrambling.get(el));
       scrambling.delete(el);
       if (render) render(el);
       else hideRow(el);
-    }, wait);
+    };
+    if (!render || calm) return done();
+    setTimeout(done, Math.max(0, pageStart + revealAt.get(el.closest('td')) + SETTLE_AFTER - Date.now()));
   }
 
   // Location is already in the HTML; it just gets the letters treatment.
@@ -154,7 +152,7 @@
   scramble($('location'), 13);
   settle($('location'), el => { el.textContent = place; });
 
-  [['weather-info', 16], ['active-info', 14], ['workout-info', 18], ['top-song', 10], ['last-movie', 12], ['last-book', 20]]
+  [['weather-info', 16], ['workout-info', 18], ['top-song', 10], ['last-movie', 12], ['last-book', 20]]
     .forEach(([id, length]) => scramble($(id), length));
 
   // Weather (OpenWeatherMap).
@@ -166,19 +164,12 @@
     })
     .catch(err => { console.error('Weather:', err); settle($('weather-info')); });
 
-  // Today's activity + latest workout (Nexus / Apple Health snapshot).
+  // Latest workout (Nexus / Apple Health snapshot).
   const nzToday = new Intl.DateTimeFormat('en-CA', { timeZone: 'Pacific/Auckland' }).format(new Date());
   const daysAgo = (day) => Math.round((Date.parse(nzToday) - Date.parse(day)) / 86400000);
   fetch('now-active.json?t=' + Date.now())
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(data => {
-      const parts = [];
-      if (data.date === nzToday) {
-        if (data.moveKcal > 0) parts.push(Math.round(data.moveKcal).toLocaleString('en-NZ') + ' kcal');
-        if (data.steps > 0) parts.push(Math.round(data.steps).toLocaleString('en-NZ') + ' steps');
-      }
-      settle($('active-info'), parts.length ? el => { el.textContent = parts.join(' · '); } : null);
-
       // Only workouts from the last two weeks count as "now".
       const w = data.workout;
       const ago = w && w.date ? daysAgo(w.date) : NaN;
@@ -187,7 +178,6 @@
     })
     .catch(err => {
       console.error('Nexus (now):', err);
-      settle($('active-info'));
       settle($('workout-info'));
     });
 
