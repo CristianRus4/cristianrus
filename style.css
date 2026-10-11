@@ -763,7 +763,10 @@ body.gallery-page { max-width: 1080px; }
   margin: 0 0 -1em;
   padding: 0.75em 0;
   background: var(--bg);
+  transition: transform 250ms ease;
 }
+/* Slid away while scrolling down; far enough to clear an iPhone status bar. */
+.hs-years.is-hidden { transform: translateY(calc(-100% - 4rem)); }
 .hs-years-track {
   display: flex;
   gap: 1.1em;
@@ -893,6 +896,7 @@ html:has(.gallery-page) { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
   html:has(.gallery-page) { scroll-behavior: auto; }
+  .hs-years { transition: none; }
   .hs-grid img { transition: none; }
 }
 

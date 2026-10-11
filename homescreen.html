@@ -251,13 +251,20 @@
 		  const bar = document.getElementById('hs-years');
 		  if (!bar) return;
 		  const years = Array.from(bar.querySelectorAll('a')).map(a => ({ a, section: document.getElementById(a.hash.slice(1)) }));
-		  let current = null, queued = false;
+		  let current = null, queued = false, picked = null;
 
 		  function markYear() {
 		    queued = false;
-		    const line = bar.getBoundingClientRect().bottom + 48;
-		    let active = years[0];
-		    years.forEach(y => { if (y.section.getBoundingClientRect().top <= line) active = y; });
+		    // A tapped year stays underlined until you scroll yourself (the last years
+		    // are too short to reach the top). At the very bottom it's the last year.
+		    let active = picked;
+		    if (!active) {
+		      const line = bar.offsetHeight + 72;   // fixed, so it doesn't move when the bar slides away
+		      const atBottom = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+		      active = years[0];
+		      years.forEach(y => { if (y.section.getBoundingClientRect().top <= line) active = y; });
+		      if (atBottom) active = years[years.length - 1];
+		    }
 		    if (active === current) return;
 		    if (current) current.a.removeAttribute('aria-current');
 		    active.a.setAttribute('aria-current', 'true');
@@ -272,7 +279,32 @@
 		    bar.dataset.more = more.join(' ');
 		  }
 
-		  addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(markYear); } }, { passive: true });
+		  bar.addEventListener('click', e => {
+		    const a = e.target.closest('a');
+		    picked = a ? years.find(y => y.a === a) : null;
+		    if (picked) markYear();
+		  });
+		  ['wheel', 'touchstart', 'keydown'].forEach(type => addEventListener(type, e => {
+		    if (!(e.target.closest && e.target.closest('.hs-years'))) picked = null;
+		  }, { passive: true }));
+
+		  // Out of the way while scrolling down through the screenshots; back as soon as you scroll up.
+		  const nav = bar.closest('.hs-years');
+		  const heading = nav.previousElementSibling;
+		  let lastY = scrollY;
+		  function autoHide() {
+		    const y = scrollY;
+		    if (Math.abs(y - lastY) < 6) return;
+		    const pastTop = heading.getBoundingClientRect().bottom < 0;
+		    nav.classList.toggle('is-hidden', pastTop && y > lastY);
+		    lastY = y;
+		  }
+
+		  addEventListener('scroll', () => {
+		    if (queued) return;
+		    queued = true;
+		    requestAnimationFrame(() => { markYear(); autoHide(); });
+		  }, { passive: true });
 		  bar.addEventListener('scroll', markEdges, { passive: true });
 		  addEventListener('resize', markEdges);
 		  markYear();
