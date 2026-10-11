@@ -161,6 +161,8 @@
   inset: auto 0 0 0;
   width: 100%;
   max-width: 680px;
+  max-height: 85vh;
+  overflow: auto;
   margin: 0 auto;
   padding: 1.25rem 1.5rem 1.75rem;
   border: 0;

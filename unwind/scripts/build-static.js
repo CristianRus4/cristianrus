@@ -134,34 +134,6 @@ const PAGE_STYLE = `
         cursor: pointer;
       }
 
-      /* Reading settings (../../reading-prefs.js): a gold square in the corner,
-         stacked above the jump button while that one is showing. */
-      .prefs-fab {
-        position: fixed;
-        right: 1.5rem;
-        bottom: 1.5rem;
-        z-index: 20;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: calc(2.8rem + 2px);   /* same box as the jump button below it */
-        height: 2.1rem;
-        padding: 0;
-        border: 1px solid var(--accent);
-        border-radius: 0;
-        background: var(--accent);
-        color: var(--bg);
-        font-family: var(--font-text);
-        font-size: 0.88rem;
-        line-height: 1;
-        cursor: pointer;
-        transition: bottom 180ms ease;
-      }
-
-      body:has(.section-jump-button:not([hidden])) .prefs-fab {
-        bottom: calc(1.5rem + 2.1rem + 0.5rem);
-      }
-
       .section-jump-button[disabled] {
         opacity: 0.45;
       }
@@ -171,6 +143,47 @@ const PAGE_STYLE = `
         border-color: var(--accent);
         background: var(--accent);
         color: var(--bg);
+      }
+
+      /* The line button's menu: reading settings, then the day's sections. */
+      .unwind-menu .reading-prefs {
+        margin: 0 0 1.75rem;
+      }
+
+      .unwind-menu-sections {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .unwind-menu-sections button {
+        display: block;
+        width: 100%;
+        padding: 0.55rem 0;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+        background: none;
+        color: var(--text);
+        font-family: var(--font-text);
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-align: left;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .unwind-menu-sections li:first-child button {
+        color: var(--accent);
+        font-size: 1rem;
+        font-style: italic;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+
+      @media (hover: hover) {
+        .unwind-menu-sections button:hover {
+          color: var(--accent);
+        }
       }
 
       .section-jump-line {
@@ -835,15 +848,6 @@ const PAGE_STYLE = `
           bottom: 1rem;
         }
 
-        .prefs-fab {
-          right: 1rem;
-          bottom: 1rem;
-        }
-
-        body:has(.section-jump-button:not([hidden])) .prefs-fab {
-          bottom: calc(1rem + 2.1rem + 0.5rem);
-        }
-
         .question-actions {
           margin-left: 1.9rem;
         }
@@ -944,7 +948,6 @@ function renderDigestPage(entry) {
     "        <p class=\"back-to-unwind\"><a href=\"../index.html\">UNWIND</a></p>",
     "      </div>",
     "    </main>",
-    "    <button type=\"button\" class=\"prefs-fab\" data-reading-prefs-toggle>Aa</button>",
     "    <script id=\"unwind-page-data\" type=\"application/json\">" + safeJson(entry) + "</script>",
     "    <script src=\"./" + SHARED_SCRIPT_NAME + "\"></script>",
     "  </body>",
@@ -1004,7 +1007,7 @@ function renderArchivePage(digests) {
     "        <p class=\"back-to-unwind\"><a href=\"../index.html\">UNWIND</a></p>",
     "      </div>",
     "    </main>",
-    "    <button type=\"button\" class=\"prefs-fab\" data-reading-prefs-toggle>Aa</button>",
+    "    <button type=\"button\" class=\"section-jump-button\" data-reading-prefs-toggle><span class=\"section-jump-line\" aria-hidden=\"true\"></span></button>",
     "  </body>",
     "</html>",
     ""
@@ -1617,64 +1620,57 @@ function setupAnswersReveal() {
 
 function setupSectionJumpButton() {
   var button = document.createElement("button");
+  var menu = document.createElement("dialog");
+  var list = document.createElement("ol");
+  var cards = app.querySelectorAll(".card");
+  var index;
+
   button.type = "button";
   button.className = "section-jump-button";
-  button.setAttribute("aria-label", "Jump to next section");
+  button.setAttribute("aria-label", "Menu");
   button.innerHTML = "<span class=\\"section-jump-line\\" aria-hidden=\\"true\\"></span>";
 
+  menu.className = "rp-sheet unwind-menu";
+  menu.setAttribute("aria-label", "Menu");
+  if (window.ReadingPrefs) {
+    menu.appendChild(window.ReadingPrefs.controls());
+  }
+
+  list.className = "unwind-menu-sections";
+  for (index = 0; index < cards.length; index += 1) {
+    list.appendChild(sectionMenuItem(cards[index], menu));
+  }
+  menu.appendChild(list);
+
+  menu.addEventListener("click", function (event) {
+    if (event.target === menu) {
+      menu.close();
+    }
+  });
   button.onclick = function () {
-    jumpToNextSection();
+    menu.showModal();
   };
 
+  document.body.appendChild(menu);
   document.body.appendChild(button);
-  updateSectionJumpButton(button);
-  window.addEventListener("scroll", function () {
-    updateSectionJumpButton(button);
-  }, { passive: true });
-  window.addEventListener("resize", function () {
-    updateSectionJumpButton(button);
-  });
 }
 
-function getNextSection() {
-  var sections = app ? app.children : [];
-  var tolerance = 96;
-  var index;
-  var section;
-  var top;
+function sectionMenuItem(card, menu) {
+  var item = document.createElement("li");
+  var go = document.createElement("button");
+  var label = card.querySelector(".section-label") || card.querySelector("h1, h2");
 
-  for (index = 0; index < sections.length; index += 1) {
-    section = sections[index];
-    if (!section.classList || !section.classList.contains("card")) {
-      continue;
-    }
-
-    top = section.getBoundingClientRect().top;
-    if (top > tolerance) {
-      return section;
-    }
-  }
-
-  return null;
-}
-
-function updateSectionJumpButton(button) {
-  var nextSection = getNextSection();
-  button.disabled = !nextSection;
-  button.hidden = !nextSection;
-}
-
-function jumpToNextSection() {
-  var nextSection = getNextSection();
-  var offset = 18;
-  if (!nextSection) {
-    return;
-  }
-
-  window.scrollTo({
-    top: window.scrollY + nextSection.getBoundingClientRect().top - offset,
-    behavior: "smooth"
-  });
+  go.type = "button";
+  go.textContent = label ? label.textContent.trim() : "";
+  go.onclick = function () {
+    menu.close();
+    window.scrollTo({
+      top: window.scrollY + card.getBoundingClientRect().top - 18,
+      behavior: "smooth"
+    });
+  };
+  item.appendChild(go);
+  return item;
 }
 
 function setupQuestionCard(card) {

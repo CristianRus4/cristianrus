@@ -37,64 +37,57 @@ function setupAnswersReveal() {
 
 function setupSectionJumpButton() {
   var button = document.createElement("button");
+  var menu = document.createElement("dialog");
+  var list = document.createElement("ol");
+  var cards = app.querySelectorAll(".card");
+  var index;
+
   button.type = "button";
   button.className = "section-jump-button";
-  button.setAttribute("aria-label", "Jump to next section");
+  button.setAttribute("aria-label", "Menu");
   button.innerHTML = "<span class=\"section-jump-line\" aria-hidden=\"true\"></span>";
 
+  menu.className = "rp-sheet unwind-menu";
+  menu.setAttribute("aria-label", "Menu");
+  if (window.ReadingPrefs) {
+    menu.appendChild(window.ReadingPrefs.controls());
+  }
+
+  list.className = "unwind-menu-sections";
+  for (index = 0; index < cards.length; index += 1) {
+    list.appendChild(sectionMenuItem(cards[index], menu));
+  }
+  menu.appendChild(list);
+
+  menu.addEventListener("click", function (event) {
+    if (event.target === menu) {
+      menu.close();
+    }
+  });
   button.onclick = function () {
-    jumpToNextSection();
+    menu.showModal();
   };
 
+  document.body.appendChild(menu);
   document.body.appendChild(button);
-  updateSectionJumpButton(button);
-  window.addEventListener("scroll", function () {
-    updateSectionJumpButton(button);
-  }, { passive: true });
-  window.addEventListener("resize", function () {
-    updateSectionJumpButton(button);
-  });
 }
 
-function getNextSection() {
-  var sections = app ? app.children : [];
-  var tolerance = 96;
-  var index;
-  var section;
-  var top;
+function sectionMenuItem(card, menu) {
+  var item = document.createElement("li");
+  var go = document.createElement("button");
+  var label = card.querySelector(".section-label") || card.querySelector("h1, h2");
 
-  for (index = 0; index < sections.length; index += 1) {
-    section = sections[index];
-    if (!section.classList || !section.classList.contains("card")) {
-      continue;
-    }
-
-    top = section.getBoundingClientRect().top;
-    if (top > tolerance) {
-      return section;
-    }
-  }
-
-  return null;
-}
-
-function updateSectionJumpButton(button) {
-  var nextSection = getNextSection();
-  button.disabled = !nextSection;
-  button.hidden = !nextSection;
-}
-
-function jumpToNextSection() {
-  var nextSection = getNextSection();
-  var offset = 18;
-  if (!nextSection) {
-    return;
-  }
-
-  window.scrollTo({
-    top: window.scrollY + nextSection.getBoundingClientRect().top - offset,
-    behavior: "smooth"
-  });
+  go.type = "button";
+  go.textContent = label ? label.textContent.trim() : "";
+  go.onclick = function () {
+    menu.close();
+    window.scrollTo({
+      top: window.scrollY + card.getBoundingClientRect().top - 18,
+      behavior: "smooth"
+    });
+  };
+  item.appendChild(go);
+  return item;
 }
 
 function setupQuestionCard(card) {

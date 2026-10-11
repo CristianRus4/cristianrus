@@ -7,6 +7,7 @@
      <div data-reading-prefs></div>             the controls, right there
      <button data-reading-prefs-toggle>Aa</button>  opens them in a sheet
                                                 (style it yourself by giving it a class)
+   ReadingPrefs.controls() returns the controls for a menu a page builds itself.
    ReadingPrefs.wrap(fn) lets a page run each change itself, e.g. to keep
    the reader's place: fn receives the function that applies the change.
    =========================================================================== */
@@ -106,6 +107,7 @@
   else mount();
 
   window.ReadingPrefs = {
-    wrap: function (fn) { wrapper = fn; }
+    wrap: function (fn) { wrapper = fn; },
+    controls: build      // a fresh set of controls, for pages that build their own menu
   };
 })();
