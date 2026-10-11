@@ -1,0 +1,41 @@
+# Cristian Rus
+
+> Cristian Rus is a designer and independent iOS developer based in Wellington, New Zealand. He works at Cntxt Labs and builds his own apps, including Left, ftnss and txtpod. Before that he spent more than five years as a technology journalist at Webedia and worked as a designer for various companies.
+
+He is interested in how design and technology shape society and human behaviour, with a focus on creating thoughtful digital products and improving the interactions between people and businesses.
+
+Contact: cristianrus@hey.com (email is the best way to reach him).
+
+## Pages
+
+- [About](https://www.cristianrus.me/about): Short bio, current work and how to get in touch.
+- [Now](https://www.cristianrus.me/now): Live status page: location, weather, latest workout, most played artist this week, last film watched and current book. Values are loaded in the browser from Last.fm, Letterboxd, Goodreads and Apple Health.
+- [Attitude](https://www.cristianrus.me/attitude): A personal list of principles, split into things to know and things to do.
+- [Homescreen](https://www.cristianrus.me/homescreen): A monthly archive of his iPhone home screen since 2015, as screenshots grouped by year.
+- [Books](https://www.cristianrus.me/books): Books he has read and found relevant, by year. No reviews or ratings.
+- [Tattoos](https://www.cristianrus.me/tattoos): His tattoos and the story behind each one.
+- [Experience](https://www.cristianrus.me/experience): Career summary.
+
+## Apps
+
+- [Left](https://getleft.app)
+- [ftnss](https://ftnss.app)
+- [txtpod](https://txtpod.app)
+- [ftnss Workouts](https://www.cristianrus.me/apps/ftnss-workouts): Design custom workouts for Apple Watch, including intervals, warmups and cooldowns.
+- [KiwiCamping](https://www.cristianrus.me/apps/kiwicamping): 3,500+ campsites, huts and holiday parks across New Zealand, offline-ready.
+- [NotSoBusy](https://www.cristianrus.me/apps/notsobusy): Share your daily availability without exposing your calendar. Private, no accounts.
+- [Bites](https://www.cristianrus.me/apps/bites): Log meals and calculate calories, macros and nutrients with Apple Intelligence.
+
+## Elsewhere
+
+- [Cntxt Labs](https://cntxtlabs.co)
+- [GitHub](https://github.com/cristianrus4)
+- [LinkedIn](https://www.linkedin.com/in/cristian-daniel-rus/)
+- [X / Twitter](https://twitter.com/cristianrus4)
+- [Letterboxd](https://letterboxd.com/cristianrus4/)
+- [Goodreads](https://www.goodreads.com/user/show/74821928-cristian-rus)
+
+## Optional
+
+- [Tools](https://www.cristianrus.me/focus): Small single-purpose pages: focus (Pomodoro timer), [flip](https://www.cristianrus.me/flip), [think](https://www.cristianrus.me/think) (a random principle), [time](https://www.cristianrus.me/time), [lofi](https://www.cristianrus.me/lofi).
+- [Site index](https://www.cristianrus.me/hyper): Every page and shortcut link on the site.

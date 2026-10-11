@@ -136,12 +136,27 @@ body {
 }
 
 body:has(.top-head) {
-    padding-top: 8vh;
+    padding-top: 2.2rem;
     padding-bottom: 6em;
 }
 
+/* Bottom-pinned pages (about, now): the block sits at the foot of the first
+   screen when it fits, and the page scrolls when it doesn't (short or
+   landscape phones) instead of clipping its top off-screen. */
+body:has(.bottom-head) {
+    max-width: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 2.2rem 5vw 8vh;
+}
 .bottom-head {
+    position: static;
     display: block;
+    margin-top: auto;
+    pointer-events: auto;
 }
 .bottom-content {
     max-width: 820px;
@@ -225,8 +240,52 @@ a.titlelink:hover {
     -webkit-text-fill-color: currentColor;
 }
 
+/* Keyboard focus gets the same invert as hover; the big title an outline. */
+a:focus-visible {
+    outline: none;
+    color: var(--paper);
+    background: var(--ink);
+    -webkit-text-fill-color: var(--paper);
+    box-shadow: 0 0 0 0.1em var(--ink);
+}
+a.titlelink:focus-visible {
+    background: none;
+    box-shadow: none;
+    color: var(--ink);
+    -webkit-text-fill-color: currentColor;
+    outline: 2px solid currentColor;
+    outline-offset: 0.08em;
+}
+
+/* ---- Page nav: the home page's top row, shrunk to one line —
+        name on the leading edge, sections trailing. ---- */
+.page-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin: 0;
+    text-align: left;
+    font-size: clamp(0.68rem, 1vw, 0.86rem);
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.page-nav a { margin-right: 0; font-weight: 500; }
+.page-nav > a:first-child { font-weight: 700; }
+.page-nav span { display: flex; gap: 1.25em; }
+.page-nav [aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+}
+body:has(.top-head) .page-nav { width: 90vw; margin-bottom: clamp(3rem, 10vh, 6rem); }
+body:has(.bottom-head) .page-nav { margin-bottom: 2rem; }
+
 /* ---- Attitude / item bars: ink, square, a touch bolder. ---- */
 .item::before { background-color: var(--ink); width: 4px; }
+.item-list { list-style: none; padding: 0; margin: 0; }
+.item-list .item { margin: 1em 0; }
 
 /* ============================================================
    NOW — keep the JS table fade; left-align the first column.
@@ -276,7 +335,7 @@ a.titlelink:hover {
     white-space: nowrap;
 }
 #animated-table tr { opacity: 1 !important; }
-#counter { color: var(--ink); }
+#counter { color: var(--ink); font-variant-numeric: tabular-nums; }
 
 /* ============================================================
    HOME — poster layout: menu across the top in three left-aligned
@@ -575,7 +634,8 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
         background-clip: border-box;
         box-shadow: none;
     }
-    a:hover {
+    a:hover,
+    a:focus-visible {
         color: var(--void);
         background: var(--ink);
         background-clip: border-box;
@@ -585,7 +645,8 @@ body:has(#dash) {            /* beat style.css's id-level rule (loaded later) */
     }
     a.titlelink:link,
     a.titlelink:visited,
-    a.titlelink:hover {
+    a.titlelink:hover,
+    a.titlelink:focus-visible {
         background: none;
         box-shadow: none;
         color: var(--paper);

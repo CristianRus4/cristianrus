@@ -2,25 +2,50 @@
 <html lang="en" style="--paper:#D6402F; --ink:#F2EAD8">
 	<head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="theme-color" content="#D6402F" media="(prefers-color-scheme: light)">
 	<meta name="theme-color" content="#070707" media="(prefers-color-scheme: dark)">
 	<meta name="description" content="Cristian Rus — digital designer and iOS developer based in Wellington, New Zealand.">
+	<link rel="canonical" href="https://www.cristianrus.me/">
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://www.cristianrus.me/">
 	<meta property="og:title" content="Cristian Rus">
 	<meta property="og:description" content="Cristian Rus — digital designer and iOS developer based in Wellington, New Zealand.">
 	<meta property="og:image" content="https://www.cristianrus.me/images/avatar.jpg">
+	<link rel="preload" href="fonts/GeistVariableVF.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="stylesheet" type="text/css" href="swissstyle.css">
 	<link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
-	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
 	<title>Cristian Rus</title>
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "Person",
+	  "@id": "https://www.cristianrus.me/#person",
+	  "name": "Cristian Rus",
+	  "url": "https://www.cristianrus.me/",
+	  "image": "https://www.cristianrus.me/images/avatar.jpg",
+	  "jobTitle": "Designer and iOS developer",
+	  "description": "Designer and independent developer in Wellington, New Zealand, interested in how design and technology shape society and human behaviour.",
+	  "email": "mailto:cristianrus@hey.com",
+	  "homeLocation": { "@type": "Place", "name": "Wellington, New Zealand" },
+	  "worksFor": { "@type": "Organization", "name": "Cntxt Labs", "url": "https://cntxtlabs.co" },
+	  "knowsAbout": ["Digital product design", "iOS app development", "User research", "Human behaviour"],
+	  "sameAs": [
+	    "https://twitter.com/cristianrus4",
+	    "https://www.linkedin.com/in/cristian-daniel-rus/",
+	    "https://github.com/cristianrus4",
+	    "https://letterboxd.com/cristianrus4/",
+	    "https://www.goodreads.com/user/show/74821928-cristian-rus",
+	    "https://www.strava.com/athletes/134984354"
+	  ]
+	}
+	</script>
 	</head>
 
 	<body>
 
-  <img class="home-bg-avatar" src="images/avatar.jpg" alt="Cristian Rus"/>
+  <img class="home-bg-avatar" src="images/avatar.jpg" alt="Portrait of Cristian Rus"/>
 
   <nav class="home-nav">
     <div class="nav-col">
@@ -37,27 +62,35 @@
     </div>
     <div class="nav-col">
       <div class="section-label">03 CONTACT</div>
-      <a id="copy-email" href="#">mail</a>
+      <a id="copy-email" href="mailto:cristianrus@hey.com">mail</a>
       <a href="sms:+642041926150">text</a>
       <a href="twitter">social</a>
     </div>
   </nav>
 
-  <p class="home-meta">NZ / DESIGN & CODE / 2026</p>
+  <p class="home-meta">NZ / DESIGN & CODE / <span id="home-year">2026</span></p>
 
-  <div class="home-hero">
+  <main class="home-hero">
     <h1 class="title"><a class="titlelink" href="/">Cristian</a></h1>
     <p class="sub">DESIGN &<br>HUMAN BEHAVIOUR</p>
-  </div>
+  </main>
 
   <script type="text/javascript">
+  document.getElementById('home-year').textContent = new Date().getFullYear();
+
+  // Copy the address instead of opening a mail app; fall back to mailto if the clipboard isn't available.
   const copyEmail = document.getElementById('copy-email');
-  copyEmail.addEventListener('click', function() {
-    navigator.clipboard.writeText('cristianrus@hey.com');
-    this.textContent = 'address copied';
-    setTimeout(() => {
-      this.textContent = 'mail';
-    }, 1000);
+  copyEmail.addEventListener('click', function(e) {
+    if (!navigator.clipboard || !window.isSecureContext) return;
+    e.preventDefault();
+    navigator.clipboard.writeText('cristianrus@hey.com').then(() => {
+      this.textContent = 'address copied';
+      setTimeout(() => {
+        this.textContent = 'mail';
+      }, 1000);
+    }, () => {
+      location.href = this.href;
+    });
   });
   </script>
 

@@ -2,24 +2,59 @@
 <html lang="en" style="--paper:#B8562D; --ink:#F2EAD8">
 	<head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="theme-color" content="#B8562D" media="(prefers-color-scheme: light)">
 	<meta name="theme-color" content="#070707" media="(prefers-color-scheme: dark)">
 	<meta name="description" content="Digital designer based in Wellington, New Zealand. Working on design and building iOS apps.">
-	<meta property="og:type" content="website">
+	<link rel="canonical" href="https://www.cristianrus.me/about">
+	<meta property="og:type" content="profile">
 	<meta property="og:url" content="https://www.cristianrus.me/about">
 	<meta property="og:title" content="About — Cristian Rus">
 	<meta property="og:description" content="Digital designer based in Wellington, New Zealand. Working on design and building iOS apps.">
 	<meta property="og:image" content="https://www.cristianrus.me/images/avatar.jpg">
+	<link rel="preload" href="fonts/GeistVariableVF.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="stylesheet" type="text/css" href="swissstyle.css">
 	<link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
-	<title>about</title>
+	<title>About — Cristian Rus</title>
+	<script type="application/ld+json">
+	{
+	  "@context": "https://schema.org",
+	  "@type": "ProfilePage",
+	  "url": "https://www.cristianrus.me/about",
+	  "mainEntity": {
+	    "@type": "Person",
+	    "@id": "https://www.cristianrus.me/#person",
+	    "name": "Cristian Rus",
+	    "url": "https://www.cristianrus.me/",
+	    "image": "https://www.cristianrus.me/images/avatar.jpg",
+	    "jobTitle": "Designer and iOS developer",
+	    "description": "Designer and independent developer in Wellington, New Zealand, interested in how design and technology shape society and human behaviour.",
+	    "email": "mailto:cristianrus@hey.com",
+	    "homeLocation": { "@type": "Place", "name": "Wellington, New Zealand" },
+	    "worksFor": { "@type": "Organization", "name": "Cntxt Labs", "url": "https://cntxtlabs.co" },
+	    "knowsAbout": ["Digital product design", "iOS app development", "User research", "Human behaviour"],
+	    "sameAs": [
+	      "https://twitter.com/cristianrus4",
+	      "https://www.linkedin.com/in/cristian-daniel-rus/",
+	      "https://github.com/cristianrus4",
+	      "https://letterboxd.com/cristianrus4/",
+	      "https://www.goodreads.com/user/show/74821928-cristian-rus",
+	      "https://www.strava.com/athletes/134984354"
+	    ]
+	  }
+	}
+	</script>
 	</head>
 
 	<body>
 
-	<header class="page-head bottom-head">
+	<nav class="page-nav" aria-label="Site">
+		<a href="/">Cristian Rus</a>
+		<span><a href="about" aria-current="page">About</a><a href="now">Now</a></span>
+	</nav>
+
+	<main class="page-head bottom-head">
 		<div class="bottom-content text-columns">
 			<p>Hey, I'm Cristian, a designer and independent developer in New Zealand.</p>
 
@@ -27,13 +62,14 @@
 
 			<p>Previously, I spent more than five years as a technology journalist at <a href="https://webedia-group.com" target="_blank">Webedia</a> and worked as a designer for various companies, researching user behaviour, crafting interfaces, and designing digital experiences.</p>
 
-			<p>The best way to reach me is <a id="copy-email" href="#">by email</a> or <a href="tel:+642041926150">by text</a>.</p>
+			<p>The best way to reach me is <a id="copy-email" href="mailto:cristianrus@hey.com">by email</a> or <a href="sms:+642041926150">by text</a>.</p>
 		</div>
 		<div class="bottom-title-row">
 			<h1 class="title"><a class="titlelink" href="/">About</a></h1>
 			<p class="sub" id="about-date"></p>
 		</div>
-	</header>
+	</main>
+
 	<script type="text/javascript">
 	const aboutDate = document.getElementById('about-date');
 	if (aboutDate) {
@@ -43,18 +79,20 @@
 	  aboutDate.textContent = `${month} '${year}`;
 	}
 
+	// Copy the address instead of opening a mail app; fall back to mailto if the clipboard isn't available.
 	const copyEmail = document.getElementById('copy-email');
 	copyEmail.addEventListener('click', function(e) {
+	  if (!navigator.clipboard || !window.isSecureContext) return;
 	  e.preventDefault();
-	  navigator.clipboard.writeText('cristianrus@hey.com');
-	  this.textContent = 'address copied';
-	  setTimeout(() => {
-	    this.textContent = 'by email';
-	  }, 1500);
+	  navigator.clipboard.writeText('cristianrus@hey.com').then(() => {
+	    this.textContent = 'address copied';
+	    setTimeout(() => {
+	      this.textContent = 'by email';
+	    }, 1500);
+	  }, () => {
+	    location.href = this.href;
+	  });
 	});
 	</script>
-	</body>
-
-
 	</body>
 </html>
