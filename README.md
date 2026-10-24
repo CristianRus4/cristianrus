@@ -22,7 +22,7 @@ Static HTML personal website hosted on GitHub Pages.
 The site deliberately has three looks. Keep all three.
 
 1. **Classic** — `style.css` alone. Light/dark, narrow centred column, gradient link hover. Books, tattoos, experience, homescreen, tools, 404.
-2. **Swiss** — `style.css` + `swissstyle.css`. One flat colour per page (`--paper`/`--ink` on `<html>`), giant title, grain, invert-on-hover links. Home, about, now, attitude, think, active, lorem. Linking the stylesheet is what opts a page in.
+2. **Swiss** — `style.css` + `swissstyle.css`. One flat colour per page (`--paper`/`--ink` on `<html>`), giant title, grain, invert-on-hover links. Home, about, now, attitude, think, active, lorem, stack. Linking the stylesheet is what opts a page in.
 3. **Unwind** — everything under `/unwind`, plus the book reader in `/books`. Digest pages are generated: edit `unwind/scripts/build-static.js`, then run `node unwind/scripts/build-static.js`. Size, font and theme come from `reading-prefs.css`.
 
 ## Active Pages
@@ -35,6 +35,7 @@ The site deliberately has three looks. Keep all three.
 - `attitude.html` — Personal principles
 - `experience.html` — Career history
 - `tattoos.html` — Tattoo designs with their stories, grid + full-size viewer (thumbnails in `images/tattoos/thumbs/`)
+- `stack.html` — "What I use" page, as a joke: every row is Claude Code
 
 ### Tool pages
 `focus.html`, `flip.html`, `think.html`, `time.html`, `lofi.html`

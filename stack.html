@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" style="--paper:#C15F3C; --ink:#F2EAD8">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#C15F3C" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#070707" media="(prefers-color-scheme: dark)">
+	<meta name="description" content="The tools and apps Cristian uses every day.">
+	<link rel="canonical" href="https://www.cristianrus.me/stack">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://www.cristianrus.me/stack">
+	<meta property="og:title" content="Stack — Cristian Rus">
+	<meta property="og:description" content="The tools and apps Cristian uses every day.">
+	<meta property="og:image" content="https://www.cristianrus.me/images/avatar.jpg">
+	<link rel="preload" href="fonts/GeistVariableVF.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="swissstyle.css">
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+	<title>Stack — Cristian Rus</title>
+	<noscript><style>#animated-table td { opacity: 1; }</style></noscript>
+	</head>
+
+	<body>
+
+
+		<main class="page-head bottom-head">
+			<div class="bottom-content">
+				<table id="animated-table">
+				  <tr>
+				    <th scope="row">editor</th>
+				    <td>Claude Code</td>
+				  </tr>
+				  <tr>
+				    <th scope="row">terminal</th>
+				    <td>Claude Code</td>
+				  </tr>
+				  <tr>
+				    <th scope="row">design</th>
+				    <td>Claude Code</td>
+				  </tr>
+				  <tr>
+				    <th scope="row">notes</th>
+				    <td>Claude Code</td>
+				  </tr>
+				  <tr>
+				    <th scope="row">tasks</th>
+				    <td>Claude Code</td>
+				  </tr>
+				  <tr>
+				    <th scope="row">email</th>
+				    <td>Claude Code</td>
+				  </tr>
+				  <tr>
+				    <th scope="row">calendar</th>
+				    <td>Claude Code</td>
+				  </tr>
+				  <tr aria-hidden="true">
+				    <th><br></th>
+				    <td></td>
+				  </tr>
+				  <tr>
+				    <th scope="row">first opinion</th>
+				    <td>Claude Code</td>
+				  </tr>
+				  <tr>
+				    <th scope="row">second opinion</th>
+				    <td>Claude Code</td>
+				  </tr>
+				</table>
+			</div>
+			<div class="bottom-title-row">
+				<h1 class="title"><a class="titlelink" href="/">Stack</a></h1>
+				<p class="sub">1 app</p>
+			</div>
+		</main>
+
+<script>
+(function () {
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const letters = 'abcdefghijklmnopqrstuvwxyz';
+  const cells = Array.from(document.querySelectorAll('#animated-table td'))
+    .filter(cell => cell.textContent.trim());
+
+  // Each row fades in on random letters, as if it might be something else, then settles on the one app.
+  cells.forEach((cell, i) => {
+    if (calm) { cell.classList.add('visible'); return; }
+    const name = cell.textContent;
+    const scramble = setInterval(() => {
+      cell.textContent = name.replace(/\S/g, ch => {
+        const r = letters[Math.floor(Math.random() * letters.length)];
+        return ch === ch.toUpperCase() ? r.toUpperCase() : r;
+      });
+    }, 50);
+    setTimeout(() => cell.classList.add('visible'), i * 300);
+    setTimeout(() => { clearInterval(scramble); cell.textContent = name; }, i * 300 + 700);
+  });
+})();
+</script>
+
+	</body>
+</html>

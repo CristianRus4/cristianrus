@@ -2,7 +2,7 @@
    swissstyle.css — Swiss / brutalist / minimalist treatment.
 
    Loaded AFTER style.css, only on the pages it's meant for:
-     home · about · now · active · lorem · attitude · think
+     home · about · now · active · lorem · attitude · think · stack
    (Linking the file is what opts a page in — nothing else.)
 
    The ONLY per-page detail is the colour, declared inline on each
