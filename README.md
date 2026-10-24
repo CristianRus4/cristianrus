@@ -16,7 +16,7 @@ Static HTML personal website hosted on GitHub Pages.
 - `reading-prefs.js` + `reading-prefs.css` — Text size, font (Mono/Serif/Sans) and theme (Auto/Light/Sepia/Dark) for the books and Unwind, saved in the browser and shared between them. Both open from the gold line button bottom right: settings at the top, then the book's contents or the day's sections.
 - `/unwind` — Self-contained daily digest with its own styles
 - `llms.txt` — Plain-markdown summary of the site for LLMs; update it when pages or apps change
-- `og.png` — The one social preview image every page shares (1200×630), in the classic look: tagline and name in black on the left over a black line, a small rounded avatar in the top right corner. Edit `scripts/og.html`, then run `scripts/og.sh` (needs Playwright's headless Chromium). New pages point `og:image` at `https://www.cristianrus.me/og.png` with `twitter:card` `summary_large_image`, like the others.
+- `og.png` — The one social preview image every page shares (1200×630), in the classic look: tagline and URL top left, a small rounded avatar top right, and "Cristian" so big it runs off the bottom and right edges. Edit `scripts/og.html`, then run `scripts/og.sh` (needs Playwright's headless Chromium). New pages point `og:image` at `https://www.cristianrus.me/og.png` with `twitter:card` `summary_large_image`, like the others.
 
 ## Styles
 

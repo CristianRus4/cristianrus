@@ -19,35 +19,25 @@ html, body {
 body {
 	position: relative;
 	background: #FDFDFC;
-	color: #555555;
+	color: #21201C;
 	font-family: 'Geist', sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
-/* Tagline and name on the leading edge, sitting on the line below; avatar in the top trailing corner. */
-.row {
+p, h1 { margin: 0; }
+.meta {
 	position: absolute;
 	left: 96px;
-	right: 96px;
-	bottom: 132px;
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-}
-.meta {
-	margin: 0 0 40px;
+	top: 96px;
 	font-size: 22px;
 	font-weight: 650;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
-	color: #21201C;
 }
-h1 {
-	margin: 0;
-	font-size: 104px;
-	font-weight: 650;
-	line-height: 0.74;
-	letter-spacing: -0.03em;
-	color: #21201C;
+.url {
+	position: absolute;
+	left: 96px;
+	top: 136px;
+	font-size: 22px;
 }
 .avatar {
 	position: absolute;
@@ -58,35 +48,26 @@ h1 {
 	border-radius: 28px;
 	object-fit: cover;
 	display: block;
+	z-index: 1;   /* sits above the page: a hairline edge and a tight contact shadow */
+	box-shadow: 0 0 0 1px rgba(33, 32, 28, 0.14), 0 2px 2px rgba(33, 32, 28, 0.10), 0 10px 14px -8px rgba(33, 32, 28, 0.45);
 }
-.rule {
+/* The name, so big it runs off the bottom and the trailing edge. */
+.name {
 	position: absolute;
-	left: 96px;
-	bottom: 98px;
-	width: 132px;
-	height: 6px;
-	background: #21201C;
-}
-.url {
-	position: absolute;
-	right: 96px;
-	bottom: 86px;
-	margin: 0;
-	font-size: 26px;
-	font-weight: 400;
-	color: #21201C;
+	left: 80px;
+	bottom: -46px;
+	font-size: 334px;
+	font-weight: 650;
+	line-height: 0.74;
+	letter-spacing: -0.055em;
+	white-space: nowrap;
 }
 </style>
 </head>
 <body>
-	<div class="row">
-		<div>
-			<p class="meta">Design &amp; Human Behaviour</p>
-			<h1>Cristian</h1>
-		</div>
-	</div>
-	<img class="avatar" src="../images/avatar.jpg" alt="">
-	<div class="rule"></div>
+	<p class="meta">Design &amp; Human Behaviour</p>
 	<p class="url">cristianrus.me</p>
+	<img class="avatar" src="../images/avatar.jpg" alt="">
+	<h1 class="name">Cristian</h1>
 </body>
 </html>
