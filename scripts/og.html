@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<!-- Source of /og.png, the one social preview image every page shares (1200 by 630).
-     Render it with scripts/og.sh after changing it. -->
+<!-- Source of /og.png, the one social preview image every page shares (1200 by 630),
+     in the classic style.css look. Render it with scripts/og.sh after changing it. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -18,66 +18,52 @@ html, body {
 }
 body {
 	position: relative;
-	background: #D6402F;
-	color: #F2EAD8;
+	background: #FDFDFC;
+	color: #555555;
 	font-family: 'Geist', sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
-/* Same printed-paper grain as swissstyle.css. */
-body::after {
-	content: "";
-	position: absolute;
-	inset: 0;
-	mix-blend-mode: multiply;
-	opacity: 0.07;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.text {
+/* Name on the leading edge, avatar trailing, both sitting on the line below. */
+.row {
 	position: absolute;
 	left: 96px;
-	top: 0;
-	bottom: 130px;
-	width: 600px;
+	right: 96px;
+	bottom: 132px;
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	justify-content: space-between;
+	align-items: flex-end;
 }
 .meta {
-	margin: 0 0 36px;
-	font-size: 20px;
-	font-weight: 700;
+	margin: 0 0 40px;
+	font-size: 22px;
+	font-weight: 650;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
+	color: #555555;
 }
 h1 {
 	margin: 0;
-	font-size: 112px;
-	font-weight: 700;
-	line-height: 0.86;
-	letter-spacing: -0.045em;
-}
-.line {
-	margin: 32px 0 0;
-	font-size: 30px;
-	line-height: 1.3;
+	font-size: 104px;
+	font-weight: 650;
+	line-height: 0.74;
+	letter-spacing: -0.03em;
+	color: #21201C;
 }
 .avatar {
-	position: absolute;
-	right: 96px;
-	top: 72px;
-	width: 380px;
-	height: 380px;
-	border-radius: 50%;
+	width: 128px;
+	height: 128px;
+	border-radius: 28px;
 	object-fit: cover;
-	z-index: 1;   /* above the grain, so the avatar prints clean */
+	display: block;
 }
+/* The link-hover gradient from style.css. */
 .rule {
 	position: absolute;
 	left: 96px;
 	bottom: 98px;
 	width: 132px;
 	height: 6px;
-	background: #F2EAD8;
+	background: linear-gradient(to right, #2A2A95, #1CB5E0);
 }
 .url {
 	position: absolute;
@@ -85,18 +71,18 @@ h1 {
 	bottom: 86px;
 	margin: 0;
 	font-size: 26px;
-	font-weight: 500;
-	opacity: 0.8;
+	font-weight: 400;
 }
 </style>
 </head>
 <body>
-	<div class="text">
-		<p class="meta">NZ / Design &amp; Code</p>
-		<h1>Cristian Rus</h1>
-		<p class="line">Designer and independent developer, based in New Zealand.</p>
+	<div class="row">
+		<div>
+			<p class="meta">Design &amp; Human Behaviour</p>
+			<h1>Cristian</h1>
+		</div>
+		<img class="avatar" src="../images/avatar.jpg" alt="">
 	</div>
-	<img class="avatar" src="../images/avatar.jpg" alt="">
 	<div class="rule"></div>
 	<p class="url">cristianrus.me</p>
 </body>
