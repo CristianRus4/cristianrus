@@ -23,7 +23,7 @@ body {
 	font-family: 'Geist', sans-serif;
 	-webkit-font-smoothing: antialiased;
 }
-/* Name on the leading edge, avatar trailing, both sitting on the line below. */
+/* Tagline and name on the leading edge, sitting on the line below; avatar in the top trailing corner. */
 .row {
 	position: absolute;
 	left: 96px;
@@ -39,7 +39,7 @@ body {
 	font-weight: 650;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
-	color: #555555;
+	color: #21201C;
 }
 h1 {
 	margin: 0;
@@ -50,20 +50,22 @@ h1 {
 	color: #21201C;
 }
 .avatar {
+	position: absolute;
+	top: 96px;
+	right: 96px;
 	width: 128px;
 	height: 128px;
 	border-radius: 28px;
 	object-fit: cover;
 	display: block;
 }
-/* The link-hover gradient from style.css. */
 .rule {
 	position: absolute;
 	left: 96px;
 	bottom: 98px;
 	width: 132px;
 	height: 6px;
-	background: linear-gradient(to right, #2A2A95, #1CB5E0);
+	background: #21201C;
 }
 .url {
 	position: absolute;
@@ -72,6 +74,7 @@ h1 {
 	margin: 0;
 	font-size: 26px;
 	font-weight: 400;
+	color: #21201C;
 }
 </style>
 </head>
@@ -81,8 +84,8 @@ h1 {
 			<p class="meta">Design &amp; Human Behaviour</p>
 			<h1>Cristian</h1>
 		</div>
-		<img class="avatar" src="../images/avatar.jpg" alt="">
 	</div>
+	<img class="avatar" src="../images/avatar.jpg" alt="">
 	<div class="rule"></div>
 	<p class="url">cristianrus.me</p>
 </body>
