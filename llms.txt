@@ -15,7 +15,7 @@ Contact: cristianrus@hey.com (email is the best way to reach him).
 - [Books](https://www.cristianrus.me/books): Books he has read and found relevant, by year. No reviews or ratings.
 - [Tattoos](https://www.cristianrus.me/tattoos): His tattoos and the story behind each one.
 - [Experience](https://www.cristianrus.me/experience): Career summary.
-- [Stack](https://www.cristianrus.me/stack): The tools he uses, as a joke: every row, from code editor to cofounder, is Claude Code.
+- [Stack](https://www.cristianrus.me/stack): The tools he uses, as a joke: every row, from code editor to email, is Claude Code.
 
 ## Apps
 
